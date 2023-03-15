@@ -1,5 +1,7 @@
 package com.github.egorbogomolov.tasktracker3.toolWindow
 
+import com.github.egorbogomolov.tasktracker3.MyBundle
+import com.github.egorbogomolov.tasktracker3.services.MyProjectService
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
@@ -8,10 +10,7 @@ import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBPanel
 import com.intellij.ui.content.ContentFactory
-import com.github.egorbogomolov.tasktracker3.MyBundle
-import com.github.egorbogomolov.tasktracker3.services.MyProjectService
 import javax.swing.JButton
-
 
 class MyToolWindowFactory : ToolWindowFactory {
 
@@ -40,11 +39,13 @@ class MyToolWindowFactory : ToolWindowFactory {
             val label = JBLabel(MyBundle.message("randomLabel", "?"))
 
             add(label)
-            add(JButton(MyBundle.message("shuffle")).apply {
-                addActionListener {
-                    label.text = MyBundle.message("randomLabel", service.getRandomNumber())
+            add(
+                JButton(MyBundle.message("shuffle")).apply {
+                    addActionListener {
+                        label.text = MyBundle.message("randomLabel", service.getRandomNumber())
+                    }
                 }
-            })
+            )
         }
     }
 }
