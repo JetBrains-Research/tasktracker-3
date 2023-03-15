@@ -1,3 +1,4 @@
+import io.gitlab.arturbosch.detekt.Detekt
 import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
 
@@ -26,6 +27,8 @@ version = properties("pluginVersion").get()
 repositories {
     mavenCentral()
 }
+
+val jdkVersion = "11"
 
 dependencies {
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0")
@@ -124,12 +127,8 @@ tasks {
         )
     }
 
-    withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
-        jvmTarget = "1.8"
-    }
-
-    withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configureEach {
-        jvmTarget = "1.8"
+    withType<Detekt>().configureEach {
+        jvmTarget = jdkVersion
     }
 }
 
