@@ -75,6 +75,10 @@ jobs:
 
           ./gradlew listProductsReleases # prepare list of IDEs for Plugin Verifier
 
+      # Run Detekt
+      - name: Detekt - Code Analysis
+        run: ./gradlew detekt
+
       # Run tests
       - name: Run Tests
         run: ./gradlew check
@@ -111,10 +115,6 @@ jobs:
         with:
           name: pluginVerifier-result
           path: ${{ github.workspace }}/build/reports/pluginVerifier
-
-      # Run Detekt
-      - name: Detekt - Code Analysis
-        run: ./gradlew detekt
 
       # Prepare plugin archive content for creating artifact
       - name: Prepare Plugin Artifact
