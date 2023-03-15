@@ -1,0 +1,6 @@
+# https://detekt.dev/docs/introduction/configurations
+
+# default config at https://github.com/detekt/detekt/blob/main/detekt-core/src/main/resources/default-detekt-config.yml
+
+build:
+  maxIssues: 0

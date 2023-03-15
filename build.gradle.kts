@@ -13,10 +13,10 @@ plugins {
     id("org.jetbrains.intellij") version "1.13.2"
     // Gradle Changelog Plugin
     id("org.jetbrains.changelog") version "2.0.0"
-    // Gradle Qodana Plugin
-    id("org.jetbrains.qodana") version "0.1.13"
     // Gradle Kover Plugin
     id("org.jetbrains.kotlinx.kover") version "0.6.1"
+    // Gradle Detekt Code Analyzer
+    id("io.gitlab.arturbosch.detekt") version "1.22.0"
 }
 
 group = properties("pluginGroup").get()
@@ -46,14 +46,6 @@ intellij {
 changelog {
     groups.empty()
     repositoryUrl.set(properties("pluginRepositoryUrl"))
-}
-
-// Configure Gradle Qodana Plugin - read more: https://github.com/JetBrains/gradle-qodana-plugin
-qodana {
-    cachePath.set(provider { file(".qodana").canonicalPath })
-    reportPath.set(provider { file("build/reports/inspections").canonicalPath })
-    saveReport.set(true)
-    showReport.set(environment("QODANA_SHOW_REPORT").map { it.toBoolean() }.getOrElse(false))
 }
 
 // Configure Gradle Kover Plugin - read more: https://github.com/Kotlin/kotlinx-kover#configuration
@@ -121,4 +113,18 @@ tasks {
         // https://plugins.jetbrains.com/docs/intellij/deployment.html#specifying-a-release-channel
         channels.set(properties("pluginVersion").map { listOf(it.split('-').getOrElse(1) { "default" }.split('.').first()) })
     }
+
+    withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+        jvmTarget = "1.8"
+    }
+
+    withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configureEach {
+        jvmTarget = "1.8"
+    }
+}
+
+detekt {
+    buildUponDefaultConfig = true
+    allRules = false
+    config = files("$projectDir/config/detekt.yml")
 }
