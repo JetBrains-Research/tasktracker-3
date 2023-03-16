@@ -1,7 +1,5 @@
-package com.github.egorbogomolov.tasktracker3.toolWindow
+package org.jetBrains.research.tasktracker.toolWindow
 
-import com.github.egorbogomolov.tasktracker3.MyBundle
-import com.github.egorbogomolov.tasktracker3.services.MyProjectService
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
@@ -10,6 +8,8 @@ import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBPanel
 import com.intellij.ui.content.ContentFactory
+import org.jetBrains.research.tasktracker.MyBundle
+import org.jetBrains.research.tasktracker.services.MyProjectService
 import javax.swing.JButton
 
 class MyToolWindowFactory : ToolWindowFactory {

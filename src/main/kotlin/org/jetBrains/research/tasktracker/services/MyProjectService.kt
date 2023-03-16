@@ -1,9 +1,9 @@
-package com.github.egorbogomolov.tasktracker3.services
+package org.jetBrains.research.tasktracker.services
 
-import com.github.egorbogomolov.tasktracker3.MyBundle
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
+import org.jetBrains.research.tasktracker.MyBundle
 
 @Service(Service.Level.PROJECT)
 class MyProjectService(project: Project) {
