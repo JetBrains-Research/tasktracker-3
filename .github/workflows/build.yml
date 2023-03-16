@@ -1,7 +1,7 @@
 # GitHub Actions Workflow is created for testing and preparing the plugin release in the following steps:
 # - validate Gradle Wrapper,
 # - run 'test' and 'verifyPlugin' tasks,
-# - run Qodana inspections,
+# - run Detekt,
 # - run 'buildPlugin' task and prepare artifact for the further tests,
 # - run 'runPluginVerifier' task,
 # - create a draft release.
@@ -75,6 +75,10 @@ jobs:
 
           ./gradlew listProductsReleases # prepare list of IDEs for Plugin Verifier
 
+      # Run Detekt
+      - name: Detekt - Code Analysis
+        run: ./gradlew detekt
+
       # Run tests
       - name: Run Tests
         run: ./gradlew check
@@ -111,10 +115,6 @@ jobs:
         with:
           name: pluginVerifier-result
           path: ${{ github.workspace }}/build/reports/pluginVerifier
-
-      # Run Qodana inspections
-      - name: Qodana - Code Inspection
-        uses: JetBrains/qodana-action@v2022.3.4
 
       # Prepare plugin archive content for creating artifact
       - name: Prepare Plugin Artifact

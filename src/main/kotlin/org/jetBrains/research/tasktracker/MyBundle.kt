@@ -1,4 +1,4 @@
-package com.github.egorbogomolov.tasktracker3
+package org.jetBrains.research.tasktracker
 
 import com.intellij.DynamicBundle
 import org.jetbrains.annotations.NonNls

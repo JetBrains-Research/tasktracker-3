@@ -1,4 +1,4 @@
-package com.github.egorbogomolov.tasktracker3
+package org.jetBrains.research.tasktracker
 
 import com.intellij.ide.highlighter.XmlFileType
 import com.intellij.openapi.components.service
@@ -6,7 +6,7 @@ import com.intellij.psi.xml.XmlFile
 import com.intellij.testFramework.TestDataPath
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.intellij.util.PsiErrorElementUtil
-import com.github.egorbogomolov.tasktracker3.services.MyProjectService
+import org.jetBrains.research.tasktracker.services.MyProjectService
 
 @TestDataPath("\$CONTENT_ROOT/src/test/testData")
 class MyPluginTest : BasePlatformTestCase() {
