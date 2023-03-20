@@ -2,7 +2,6 @@ package org.jetBrains.research.tasktracker.config.tracking
 
 import org.jetBrains.research.tasktracker.config.BaseConfig
 import org.jetBrains.research.tasktracker.config.tracking.BaseTrackingConfig.Companion.DEFAULT_TRACKING_DELTA
-import org.jetBrains.research.tasktracker.handler.tracking.BaseTrackingHandler
 import java.io.File
 
 enum class CodeTrackingGranularity {
@@ -14,9 +13,9 @@ enum class CodeTrackingGranularity {
 data class CodeTrackingConfig(
     override val trackingDeltaSec: Double = DEFAULT_TRACKING_DELTA,
     val granularity: CodeTrackingGranularity = CodeTrackingGranularity.ALL_CHANGES,
+    // Additional files to track
+    val filesToTrack: List<File> = emptyList(),
 ) : BaseTrackingConfig, BaseConfig {
-    override val handler: BaseTrackingHandler = TODO("Not implemented yet")
-
     companion object {
         const val CONFIG_FILE_PREFIX: String = "code_tracking"
 

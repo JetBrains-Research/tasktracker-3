@@ -1,18 +1,11 @@
 package org.jetBrains.research.tasktracker.handler
 
-import kotlin.reflect.KClass
+import org.jetBrains.research.tasktracker.config.BaseConfig
 
 interface BaseHandler {
-    // Indicates if we need to run all actions from the current handler after handlers from the list
-    val dependentHandlers: List<KClass<*>>
-        get() = emptyList()
+    val config: BaseConfig
 
-    fun preAction() = run { }
+    fun setup() = run { }
 
-    fun postAction() = run { }
-}
-
-interface RunnableHandler {
-    fun run()
-    fun stop()
+    fun destroy() = run { }
 }
