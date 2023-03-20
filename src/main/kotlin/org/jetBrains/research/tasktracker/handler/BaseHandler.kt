@@ -11,3 +11,8 @@ interface BaseHandler {
 
     fun postAction() = run { }
 }
+
+interface RunnableHandler {
+    fun run()
+    fun stop()
+}
