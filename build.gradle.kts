@@ -5,19 +5,15 @@ import org.jetbrains.changelog.markdownToHTML
 fun properties(key: String) = providers.gradleProperty(key)
 fun environment(key: String) = providers.environmentVariable(key)
 
+@Suppress("DSL_SCOPE_VIOLATION") // "libs" produces a false-positive warning, see https://youtrack.jetbrains.com/issue/KTIJ-19369
 plugins {
-    // Java support
-    id("java")
-    // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.8.10"
-    // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.13.2"
-    // Gradle Changelog Plugin
-    id("org.jetbrains.changelog") version "2.0.0"
-    // Gradle Kover Plugin
-    id("org.jetbrains.kotlinx.kover") version "0.6.1"
-    // Gradle Detekt Code Analyzer
-    id("io.gitlab.arturbosch.detekt") version "1.22.0"
+    java
+    id(libs.plugins.kotlin.jvm.get().pluginId) version libs.versions.kotlin.get()
+    alias(libs.plugins.buildconfig) apply false
+    alias(libs.plugins.intellij)
+    alias(libs.plugins.changelog)
+    alias(libs.plugins.kover)
+    alias(libs.plugins.detekt)
 }
 
 group = properties("pluginGroup").get()
@@ -28,10 +24,10 @@ repositories {
     mavenCentral()
 }
 
-val jdkVersion = "11"
+val jdkVersion = libs.versions.jdk.get()
 
 dependencies {
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0")
+    detektPlugins(rootProject.libs.detekt.formatting)
 }
 
 // Set the JVM language level used to build the project. Use Java 11 for 2020.3+, and Java 17 for 2022.2+.
@@ -98,32 +94,6 @@ tasks {
                     )
                 }
             }
-        )
-    }
-
-    // Configure UI tests plugin
-    // Read more: https://github.com/JetBrains/intellij-ui-test-robot
-    runIdeForUiTests {
-        systemProperty("robot-server.port", "8082")
-        systemProperty("ide.mac.message.dialogs.as.sheets", "false")
-        systemProperty("jb.privacy.policy.text", "<!--999.999-->")
-        systemProperty("jb.consents.confirmation.enabled", "false")
-    }
-
-    signPlugin {
-        certificateChain.set(environment("CERTIFICATE_CHAIN"))
-        privateKey.set(environment("PRIVATE_KEY"))
-        password.set(environment("PRIVATE_KEY_PASSWORD"))
-    }
-
-    publishPlugin {
-        dependsOn("patchChangelog")
-        token.set(environment("PUBLISH_TOKEN"))
-        // The pluginVersion is based on the SemVer (https://semver.org) and supports pre-release labels, like 2.1.7-alpha.3
-        // Specify pre-release label to publish the plugin in a custom Release Channel automatically. Read more:
-        // https://plugins.jetbrains.com/docs/intellij/deployment.html#specifying-a-release-channel
-        channels.set(
-            properties("pluginVersion").map { listOf(it.split('-').getOrElse(1) { "default" }.split('.').first()) }
         )
     }
 
