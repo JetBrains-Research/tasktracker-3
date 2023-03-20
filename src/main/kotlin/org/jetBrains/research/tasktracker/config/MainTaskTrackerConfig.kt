@@ -23,6 +23,11 @@ data class MainTaskTrackerConfig(
 
         const val PLUGIN_NAME = "tasktracker"
 
+        @Suppress("UnusedPrivateMember")
+        private fun sortConfigHandlers(configs: List<BaseConfig>): List<BaseConfig> {
+            TODO("Sort handlers according to dependentHandlers")
+        }
+
         fun buildConfig(vararg configFiles: Path): MainTaskTrackerConfig {
             val configs = configFiles.mapNotNull { configFile ->
                 val fileName = configFile.fileName.toString()
@@ -54,11 +59,9 @@ data class MainTaskTrackerConfig(
                 }
             }
 
-            // TODO: sort configs according to dependentConfigs field: build a dependencies graph and sort topologically
-
             // TODO: do something with test mode, read from an additional config?
             return MainTaskTrackerConfig(
-                configs = configs
+                configs = sortConfigHandlers(configs)
             )
         }
     }
