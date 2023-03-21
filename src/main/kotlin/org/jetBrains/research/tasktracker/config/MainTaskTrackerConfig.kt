@@ -4,6 +4,7 @@ import com.intellij.openapi.application.PathManager
 import com.intellij.openapi.diagnostic.Logger
 import org.jetBrains.research.tasktracker.config.content.TaskContentConfig
 import org.jetBrains.research.tasktracker.config.ide.MainIdeConfig
+import org.jetBrains.research.tasktracker.config.scenario.ScenarioConfig
 import org.jetBrains.research.tasktracker.config.tracking.ActivityTrackingConfig
 import org.jetBrains.research.tasktracker.config.tracking.CodeTrackingConfig
 import org.jetBrains.research.tasktracker.properties.PluginProperties
@@ -19,6 +20,7 @@ data class MainTaskTrackerConfig(
     var mainIdeConfig: MainIdeConfig? = null,
     var activityTrackingConfig: ActivityTrackingConfig? = null,
     var codeTrackingConfig: CodeTrackingConfig? = null,
+    var scenarioConfig: ScenarioConfig? = null,
 ) {
     companion object {
         private val logger = Logger.getInstance(MainTaskTrackerConfig::class.java)
@@ -66,6 +68,14 @@ data class MainTaskTrackerConfig(
                         }
                         logger.info("Building task content config...")
                         mainConfig.taskContentConfig = TaskContentConfig.buildConfig(configFile)
+                    }
+
+                    fileName.startsWith(ScenarioConfig.CONFIG_FILE_PREFIX) -> {
+                        require(mainConfig.scenarioConfig == null) {
+                            "The scenario config was already parsed"
+                        }
+                        logger.info("Building scenario config...")
+                        mainConfig.scenarioConfig = ScenarioConfig.buildConfig(configFile)
                     }
                 }
             }
