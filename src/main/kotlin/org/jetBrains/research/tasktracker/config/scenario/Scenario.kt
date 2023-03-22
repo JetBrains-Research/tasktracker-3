@@ -5,11 +5,17 @@ import org.jetBrains.research.tasktracker.TaskTrackerPlugin
 import org.jetBrains.research.tasktracker.config.BaseConfig
 import java.util.*
 
-enum class ScenarioUnitType(val config: BaseConfig?) {
-    TASK_CONTENT(TaskTrackerPlugin.mainConfig.taskContentConfig),
+enum class ScenarioUnitType {
+    TASK_CONTENT,
 
     // TODO: add other types of content
-    IDE_SETTINGS(TaskTrackerPlugin.mainConfig.mainIdeConfig),
+    IDE_SETTINGS;
+
+    val config: BaseConfig?
+        get() = when (this) {
+            TASK_CONTENT -> TaskTrackerPlugin.mainConfig.taskContentConfig
+            IDE_SETTINGS -> TaskTrackerPlugin.mainConfig.mainIdeConfig
+        }
 }
 
 data class ScenarioStep(
