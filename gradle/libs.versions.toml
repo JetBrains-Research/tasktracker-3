@@ -6,9 +6,16 @@ kover = "0.6.1"
 detekt = "1.22.0"
 buildconfig = "3.1.0"
 jdk = "11"
+kaml = "0.53.0"
+serialization = "1.8.10"
+csv = "1.10.0"
+joda = "2.12.4"
 
 [libraries]
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+kaml = { module = "com.charleskorn.kaml:kaml", version.ref = "kaml" }
+csv = { module = "org.apache.commons:commons-csv", version.ref = "csv" }
+joda = {module = "joda-time:joda-time", version.ref = "joda"}
 
 [plugins]
 intellij = { id = "org.jetbrains.intellij", version.ref = "intellij" }
@@ -17,3 +24,4 @@ kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 changelog = { id = "org.jetbrains.changelog", version.ref = "changelog" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildconfig" }
+serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serialization" }
