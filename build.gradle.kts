@@ -14,6 +14,7 @@ plugins {
     alias(libs.plugins.changelog)
     alias(libs.plugins.kover)
     alias(libs.plugins.detekt)
+    alias(libs.plugins.serialization)
 }
 
 group = properties("pluginGroup").get()
@@ -28,6 +29,7 @@ val jdkVersion = libs.versions.jdk.get()
 
 dependencies {
     detektPlugins(rootProject.libs.detekt.formatting)
+    implementation(rootProject.libs.kaml)
 }
 
 // Set the JVM language level used to build the project. Use Java 11 for 2020.3+, and Java 17 for 2022.2+.
