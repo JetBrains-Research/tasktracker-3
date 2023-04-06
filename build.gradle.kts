@@ -30,6 +30,7 @@ val jdkVersion = libs.versions.jdk.get()
 dependencies {
     detektPlugins(rootProject.libs.detekt.formatting)
     implementation(rootProject.libs.kaml)
+    implementation(rootProject.libs.snakeyaml)
     testImplementation(kotlin("test"))
 }
 

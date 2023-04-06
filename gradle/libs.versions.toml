@@ -7,11 +7,15 @@ detekt = "1.22.0"
 buildconfig = "3.1.0"
 jdk = "17"
 kaml = "0.52.0"
-serialization = "1.5.0"
+serialization = "1.8.10"
+snakeyaml = "2.0"
+
 
 [libraries]
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 kaml = { module = "com.charleskorn.kaml:kaml", version.ref = "kaml" }
+snakeyaml = { module = "org.snakeyaml:snakeyaml-engine", version.ref = "snakeyaml" }
+
 
 [plugins]
 intellij = { id = "org.jetbrains.intellij", version.ref = "intellij" }
