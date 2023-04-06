@@ -7,12 +7,4 @@
     <depends>com.intellij.modules.platform</depends>
 
     <resource-bundle>messages.MyBundle</resource-bundle>
-
-    <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="org.jetBrains.research.tasktracker.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
-    </extensions>
-
-    <applicationListeners>
-        <listener class="org.jetBrains.research.tasktracker.listeners.MyFrameStateListener" topic="com.intellij.ide.FrameStateListener"/>
-    </applicationListeners>
 </idea-plugin>

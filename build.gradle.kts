@@ -106,6 +106,9 @@ tasks {
     withType<Detekt>().configureEach {
         jvmTarget = jdkVersion
     }
+
+    withType<org.jetbrains.intellij.tasks.BuildSearchableOptionsTask>()
+        .forEach { it.enabled = false }
 }
 
 tasks.test {
