@@ -62,10 +62,10 @@ tasks {
 
     withType<JavaCompile> {
         sourceCompatibility = jdkVersion
-        targetCompatibility = jdkVersion
+        targetCompatibility = JavaVersion.VERSION_1_8.toString()
     }
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = jdkVersion
+        kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
     patchPluginXml {
