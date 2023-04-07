@@ -1,8 +1,8 @@
 package org.jetBrains.research.tasktracker.config
 
 import org.jetBrains.research.tasktracker.config.tracking.CodeTrackingConfig
+import org.junit.Assert.assertEquals
 import org.junit.Test
-import kotlin.test.assertEquals
 
 class YamlConfigLoadStrategyTest {
     @Test
