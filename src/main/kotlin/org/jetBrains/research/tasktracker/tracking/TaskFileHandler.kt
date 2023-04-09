@@ -24,6 +24,7 @@ interface Task {
     fun getFileName(): String
 }
 
+@Suppress("UnusedPrivateMember")
 object TaskFileHandler {
     private val logger: Logger = Logger.getInstance(javaClass)
     private val listener by lazy { TaskDocumentListener() }
