@@ -1,10 +1,10 @@
 package org.jetBrains.research.tasktracker.models
 
 enum class Extension(val ext: String) {
-    PY(".py"),
-    IPYNB(".ipynb"),
+    PYTHON(".py"),
+    JUPYTER(".ipynb"),
     JAVA(".java"),
-    KT(".kt"),
+    KOTLIN(".kt"),
     CPP(".cpp"),
     CSV(".csv");
 }
