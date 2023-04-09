@@ -14,7 +14,6 @@ plugins {
     alias(libs.plugins.changelog)
     alias(libs.plugins.kover)
     alias(libs.plugins.detekt)
-    alias(libs.plugins.serialization)
 }
 
 group = properties("pluginGroup").get()
@@ -29,7 +28,6 @@ val jdkVersion = libs.versions.jdk.get()
 
 dependencies {
     detektPlugins(rootProject.libs.detekt.formatting)
-    implementation(rootProject.libs.kaml)
     implementation(rootProject.libs.csv)
     implementation(rootProject.libs.joda)
 }
