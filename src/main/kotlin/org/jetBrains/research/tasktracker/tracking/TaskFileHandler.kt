@@ -33,7 +33,7 @@ object TaskFileHandler {
     }
 
     // TODO Control which files are listening
-    fun listenVirtualFile(virtualFile: VirtualFile) {
+    fun addVirtualFileListener(virtualFile: VirtualFile) {
         ApplicationManager.getApplication().invokeAndWait {
             val document = FileDocumentManager.getInstance().getDocument(virtualFile)
             document?.addDocumentListener(listener)
