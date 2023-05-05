@@ -19,40 +19,61 @@ import java.io.File
 
 // TODO delete, just template
 interface Task {
-    fun getContent(): String
-    fun getRelativeFilePath(): String
+    fun getContent(): String?
+    fun getRelativeFilePath(): String?
     fun getFileName(): String
+    fun getExtension(): Extension
 }
 
 @Suppress("UnusedPrivateMember")
 object TaskFileHandler {
     private val logger: Logger = Logger.getInstance(javaClass)
     private val listener by lazy { TaskDocumentListener() }
+    private val projectToTaskToFiles: HashMap<Project, HashMap<Task, VirtualFile>> = HashMap()
 
     fun initProject(project: Project) {
         TODO()
     }
 
-    // TODO Control which files are listening
-    fun addVirtualFileListener(virtualFile: VirtualFile) {
+    fun initTask(project: Project, task: Task) {
+        getOrCreateFile(project, task)?.let {
+            addVirtualFileListener(it)
+            projectToTaskToFiles[project]?.set(task, it)
+        }
+    }
+
+    fun disposeTask(project: Project, task: Task) {
+        projectToTaskToFiles[project]?.let {
+            it[task]?.let { virtualFile -> removeVirtualFileListener(virtualFile) }
+            it.remove(task)
+        }
+    }
+
+    private fun addVirtualFileListener(virtualFile: VirtualFile) {
         ApplicationManager.getApplication().invokeAndWait {
             val document = FileDocumentManager.getInstance().getDocument(virtualFile)
             document?.addDocumentListener(listener)
         }
     }
 
+    private fun removeVirtualFileListener(virtualFile: VirtualFile) {
+        ApplicationManager.getApplication().invokeAndWait {
+            val document = FileDocumentManager.getInstance().getDocument(virtualFile)
+            document?.removeDocumentListener(listener)
+        }
+    }
+
     // TODO fix path and content to file
-    private fun getOrCreateFile(project: Project, task: Task, extension: Extension): VirtualFile? {
-        val relativeFilePath = task.getRelativeFilePath()
+    private fun getOrCreateFile(project: Project, task: Task): VirtualFile? {
+        val relativeFilePath = task.getRelativeFilePath() ?: DefaultContentProvider.getDefaultFolderRelativePath(task)
         ApplicationManager.getApplication().runWriteAction {
             addSourceFolder(relativeFilePath, ModuleManager.getInstance(project).modules.last())
         }
-        val file =
-            File("${project.basePath}/$relativeFilePath/${task.getFileName()}/${extension.ext}")
+        val file = File("${project.basePath}/$relativeFilePath/${task.getFileName()}/${task.getExtension().ext}")
         if (!file.exists()) {
             ApplicationManager.getApplication().runWriteAction {
                 FileUtil.createIfDoesntExist(file)
-                file.writeText(task.getContent())
+                file.writeText(task.getContent() ?: DefaultContentProvider.getDefaultContent(task))
             }
         }
         return LocalFileSystem.getInstance().refreshAndFindFileByIoFile(file)
