@@ -74,7 +74,7 @@ class DocumentLogPrinter {
         val logFilesNumber = logPrinters.size
         val logFile = File(
             "$pluginFolderPath/${trackedFile?.nameWithoutExtension}_${trackedFile.hashCode()}" +
-                    "_${document.hashCode()}_$logFilesNumber.csv"
+                "_${document.hashCode()}_$logFilesNumber.csv"
         )
         FileUtil.createIfDoesntExist(logFile)
         return logFile
