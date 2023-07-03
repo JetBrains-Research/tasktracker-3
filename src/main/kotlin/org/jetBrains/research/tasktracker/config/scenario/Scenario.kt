@@ -1,6 +1,8 @@
 package org.jetBrains.research.tasktracker.config.scenario
 
 import com.intellij.openapi.diagnostic.Logger
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import org.jetBrains.research.tasktracker.TaskTrackerPlugin
 import org.jetBrains.research.tasktracker.config.BaseConfig
 import java.util.*
@@ -18,6 +20,7 @@ enum class ScenarioUnitType {
         }
 }
 
+@Serializable
 data class ScenarioStep(
     // TODO: sort according to the plugin's implementation to make sure in the right order
     val units: List<ScenarioUnitType>
@@ -25,10 +28,13 @@ data class ScenarioStep(
     fun isValid() = units.any { it.config != null }
 }
 
+@Serializable
 data class Scenario(
     val steps: Queue<ScenarioStep>
 ) {
+    @Transient
     private val logger: Logger = Logger.getInstance(javaClass)
+
     fun getNextStep(): ScenarioStep? {
         var isValid: Boolean
         var step: ScenarioStep
