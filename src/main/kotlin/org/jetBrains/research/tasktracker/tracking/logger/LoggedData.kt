@@ -1,4 +1,4 @@
-package org.jetBrains.research.tasktracker.tracking
+package org.jetBrains.research.tasktracker.tracking.logger
 
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.fileEditor.FileDocumentManager

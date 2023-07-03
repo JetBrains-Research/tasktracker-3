@@ -13,17 +13,9 @@ import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VfsUtilCore
 import com.intellij.openapi.vfs.VirtualFile
-import org.jetBrains.research.tasktracker.models.Extension
+import org.jetBrains.research.tasktracker.tracking.task.Task
 import org.jetbrains.jps.model.serialization.PathMacroUtil
 import java.io.File
-
-// TODO delete, just template
-interface Task {
-    fun getContent(): String?
-    fun getRelativeFilePath(): String?
-    fun getFileName(): String
-    fun getExtension(): Extension
-}
 
 @Suppress("UnusedPrivateMember")
 object TaskFileHandler {
@@ -95,7 +87,11 @@ object TaskFileHandler {
 
     private fun getContentEntry(url: VirtualFile?, rootModel: ModifiableRootModel): ContentEntry? {
         rootModel.contentEntries.forEach { e ->
-            url?.let { if (VfsUtilCore.isEqualOrAncestor(e.url, url.url)) return e }
+            url?.let {
+                if (VfsUtilCore.isEqualOrAncestor(e.url, url.url)) {
+                    return e
+                }
+            }
         }
         return null
     }

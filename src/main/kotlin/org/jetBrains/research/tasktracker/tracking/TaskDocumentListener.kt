@@ -6,6 +6,7 @@ import com.intellij.openapi.editor.event.DocumentEvent
 import com.intellij.openapi.editor.event.DocumentListener
 import com.intellij.openapi.fileEditor.FileDocumentManager
 import org.jetBrains.research.tasktracker.config.MainTaskTrackerConfig
+import org.jetBrains.research.tasktracker.tracking.logger.DocumentLogger
 
 class TaskDocumentListener : DocumentListener {
     private val logger: Logger = Logger.getInstance(javaClass)
@@ -24,8 +25,7 @@ class TaskDocumentListener : DocumentListener {
     // To avoid completion events with IntellijIdeaRulezzz sign.
     // TODO: Maybe we should remove it since we don't use EditorFactory
     // to add listeners anymore (see https://intellij-support.jetbrains.com/hc/en-us/community/posts/115000664264-IntelliJ-DocumentListener-gives-an-internally-inconsistent-event-stream)
-    private fun isValidChange(event: DocumentEvent): Boolean {
-        return EditorFactory.getInstance().getEditors(event.document).isNotEmpty() && FileDocumentManager.getInstance()
-            .getFile(event.document) != null
-    }
+    private fun isValidChange(event: DocumentEvent) = EditorFactory.getInstance()
+        .getEditors(event.document).isNotEmpty() && FileDocumentManager.getInstance()
+        .getFile(event.document) != null
 }

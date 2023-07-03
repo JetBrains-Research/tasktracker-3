@@ -1,4 +1,4 @@
-package org.jetBrains.research.tasktracker.tracking
+package org.jetBrains.research.tasktracker.tracking.logger
 
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.editor.Document
@@ -7,25 +7,10 @@ import com.intellij.openapi.util.io.FileUtil
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVPrinter
 import org.jetBrains.research.tasktracker.config.MainTaskTrackerConfig
-import org.jetBrains.research.tasktracker.config.MainTaskTrackerConfig.Companion.pluginFolderPath
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStreamWriter
 import java.nio.charset.StandardCharsets
-
-/**
- * Prints logs to the [logFile] in .csv format using [csvPrinter]
- */
-data class LogPrinter(val csvPrinter: CSVPrinter, val fileWriter: OutputStreamWriter, val logFile: File) {
-    companion object {
-        private const val MAX_DIF_SIZE = 300
-        private const val MAX_FILE_SIZE = 50 * 1024 * 1024
-    }
-
-    fun isFull(): Boolean {
-        return logFile.length() > MAX_FILE_SIZE - MAX_DIF_SIZE
-    }
-}
 
 /**
  * Takes care of all [logPrinters] (there may be several in case of log file overflowing), log a tracked document
@@ -49,12 +34,10 @@ class DocumentLogPrinter {
         }
     }
 
-    private fun getLastPrinter(document: Document): LogPrinter {
-        return if (logPrinters.size == 0) {
-            addLogPrinter(document)
-        } else {
-            logPrinters.last()
-        }
+    private fun getLastPrinter(document: Document) = if (logPrinters.isEmpty()) {
+        addLogPrinter(document)
+    } else {
+        logPrinters.last()
     }
 
     private fun addLogPrinter(document: Document): LogPrinter {
@@ -68,14 +51,13 @@ class DocumentLogPrinter {
     }
 
     private fun createLogFile(document: Document): File {
-        File(pluginFolderPath).mkdirs()
+        File(MainTaskTrackerConfig.pluginFolderPath).mkdirs()
         val trackedFile = FileDocumentManager.getInstance().getFile(document)
         logger.info("${MainTaskTrackerConfig.PLUGIN_NAME}: create log file for tracked file ${trackedFile?.name}")
         val logFilesNumber = logPrinters.size
-        val logFile = File(
-            "$pluginFolderPath/${trackedFile?.nameWithoutExtension}_${trackedFile.hashCode()}" +
-                "_${document.hashCode()}_$logFilesNumber.csv"
-        )
+        val logFileName =
+            "${trackedFile?.nameWithoutExtension}_${trackedFile.hashCode()}_${document.hashCode()}_$logFilesNumber.csv"
+        val logFile = File("${MainTaskTrackerConfig.pluginFolderPath}/$logFileName")
         FileUtil.createIfDoesntExist(logFile)
         return logFile
     }
@@ -93,28 +75,8 @@ class DocumentLogPrinter {
     /**
      * We need to flush printers before getting their log files.
      */
-    fun getLogFiles(): List<File> {
-        return logPrinters.map {
-            it.csvPrinter.flush()
-            it.logFile
-        }
-    }
-}
-
-object DocumentLogger {
-    private val myDocumentsToPrinters: HashMap<Document, DocumentLogPrinter> = HashMap()
-
-    fun log(document: Document) {
-        val docPrinter = myDocumentsToPrinters.getOrPut(document) { DocumentLogPrinter() }
-        val logPrinter = docPrinter.getActiveLogPrinter(document)
-        logPrinter.csvPrinter.printRecord(DocumentLoggedData.getData(document))
-    }
-
-    fun getDocumentLogPrinter(document: Document): DocumentLogPrinter? {
-        return myDocumentsToPrinters[document]
-    }
-
-    fun removeDocumentLogPrinter(document: Document) {
-        myDocumentsToPrinters.remove(document)
+    fun getLogFiles() = logPrinters.map {
+        it.csvPrinter.flush()
+        it.logFile
     }
 }
