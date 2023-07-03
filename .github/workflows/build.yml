@@ -13,9 +13,6 @@ jobs:
         with:
           java-version: 17
           distribution: liberica
-      - name: Install python parser requirements
-        run: |
-          pip install -r ./scripts/requirements-python-parser.txt
 
       - name: Gradle Wrapper Validation
         uses: gradle/wrapper-validation-action@v1.0.4
