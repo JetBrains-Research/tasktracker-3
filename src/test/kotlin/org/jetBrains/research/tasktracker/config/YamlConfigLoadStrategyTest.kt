@@ -5,15 +5,17 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class YamlConfigLoadStrategyTest {
+    private fun loadConfig() = javaClass.classLoader
+        .getResource("config/codeTrackingConfig.yaml")?.readText()
+        ?: error("Cannot find codeTrackingConfig.yaml!")
+
     @Test
     fun loadCodeTrackingConfig() {
-        val config = javaClass.classLoader.getResource("config/codeTrackingConfig.yaml")?.readText() ?: ""
-        assertEquals(CodeTrackingConfig(), YamlConfigLoadStrategy.load(config, CodeTrackingConfig.serializer()))
+        assertEquals(CodeTrackingConfig(), YamlConfigLoadStrategy.load(loadConfig(), CodeTrackingConfig.serializer()))
     }
 
     @Test
     fun dumpCodeTrackingConfig() {
-        val config = javaClass.classLoader.getResource("config/codeTrackingConfig.yaml")?.readText() ?: ""
-        assertEquals(config, YamlConfigLoadStrategy.dump(CodeTrackingConfig(), CodeTrackingConfig.serializer()))
+        assertEquals(loadConfig(), YamlConfigLoadStrategy.dump(CodeTrackingConfig(), CodeTrackingConfig.serializer()))
     }
 }
