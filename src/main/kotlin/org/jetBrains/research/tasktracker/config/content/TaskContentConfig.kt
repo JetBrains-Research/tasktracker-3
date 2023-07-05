@@ -11,7 +11,6 @@ class TaskContentConfig : BaseConfig {
     companion object {
         const val CONFIG_FILE_PREFIX: String = "task_content"
 
-        @Suppress("UnusedPrivateMember")
         fun buildConfig(configFile: File): TaskContentConfig =
             YamlConfigLoadStrategy.load(configFile.readText(), serializer())
     }
