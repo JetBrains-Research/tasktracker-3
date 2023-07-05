@@ -13,6 +13,7 @@ import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VfsUtilCore
 import com.intellij.openapi.vfs.VirtualFile
+import org.jetBrains.research.tasktracker.config.MainTaskTrackerConfig.Companion.PLUGIN_NAME
 import org.jetBrains.research.tasktracker.tracking.task.Task
 import org.jetbrains.jps.model.serialization.PathMacroUtil
 import java.io.File
@@ -56,13 +57,13 @@ object TaskFileHandler {
         }
     }
 
-    // TODO fix path and content to file
     private fun getOrCreateFile(project: Project, task: Task): VirtualFile? {
-        val relativeFilePath = task.getRelativeFilePath() ?: DefaultContentProvider.getDefaultFolderRelativePath(task)
+        val relativeFilePath = task.getRelativeFilePath()?.let { "${PLUGIN_NAME}/${it}" }
+            ?: DefaultContentProvider.getDefaultFolderRelativePath(task)
         ApplicationManager.getApplication().runWriteAction {
             addSourceFolder(relativeFilePath, ModuleManager.getInstance(project).modules.last())
         }
-        val file = File("${project.basePath}/$relativeFilePath/${task.getFileName()}/${task.getExtension().ext}")
+        val file = File("${project.basePath}/$relativeFilePath/${task.getFileName()}${task.getExtension().ext}")
         if (!file.exists()) {
             ApplicationManager.getApplication().runWriteAction {
                 FileUtil.createIfDoesntExist(file)
