@@ -13,6 +13,7 @@ import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VfsUtilCore
 import com.intellij.openapi.vfs.VirtualFile
+import org.jetBrains.research.tasktracker.config.MainTaskTrackerConfig.Companion.PLUGIN_NAME
 import org.jetBrains.research.tasktracker.tracking.task.Task
 import org.jetbrains.jps.model.serialization.PathMacroUtil
 import java.io.File
@@ -21,7 +22,7 @@ import java.io.File
 object TaskFileHandler {
     private val logger: Logger = Logger.getInstance(javaClass)
     private val listener by lazy { TaskDocumentListener() }
-    private val projectToTaskToFiles: HashMap<Project, HashMap<Task, VirtualFile>> = HashMap()
+    private val projectToTaskToFiles: MutableMap<Project, MutableMap<Task, VirtualFile>> = HashMap()
 
     fun initProject(project: Project) {
         TODO()
@@ -30,6 +31,7 @@ object TaskFileHandler {
     fun initTask(project: Project, task: Task) {
         getOrCreateFile(project, task)?.let {
             addVirtualFileListener(it)
+            projectToTaskToFiles.putIfAbsent(project, mutableMapOf())
             projectToTaskToFiles[project]?.set(task, it)
         }
     }
@@ -39,6 +41,9 @@ object TaskFileHandler {
         projectToTaskToFiles[project]?.let {
             it[task]?.let { virtualFile -> removeVirtualFileListener(virtualFile) }
             it.remove(task)
+            if (it.isEmpty()) {
+                projectToTaskToFiles.remove(project)
+            }
         }
     }
 
@@ -56,13 +61,13 @@ object TaskFileHandler {
         }
     }
 
-    // TODO fix path and content to file
     private fun getOrCreateFile(project: Project, task: Task): VirtualFile? {
-        val relativeFilePath = task.getRelativeFilePath() ?: DefaultContentProvider.getDefaultFolderRelativePath(task)
+        val relativeFilePath = task.getRelativeFilePath()?.let { "$PLUGIN_NAME/$it" }
+            ?: DefaultContentProvider.getDefaultFolderRelativePath(task)
         ApplicationManager.getApplication().runWriteAction {
             addSourceFolder(relativeFilePath, ModuleManager.getInstance(project).modules.last())
         }
-        val file = File("${project.basePath}/$relativeFilePath/${task.getFileName()}/${task.getExtension().ext}")
+        val file = File("${project.basePath}/$relativeFilePath/${task.getFileName()}${task.getExtension().ext}")
         if (!file.exists()) {
             ApplicationManager.getApplication().runWriteAction {
                 FileUtil.createIfDoesntExist(file)
