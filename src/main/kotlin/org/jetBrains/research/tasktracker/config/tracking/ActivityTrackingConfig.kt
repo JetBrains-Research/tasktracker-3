@@ -12,7 +12,6 @@ data class ActivityTrackingConfig(
     companion object {
         const val CONFIG_FILE_PREFIX: String = "activity_tracking"
 
-        @Suppress("UnusedPrivateMember")
         fun buildConfig(configFile: File): ActivityTrackingConfig =
             YamlConfigLoadStrategy.load(configFile.readText(), serializer())
     }
