@@ -5,7 +5,7 @@ import com.intellij.ui.jcef.JBCefBrowser
 import javax.swing.JComponent
 
 class MainPluginWindow(service: MainWindowService) {
-    val windowBrowser: JBCefBrowser
+    private val windowBrowser: JBCefBrowser
     val jComponent: JComponent
         get() = windowBrowser.component
     init {
