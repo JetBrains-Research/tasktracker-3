@@ -22,7 +22,7 @@ import java.io.File
 object TaskFileHandler {
     private val logger: Logger = Logger.getInstance(javaClass)
     private val listener by lazy { TaskDocumentListener() }
-    private val projectToTaskToFiles: HashMap<Project, HashMap<Task, VirtualFile>> = HashMap()
+    private val projectToTaskToFiles: MutableMap<Project, MutableMap<Task, VirtualFile>> = HashMap()
 
     fun initProject(project: Project) {
         TODO()
@@ -31,6 +31,7 @@ object TaskFileHandler {
     fun initTask(project: Project, task: Task) {
         getOrCreateFile(project, task)?.let {
             addVirtualFileListener(it)
+            projectToTaskToFiles.putIfAbsent(project, mutableMapOf())
             projectToTaskToFiles[project]?.set(task, it)
         }
     }
@@ -40,6 +41,9 @@ object TaskFileHandler {
         projectToTaskToFiles[project]?.let {
             it[task]?.let { virtualFile -> removeVirtualFileListener(virtualFile) }
             it.remove(task)
+            if (it.isEmpty()) {
+                projectToTaskToFiles.remove(project)
+            }
         }
     }
 
@@ -58,7 +62,7 @@ object TaskFileHandler {
     }
 
     private fun getOrCreateFile(project: Project, task: Task): VirtualFile? {
-        val relativeFilePath = task.getRelativeFilePath()?.let { "${PLUGIN_NAME}/${it}" }
+        val relativeFilePath = task.getRelativeFilePath()?.let { "$PLUGIN_NAME/$it" }
             ?: DefaultContentProvider.getDefaultFolderRelativePath(task)
         ApplicationManager.getApplication().runWriteAction {
             addSourceFolder(relativeFilePath, ModuleManager.getInstance(project).modules.last())

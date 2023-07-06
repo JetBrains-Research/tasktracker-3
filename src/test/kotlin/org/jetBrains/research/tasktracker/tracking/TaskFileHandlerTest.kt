@@ -19,8 +19,8 @@ class TaskFileHandlerTest : BasePlatformTestCase() {
     private lateinit var taskFileHandler: TaskFileHandler
 
     private fun getPrivateFunc(name: String): KFunction<*> {
-        val method = taskFileHandler::class.memberFunctions.find { it.name == name }
-            ?: error("Function hasn't been find")
+        val method = TaskFileHandler::class.memberFunctions.find { it.name == name }
+            ?: error("Function hasn't been found")
         method.isAccessible = true
         return method
     }
@@ -28,6 +28,38 @@ class TaskFileHandlerTest : BasePlatformTestCase() {
     override fun setUp() {
         super.setUp()
         taskFileHandler = TaskFileHandler
+    }
+
+    fun testInitDisposeTask() {
+        val projectToTaskToFiles =
+            taskFileHandler.javaClass.getDeclaredField("projectToTaskToFiles").also { it.isAccessible = true }
+                .get(taskFileHandler) as MutableMap<*, MutableMap<*, *>>
+        assert(projectToTaskToFiles.isEmpty())
+
+        assertNoThrowable {
+            taskFileHandler.disposeTask(project, task1)
+            taskFileHandler.initTask(project, task1)
+        }
+        assert(projectToTaskToFiles.size == 1)
+        assert(projectToTaskToFiles[project]?.let { it.size == 1 } ?: false)
+        assertNoThrowable {
+            taskFileHandler.initTask(project, task2)
+        }
+        assert(projectToTaskToFiles.size == 1)
+        assert(projectToTaskToFiles[project]?.let { it.size == 2 } ?: false)
+        assertFailsWith<Throwable> {
+            taskFileHandler.initTask(project, task2)
+        }
+        assert(projectToTaskToFiles[project]?.let { it.size == 2 } ?: false)
+        assertNoThrowable {
+            taskFileHandler.disposeTask(project, task1)
+        }
+        assert(projectToTaskToFiles[project]?.let { it.size == 1 } ?: false)
+        assert(projectToTaskToFiles[project]?.let { it.keys.first() == task2 } ?: false)
+        assertNoThrowable {
+            taskFileHandler.disposeTask(project, task2)
+        }
+        assert(projectToTaskToFiles.isEmpty())
     }
 
     fun testAddVirtualFileListener() {
@@ -87,11 +119,10 @@ class TaskFileHandlerTest : BasePlatformTestCase() {
         val file2 = method.call(taskFileHandler, project, task2) as VirtualFile? ?: error("file must exist")
         assert(file1.exists())
         assert(file2.exists())
-        assert(file1.path == "${project.basePath}/${PLUGIN_NAME}/cpp/task1.cpp")
-        assert(file2.path == "${project.basePath}/${PLUGIN_NAME}/tasks/task2.kt")
+        assert(file1.path == "${project.basePath}/$PLUGIN_NAME/cpp/task1.cpp")
+        assert(file2.path == "${project.basePath}/$PLUGIN_NAME/tasks/task2.kt")
         assert(String(file1.contentsToByteArray()) == task1.getContent())
         assert(String(file2.contentsToByteArray()) == DefaultContentProvider.getDefaultContent(task2))
-
     }
 
     private val task1 = object : Task {
@@ -129,5 +160,4 @@ class TaskFileHandlerTest : BasePlatformTestCase() {
             return Extension.KOTLIN
         }
     }
-
 }
