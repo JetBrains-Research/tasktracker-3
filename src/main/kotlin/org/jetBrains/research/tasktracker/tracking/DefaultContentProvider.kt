@@ -11,7 +11,8 @@ object DefaultContentProvider {
         "$PLUGIN_NAME/${lowercaseExtension(task)}"
 
     fun getDefaultContent(task: Task) = when (task.getExtension()) {
-        Extension.JAVA -> """
+        Extension.JAVA ->
+            """
                 ${getPackage(task)}
                
                 public class Solution {
@@ -25,7 +26,8 @@ object DefaultContentProvider {
                 }
             """.trimIndent()
 
-        Extension.KOTLIN -> """
+        Extension.KOTLIN ->
+            """
                 ${getPackage(task)}
                 
                 fun main() {
@@ -35,7 +37,8 @@ object DefaultContentProvider {
                 }
             """.trimIndent()
 
-        Extension.CPP -> """
+        Extension.CPP ->
+            """
                 #include <iostream>
                 
                 int main() {
@@ -52,18 +55,16 @@ object DefaultContentProvider {
     }
 
     private fun getPackage(task: Task): String {
-        val currentPackage = "package $PLUGIN_NAME.${
-            task.getRelativeFilePath()?.let { relativePathToPackage(it) } ?: lowercaseExtension(task)
-        }"
+        val pack = "package $PLUGIN_NAME.${relativePathToPackage(task) ?: lowercaseExtension(task)}"
         return when (task.getExtension()) {
-            Extension.JAVA -> "$currentPackage;$lineSeparator$lineSeparator"
-            Extension.KOTLIN -> "$currentPackage$lineSeparator$lineSeparator"
+            Extension.JAVA -> "$pack;$lineSeparator$lineSeparator"
+            Extension.KOTLIN -> "$pack$lineSeparator$lineSeparator"
             else -> ""
         }
     }
 
-    private fun relativePathToPackage(path: String): String {
-        var pack = path.replace("/", ".")
+    private fun relativePathToPackage(task: Task): String? {
+        var pack = task.getRelativeFilePath()?.replace("/", ".") ?: return null
         if (pack.first() == '/') {
             pack = pack.substring(1)
         }
