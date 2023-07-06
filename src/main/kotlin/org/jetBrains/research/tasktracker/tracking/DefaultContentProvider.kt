@@ -8,12 +8,11 @@ import java.util.*
 object DefaultContentProvider {
     private val lineSeparator = System.lineSeparator()
     fun getDefaultFolderRelativePath(task: Task) =
-        "$PLUGIN_NAME/${task.getExtension().name.lowercase(Locale.getDefault())}"
+        "$PLUGIN_NAME/${lowercaseExtension(task)}"
 
     fun getDefaultContent(task: Task) = when (task.getExtension()) {
-        Extension.JAVA ->
-            """
-                ${getPackage(task.getExtension())}
+        Extension.JAVA -> """
+                ${getPackage(task)}
                
                 public class Solution {
                 
@@ -26,9 +25,8 @@ object DefaultContentProvider {
                 }
             """.trimIndent()
 
-        Extension.KOTLIN ->
-            """
-                ${getPackage(task.getExtension())}
+        Extension.KOTLIN -> """
+                ${getPackage(task)}
                 
                 fun main() {
                 
@@ -37,8 +35,7 @@ object DefaultContentProvider {
                 }
             """.trimIndent()
 
-        Extension.CPP ->
-            """
+        Extension.CPP -> """
                 #include <iostream>
                 
                 int main() {
@@ -54,13 +51,27 @@ object DefaultContentProvider {
         else -> ""
     }
 
-    private fun getPackage(extension: Extension): String {
-        val currentPackage =
-            "package $PLUGIN_NAME.${extension.name.lowercase(Locale.getDefault())}"
-        return when (extension) {
+    private fun getPackage(task: Task): String {
+        val currentPackage = "package $PLUGIN_NAME.${
+            task.getRelativeFilePath()?.let { relativePathToPackage(it) } ?: lowercaseExtension(task)
+        }"
+        return when (task.getExtension()) {
             Extension.JAVA -> "$currentPackage;$lineSeparator$lineSeparator"
             Extension.KOTLIN -> "$currentPackage$lineSeparator$lineSeparator"
             else -> ""
         }
     }
+
+    private fun relativePathToPackage(path: String): String {
+        var pack = path.replace("/", ".")
+        if (pack.first() == '/') {
+            pack = pack.substring(1)
+        }
+        if (pack.last() == '/') {
+            pack = pack.dropLast(1)
+        }
+        return pack
+    }
+
+    private fun lowercaseExtension(task: Task) = task.getExtension().name.lowercase(Locale.getDefault())
 }
