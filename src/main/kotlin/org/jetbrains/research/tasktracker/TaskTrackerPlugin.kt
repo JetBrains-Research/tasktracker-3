@@ -15,11 +15,12 @@ object TaskTrackerPlugin {
     private val logger: Logger = Logger.getInstance(javaClass)
 
     // TODO: add a settings panel to update properties and the main config
-    var mainConfig: MainTaskTrackerConfig
+    lateinit var mainConfig: MainTaskTrackerConfig
 
-    init {
+    fun initPlugin() {
         val props = loadProps()
         val pluginProps = props.toPluginProperties()
+        // TODO: put base configs into the config folder by default if we don't upload them from the server
         logger.info("Building the main config...")
         mainConfig = buildConfig(props, pluginProps)
     }

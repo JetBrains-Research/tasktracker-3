@@ -23,6 +23,8 @@ object PropertiesController {
 
     private fun createPropertiesFile() {
         if (!propertiesFile.exists()) {
+            defaultConfigRoot.mkdirs()
+            propertiesFile.createNewFile()
             createDefaultPropertiesFile()
         }
     }

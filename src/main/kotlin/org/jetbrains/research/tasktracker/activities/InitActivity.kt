@@ -13,6 +13,7 @@ class InitActivity : StartupActivity {
 
     init {
         logger.info("${MainTaskTrackerConfig.PLUGIN_NAME}: startup activity")
+        TaskTrackerPlugin.initPlugin()
     }
 
     // TODO: show an error message to the user if an error occurs
