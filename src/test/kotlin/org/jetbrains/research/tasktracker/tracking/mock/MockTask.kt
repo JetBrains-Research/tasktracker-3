@@ -27,4 +27,12 @@ data class MockTask(
         }
         return true
     }
+
+    override fun hashCode(): Int {
+        var result = filename.hashCode()
+        result = 31 * result + extension.hashCode()
+        result = 31 * result + (content?.hashCode() ?: 0)
+        result = 31 * result + (relativeFilePath?.hashCode() ?: 0)
+        return result
+    }
 }
