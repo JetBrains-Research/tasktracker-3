@@ -31,7 +31,6 @@ object TaskFileHandler {
     fun initTask(project: Project, task: Task) {
         getOrCreateFile(project, task)?.let {
             addVirtualFileListener(it)
-            projectToTaskToFiles.putIfAbsent(project, mutableMapOf())
             projectToTaskToFiles[project]?.set(task, it)
         }
     }
@@ -41,9 +40,6 @@ object TaskFileHandler {
         projectToTaskToFiles[project]?.let {
             it[task]?.let { virtualFile -> removeVirtualFileListener(virtualFile) }
             it.remove(task)
-            if (it.isEmpty()) {
-                projectToTaskToFiles.remove(project)
-            }
         }
     }
 

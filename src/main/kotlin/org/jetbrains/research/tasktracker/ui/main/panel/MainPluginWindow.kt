@@ -8,9 +8,19 @@ class MainPluginWindow(service: MainWindowService) {
     private val windowBrowser: JBCefBrowser
     val jComponent: JComponent
         get() = windowBrowser.component
+
     init {
         windowBrowser = JBCefBrowser()
-        // TODO: add main page view
+        windowBrowser.setErrorPage { _, _, _ -> // TODO insert parameters to error page
+            defaultPageContent("error")
+        }
+        loadDefaultPage("index")
         Disposer.register(service, windowBrowser)
     }
+
+    fun loadDefaultPage(name: String) = windowBrowser.loadHTML(defaultPageContent(name))
+
+    private fun defaultPageContent(name: String) =
+        MainPluginWindow::class.java.getResource("template/$name.html")?.readText()
+            ?: error("Cannot find default page with name $name")
 }

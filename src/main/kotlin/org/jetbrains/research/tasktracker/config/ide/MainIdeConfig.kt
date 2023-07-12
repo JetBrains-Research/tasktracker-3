@@ -7,6 +7,9 @@ import java.io.File
 
 @Serializable
 class MainIdeConfig : BaseConfig {
+
+    val test: String = "" // TODO make real fields
+
     companion object {
         const val CONFIG_FILE_PREFIX: String = "ide"
 

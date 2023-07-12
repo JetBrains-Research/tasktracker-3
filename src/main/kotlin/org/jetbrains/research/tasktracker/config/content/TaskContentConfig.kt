@@ -8,6 +8,8 @@ import java.io.File
 // TODO should it be a data class?
 @Serializable
 class TaskContentConfig : BaseConfig {
+
+    val test: String = "" // TODO make real fields
     companion object {
         const val CONFIG_FILE_PREFIX: String = "task_content"
 
