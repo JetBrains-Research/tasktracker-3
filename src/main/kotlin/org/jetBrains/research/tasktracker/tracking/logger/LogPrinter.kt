@@ -1,4 +1,4 @@
-package org.jetBrains.research.tasktracker.tracking.logger
+package org.jetbrains.research.tasktracker.tracking.logger
 
 import org.apache.commons.csv.CSVPrinter
 import java.io.File

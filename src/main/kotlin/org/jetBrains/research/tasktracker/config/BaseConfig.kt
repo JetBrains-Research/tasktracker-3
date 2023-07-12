@@ -1,3 +1,3 @@
-package org.jetBrains.research.tasktracker.config
+package org.jetbrains.research.tasktracker.config
 
 interface BaseConfig

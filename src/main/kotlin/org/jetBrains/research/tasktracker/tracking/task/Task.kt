@@ -1,6 +1,6 @@
-package org.jetBrains.research.tasktracker.tracking.task
+package org.jetbrains.research.tasktracker.tracking.task
 
-import org.jetBrains.research.tasktracker.models.Extension
+import org.jetbrains.research.tasktracker.models.Extension
 
 interface Task {
     fun getContent(): String?

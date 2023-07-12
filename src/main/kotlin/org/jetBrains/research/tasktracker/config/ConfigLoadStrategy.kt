@@ -1,4 +1,4 @@
-package org.jetBrains.research.tasktracker.config
+package org.jetbrains.research.tasktracker.config
 
 import com.charleskorn.kaml.Yaml
 import kotlinx.serialization.KSerializer

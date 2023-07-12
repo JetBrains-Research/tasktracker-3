@@ -1,4 +1,4 @@
-package org.jetBrains.research.tasktracker.tracking
+package org.jetbrains.research.tasktracker.tracking
 
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.diagnostic.Logger
@@ -13,8 +13,8 @@ import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VfsUtilCore
 import com.intellij.openapi.vfs.VirtualFile
-import org.jetBrains.research.tasktracker.tracking.task.Task
 import org.jetbrains.jps.model.serialization.PathMacroUtil
+import org.jetbrains.research.tasktracker.tracking.task.Task
 import java.io.File
 
 @Suppress("UnusedPrivateMember")

@@ -1,4 +1,4 @@
-package org.jetBrains.research.tasktracker.properties
+package org.jetbrains.research.tasktracker.properties
 
 data class PluginProperties(
     val testMode: TestMode,

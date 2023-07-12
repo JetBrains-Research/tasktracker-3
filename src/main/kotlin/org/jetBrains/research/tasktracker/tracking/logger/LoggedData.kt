@@ -1,8 +1,8 @@
-package org.jetBrains.research.tasktracker.tracking.logger
+package org.jetbrains.research.tasktracker.tracking.logger
 
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.fileEditor.FileDocumentManager
-import org.jetBrains.research.tasktracker.TaskTrackerPlugin
+import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.joda.time.DateTime
 
 data class LoggedDataGetter<T, S>(val header: String, val getData: (T) -> S)

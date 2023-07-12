@@ -1,4 +1,4 @@
-package org.jetBrains.research.tasktracker.models
+package org.jetbrains.research.tasktracker.models
 
 enum class Extension(val ext: String) {
     PYTHON(".py"),

@@ -1,13 +1,13 @@
-package org.jetBrains.research.tasktracker.config
+package org.jetbrains.research.tasktracker.config
 
 import com.intellij.openapi.application.PathManager
 import com.intellij.openapi.diagnostic.Logger
-import org.jetBrains.research.tasktracker.config.content.TaskContentConfig
-import org.jetBrains.research.tasktracker.config.ide.MainIdeConfig
-import org.jetBrains.research.tasktracker.config.scenario.ScenarioConfig
-import org.jetBrains.research.tasktracker.config.tracking.ActivityTrackingConfig
-import org.jetBrains.research.tasktracker.config.tracking.CodeTrackingConfig
-import org.jetBrains.research.tasktracker.properties.PluginProperties
+import org.jetbrains.research.tasktracker.config.content.TaskContentConfig
+import org.jetbrains.research.tasktracker.config.ide.MainIdeConfig
+import org.jetbrains.research.tasktracker.config.scenario.ScenarioConfig
+import org.jetbrains.research.tasktracker.config.tracking.ActivityTrackingConfig
+import org.jetbrains.research.tasktracker.config.tracking.CodeTrackingConfig
+import org.jetbrains.research.tasktracker.properties.PluginProperties
 import java.io.File
 
 /**

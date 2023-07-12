@@ -1,7 +1,7 @@
-package org.jetBrains.research.tasktracker.handler.tracking
+package org.jetbrains.research.tasktracker.handler.tracking
 
-import org.jetBrains.research.tasktracker.config.tracking.CodeTrackingConfig
-import org.jetBrains.research.tasktracker.handler.BaseHandler
+import org.jetbrains.research.tasktracker.config.tracking.CodeTrackingConfig
+import org.jetbrains.research.tasktracker.handler.BaseHandler
 
 class CodeTrackingHandler(override val config: CodeTrackingConfig) : BaseHandler {
     override fun setup() {

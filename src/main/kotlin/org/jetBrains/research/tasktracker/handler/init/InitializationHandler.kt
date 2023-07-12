@@ -1,9 +1,9 @@
-package org.jetBrains.research.tasktracker.handler.init
+package org.jetbrains.research.tasktracker.handler.init
 
-import org.jetBrains.research.tasktracker.config.MainTaskTrackerConfig
-import org.jetBrains.research.tasktracker.handler.BaseHandler
-import org.jetBrains.research.tasktracker.handler.ide.IdeHandler
-import org.jetBrains.research.tasktracker.handler.tracking.CodeTrackingHandler
+import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
+import org.jetbrains.research.tasktracker.handler.BaseHandler
+import org.jetbrains.research.tasktracker.handler.ide.IdeHandler
+import org.jetbrains.research.tasktracker.handler.tracking.CodeTrackingHandler
 
 class InitializationHandler(private val mainConfig: MainTaskTrackerConfig) {
     private val handlers = mutableListOf<BaseHandler>()

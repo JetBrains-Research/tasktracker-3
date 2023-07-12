@@ -1,8 +1,8 @@
-package org.jetBrains.research.tasktracker.tracking
+package org.jetbrains.research.tasktracker.tracking
 
-import org.jetBrains.research.tasktracker.config.MainTaskTrackerConfig.Companion.PLUGIN_NAME
-import org.jetBrains.research.tasktracker.models.Extension
-import org.jetBrains.research.tasktracker.tracking.task.Task
+import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig.Companion.PLUGIN_NAME
+import org.jetbrains.research.tasktracker.models.Extension
+import org.jetbrains.research.tasktracker.tracking.task.Task
 import java.util.*
 
 object DefaultContentProvider {

@@ -1,4 +1,4 @@
-package org.jetBrains.research.tasktracker.ui.main.panel
+package org.jetbrains.research.tasktracker.ui.main.panel
 
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.components.Service

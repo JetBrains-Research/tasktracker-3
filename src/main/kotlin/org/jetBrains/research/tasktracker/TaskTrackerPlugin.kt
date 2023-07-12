@@ -1,14 +1,14 @@
-package org.jetBrains.research.tasktracker
+package org.jetbrains.research.tasktracker
 
 import com.intellij.openapi.diagnostic.Logger
-import org.jetBrains.research.tasktracker.config.DefaultConfigsFactory
-import org.jetBrains.research.tasktracker.config.MainTaskTrackerConfig
-import org.jetBrains.research.tasktracker.properties.DataHandler
-import org.jetBrains.research.tasktracker.properties.PluginProperties
-import org.jetBrains.research.tasktracker.properties.PropertiesController.CONFIG_ROOT_PROPERTY_NAME
-import org.jetBrains.research.tasktracker.properties.PropertiesController.defaultConfigRoot
-import org.jetBrains.research.tasktracker.properties.PropertiesController.loadProps
-import org.jetBrains.research.tasktracker.properties.PropertiesController.toPluginProperties
+import org.jetbrains.research.tasktracker.config.DefaultConfigsFactory
+import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
+import org.jetbrains.research.tasktracker.properties.DataHandler
+import org.jetbrains.research.tasktracker.properties.PluginProperties
+import org.jetbrains.research.tasktracker.properties.PropertiesController.CONFIG_ROOT_PROPERTY_NAME
+import org.jetbrains.research.tasktracker.properties.PropertiesController.defaultConfigRoot
+import org.jetbrains.research.tasktracker.properties.PropertiesController.loadProps
+import org.jetbrains.research.tasktracker.properties.PropertiesController.toPluginProperties
 import java.io.File
 import java.util.*
 

@@ -1,8 +1,8 @@
-package org.jetBrains.research.tasktracker.config.content
+package org.jetbrains.research.tasktracker.config.content
 
 import kotlinx.serialization.Serializable
-import org.jetBrains.research.tasktracker.config.BaseConfig
-import org.jetBrains.research.tasktracker.config.YamlConfigLoadStrategy
+import org.jetbrains.research.tasktracker.config.BaseConfig
+import org.jetbrains.research.tasktracker.config.YamlConfigLoadStrategy
 import java.io.File
 
 // TODO should it be a data class?

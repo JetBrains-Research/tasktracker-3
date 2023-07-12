@@ -1,11 +1,11 @@
-package org.jetBrains.research.tasktracker.activities
+package org.jetbrains.research.tasktracker.activities
 
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.StartupActivity
-import org.jetBrains.research.tasktracker.TaskTrackerPlugin
-import org.jetBrains.research.tasktracker.config.MainTaskTrackerConfig
-import org.jetBrains.research.tasktracker.handler.scenario.ScenarioHandler
+import org.jetbrains.research.tasktracker.TaskTrackerPlugin
+import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
+import org.jetbrains.research.tasktracker.handler.scenario.ScenarioHandler
 
 // Put into plugin.xml
 class InitActivity : StartupActivity {

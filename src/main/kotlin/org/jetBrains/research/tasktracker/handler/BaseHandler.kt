@@ -1,6 +1,6 @@
-package org.jetBrains.research.tasktracker.handler
+package org.jetbrains.research.tasktracker.handler
 
-import org.jetBrains.research.tasktracker.config.BaseConfig
+import org.jetbrains.research.tasktracker.config.BaseConfig
 
 interface BaseHandler {
     val config: BaseConfig

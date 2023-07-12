@@ -1,4 +1,4 @@
-package org.jetBrains.research.tasktracker.config.tracking
+package org.jetbrains.research.tasktracker.config.tracking
 
 // To be consistent between code tracking and activity tracking changes
 interface BaseTrackingConfig {

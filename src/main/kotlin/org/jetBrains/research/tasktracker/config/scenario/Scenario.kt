@@ -1,4 +1,4 @@
-package org.jetBrains.research.tasktracker.config.scenario
+package org.jetbrains.research.tasktracker.config.scenario
 
 import com.intellij.openapi.diagnostic.Logger
 import kotlinx.serialization.KSerializer
@@ -8,8 +8,8 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import org.jetBrains.research.tasktracker.TaskTrackerPlugin
-import org.jetBrains.research.tasktracker.config.BaseConfig
+import org.jetbrains.research.tasktracker.TaskTrackerPlugin
+import org.jetbrains.research.tasktracker.config.BaseConfig
 import java.util.*
 
 enum class ScenarioUnitType {

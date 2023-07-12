@@ -1,8 +1,8 @@
-package org.jetBrains.research.tasktracker.config.ide
+package org.jetbrains.research.tasktracker.config.ide
 
 import kotlinx.serialization.Serializable
-import org.jetBrains.research.tasktracker.config.BaseConfig
-import org.jetBrains.research.tasktracker.config.YamlConfigLoadStrategy
+import org.jetbrains.research.tasktracker.config.BaseConfig
+import org.jetbrains.research.tasktracker.config.YamlConfigLoadStrategy
 import java.io.File
 
 @Serializable

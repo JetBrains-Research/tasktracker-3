@@ -1,6 +1,7 @@
 package org.jetBrains.research.tasktracker.config
 
-import org.jetBrains.research.tasktracker.config.tracking.CodeTrackingConfig
+import org.jetbrains.research.tasktracker.config.YamlConfigLoadStrategy
+import org.jetbrains.research.tasktracker.config.tracking.CodeTrackingConfig
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

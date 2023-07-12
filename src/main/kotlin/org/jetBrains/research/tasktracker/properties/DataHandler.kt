@@ -1,4 +1,4 @@
-package org.jetBrains.research.tasktracker.properties
+package org.jetbrains.research.tasktracker.properties
 
 enum class DataHandler(val propValue: String) {
     LOCAL_FILE("local_file"), SERVER_CONNECTION("server_connection");

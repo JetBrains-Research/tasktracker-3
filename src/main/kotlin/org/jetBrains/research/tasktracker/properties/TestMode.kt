@@ -1,4 +1,4 @@
-package org.jetBrains.research.tasktracker.properties
+package org.jetbrains.research.tasktracker.properties
 
 enum class TestMode(val propValue: String) {
     ON("on"), OFF("off");

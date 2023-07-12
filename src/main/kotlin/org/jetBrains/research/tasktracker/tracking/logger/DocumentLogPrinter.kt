@@ -1,4 +1,4 @@
-package org.jetBrains.research.tasktracker.tracking.logger
+package org.jetbrains.research.tasktracker.tracking.logger
 
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.editor.Document
@@ -6,7 +6,7 @@ import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.util.io.FileUtil
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVPrinter
-import org.jetBrains.research.tasktracker.config.MainTaskTrackerConfig
+import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStreamWriter

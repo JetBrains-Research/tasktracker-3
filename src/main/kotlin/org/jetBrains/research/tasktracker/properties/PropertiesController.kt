@@ -1,6 +1,6 @@
-package org.jetBrains.research.tasktracker.properties
+package org.jetbrains.research.tasktracker.properties
 
-import org.jetBrains.research.tasktracker.config.MainTaskTrackerConfig
+import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
