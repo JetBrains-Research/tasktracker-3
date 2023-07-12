@@ -1,6 +1,7 @@
 package org.jetbrains.research.tasktracker
 
 import com.intellij.openapi.diagnostic.Logger
+import org.jetbrains.research.tasktracker.config.DefaultConfigsFactory
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
 import org.jetbrains.research.tasktracker.properties.DataHandler
 import org.jetbrains.research.tasktracker.properties.PluginProperties
@@ -8,6 +9,7 @@ import org.jetbrains.research.tasktracker.properties.PropertiesController.CONFIG
 import org.jetbrains.research.tasktracker.properties.PropertiesController.defaultConfigRoot
 import org.jetbrains.research.tasktracker.properties.PropertiesController.loadProps
 import org.jetbrains.research.tasktracker.properties.PropertiesController.toPluginProperties
+import org.jetbrains.research.tasktracker.properties.TestMode
 import java.io.File
 import java.util.*
 
@@ -20,6 +22,9 @@ object TaskTrackerPlugin {
     fun initPlugin() {
         val props = loadProps()
         val pluginProps = props.toPluginProperties()
+        if (pluginProps.testMode == TestMode.ON) {
+            DefaultConfigsFactory.createDefaultConfigs()
+        }
         // TODO: put base configs into the config folder by default if we don't upload them from the server
         logger.info("Building the main config...")
         mainConfig = buildConfig(props, pluginProps)
