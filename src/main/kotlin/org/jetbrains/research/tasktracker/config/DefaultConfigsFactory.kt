@@ -18,14 +18,14 @@ object DefaultConfigsFactory {
         ScenarioConfig.CONFIG_FILE_PREFIX
     )
 
-    fun createDefaultConfigs() { // TODO rename?
+    fun createDefaultConfigs() {
         configNames.forEach { configPrefix ->
             val configName = "${configPrefix}_default.yaml"
             val configFile = File("${PropertiesController.defaultConfigRoot}/$configName")
             if (!configFile.exists()) {
                 configFile.writeText(
-                    javaClass.classLoader.getResource("configs/$configName")?.readText()
-                        ?: error("default config must exist")
+                    DefaultConfigsFactory::class.java.getResource(configName)?.readText()
+                        ?: error("default $configName config must exist")
                 )
             }
         }

@@ -39,6 +39,6 @@ class MainPluginPanelFactory : ToolWindowFactory {
         actionListeners.forEach {
             removeActionListener(it)
         }
-        addListener(listener)
+        addActionListener(listener)
     }
 }

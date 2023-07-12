@@ -9,8 +9,13 @@ class ScenarioHandler(private val mainConfig: MainTaskTrackerConfig) {
     fun ScenarioStep.run() {
         units.forEach {
             when (it) {
-                ScenarioUnitType.IDE_SETTINGS -> TODO("Not implemented yet")
-                ScenarioUnitType.TASK_CONTENT -> TODO("Not implemented yet")
+                ScenarioUnitType.IDE_SETTINGS -> {
+                    // TODO: handle unit
+                }
+
+                ScenarioUnitType.TASK_CONTENT -> {
+                    // TODO: handle unit
+                }
             }
         }
     }
