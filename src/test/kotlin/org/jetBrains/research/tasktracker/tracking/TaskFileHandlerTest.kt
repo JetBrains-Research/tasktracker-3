@@ -1,7 +1,7 @@
 package org.jetBrains.research.tasktracker.tracking
 
 import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.util.io.FileUtil
+import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
@@ -9,155 +9,167 @@ import org.jetBrains.research.tasktracker.config.MainTaskTrackerConfig.Companion
 import org.jetBrains.research.tasktracker.models.Extension
 import org.jetBrains.research.tasktracker.tracking.task.Task
 import java.io.File
-import kotlin.reflect.KFunction
-import kotlin.reflect.full.memberFunctions
-import kotlin.reflect.jvm.isAccessible
 import kotlin.test.assertFailsWith
 
 class TaskFileHandlerTest : BasePlatformTestCase() {
 
-    private lateinit var taskFileHandler: TaskFileHandler
+    private val projectToTaskToFiles = TaskFileHandler.projectToTaskToFiles
 
-    private fun getPrivateFunc(name: String): KFunction<*> {
-        val method = TaskFileHandler::class.memberFunctions.find { it.name == name }
-            ?: error("Function hasn't been found")
-        method.isAccessible = true
-        return method
+    override fun tearDown() {
+        TaskFileHandler.disposeTask(project, task1)
+        TaskFileHandler.disposeTask(project, task2)
+        super.tearDown()
     }
 
-    override fun setUp() {
-        super.setUp()
-        taskFileHandler = TaskFileHandler
+    fun testDisposeNonExistedTask() {
+        assertNoThrowable {
+            TaskFileHandler.disposeTask(project, task1)
+        }
     }
 
-    fun testInitDisposeTask() {
-        val projectToTaskToFiles =
-            taskFileHandler.javaClass.getDeclaredField("projectToTaskToFiles").also { it.isAccessible = true }
-                .get(taskFileHandler) as MutableMap<*, MutableMap<*, *>>
-        assert(projectToTaskToFiles.isEmpty())
+    fun testInitSingleTask() {
+        assertNoThrowable {
+            TaskFileHandler.initTask(project, task1)
+        }
+        assert(projectToTaskToFiles.size == 1) {
+            "Expected the size of 'projectToTaskToFiles' to be 1, but found ${projectToTaskToFiles.size}"
+        }
+        assertNotNull(projectToTaskToFiles[project])
+        assert(
+            projectToTaskToFiles[project]?.let { it.size == 1 }
+                ?: false
+        ) {
+            "Expected the size of 'projectToTaskToFiles[project]'" +
+                " to be 1, but found ${projectToTaskToFiles[project]?.size}"
+        }
+        assert(
+            projectToTaskToFiles[project]?.contains(task1) ?: false
+        ) {
+            "projectToTaskToFiles[project] must contain task1"
+        }
+        assert(
+            "${project.basePath}/$PLUGIN_NAME/cpp/task1.cpp".getVirtualFile().toMockTask() == task1
+        ) { "Incorrect task from VirtualFile" }
+        // TODO check listener has been added
+    }
 
+    fun testInitMultipleTask() {
         assertNoThrowable {
-            taskFileHandler.disposeTask(project, task1)
-            taskFileHandler.initTask(project, task1)
+            TaskFileHandler.initTask(project, task1)
+            TaskFileHandler.initTask(project, task2)
         }
-        assert(projectToTaskToFiles.size == 1)
-        assert(projectToTaskToFiles[project]?.let { it.size == 1 } ?: false)
-        assertNoThrowable {
-            taskFileHandler.initTask(project, task2)
+        assert(projectToTaskToFiles.size == 1) {
+            "Expected the size of 'projectToTaskToFiles' to be 1," +
+                " but found ${projectToTaskToFiles.size}"
         }
-        assert(projectToTaskToFiles.size == 1)
-        assert(projectToTaskToFiles[project]?.let { it.size == 2 } ?: false)
+        assertNotNull(projectToTaskToFiles[project])
+        assert(
+            projectToTaskToFiles[project]?.let { it.size == 2 } ?: false
+        ) {
+            "Expected the size of 'projectToTaskToFiles[project]'" +
+                " to be 2, but found ${projectToTaskToFiles[project]?.size}"
+        }
+        assert(
+            projectToTaskToFiles[project]?.contains(task1) ?: false
+        ) { "projectToTaskToFiles[project] must contain task1" }
+        assert(
+            projectToTaskToFiles[project]?.contains(task2) ?: false
+        ) { "projectToTaskToFiles[project] must contain task1" }
+        assert(
+            "${project.basePath}/$PLUGIN_NAME/cpp/task1.cpp".getVirtualFile().toMockTask() == task1
+        ) { "Incorrect task from VirtualFile" }
+        assert(
+            "${project.basePath}/$PLUGIN_NAME/tasks/task2.kt".getVirtualFile().toMockTask() == task2
+        ) { "Incorrect task from VirtualFile" }
+    }
+
+    fun testInitExistingTask() {
+        TaskFileHandler.initTask(project, task1)
         assertFailsWith<Throwable> {
-            taskFileHandler.initTask(project, task2)
+            TaskFileHandler.initTask(project, task1)
         }
-        assert(projectToTaskToFiles[project]?.let { it.size == 2 } ?: false)
-        assertNoThrowable {
-            taskFileHandler.disposeTask(project, task1)
-        }
-        assert(projectToTaskToFiles[project]?.let { it.size == 1 } ?: false)
-        assert(projectToTaskToFiles[project]?.let { it.keys.first() == task2 } ?: false)
-        assertNoThrowable {
-            taskFileHandler.disposeTask(project, task2)
-        }
-        assert(projectToTaskToFiles.isEmpty())
     }
 
-    fun testAddVirtualFileListener() {
-        val file1 = File("${project.basePath}/test1")
-        val file2 = File("${project.basePath}/test2")
-        val directory = File("${project.basePath}/tests/")
+    fun testDisposeSingleTask() {
+        TaskFileHandler.initTask(project, task1)
+        assertNoThrowable {
+            TaskFileHandler.disposeTask(project, task1)
+        }
+        assert(projectToTaskToFiles.isEmpty()) { "projectToTaskToFiles expected to be empty" }
+    }
+
+    fun testDisposeMultipleTask() {
+        TaskFileHandler.initTask(project, task1)
+        TaskFileHandler.initTask(project, task2)
+        assertNoThrowable {
+            TaskFileHandler.disposeTask(project, task1)
+        }
+        assert(
+            projectToTaskToFiles[project]?.let { it.size == 1 } ?: false
+        ) {
+            "Expected the size of 'projectToTaskToFiles' to be 1, but found ${projectToTaskToFiles.size}"
+        }
+        assertNoThrowable {
+            TaskFileHandler.disposeTask(project, task2)
+        }
+        assert(projectToTaskToFiles.isEmpty()) { "projectToTaskToFiles expected to be empty" }
+    }
+
+    private fun String.getVirtualFile(): VirtualFile {
+        val file = File(this)
         ApplicationManager.getApplication().runWriteAction {
-            FileUtil.createIfDoesntExist(file1)
-            FileUtil.createIfDoesntExist(file2)
-            FileUtil.createDirectory(directory)
+            if (file.isDirectory) {
+                file.mkdirs()
+            } else {
+                file.createNewFile()
+            }
         }
-        val virtualFile1 = LocalFileSystem.getInstance().findFileByIoFile(file1) ?: error("file must exist")
-        val virtualFile2 = LocalFileSystem.getInstance().findFileByIoFile(file2) ?: error("file must exist")
-        val virtualDirectory =
-            LocalFileSystem.getInstance().findFileByIoFile(directory) ?: error("file must exist")
-        assert(virtualFile1.exists())
-        assert(virtualFile2.exists())
-        assert(virtualDirectory.exists())
-        val method = getPrivateFunc("addVirtualFileListener")
-        assertNoThrowable {
-            method.call(taskFileHandler, virtualFile1)
-            method.call(taskFileHandler, virtualFile2)
-            method.call(taskFileHandler, virtualDirectory)
+        return LocalFileSystem.getInstance().findFileByIoFile(file) ?: error("File $this must exist")
+    }
+
+    companion object {
+        val task1 = MockTask("task1", Extension.CPP, "int main(){return 0;}")
+        val task2 = MockTask("task2", Extension.KOTLIN, relativePath = "tasks")
+    }
+
+    data class MockTask(
+        val filename: String,
+        val ext: Extension,
+        val text: String? = null,
+        val relativePath: String? = null
+    ) : Task {
+        override fun getContent() = text
+
+        override fun getRelativeFilePath() = relativePath
+
+        override fun getFileName() = filename
+
+        override fun getExtension() = ext
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+
+            other as MockTask
+
+            if (filename != other.filename) return false
+            if (ext != other.ext) return false
+            if (text != other.text) {
+                if (text == null || other.text == null) {
+                    return text == DefaultContentProvider.getDefaultContent(this) ||
+                        other.text == DefaultContentProvider.getDefaultContent(other)
+                }
+            }
+            return true
         }
     }
 
-    fun testRemoveVirtualFileListener() {
-        val file = File("${project.basePath}/test")
-        val directory = File("${project.basePath}/tests/")
-        ApplicationManager.getApplication().runWriteAction {
-            FileUtil.createIfDoesntExist(file)
-            FileUtil.createDirectory(directory)
-        }
-        val virtualFile = LocalFileSystem.getInstance().findFileByIoFile(file) ?: error("file must exist")
-        val virtualDirectory =
-            LocalFileSystem.getInstance().findFileByIoFile(directory) ?: error("file must exist")
-        assert(virtualFile.exists())
-        assert(virtualDirectory.exists())
-        val methodRemove = getPrivateFunc("removeVirtualFileListener")
-        assertFailsWith<Throwable> {
-            methodRemove.call(taskFileHandler, virtualFile)
-        }
-        val methodAdd = getPrivateFunc("addVirtualFileListener")
-        assertNoThrowable {
-            methodAdd.call(taskFileHandler, virtualFile)
-            methodRemove.call(taskFileHandler, virtualFile)
-            methodRemove.call(taskFileHandler, virtualDirectory)
-        }
-        assertFailsWith<Throwable> {
-            methodRemove.call(taskFileHandler, virtualFile)
-        }
-    }
-
-    fun testGetOrCreateFile() {
-        val method = getPrivateFunc("getOrCreateFile")
-        val file1 = method.call(taskFileHandler, project, task1) as VirtualFile? ?: error("file must exist")
-        val file2 = method.call(taskFileHandler, project, task2) as VirtualFile? ?: error("file must exist")
-        assert(file1.exists())
-        assert(file2.exists())
-        assert(file1.path == "${project.basePath}/$PLUGIN_NAME/cpp/task1.cpp")
-        assert(file2.path == "${project.basePath}/$PLUGIN_NAME/tasks/task2.kt")
-        assert(String(file1.contentsToByteArray()) == task1.getContent())
-        assert(String(file2.contentsToByteArray()) == DefaultContentProvider.getDefaultContent(task2))
-    }
-
-    private val task1 = object : Task {
-        override fun getContent(): String {
-            return "int main(){return 0;}"
-        }
-
-        override fun getRelativeFilePath(): String? {
-            return null
-        }
-
-        override fun getFileName(): String {
-            return "task1"
-        }
-
-        override fun getExtension(): Extension {
-            return Extension.CPP
-        }
-    }
-
-    private val task2 = object : Task {
-        override fun getContent(): String? {
-            return null
-        }
-
-        override fun getRelativeFilePath(): String {
-            return "tasks"
-        }
-
-        override fun getFileName(): String {
-            return "task2"
-        }
-
-        override fun getExtension(): Extension {
-            return Extension.KOTLIN
-        }
+    private fun VirtualFile.toMockTask(): MockTask {
+        return MockTask(
+            nameWithoutExtension,
+            Extension.values().find { it.ext == ".$extension" } ?: error("Unexpected extension"),
+            FileDocumentManager.getInstance().getDocument(this)?.text,
+            null
+        )
     }
 }

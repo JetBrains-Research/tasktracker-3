@@ -22,7 +22,7 @@ import java.io.File
 object TaskFileHandler {
     private val logger: Logger = Logger.getInstance(javaClass)
     private val listener by lazy { TaskDocumentListener() }
-    private val projectToTaskToFiles: MutableMap<Project, MutableMap<Task, VirtualFile>> = HashMap()
+    val projectToTaskToFiles: MutableMap<Project, MutableMap<Task, VirtualFile>> = HashMap()
 
     fun initProject(project: Project) {
         TODO()
