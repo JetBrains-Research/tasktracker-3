@@ -1,4 +1,4 @@
-package org.jetBrains.research.tasktracker.ui.main.panel
+package org.jetbrains.research.tasktracker.ui.main.panel
 
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
