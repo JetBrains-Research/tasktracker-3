@@ -25,7 +25,6 @@ object TaskTrackerPlugin {
         if (pluginProps.testMode == TestMode.ON) {
             DefaultConfigsFactory.createDefaultConfigs()
         }
-        // TODO: put base configs into the config folder by default if we don't upload them from the server
         logger.info("Building the main config...")
         mainConfig = buildConfig(props, pluginProps)
     }
