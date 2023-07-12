@@ -5,8 +5,8 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class YamlConfigLoadStrategyTest {
-    private fun loadConfig() = javaClass.classLoader
-        .getResource("config/codeTrackingConfig.yaml")?.readText()
+    private fun loadConfig() = YamlConfigLoadStrategyTest::class.java
+        .getResource("codeTrackingConfig.yaml")?.readText()
         ?: error("Cannot find codeTrackingConfig.yaml!")
 
     @Test

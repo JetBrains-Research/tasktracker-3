@@ -14,6 +14,7 @@ import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VfsUtilCore
 import com.intellij.openapi.vfs.VirtualFile
 import org.jetbrains.jps.model.serialization.PathMacroUtil
+import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig.Companion.PLUGIN_NAME
 import org.jetbrains.research.tasktracker.tracking.task.Task
 import java.io.File
 
@@ -21,7 +22,7 @@ import java.io.File
 object TaskFileHandler {
     private val logger: Logger = Logger.getInstance(javaClass)
     private val listener by lazy { TaskDocumentListener() }
-    private val projectToTaskToFiles: HashMap<Project, HashMap<Task, VirtualFile>> = HashMap()
+    private val projectToTaskToFiles: MutableMap<Project, MutableMap<Task, VirtualFile>> = HashMap()
 
     fun initProject(project: Project) {
         TODO()
@@ -56,17 +57,17 @@ object TaskFileHandler {
         }
     }
 
-    // TODO fix path and content to file
     private fun getOrCreateFile(project: Project, task: Task): VirtualFile? {
-        val relativeFilePath = task.getRelativeFilePath() ?: DefaultContentProvider.getDefaultFolderRelativePath(task)
+        val relativeFilePath = task.relativeFilePath?.let { "$PLUGIN_NAME/$it" }
+            ?: DefaultContentProvider.getDefaultFolderRelativePath(task)
         ApplicationManager.getApplication().runWriteAction {
             addSourceFolder(relativeFilePath, ModuleManager.getInstance(project).modules.last())
         }
-        val file = File("${project.basePath}/$relativeFilePath/${task.getFileName()}/${task.getExtension().ext}")
+        val file = File("${project.basePath}/$relativeFilePath/${task.filename}${task.extension.ext}")
         if (!file.exists()) {
             ApplicationManager.getApplication().runWriteAction {
                 FileUtil.createIfDoesntExist(file)
-                file.writeText(task.getContent() ?: DefaultContentProvider.getDefaultContent(task))
+                file.writeText(task.content ?: DefaultContentProvider.getDefaultContent(task))
             }
         }
         return LocalFileSystem.getInstance().refreshAndFindFileByIoFile(file)

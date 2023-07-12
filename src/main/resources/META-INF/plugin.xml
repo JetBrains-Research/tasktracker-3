@@ -1,6 +1,6 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>org.jetBrains.research.tasktracker</id>
+    <id>org.jetbrains.research.tasktracker</id>
     <name>TaskTracker</name>
     <vendor>egor-bogomolov</vendor>
 

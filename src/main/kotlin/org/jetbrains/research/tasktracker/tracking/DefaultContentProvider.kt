@@ -8,32 +8,32 @@ import java.util.*
 object DefaultContentProvider {
     private val lineSeparator = System.lineSeparator()
     fun getDefaultFolderRelativePath(task: Task) =
-        "$PLUGIN_NAME/${task.getExtension().name.lowercase(Locale.getDefault())}"
+        "$PLUGIN_NAME/${task.lowercaseExtension()}"
 
-    fun getDefaultContent(task: Task) = when (task.getExtension()) {
+    fun getDefaultContent(task: Task) = when (task.extension) {
         Extension.JAVA ->
             """
-                ${getPackage(task.getExtension())}
+                ${getPackage(task)}
                
                 public class Solution {
                 
                     public static void main(String[] args) {
-                    
+                
                             // Write your code here
-                            
+                
                     }
-                    
+                
                 }
             """.trimIndent()
 
         Extension.KOTLIN ->
             """
-                ${getPackage(task.getExtension())}
+                ${getPackage(task)}
                 
                 fun main() {
                 
                     // Write your code here
-                    
+                
                 }
             """.trimIndent()
 
@@ -44,9 +44,9 @@ object DefaultContentProvider {
                 int main() {
                 
                     // Write your code here
-                    
+                
                     return 0;
-                    
+                
                 }
             """.trimIndent()
 
@@ -54,13 +54,20 @@ object DefaultContentProvider {
         else -> ""
     }
 
-    private fun getPackage(extension: Extension): String {
+    private fun getPackage(task: Task): String {
         val currentPackage =
-            "package $PLUGIN_NAME.${extension.name.lowercase(Locale.getDefault())}"
-        return when (extension) {
+            "package $PLUGIN_NAME.${task.lowercaseExtension()}${task.relativePathToPackage()?.let { ".$it" } ?: ""}"
+        return when (task.extension) {
             Extension.JAVA -> "$currentPackage;$lineSeparator$lineSeparator"
             Extension.KOTLIN -> "$currentPackage$lineSeparator$lineSeparator"
             else -> ""
         }
     }
+
+    private fun Task.relativePathToPackage() = relativeFilePath
+        ?.removePrefix("/")
+        ?.removeSuffix("/")
+        ?.replace("/", ".")
+
+    private fun Task.lowercaseExtension() = extension.name.lowercase(Locale.getDefault())
 }
