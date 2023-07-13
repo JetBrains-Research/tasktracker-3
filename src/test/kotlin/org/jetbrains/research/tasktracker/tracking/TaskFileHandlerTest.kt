@@ -47,12 +47,12 @@ class TaskFileHandlerTest : BasePlatformTestCase() {
         assert(
             projectToTaskToFiles[project]?.contains(task1) ?: false
         ) {
-            "projectToTaskToFiles[project] must contain task1"
+            "projectToTaskToFiles[project] must contain $task1"
         }
+        val virtualFileTask1 = "${project.basePath}/$PLUGIN_NAME/cpp/task1.cpp".getVirtualFile().toMockTask()
         assert(
-            "${project.basePath}/$PLUGIN_NAME/cpp/task1.cpp".getVirtualFile().toMockTask() == task1
-        ) { "Incorrect task from VirtualFile" }
-        // TODO check listener has been added
+            virtualFileTask1 == task1
+        ) { "Incorrect task $virtualFileTask1 from VirtualFile" }
     }
 
     fun testInitMultipleTask() {
@@ -77,17 +77,19 @@ class TaskFileHandlerTest : BasePlatformTestCase() {
         assert(
             projectToTaskToFiles[project]?.contains(task2) ?: false
         ) { "projectToTaskToFiles[project] must contain task1" }
+        val virtualFileTask1 = "${project.basePath}/$PLUGIN_NAME/cpp/task1.cpp".getVirtualFile().toMockTask()
+        val virtualFileTask2 = "${project.basePath}/$PLUGIN_NAME/tasks/task2.kt".getVirtualFile().toMockTask()
         assert(
-            "${project.basePath}/$PLUGIN_NAME/cpp/task1.cpp".getVirtualFile().toMockTask() == task1
-        ) { "Incorrect task from VirtualFile" }
+            virtualFileTask1 == task1
+        ) { "Incorrect task $virtualFileTask1 from VirtualFile" }
         assert(
-            "${project.basePath}/$PLUGIN_NAME/tasks/task2.kt".getVirtualFile().toMockTask() == task2
-        ) { "Incorrect task from VirtualFile" }
+            virtualFileTask2 == task2
+        ) { "Incorrect task $virtualFileTask2 from VirtualFile" }
     }
 
     fun testInitExistingTask() {
         TaskFileHandler.initTask(project, task1)
-        assertFailsWith<Throwable> {
+        assertFailsWith<Throwable> ("Expected Throwable on second initialization of $task1"){
             TaskFileHandler.initTask(project, task1)
         }
     }
