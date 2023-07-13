@@ -89,7 +89,7 @@ class TaskFileHandlerTest : BasePlatformTestCase() {
 
     fun testInitExistingTask() {
         TaskFileHandler.initTask(project, task1)
-        assertFailsWith<Throwable> ("Expected Throwable on second initialization of $task1"){
+        assertFailsWith<Throwable>("Expected Throwable on second initialization of $task1") {
             TaskFileHandler.initTask(project, task1)
         }
     }
