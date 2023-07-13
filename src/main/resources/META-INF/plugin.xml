@@ -1,10 +1,15 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>org.jetBrains.research.tasktracker</id>
+    <id>org.jetbrains.research.tasktracker</id>
     <name>TaskTracker</name>
     <vendor>egor-bogomolov</vendor>
 
     <depends>com.intellij.modules.platform</depends>
 
     <resource-bundle>messages.MyBundle</resource-bundle>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow factoryClass="org.jetbrains.research.tasktracker.ui.main.panel.MainPluginPanelFactory" id="TaskTracker" anchor="right"/>
+        <postStartupActivity implementation="org.jetbrains.research.tasktracker.activities.InitActivity"/>
+    </extensions>
 </idea-plugin>
