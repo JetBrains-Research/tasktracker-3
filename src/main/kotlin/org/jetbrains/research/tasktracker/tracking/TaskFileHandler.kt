@@ -61,7 +61,6 @@ object TaskFileHandler {
         }
     }
 
-    // TODO fix path and content to file
     private fun getOrCreateFile(project: Project, task: Task): VirtualFile? {
         val relativeFilePath = task.relativeFilePath?.let { "$PLUGIN_NAME/$it" }
             ?: DefaultContentProvider.getDefaultFolderRelativePath(task)

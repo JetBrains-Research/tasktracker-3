@@ -5,6 +5,7 @@ import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig.Companion.PLUGIN_NAME
 import org.jetbrains.research.tasktracker.models.Extension
 import org.jetbrains.research.tasktracker.tracking.mock.MockTask
@@ -117,6 +118,25 @@ class TaskFileHandlerTest : BasePlatformTestCase() {
             TaskFileHandler.disposeTask(project, task2)
         }
         assert(projectToTaskToFiles.isEmpty()) { "projectToTaskToFiles expected to be empty" }
+    }
+
+    fun testTaskDocumentListener() {
+        val directory = File("${project.basePath}/$PLUGIN_NAME/cpp/")
+        directory.mkdirs()
+        val virtualFile = "${directory.path}/task.cpp".getVirtualFile()
+        val document = FileDocumentManager.getInstance().getDocument(virtualFile)
+            ?: error("document with path ${virtualFile.path} must exist")
+        val logFileName =
+            "${virtualFile.nameWithoutExtension}_${virtualFile.hashCode()}_${document.hashCode()}_0.csv"
+        val logFile = File("${MainTaskTrackerConfig.pluginFolderPath}/$logFileName")
+        assert(!logFile.exists()) {
+            "log file with path ${logFile.path} should be created on first event in TaskDocumentListener"
+        }
+        document.addDocumentListener(TaskDocumentListener())
+        ApplicationManager.getApplication().runWriteAction {
+            document.setText("test")
+        }
+        assert(logFile.exists()) { "log file with path ${logFile.path} should have been created" }
     }
 
     private fun String.getVirtualFile(): VirtualFile {

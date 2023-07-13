@@ -8,6 +8,7 @@ import com.intellij.openapi.fileEditor.FileDocumentManager
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
 import org.jetbrains.research.tasktracker.tracking.logger.DocumentLogger
 
+@Suppress("UnusedPrivateMember")
 class TaskDocumentListener : DocumentListener {
     private val logger: Logger = Logger.getInstance(javaClass)
 
@@ -17,9 +18,7 @@ class TaskDocumentListener : DocumentListener {
 
     // Tracking documents changes before to be consistent with activity-tracker plugin
     override fun beforeDocumentChange(event: DocumentEvent) {
-        if (isValidChange(event)) {
-            DocumentLogger.log(event.document)
-        }
+        DocumentLogger.log(event.document)
     }
 
     // To avoid completion events with IntellijIdeaRulezzz sign.
