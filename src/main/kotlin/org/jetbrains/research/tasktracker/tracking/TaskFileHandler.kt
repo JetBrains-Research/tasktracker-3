@@ -14,7 +14,6 @@ import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VfsUtilCore
 import com.intellij.openapi.vfs.VirtualFile
 import org.jetbrains.jps.model.serialization.PathMacroUtil
-import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig.Companion.PLUGIN_NAME
 import org.jetbrains.research.tasktracker.tracking.task.Task
 import java.io.File
 
@@ -40,17 +39,19 @@ object TaskFileHandler {
     fun disposeTask(project: Project, task: Task) {
         projectToTaskToFiles[project]?.let {
             it[task]?.let { virtualFile -> removeVirtualFileListener(virtualFile) }
+                ?: logger.warn("attempt to dispose a uninitialized task: '$task'")
             it.remove(task)
             if (it.isEmpty()) {
                 projectToTaskToFiles.remove(project)
             }
-        }
+        } ?: logger.warn("attempt to dispose task: '$task' from uninitialized project: '$project'")
     }
 
     private fun addVirtualFileListener(virtualFile: VirtualFile) {
         ApplicationManager.getApplication().invokeAndWait {
             val document = FileDocumentManager.getInstance().getDocument(virtualFile)
             document?.addDocumentListener(listener)
+                ?: logger.warn("attempt to add listener for non-existing document: '$document'")
         }
     }
 
@@ -62,8 +63,8 @@ object TaskFileHandler {
     }
 
     private fun getOrCreateFile(project: Project, task: Task): VirtualFile? {
-        val relativeFilePath = task.relativeFilePath?.let { "$PLUGIN_NAME/$it" }
-            ?: DefaultContentProvider.getDefaultFolderRelativePath(task)
+        val relativeFilePath =
+            "${DefaultContentProvider.getDefaultFolderRelativePath(task)}/${task.relativeFilePath ?: ""}"
         ApplicationManager.getApplication().runWriteAction {
             addSourceFolder(relativeFilePath, ModuleManager.getInstance(project).modules.last())
         }
