@@ -2,6 +2,9 @@ package org.jetbrains.research.tasktracker.ui.main.panel
 
 import com.intellij.openapi.util.Disposer
 import com.intellij.ui.jcef.JBCefBrowser
+import org.jetbrains.research.tasktracker.ui.main.panel.template.ErrorPageTemplate
+import org.jetbrains.research.tasktracker.ui.main.panel.template.HtmlTemplate
+import org.jetbrains.research.tasktracker.ui.main.panel.template.IndexPageTemplate
 import javax.swing.JComponent
 
 class MainPluginWindow(service: MainWindowService) {
@@ -11,16 +14,12 @@ class MainPluginWindow(service: MainWindowService) {
 
     init {
         windowBrowser = JBCefBrowser()
-        windowBrowser.setErrorPage { _, _, _ -> // TODO insert parameters to error page
-            defaultPageContent("error")
+        windowBrowser.setErrorPage { errorCode, errorText, failedUrl ->
+            ErrorPageTemplate.pageContent(errorCode.code.toString(), errorText, failedUrl)
         }
-        loadDefaultPage("index")
+        loadDefaultPage(IndexPageTemplate)
         Disposer.register(service, windowBrowser)
     }
 
-    fun loadDefaultPage(name: String) = windowBrowser.loadHTML(defaultPageContent(name))
-
-    private fun defaultPageContent(name: String) =
-        MainPluginWindow::class.java.getResource("template/$name.html")?.readText()
-            ?: error("Cannot find default page with name $name")
+    fun loadDefaultPage(template: HtmlTemplate) = windowBrowser.loadHTML(template.pageContent())
 }

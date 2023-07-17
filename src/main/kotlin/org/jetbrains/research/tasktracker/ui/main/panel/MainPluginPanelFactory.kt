@@ -5,6 +5,7 @@ import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBPanel
 import com.intellij.ui.jcef.JBCefApp
+import org.jetbrains.research.tasktracker.ui.main.panel.template.TasksPageTemplate
 import java.awt.GridLayout
 import java.awt.event.ActionListener
 import javax.swing.JButton
@@ -22,7 +23,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
                     add(
                         button.apply {
                             addListener {
-                                mainWindow.loadDefaultPage("tasks")
+                                mainWindow.loadDefaultPage(TasksPageTemplate)
                                 // TODO refactor, add function for button listener and text change
                             }
                         }
