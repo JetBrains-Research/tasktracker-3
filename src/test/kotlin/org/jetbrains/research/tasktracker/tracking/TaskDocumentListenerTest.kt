@@ -23,10 +23,16 @@ class TaskDocumentListenerTest : BasePlatformTestCase() {
         document.reWriteText("test")
         DocumentLogger.getDocumentLogPrinter(document)?.getActiveLogPrinter(document)?.csvPrinter?.flush()
         assert(logFile.exists()) { "log file with path '${logFile.path}' should have been created" }
-        val changes = logFile.readLines().map {
-            it.split(",")[5]
-                .replace("\"", "")
-        }.takeLast(3) // skip
+        val changes = logFile.readLines()
+            .filterIndexed { index, _ -> index > 1 }
+            .map {
+                it.split(",")[5]
+                    .replace("\"", "")
+            }
+        /*
+         we do not take the first 2 elements because first is column title
+         and second is empty string with initial state of the file
+         5 - is the column in csv with changes in file  */
         assert(changes == expectedChanges)
     }
 
