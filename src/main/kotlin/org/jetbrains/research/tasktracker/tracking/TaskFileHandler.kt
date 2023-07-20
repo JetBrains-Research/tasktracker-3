@@ -15,17 +15,20 @@ import com.intellij.openapi.vfs.VfsUtilCore
 import com.intellij.openapi.vfs.VirtualFile
 import org.jetbrains.jps.model.serialization.PathMacroUtil
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig.Companion.PLUGIN_NAME
+import org.jetbrains.research.tasktracker.tracking.task.SourceSet
 import org.jetbrains.research.tasktracker.tracking.task.Task
 import org.jetbrains.research.tasktracker.tracking.task.TaskFile
 import java.io.File
 import java.util.*
 import kotlin.collections.HashMap
 
+typealias ProjectTaskFileMap = MutableMap<Project, MutableMap<Task, MutableList<VirtualFile>>>
+
 @Suppress("UnusedPrivateMember")
 object TaskFileHandler {
     private val logger: Logger = Logger.getInstance(javaClass)
     private val listener by lazy { TaskDocumentListener() }
-    val projectToTaskToFiles: MutableMap<Project, MutableMap<Task, MutableList<VirtualFile>>> = HashMap()
+    val projectToTaskToFiles: ProjectTaskFileMap = HashMap()
 
     fun initProject(project: Project) {
         TODO()
@@ -73,24 +76,27 @@ object TaskFileHandler {
 
     private fun getOrCreateFiles(project: Project, task: Task): List<VirtualFile?> {
         return task.taskFiles.map { taskFile ->
-            val relativeFilePath = taskFile.relativePath
             ApplicationManager.getApplication().runWriteAction {
-                addSourceFolder(relativeFilePath, ModuleManager.getInstance(project).modules.last())
+                addSourceFolder(taskFile, ModuleManager.getInstance(project).modules.last())
             }
             val path = getPath(project, taskFile, task)
             val file = File(path)
-            if (!file.exists()) {
-                ApplicationManager.getApplication().runWriteAction {
-                    FileUtil.createIfDoesntExist(file)
-                    file.writeText(
-                        taskFile.content ?: DefaultContentProvider.getDefaultContent(
-                            taskFile.extension,
-                            taskFile.relativePath
-                        )
-                    )
-                }
-            }
+            file.writeDefaultContent(taskFile)
             LocalFileSystem.getInstance().refreshAndFindFileByIoFile(file)
+        }
+    }
+
+    private fun File.writeDefaultContent(taskFile: TaskFile) {
+        if (!exists()) {
+            ApplicationManager.getApplication().runWriteAction {
+                FileUtil.createParentDirs(this)
+                writeText(
+                    taskFile.content ?: DefaultContentProvider.getDefaultContent(
+                        taskFile.extension,
+                        taskFile.relativePath
+                    )
+                )
+            }
         }
     }
 
@@ -100,15 +106,15 @@ object TaskFileHandler {
             "${taskFile.relativePath.pathOrEmpty()}/${taskFile.filename}${taskFile.extension.ext}"
     }
 
-    private fun addSourceFolder(relativePath: String, module: Module) {
-        val directory = File(PathMacroUtil.getModuleDir(module.moduleFilePath), relativePath)
+    private fun addSourceFolder(taskFile: TaskFile, module: Module) {
+        val directory = File(PathMacroUtil.getModuleDir(module.moduleFilePath), taskFile.relativePath)
         if (!directory.exists()) {
             directory.mkdirs()
         }
         val virtualFile = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(directory)
         virtualFile?.let {
             val rootModel = ModuleRootManager.getInstance(module).modifiableModel
-            getContentEntry(virtualFile, rootModel)?.addSourceFolder(it.url, false)
+            getContentEntry(virtualFile, rootModel)?.addSourceFolder(it.url, taskFile.sourceSet == SourceSet.TEST)
             rootModel.commit()
         }
     }
@@ -124,5 +130,9 @@ object TaskFileHandler {
         return null
     }
 
-    private fun String.pathOrEmpty() = if (!isEmpty()) "/$this" else this
+    private fun String.pathOrEmpty() = if (isNotEmpty()) {
+        if (this.startsWith("/")) this else "/$this"
+    } else {
+        this
+    }
 }

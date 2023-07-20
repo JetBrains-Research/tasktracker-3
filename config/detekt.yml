@@ -8,3 +8,7 @@ build:
 style:
   ForbiddenComment:
     active: false
+
+complexity:
+  TooManyFunctions:
+    thresholdInObjects: 12
