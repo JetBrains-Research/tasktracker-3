@@ -14,7 +14,7 @@ body {
 
 .small-font {
     font-family: 'Inter', sans-serif;
-    font-size: 6vmin;
+    font-size: 5vmin;
     margin-top: 0;
     margin-bottom: 2vmin;
 }
@@ -30,7 +30,7 @@ body {
 
 label {
     font-family: 'Inter', sans-serif;
-    font-size: 5vmin;
+    font-size: 4vmin;
     font-weight: bold;
 }
 

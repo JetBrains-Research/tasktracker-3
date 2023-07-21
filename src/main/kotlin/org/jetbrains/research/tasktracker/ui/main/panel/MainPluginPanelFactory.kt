@@ -5,6 +5,7 @@ import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBPanel
 import com.intellij.ui.jcef.JBCefApp
+import com.intellij.util.ui.JBUI
 import org.jetbrains.research.tasktracker.ui.main.panel.template.IndexPageTemplate
 import org.jetbrains.research.tasktracker.ui.main.panel.template.TasksPageTemplate
 import java.awt.BorderLayout
@@ -24,13 +25,14 @@ class MainPluginPanelFactory : ToolWindowFactory {
         nextButton.addListener {
             selectTask()
         }
+        mainWindow.jComponent.size = JBUI.size(toolWindow.component.width, toolWindow.component.height)
         val buttonPanel = JBPanel<JBPanel<*>>(FlowLayout()).apply {
             add(backButton)
             add(nextButton)
         }
         val panel = JBPanel<JBPanel<*>>(BorderLayout()).apply {
-            add(mainWindow.jComponent, BorderLayout.NORTH)
-            add(buttonPanel)
+            add(mainWindow.jComponent)
+            add(buttonPanel, BorderLayout.SOUTH)
         }
         jComponent.add(panel)
     }
