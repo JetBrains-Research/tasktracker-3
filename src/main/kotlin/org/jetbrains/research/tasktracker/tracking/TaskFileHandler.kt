@@ -74,6 +74,7 @@ object TaskFileHandler {
         }
     }
 
+    // TODO group tasks by sourceSet and make sourceSet once for each
     private fun getOrCreateFiles(project: Project, task: Task): List<VirtualFile?> {
         return task.taskFiles.map { taskFile ->
             ApplicationManager.getApplication().runWriteAction {
