@@ -21,11 +21,17 @@ body {
 
 .container {
     min-height: 100vh;
+    margin: 4vmin;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     justify-content: center;
+}
+
+.portable {
+    overflow-wrap: break-word;
+    word-break: break-all;
 }
 
 label {

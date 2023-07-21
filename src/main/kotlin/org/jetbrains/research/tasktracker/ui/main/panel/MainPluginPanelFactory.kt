@@ -8,14 +8,15 @@ import com.intellij.ui.jcef.JBCefApp
 import com.intellij.util.ui.JBUI
 import org.jetbrains.research.tasktracker.ui.main.panel.template.IndexPageTemplate
 import org.jetbrains.research.tasktracker.ui.main.panel.template.TasksPageTemplate
+import org.jetbrains.research.tasktracker.util.UIBundle
 import java.awt.BorderLayout
 import java.awt.FlowLayout
 import java.awt.event.ActionListener
 import javax.swing.JButton
 
 class MainPluginPanelFactory : ToolWindowFactory {
-    private val nextButton = buttonNonPaintedBorder("next")
-    private val backButton = buttonNonPaintedBorder("back")
+    private val nextButton = buttonNonPaintedBorder(UIBundle.message("next"))
+    private val backButton = buttonNonPaintedBorder(UIBundle.message("back"))
     private lateinit var mainWindow: MainPluginWindow
 
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
@@ -41,11 +42,11 @@ class MainPluginPanelFactory : ToolWindowFactory {
 
     private fun selectTask() {
         mainWindow.loadDefaultPage(TasksPageTemplate)
-        nextButton.text = "select"
+        nextButton.text = UIBundle.message("select")
         backButton.isVisible = true
         backButton.addListener {
             mainWindow.loadDefaultPage(IndexPageTemplate)
-            nextButton.text = "next" // TODO constants
+            nextButton.text = UIBundle.message("next")
             backButton.isVisible = false
         }
     }

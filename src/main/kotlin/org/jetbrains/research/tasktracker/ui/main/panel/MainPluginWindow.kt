@@ -1,6 +1,6 @@
 package org.jetbrains.research.tasktracker.ui.main.panel
 
-import com.intellij.ide.ui.UISettingsListener
+import com.intellij.ide.ui.LafManagerListener
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.util.Disposer
 import com.intellij.ui.jcef.JBCefBrowser
@@ -24,8 +24,8 @@ class MainPluginWindow(service: MainWindowService) {
         loadDefaultPage(currentTemplate)
         val app = ApplicationManager.getApplication().messageBus
         app.connect().subscribe(
-            UISettingsListener.TOPIC,
-            UISettingsListener {
+            LafManagerListener.TOPIC,
+            LafManagerListener {
                 loadDefaultPage(currentTemplate)
             }
         )

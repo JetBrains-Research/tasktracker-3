@@ -3,15 +3,15 @@ body {
 }
 
 p {
-    color: white;
+    color: #fefefe;
 }
 
 label {
-    color: white;
+    color: #fefefe;
 }
 
 select {
     border: 1px solid #575555;
     background-color: #1e1e1e;
-    color: white;
+    color: #fefefe;
 }

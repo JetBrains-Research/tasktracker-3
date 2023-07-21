@@ -1,6 +1,7 @@
 package org.jetbrains.research.tasktracker.ui.main.panel.template
 
 import com.intellij.util.ui.UIUtil
+import org.jetbrains.research.tasktracker.util.UIBundle
 
 sealed class HtmlTemplate {
 
@@ -28,7 +29,7 @@ sealed class HtmlTemplate {
     protected enum class CSS {
         DEFAULT {
             override val filename: String
-                get() = if (UIUtil.isUnderDarcula()) "dark" else "light"
+                get() = if (UIUtil.isUnderDarcula()) UIBundle.message("dark") else UIBundle.message("light")
         };
 
         abstract val filename: String
