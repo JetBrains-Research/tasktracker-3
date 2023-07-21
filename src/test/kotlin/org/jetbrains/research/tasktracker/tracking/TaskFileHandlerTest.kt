@@ -6,7 +6,11 @@ import org.jetbrains.research.tasktracker.tracking.mock.task1
 import org.jetbrains.research.tasktracker.tracking.mock.task2
 import org.jetbrains.research.tasktracker.tracking.mock.task3
 import org.jetbrains.research.tasktracker.tracking.mock.task4
-import org.jetbrains.research.tasktracker.tracking.mock.task5
+import org.jetbrains.research.tasktracker.tracking.mock.taskFile1
+import org.jetbrains.research.tasktracker.tracking.mock.taskFile2Java
+import org.jetbrains.research.tasktracker.tracking.mock.taskFile2Kotlin
+import org.jetbrains.research.tasktracker.tracking.mock.taskFile3
+import org.jetbrains.research.tasktracker.tracking.mock.taskFile4
 import org.jetbrains.research.tasktracker.tracking.mock.toMockTask
 import org.jetbrains.research.tasktracker.tracking.task.Task
 import kotlin.test.assertFailsWith
@@ -74,8 +78,9 @@ class TaskFileHandlerTest : BasePlatformTestCase() {
             }
         }
         tasks.forEach { task ->
-            val virtualFileTask =
-                "${project.basePath}/$PLUGIN_NAME/${relativePaths[task]}".getVirtualFile().toMockTask(project)
+            val virtualFileTask = task.taskFiles.map { taskFile ->
+                "${project.basePath}/$PLUGIN_NAME/${relativePaths[taskFile]}".getVirtualFile()
+            }.toMockTask(project)
             assert(
                 virtualFileTask == task
             ) { "Incorrect task $virtualFileTask from VirtualFile" }
@@ -97,12 +102,12 @@ class TaskFileHandlerTest : BasePlatformTestCase() {
     companion object {
         private val relativePaths =
             mapOf(
-                task1 to "cpp/task1.cpp",
-                task2 to "kotlin/tasks/task2.kt",
-                task3 to "java/task3.java",
-                task4 to "python/tasks/task4.py",
-                task5 to "jupyter/task5.ipynb"
+                taskFile1 to "cpp/src/task1/task1.cpp",
+                taskFile2Kotlin to "kotlin/tasks/src/task2/task2.kt",
+                taskFile2Java to "java/tasks/src/task2/java/task2.java",
+                taskFile3 to "python/example/src/task3/task3.py",
+                taskFile4 to "jupyter/src/task4/jupyter/task4.ipynb",
             )
-        private val tasks = listOf(task1, task2, task3, task4, task5)
+        private val tasks = listOf(task1, task2, task3, task4)
     }
 }

@@ -1,19 +1,14 @@
 package org.jetbrains.research.tasktracker.tracking
 
-import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig.Companion.PLUGIN_NAME
 import org.jetbrains.research.tasktracker.models.Extension
-import org.jetbrains.research.tasktracker.tracking.task.Task
-import java.util.*
 
 object DefaultContentProvider {
     private val lineSeparator = System.lineSeparator()
-    fun getDefaultFolderRelativePath(task: Task) =
-        "$PLUGIN_NAME/${task.lowercaseExtension()}"
 
-    fun getDefaultContent(task: Task) = when (task.extension) {
+    fun getDefaultContent(extension: Extension, path: String) = when (extension) {
         Extension.JAVA ->
             """
-                ${getPackage(task)}
+                ${getPackage(extension, path)}
                
                 public class Solution {
                 
@@ -28,7 +23,7 @@ object DefaultContentProvider {
 
         Extension.KOTLIN ->
             """
-                ${getPackage(task)}
+                ${getPackage(extension, path)}
                 
                 fun main() {
                 
@@ -54,20 +49,18 @@ object DefaultContentProvider {
         else -> ""
     }
 
-    private fun getPackage(task: Task): String {
+    private fun getPackage(extension: Extension, path: String): String {
         val currentPackage =
-            "package $PLUGIN_NAME.${task.lowercaseExtension()}${task.relativePathToPackage()?.let { ".$it" } ?: ""}"
-        return when (task.extension) {
+            "package ${path.relativePathToPackage()}"
+        return when (extension) {
             Extension.JAVA -> "$currentPackage;$lineSeparator$lineSeparator"
             Extension.KOTLIN -> "$currentPackage$lineSeparator$lineSeparator"
             else -> ""
         }
     }
 
-    private fun Task.relativePathToPackage() = relativeFilePath
-        ?.removePrefix("/")
-        ?.removeSuffix("/")
-        ?.replace("/", ".")
-
-    private fun Task.lowercaseExtension() = extension.name.lowercase(Locale.getDefault())
+    private fun String.relativePathToPackage() = this
+        .removePrefix("/")
+        .removeSuffix("/")
+        .replace("/", ".")
 }

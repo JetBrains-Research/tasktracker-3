@@ -6,46 +6,48 @@ import com.intellij.openapi.vfs.VirtualFile
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
 import org.jetbrains.research.tasktracker.models.Extension
 import org.jetbrains.research.tasktracker.tracking.DefaultContentProvider
+import org.jetbrains.research.tasktracker.tracking.task.SourceSet
 import org.jetbrains.research.tasktracker.tracking.task.Task
+import org.jetbrains.research.tasktracker.tracking.task.TaskFile
 
 data class MockTask(
+    override val name: String,
+    override val taskFiles: List<TaskFile>,
+    override val root: String = ""
+) : Task
+
+data class MockTaskFile(
     override val filename: String,
     override val extension: Extension,
-    override val content: String? = null,
-    override val relativeFilePath: String? = null
-) : Task {
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as MockTask
-
-        if (filename != other.filename) return false
-        if (extension != other.extension) return false
-        if (content != other.content) {
-            if (content == null || other.content == null) {
-                return content == DefaultContentProvider.getDefaultContent(other) ||
-                    other.content == DefaultContentProvider.getDefaultContent(this)
-            }
-        }
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = filename.hashCode()
-        result = 31 * result + extension.hashCode()
-        result = 31 * result + (content?.hashCode() ?: 0)
-        result = 31 * result + (relativeFilePath?.hashCode() ?: 0)
-        return result
-    }
+    override val relativePath: String = "",
+    override val content: String = DefaultContentProvider.getDefaultContent(extension, relativePath),
+) : TaskFile {
+    override val sourceSet: SourceSet = SourceSet.SRC
 }
 
-fun VirtualFile.toMockTask(project: Project): MockTask {
-    return MockTask(
-        nameWithoutExtension,
-        Extension.values().find { it.ext == ".$extension" } ?: error("Unexpected extension"),
-        FileDocumentManager.getInstance().getDocument(this)?.text,
-        path.removePrefix("${project.basePath}/${MainTaskTrackerConfig.PLUGIN_NAME}/").removeSuffix("/$name")
-    )
+fun List<VirtualFile>.toMockTask(project: Project): MockTask {
+    val firstFile = this.firstOrNull() ?: error("Empty list is unexpected")
+    val taskFiles = map { file ->
+        println(file.path)
+        MockTaskFile(
+            file.nameWithoutExtension,
+            file.extensionEnum(),
+            file.getRelativePath(project),
+            FileDocumentManager.getInstance().getDocument(file)?.text ?: error("file `${file.name}` does not exist"),
+        )
+    }
+    return MockTask(firstFile.nameWithoutExtension, taskFiles, firstFile.getRoot(project))
 }
+
+private fun VirtualFile.getRoot(project: Project) =
+    getRootAndRelativePath(project).first().takeIf { it != "src" }.orEmpty()
+
+private fun VirtualFile.getRelativePath(project: Project) =
+    getRootAndRelativePath(project).last().takeIf { it != nameWithoutExtension }.orEmpty()
+
+private fun VirtualFile.getRootAndRelativePath(project: Project): List<String> =
+    path.removePrefix("${project.basePath}/${MainTaskTrackerConfig.PLUGIN_NAME}/${extensionEnum().name.lowercase()}/")
+        .removeSuffix("/$name").split("/")
+
+private fun VirtualFile.extensionEnum() =
+    Extension.values().find { it.ext == ".$extension" } ?: error("Unexpected extension `$extension`")
