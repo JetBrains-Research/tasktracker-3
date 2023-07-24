@@ -6,7 +6,8 @@ import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBPanel
 import com.intellij.ui.jcef.JBCefApp
 import com.intellij.util.ui.JBUI
-import org.jetbrains.research.tasktracker.ui.main.panel.template.IndexPageTemplate
+import org.jetbrains.research.tasktracker.ui.main.panel.template.HtmlTemplateBase
+import org.jetbrains.research.tasktracker.ui.main.panel.template.MainPageTemplate
 import org.jetbrains.research.tasktracker.ui.main.panel.template.TasksPageTemplate
 import org.jetbrains.research.tasktracker.util.UIBundle
 import java.awt.BorderLayout
@@ -15,18 +16,17 @@ import java.awt.event.ActionListener
 import javax.swing.JButton
 
 class MainPluginPanelFactory : ToolWindowFactory {
-    private val nextButton = buttonNonPaintedBorder(UIBundle.message("next"))
-    private val backButton = buttonNonPaintedBorder(UIBundle.message("back"))
-    private lateinit var mainWindow: MainPluginWindow
+    private val nextButton = createJButton("ui.button.next")
+    private val backButton = createJButton("ui.button.back", isVisibleProp = false)
 
+    private lateinit var mainWindow: MainPluginWindow
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
         mainWindow = project.getService(MainWindowService::class.java).mainWindow
-        val jComponent = toolWindow.component
-        backButton.isVisible = false
+        mainWindow.jComponent.size = JBUI.size(toolWindow.component.width, toolWindow.component.height)
+
         nextButton.addListener {
             selectTask()
         }
-        mainWindow.jComponent.size = JBUI.size(toolWindow.component.width, toolWindow.component.height)
         val buttonPanel = JBPanel<JBPanel<*>>(FlowLayout()).apply {
             add(backButton)
             add(nextButton)
@@ -35,19 +35,21 @@ class MainPluginPanelFactory : ToolWindowFactory {
             add(mainWindow.jComponent)
             add(buttonPanel, BorderLayout.SOUTH)
         }
-        jComponent.add(panel)
+        toolWindow.component.add(panel)
     }
 
     override fun isApplicable(project: Project) = super.isApplicable(project) && JBCefApp.isSupported()
 
+    private fun loadBasePage(template: HtmlTemplateBase, buttonTextKey: String, isVisibleBackButton: Boolean) {
+        mainWindow.loadHtmlTemplate(template)
+        nextButton.text = UIBundle.message(buttonTextKey)
+        backButton.isVisible = isVisibleBackButton
+    }
+
     private fun selectTask() {
-        mainWindow.loadDefaultPage(TasksPageTemplate)
-        nextButton.text = UIBundle.message("select")
-        backButton.isVisible = true
+        loadBasePage(TasksPageTemplate, "ui.button.select", true)
         backButton.addListener {
-            mainWindow.loadDefaultPage(IndexPageTemplate)
-            nextButton.text = UIBundle.message("next")
-            backButton.isVisible = false
+            loadBasePage(MainPageTemplate, "ui.button.next", false)
         }
     }
 
@@ -56,9 +58,5 @@ class MainPluginPanelFactory : ToolWindowFactory {
             removeActionListener(it)
         }
         addActionListener(listener)
-    }
-
-    private fun buttonNonPaintedBorder(text: String) = JButton(text).apply {
-        isBorderPainted = false
     }
 }
