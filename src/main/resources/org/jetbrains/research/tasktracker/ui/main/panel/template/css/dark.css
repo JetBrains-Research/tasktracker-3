@@ -1,0 +1,17 @@
+body {
+    background: black;
+}
+
+p {
+    color: #fefefe;
+}
+
+label {
+    color: #fefefe;
+}
+
+select {
+    border: 1px solid #575555;
+    background-color: #1e1e1e;
+    color: #fefefe;
+}

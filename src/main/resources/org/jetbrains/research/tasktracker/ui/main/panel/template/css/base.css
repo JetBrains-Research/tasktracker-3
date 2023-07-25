@@ -1,0 +1,55 @@
+body {
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.big-font {
+    font-size: 12vmin;
+    margin-top: 2vmin;
+    margin-bottom: 2vmin;
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+}
+
+.small-font {
+    font-family: 'Inter', sans-serif;
+    font-size: 5vmin;
+    margin-top: 0;
+    margin-bottom: 2vmin;
+}
+
+.container {
+    min-height: 100vh;
+    margin: 4vmin;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+.portable {
+    overflow-wrap: break-word;
+    word-break: break-all;
+}
+
+label {
+    font-family: 'Inter', sans-serif;
+    font-size: 4vmin;
+    font-weight: bold;
+}
+
+label, select {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+select {
+    font-family: 'Inter', sans-serif;
+    margin-left: 5px;
+    font-size: 0.8em;
+    padding: 6px;
+    border-radius: 4px;
+    width: 200px;
+}

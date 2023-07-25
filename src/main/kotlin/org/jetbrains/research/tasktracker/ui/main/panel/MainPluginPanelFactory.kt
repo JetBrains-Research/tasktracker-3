@@ -5,35 +5,53 @@ import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBPanel
 import com.intellij.ui.jcef.JBCefApp
-import java.awt.GridLayout
+import com.intellij.util.ui.JBUI
+import org.jetbrains.research.tasktracker.ui.main.panel.template.HtmlTemplateBase
+import org.jetbrains.research.tasktracker.ui.main.panel.template.MainPageTemplate
+import org.jetbrains.research.tasktracker.ui.main.panel.template.TasksPageTemplate
+import org.jetbrains.research.tasktracker.util.UIBundle
+import java.awt.BorderLayout
+import java.awt.FlowLayout
 import java.awt.event.ActionListener
 import javax.swing.JButton
 
 class MainPluginPanelFactory : ToolWindowFactory {
-    private val button = JButton("click me")
+    private val nextButton = createJButton("ui.button.next")
+    private val backButton = createJButton("ui.button.back", isVisibleProp = false)
 
+    private lateinit var mainWindow: MainPluginWindow
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
-        val mainWindow = project.getService(MainWindowService::class.java).mainWindow
-        val jComponent = toolWindow.component
-        val panel = JBPanel<JBPanel<*>>(GridLayout(2, 1)).apply { // TODO need we GridLayout?
-            add(mainWindow.jComponent)
-            add(
-                JBPanel<JBPanel<*>>().apply {
-                    add(
-                        button.apply {
-                            addListener {
-                                mainWindow.loadDefaultPage("tasks")
-                                // TODO refactor, add function for button listener and text change
-                            }
-                        }
-                    )
-                }
-            )
+        mainWindow = project.getService(MainWindowService::class.java).mainWindow
+        mainWindow.jComponent.size = JBUI.size(toolWindow.component.width, toolWindow.component.height)
+
+        nextButton.addListener {
+            selectTask()
         }
-        jComponent.parent.add(panel)
+        val buttonPanel = JBPanel<JBPanel<*>>(FlowLayout()).apply {
+            add(backButton)
+            add(nextButton)
+        }
+        val panel = JBPanel<JBPanel<*>>(BorderLayout()).apply {
+            add(mainWindow.jComponent)
+            add(buttonPanel, BorderLayout.SOUTH)
+        }
+        toolWindow.component.add(panel)
     }
 
     override fun isApplicable(project: Project) = super.isApplicable(project) && JBCefApp.isSupported()
+
+    private fun loadBasePage(template: HtmlTemplateBase, buttonTextKey: String, isVisibleBackButton: Boolean) {
+        mainWindow.loadHtmlTemplate(template)
+        nextButton.text = UIBundle.message(buttonTextKey)
+        backButton.isVisible = isVisibleBackButton
+    }
+
+    private fun selectTask() {
+        loadBasePage(TasksPageTemplate, "ui.button.select", true)
+        backButton.addListener {
+            loadBasePage(MainPageTemplate, "ui.button.next", false)
+        }
+    }
 
     private fun JButton.addListener(listener: ActionListener) {
         actionListeners.forEach {
