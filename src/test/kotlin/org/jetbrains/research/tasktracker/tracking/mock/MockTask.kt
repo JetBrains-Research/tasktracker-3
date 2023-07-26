@@ -13,7 +13,8 @@ import org.jetbrains.research.tasktracker.tracking.task.TaskFile
 data class MockTask(
     override val name: String,
     override val taskFiles: List<TaskFile>,
-    override val root: String = ""
+    override val root: String = "",
+    override val description: String = ""
 ) : Task
 
 data class MockTaskFile(

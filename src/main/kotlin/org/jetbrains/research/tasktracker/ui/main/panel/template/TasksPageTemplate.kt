@@ -9,7 +9,7 @@ class TasksPageTemplate(private val taskConfigs: List<TaskContentConfig>) : Html
         get() = "tasks"
 
     override fun pageContent(theme: Theme, vararg arguments: String): String {
-        return super.pageContent(theme, *arguments, optionTags(), loadJs()).also { println(it) }
+        return super.pageContent(theme, *arguments, optionTags(), loadJs())
     }
 
     private fun optionTags() =
