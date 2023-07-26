@@ -6,6 +6,7 @@ import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBPanel
 import com.intellij.ui.jcef.JBCefApp
 import com.intellij.util.ui.JBUI
+import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.ui.main.panel.template.HtmlTemplateBase
 import org.jetbrains.research.tasktracker.ui.main.panel.template.MainPageTemplate
 import org.jetbrains.research.tasktracker.ui.main.panel.template.TasksPageTemplate
@@ -47,7 +48,12 @@ class MainPluginPanelFactory : ToolWindowFactory {
     }
 
     private fun selectTask() {
-        loadBasePage(TasksPageTemplate, "ui.button.select", true)
+        // TODO taskContentConfig can be null?
+        loadBasePage(
+            TasksPageTemplate(listOf(TaskTrackerPlugin.mainConfig.taskContentConfig ?: error("TODO"))),
+            "ui.button.select",
+            true
+        )
         backButton.addListener {
             loadBasePage(MainPageTemplate, "ui.button.next", false)
         }
