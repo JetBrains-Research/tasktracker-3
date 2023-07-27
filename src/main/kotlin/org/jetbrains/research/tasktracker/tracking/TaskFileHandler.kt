@@ -45,7 +45,7 @@ object TaskFileHandler {
         }
     }
 
-    // TODO not forget to remove from document loggers hashmap
+    // TODO not forget to remove from document loggers hashmap, flush data
     fun disposeTask(project: Project, task: Task) {
         projectToTaskToFiles[project]?.let {
             it[task]?.let { virtualFiles -> removeVirtualFileListener(virtualFiles) }

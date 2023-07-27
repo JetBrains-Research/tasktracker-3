@@ -1,1 +1,2 @@
-test: TODO
+name: hello world
+description: Write a program that will print 'hello world' to the console.

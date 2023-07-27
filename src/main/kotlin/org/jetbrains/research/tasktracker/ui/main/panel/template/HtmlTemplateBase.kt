@@ -5,7 +5,7 @@ import org.jetbrains.research.tasktracker.ui.main.panel.models.Theme
 sealed class HtmlTemplateBase {
     protected abstract val htmlFileName: String
 
-    fun pageContent(theme: Theme, vararg arguments: String) = pageTemplate(theme).format(*arguments)
+    open fun pageContent(theme: Theme, vararg arguments: String) = pageTemplate(theme).format(*arguments)
 
     private fun loadCss(filename: String) =
         HtmlTemplateBase::class.java.getResource("css/$filename.css")?.readText()?.replace("%", "%%")
