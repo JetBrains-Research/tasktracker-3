@@ -9,9 +9,8 @@ import org.jetbrains.research.tasktracker.tracking.task.Task
 import org.jetbrains.research.tasktracker.tracking.task.TaskFile
 import java.io.File
 
-// TODO should it be a data class?
 @Serializable
-class TaskContentConfig(
+data class TaskContentConfig(
     val name: String,
     val description: String,
     // TODO input, output

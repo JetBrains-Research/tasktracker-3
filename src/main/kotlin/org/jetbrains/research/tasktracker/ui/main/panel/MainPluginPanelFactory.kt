@@ -23,6 +23,13 @@ import java.awt.FlowLayout
 import java.awt.event.ActionListener
 import javax.swing.JButton
 
+/**
+ * The class is intended to manage JCEF and Swing components simultaneously,
+ * and its methods primarily serve as a way to switch between frames.
+ *
+ * Note: This class requires JBCefApp to be supported for proper functioning.
+ *
+ */
 class MainPluginPanelFactory : ToolWindowFactory {
     private val nextButton = createJButton("ui.button.next")
     private val backButton = createJButton("ui.button.back", isVisibleProp = false)
@@ -55,6 +62,9 @@ class MainPluginPanelFactory : ToolWindowFactory {
         backButton.isVisible = isVisibleBackButton
     }
 
+    /**
+     * Switches the panel to the plugin description window.
+     */
     private fun welcomePage() {
         loadBasePage(MainPageTemplate, "ui.button.next", false)
         nextButton.addListener {
@@ -63,6 +73,9 @@ class MainPluginPanelFactory : ToolWindowFactory {
     }
 
     // TODO refactor it for many configs
+    /**
+     * Switches the panel to the task selection window.
+     */
     private fun selectTask() {
         // TODO taskContentConfig can be null?
         loadBasePage(
@@ -101,6 +114,10 @@ class MainPluginPanelFactory : ToolWindowFactory {
         }
     }
 
+    /**
+     * Switches the panel to the task solving window.
+     * It contains task name, description and I/O data.
+     */
     private fun solveTask(task: Task) {
         // TODO to selected config
         loadBasePage(
