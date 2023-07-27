@@ -12,6 +12,7 @@ import com.intellij.util.ui.JBUI
 import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.models.Extension
 import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
+import org.jetbrains.research.tasktracker.tracking.task.Task
 import org.jetbrains.research.tasktracker.ui.main.panel.template.HtmlTemplateBase
 import org.jetbrains.research.tasktracker.ui.main.panel.template.MainPageTemplate
 import org.jetbrains.research.tasktracker.ui.main.panel.template.SolvePageTemplate
@@ -69,9 +70,6 @@ class MainPluginPanelFactory : ToolWindowFactory {
             "ui.button.select",
             true
         )
-        backButton.addListener {
-            welcomePage()
-        }
         nextButton.addListener {
             mainWindow.getElementValue("language").onSuccess { result ->
                 val task = TaskTrackerPlugin.mainConfig.taskContentConfig?.getTask(
@@ -83,10 +81,13 @@ class MainPluginPanelFactory : ToolWindowFactory {
                     TaskFileHandler.initTask(project, task)
                 }
                 focusOnFile(TaskFileHandler.projectToTaskToFiles[project]?.get(task)?.first() ?: error("Error"))
-                solveTask()
+                solveTask(task)
             }.onError {
                 error(it.localizedMessage)
             }
+        }
+        backButton.addListener {
+            welcomePage()
         }
     }
 
@@ -100,15 +101,19 @@ class MainPluginPanelFactory : ToolWindowFactory {
         }
     }
 
-    private fun solveTask() {
+    private fun solveTask(task: Task) {
         // TODO to selected config
         loadBasePage(
-            SolvePageTemplate(TaskTrackerPlugin.mainConfig.taskContentConfig?.getTask(Extension.CPP) ?: error("")),
+            SolvePageTemplate(task),
             "ui.button.submit",
             true
         )
         backButton.addListener {
             selectTask()
+        }
+        nextButton.addListener {
+            TaskFileHandler.disposeTask(project, task)
+            welcomePage()
         }
     }
 
