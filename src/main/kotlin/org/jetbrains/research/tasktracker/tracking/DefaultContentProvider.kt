@@ -60,6 +60,7 @@ object DefaultContentProvider {
     }
 
     private fun String.relativePathToPackage() = this
+        .replace("//", "/")
         .removePrefix("/")
         .removeSuffix("/")
         .replace("/", ".")

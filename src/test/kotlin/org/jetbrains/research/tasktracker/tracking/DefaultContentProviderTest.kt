@@ -21,7 +21,10 @@ class DefaultContentProviderTest {
                 assertEquals(
                     "Unexpected default content for `$taskFile` task file",
                     taskFile.loadContent(),
-                    DefaultContentProvider.getDefaultContent(taskFile.extension, "${task.root}")
+                    DefaultContentProvider.getDefaultContent(
+                        taskFile.extension,
+                        "${task.root}/${taskFile.relativePath}"
+                    )
                 )
             }
         }

@@ -29,7 +29,6 @@ data class MockTaskFile(
 fun List<VirtualFile>.toMockTask(project: Project): MockTask {
     val firstFile = this.firstOrNull() ?: error("Empty list is unexpected")
     val taskFiles = map { file ->
-        println(file.path)
         MockTaskFile(
             file.nameWithoutExtension,
             file.extensionEnum(),

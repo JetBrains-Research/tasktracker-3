@@ -82,30 +82,29 @@ object TaskFileHandler {
             }
             val path = getPath(project, taskFile, task)
             val file = File(path)
-            file.writeDefaultContent(taskFile)
+            file.writeDefaultContent(taskFile, task.name)
             LocalFileSystem.getInstance().refreshAndFindFileByIoFile(file)
         }
     }
 
-    private fun File.writeDefaultContent(taskFile: TaskFile) {
+    private fun File.writeDefaultContent(taskFile: TaskFile, name: String) {
         if (!exists()) {
             ApplicationManager.getApplication().runWriteAction {
                 FileUtil.createParentDirs(this)
                 writeText(
                     taskFile.content ?: DefaultContentProvider.getDefaultContent(
                         taskFile.extension,
-                        taskFile.relativePath
+                        "${name.toPackageName()}/${taskFile.relativePath}"
                     )
                 )
             }
         }
     }
 
-    private fun getPath(project: Project, taskFile: TaskFile, task: Task): String {
-        return "${project.basePath}/$PLUGIN_NAME/${taskFile.extension.name.lowercase(Locale.getDefault())}" +
-            "${task.root.pathOrEmpty()}/${taskFile.sourceSet.path}/${task.name}" +
+    private fun getPath(project: Project, taskFile: TaskFile, task: Task): String =
+        "${project.basePath}/$PLUGIN_NAME/${taskFile.extension.name.lowercase(Locale.getDefault())}" +
+            "${task.root.pathOrEmpty()}/${taskFile.sourceSet.path}/${task.name.toPackageName()}" +
             "${taskFile.relativePath.pathOrEmpty()}/${taskFile.filename}${taskFile.extension.ext}"
-    }
 
     private fun addSourceFolder(taskFile: TaskFile, module: Module) {
         val directory = File(PathMacroUtil.getModuleDir(module.moduleFilePath), taskFile.relativePath)
@@ -136,4 +135,7 @@ object TaskFileHandler {
     } else {
         this
     }
+
+    private fun String.toPackageName() =
+        listOf(" ", "-", "_").fold(this) { acc, s -> acc.replace(s, "") }
 }
