@@ -126,11 +126,33 @@ class MainPluginPanelFactory : ToolWindowFactory {
             true
         )
         backButton.addListener {
+            mainWindow.removeHandlers()
             selectTask()
         }
         nextButton.addListener {
             TaskFileHandler.disposeTask(project, task)
+            mainWindow.removeHandlers()
             welcomePage()
+        }
+        listenFileRedirection()
+    }
+
+    private fun listenFileRedirection() {
+        mainWindow.executeJavascript(
+            """
+            const files = document.getElementsByClassName('file');  
+            for (const file of files) {
+                file.onclick = load_file
+            }
+                function load_file (){
+                 file_name = this.getAttribute('data-value');
+                
+            """,
+            "}",
+            "file_name"
+        ) {
+            // TODO redirect to selected file
+            null
         }
     }
 
