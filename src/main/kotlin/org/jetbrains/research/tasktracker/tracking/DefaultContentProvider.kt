@@ -49,7 +49,7 @@ object DefaultContentProvider {
         else -> ""
     }
 
-    private fun getPackage(extension: Extension, path: String): String {
+    fun getPackage(extension: Extension, path: String): String {
         val currentPackage =
             "package ${path.relativePathToPackage()}"
         return when (extension) {

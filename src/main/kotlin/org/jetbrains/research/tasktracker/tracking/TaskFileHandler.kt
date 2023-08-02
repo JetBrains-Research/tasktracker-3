@@ -26,7 +26,7 @@ typealias ProjectTaskFileMap = MutableMap<Project, MutableMap<Task, MutableList<
 
 @Suppress("UnusedPrivateMember")
 object TaskFileHandler {
-    private val logger: Logger = Logger.getInstance(javaClass)
+    private val logger: Logger = Logger.getInstance(TaskFileHandler.javaClass)
     private val listener by lazy { TaskDocumentListener() }
     val projectToTaskToFiles: ProjectTaskFileMap = HashMap()
 
