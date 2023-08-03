@@ -79,22 +79,15 @@ class MainPluginPanelFactory : ToolWindowFactory {
     private fun selectTask() {
         // TODO taskContentConfig can be null?
         loadBasePage(
-            TasksPageTemplate(listOf(TaskTrackerPlugin.mainConfig.taskContentConfig ?: error("TODO"))),
+            TasksPageTemplate(TaskTrackerPlugin.tasksInfoConfig.taskInfos),
             "ui.button.select",
             true
         )
         nextButton.addListener {
-            mainWindow.getElementValue("language").onSuccess { result ->
-                val task = TaskTrackerPlugin.mainConfig.taskContentConfig?.getTask(
-                    Extension.values().find { it.name == result?.uppercase() }
-                        ?: error("Cannot find extension $result")
-                )
-                    ?: error("taskContentConfig is null")
-                ApplicationManager.getApplication().invokeAndWait {
-                    TaskFileHandler.initTask(project, task)
-                }
-                focusOnFile(TaskFileHandler.projectToTaskToFiles[project]?.get(task)?.first() ?: error("Error"))
-                solveTask(task)
+            mainWindow.getElementValue("tasks").onSuccess { configDirectory ->
+                mainWindow.getElementValue("language").onSuccess { language ->
+                    processTask(configDirectory.toString(), language.toString())
+                }.onError { it.localizedMessage }
             }.onError {
                 error(it.localizedMessage)
             }
@@ -104,6 +97,27 @@ class MainPluginPanelFactory : ToolWindowFactory {
         }
     }
 
+    /**
+     * Loads configs by selected task and language
+     */
+    private fun processTask(configDirectory: String, language: String) {
+        TaskTrackerPlugin.updateMainConfig(configDirectory)
+        val task = TaskTrackerPlugin.mainConfig.taskContentConfig?.getTask(
+            Extension.values().find { it.name == language.uppercase() }
+                ?: error("Cannot find extension $language")
+        )
+            ?: error("taskContentConfig is null")
+        ApplicationManager.getApplication().invokeAndWait {
+            TaskFileHandler.initTask(project, task)
+        }
+        // TODO check taskContentConfig on focusFile
+        focusOnFile(TaskFileHandler.projectToTaskToFiles[project]?.get(task)?.first() ?: error("Error"))
+        solveTask(task)
+    }
+
+    /**
+     * Switches the editor to the virtualFile.
+     */
     private fun focusOnFile(virtualFile: VirtualFile) {
         ApplicationManager.getApplication().invokeAndWait {
             FileEditorManager.getInstance(project)

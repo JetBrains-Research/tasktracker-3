@@ -1,10 +1,10 @@
 package org.jetbrains.research.tasktracker.ui.main.panel.template
 
-import org.jetbrains.research.tasktracker.config.content.TaskContentConfig
+import org.jetbrains.research.tasktracker.config.tasksInfo.TaskInfo
 import org.jetbrains.research.tasktracker.ui.main.panel.models.Theme
-import java.util.Locale
+import java.util.*
 
-class TasksPageTemplate(private val taskConfigs: List<TaskContentConfig>) : HtmlTemplateBase() {
+class TasksPageTemplate(private val taskInfos: List<TaskInfo>) : HtmlTemplateBase() {
     override val htmlFileName: String
         get() = "tasks"
 
@@ -13,15 +13,15 @@ class TasksPageTemplate(private val taskConfigs: List<TaskContentConfig>) : Html
     }
 
     private fun optionTags() =
-        taskConfigs.joinToString(System.lineSeparator()) { "<option value=\"${it.name}\">${it.name}</option>" }
+        taskInfos.joinToString(System.lineSeparator()) { "<option value=\"${it.configDirectory}\">${it.name}</option>" }
 
     private fun taskLanguages() =
-        taskConfigs.joinToString(
+        taskInfos.joinToString(
             separator = ",",
             prefix = "{",
             postfix = "}"
-        ) { config ->
-            "\"${config.name}\": ${config.languages.map { "\"${it.name.lowercase(Locale.getDefault())}\"" }}"
+        ) { info ->
+            "\"${info.name}\": ${info.languages.map { "\"${it.name.lowercase(Locale.getDefault())}\"" }}"
         }
 
     private fun loadJs() = TasksPageTemplate::class.java.getResource("js/tasks.js")?.readText()?.format(taskLanguages())

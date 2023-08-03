@@ -1,0 +1,3 @@
+taskInfos:
+  - name: "hello world"
+    configDirectory: "default"

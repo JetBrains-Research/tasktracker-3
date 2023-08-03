@@ -13,7 +13,6 @@ data class TaskContentConfig(
     val name: String,
     val description: String,
     val inputsOutputs: List<InputOutput>? = null,
-    val languages: List<Extension> = Extension.values().toList(),
     val files: List<TaskFileDto> = listOf(TaskFileDto.defaultTaskFileDto),
     val root: String = name,
     val focusFile: String? = null

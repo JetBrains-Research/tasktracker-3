@@ -94,7 +94,7 @@ object TaskFileHandler {
                 writeText(
                     taskFile.content ?: DefaultContentProvider.getDefaultContent(
                         taskFile.extension,
-                        "${name.toPackageName()}/${taskFile.relativePath}"
+                        "$name/${taskFile.relativePath}"
                     )
                 )
             }
@@ -135,7 +135,4 @@ object TaskFileHandler {
     } else {
         this
     }
-
-    private fun String.toPackageName() =
-        listOf(" ", "-", "_").fold(this) { acc, s -> acc.replace(s, "") }
 }

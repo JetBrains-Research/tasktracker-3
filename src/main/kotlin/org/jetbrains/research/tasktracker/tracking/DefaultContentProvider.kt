@@ -51,7 +51,7 @@ object DefaultContentProvider {
 
     fun getPackage(extension: Extension, path: String): String {
         val currentPackage =
-            "package ${path.relativePathToPackage()}"
+            "package ${path.toPackageName().relativePathToPackage()}"
         return when (extension) {
             Extension.JAVA -> "$currentPackage;$lineSeparator$lineSeparator"
             Extension.KOTLIN -> "$currentPackage$lineSeparator$lineSeparator"

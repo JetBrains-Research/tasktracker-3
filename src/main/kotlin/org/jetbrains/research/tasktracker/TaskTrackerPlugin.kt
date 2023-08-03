@@ -3,9 +3,11 @@ package org.jetbrains.research.tasktracker
 import com.intellij.openapi.diagnostic.Logger
 import org.jetbrains.research.tasktracker.config.DefaultConfigsFactory
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
+import org.jetbrains.research.tasktracker.config.tasksInfo.TasksInfoConfig
 import org.jetbrains.research.tasktracker.properties.DataHandler
 import org.jetbrains.research.tasktracker.properties.PluginProperties
 import org.jetbrains.research.tasktracker.properties.PropertiesController.CONFIG_ROOT_PROPERTY_NAME
+import org.jetbrains.research.tasktracker.properties.PropertiesController.configRoot
 import org.jetbrains.research.tasktracker.properties.PropertiesController.defaultConfigRoot
 import org.jetbrains.research.tasktracker.properties.PropertiesController.loadProps
 import org.jetbrains.research.tasktracker.properties.PropertiesController.toPluginProperties
@@ -18,10 +20,13 @@ object TaskTrackerPlugin {
 
     // TODO: add a settings panel to update properties and the main config
     lateinit var mainConfig: MainTaskTrackerConfig
-    lateinit var props : Properties
+    lateinit var tasksInfoConfig: TasksInfoConfig
+
     fun initPlugin() {
-        props = loadProps()
+        val props = loadProps()
         val pluginProps = props.toPluginProperties()
+        DefaultConfigsFactory.createAvailableTasksConfig()
+        tasksInfoConfig = TasksInfoConfig.buildConfig()
         if (pluginProps.testMode == TestMode.ON) {
             DefaultConfigsFactory.createDefaultConfigs()
         }
@@ -41,5 +46,14 @@ object TaskTrackerPlugin {
                 TODO("Get the server values (port, host) from properties")
             }
         }
+    }
+
+    fun updateMainConfig(configDirectory: String) {
+        // TODO: maybe change props to field?
+        val props = loadProps()
+        val pluginProps = props.toPluginProperties()
+        val configDirectoryPath = File("$configRoot/$configDirectory")
+        require(configDirectoryPath.exists()) { "config directory '$configDirectory' doesn't exist" }
+        mainConfig = MainTaskTrackerConfig.buildConfig(pluginProps, configDirectoryPath)
     }
 }
