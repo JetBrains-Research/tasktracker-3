@@ -8,6 +8,18 @@ class SolvePageTemplate(val task: Task) : HtmlTemplateBase() {
         get() = "solve"
 
     override fun pageContent(theme: Theme, vararg arguments: String): String {
-        return super.pageContent(theme, *arguments, task.name, task.description)
+        return super.pageContent(theme, *arguments, task.name, task.description).reformFileLinks()
+    }
+
+    private fun String.reformFileLinks(): String {
+        return FILE_PATTERN.replace(this) {
+            val matchText = it.groupValues[1]
+            val matchLink = it.groupValues[2]
+            """<a href="#" class="file" data-value="$matchLink">$matchText</a>"""
+        }
+    }
+
+    companion object {
+        val FILE_PATTERN = "\\[(.*?)]\\((.*?)\\)".toRegex()
     }
 }

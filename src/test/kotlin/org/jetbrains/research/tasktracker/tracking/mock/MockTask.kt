@@ -22,6 +22,7 @@ data class MockTaskFile(
     override val extension: Extension,
     override val relativePath: String = "",
     override val content: String = DefaultContentProvider.getDefaultContent(extension, relativePath),
+    override val id: String? = null,
 ) : TaskFile {
     override val sourceSet: SourceSet = SourceSet.SRC
 }

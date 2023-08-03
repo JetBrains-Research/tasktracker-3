@@ -1,6 +1,7 @@
 package org.jetbrains.research.tasktracker.ui.main.panel
 
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
@@ -31,8 +32,10 @@ import javax.swing.JButton
  *
  */
 class MainPluginPanelFactory : ToolWindowFactory {
+    // TODO: init in other place, states can be saved between sessions
     private val nextButton = createJButton("ui.button.next")
     private val backButton = createJButton("ui.button.back", isVisibleProp = false)
+    private val logger: Logger = Logger.getInstance(MainPluginPanelFactory::class.java)
 
     private lateinit var mainWindow: MainPluginWindow
     private lateinit var project: Project
@@ -110,9 +113,18 @@ class MainPluginPanelFactory : ToolWindowFactory {
         ApplicationManager.getApplication().invokeAndWait {
             TaskFileHandler.initTask(project, task)
         }
-        // TODO check taskContentConfig on focusFile
-        focusOnFile(TaskFileHandler.projectToTaskToFiles[project]?.get(task)?.first() ?: error("Error"))
+        TaskTrackerPlugin.mainConfig.taskContentConfig?.focusFileId?.let { id ->
+            focusOnfFileById(task, id)
+        }
         solveTask(task)
+    }
+
+    private fun focusOnfFileById(task: Task, id: String) {
+        TaskFileHandler.getVirtualFileByProjectTaskId(project, task, id)?.let {
+            focusOnFile(it)
+        } ?: TaskFileHandler.projectToTaskToFiles[project]?.get(task)?.first()?.let {
+            focusOnFile(it)
+        } ?: logger.error("Can't find any file for '$task' task")
     }
 
     /**
@@ -148,10 +160,10 @@ class MainPluginPanelFactory : ToolWindowFactory {
             mainWindow.removeHandlers()
             welcomePage()
         }
-        listenFileRedirection()
+        listenFileRedirection(task)
     }
 
-    private fun listenFileRedirection() {
+    private fun listenFileRedirection(task: Task) {
         mainWindow.executeJavascript(
             """
             const files = document.getElementsByClassName('file');  
@@ -159,13 +171,13 @@ class MainPluginPanelFactory : ToolWindowFactory {
                 file.onclick = load_file
             }
                 function load_file (){
-                 file_name = this.getAttribute('data-value');
+                 file_id = this.getAttribute('data-value');
                 
             """,
             "}",
-            "file_name"
+            "file_id"
         ) {
-            // TODO redirect to selected file
+            focusOnfFileById(task, it)
             null
         }
     }

@@ -11,8 +11,9 @@ class TaskFileDto(val filename: String, val sourceSet: SourceSet) {
     val extension: Extension? = null
     val templateFile: String? = null
     val relativePath: String = ""
+    val id: String? = null
 
-    fun toTaskFile(extension: Extension, taskName: String) = object : TaskFile {
+    fun toTaskFile(extension: Extension, taskName: String): TaskFile = object : TaskFile {
         private val path = "$taskName/$relativePath"
         override val content: String
             get() = templateFile?.getTemplate(path, extension) ?: DefaultContentProvider.getDefaultContent(
@@ -27,6 +28,8 @@ class TaskFileDto(val filename: String, val sourceSet: SourceSet) {
             get() = this@TaskFileDto.extension ?: extension
         override val sourceSet: SourceSet
             get() = this@TaskFileDto.sourceSet
+        override val id: String?
+            get() = this@TaskFileDto.id
     }
 
     private fun String.getTemplate(path: String, extension: Extension): String {

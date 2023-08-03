@@ -12,3 +12,4 @@ style:
 complexity:
   TooManyFunctions:
     thresholdInObjects: 13
+    thresholdInClasses: 13

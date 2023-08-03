@@ -15,7 +15,7 @@ data class TaskContentConfig(
     val inputsOutputs: List<InputOutput>? = null,
     val files: List<TaskFileDto> = listOf(TaskFileDto.defaultTaskFileDto),
     val root: String = name,
-    val focusFile: String? = null
+    val focusFileId: String? = null
 ) : BaseConfig {
 
     companion object {

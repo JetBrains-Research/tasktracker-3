@@ -37,4 +37,10 @@ interface TaskFile {
      * @return The source set associated with this file.
      */
     val sourceSet: SourceSet
+
+    /**
+     * id is intended for quick access to the corresponding VirtualFile.
+     * @return id or null.
+     */
+    val id: String?
 }

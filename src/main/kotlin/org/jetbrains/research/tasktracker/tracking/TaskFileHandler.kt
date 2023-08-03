@@ -23,11 +23,13 @@ import java.util.*
 import kotlin.collections.HashMap
 
 typealias ProjectTaskFileMap = MutableMap<Project, MutableMap<Task, MutableList<VirtualFile>>>
+typealias ProjectTaskIdFile = MutableMap<Project, MutableMap<Task, MutableMap<String, VirtualFile>>>
 
 @Suppress("UnusedPrivateMember")
 object TaskFileHandler {
     private val logger: Logger = Logger.getInstance(TaskFileHandler.javaClass)
     private val listener by lazy { TaskDocumentListener() }
+    private val projectTaskIdToFile: ProjectTaskIdFile = HashMap()
     val projectToTaskToFiles: ProjectTaskFileMap = HashMap()
 
     fun initProject(project: Project) {
@@ -35,6 +37,8 @@ object TaskFileHandler {
     }
 
     fun initTask(project: Project, task: Task) {
+        projectTaskIdToFile.putIfAbsent(project, mutableMapOf())
+        projectTaskIdToFile[project]?.putIfAbsent(task, mutableMapOf())
         getOrCreateFiles(project, task).forEach { file ->
             file?.let {
                 addVirtualFileListener(it)
@@ -51,8 +55,10 @@ object TaskFileHandler {
             it[task]?.let { virtualFiles -> removeVirtualFileListener(virtualFiles) }
                 ?: logger.warn("attempt to dispose a uninitialized task: '$task'")
             it.remove(task)
+            projectTaskIdToFile[project]?.remove(task)
             if (it.isEmpty()) {
                 projectToTaskToFiles.remove(project)
+                projectTaskIdToFile.remove(project)
             }
         } ?: logger.warn("attempt to dispose task: '$task' from uninitialized project: '$project'")
     }
@@ -83,7 +89,11 @@ object TaskFileHandler {
             val path = getPath(project, taskFile, task)
             val file = File(path)
             file.writeDefaultContent(taskFile, task.name)
-            LocalFileSystem.getInstance().refreshAndFindFileByIoFile(file)
+            LocalFileSystem.getInstance().refreshAndFindFileByIoFile(file)?.also {
+                taskFile.id?.let { id ->
+                    projectTaskIdToFile[project]?.get(task)?.putIfAbsent(id, it)
+                }
+            }
         }
     }
 
@@ -135,4 +145,7 @@ object TaskFileHandler {
     } else {
         this
     }
+
+    fun getVirtualFileByProjectTaskId(project: Project, task: Task, id: String) =
+        projectTaskIdToFile[project]?.get(task)?.get(id)
 }
