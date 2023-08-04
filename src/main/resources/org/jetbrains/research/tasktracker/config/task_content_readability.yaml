@@ -1,0 +1,15 @@
+name: Readability Test
+description: "In this task, we kindly request you to review three provided files and determine which one is the most readable and which one is the least readable. Files: [a.java](a), [b.java](b), [c.java](c)"
+files:
+  - filename: a
+    sourceSet: "SRC"
+    templateFile: "a"
+    id: "a"
+  - filename: b
+    sourceSet: "SRC"
+    templateFile: "b"
+    id: "b"
+  - filename: с
+    sourceSet: "SRC"
+    templateFile: "c"
+    id: "с"

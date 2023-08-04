@@ -1,0 +1,6 @@
+scenario:
+  steps:
+    - units:
+        - "IDE_SETTINGS"
+    - units:
+        - "TASK_CONTENT"
