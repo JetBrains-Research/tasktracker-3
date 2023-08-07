@@ -53,3 +53,13 @@ select {
     border-radius: 4px;
     width: 200px;
 }
+
+/* unvisited link */
+a:link {
+    color: #808080;
+}
+
+/* visited link */
+a:visited {
+    color: #696969;
+}

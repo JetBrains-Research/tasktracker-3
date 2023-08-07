@@ -113,15 +113,17 @@ class MainPluginPanelFactory : ToolWindowFactory {
         ApplicationManager.getApplication().invokeAndWait {
             TaskFileHandler.initTask(project, task)
         }
-        TaskTrackerPlugin.mainConfig.taskContentConfig?.focusFileId?.let { id ->
+        TaskTrackerPlugin.mainConfig.taskContentConfig?.focusFileId.let { id ->
             focusOnfFileById(task, id)
         }
         solveTask(task)
     }
 
-    private fun focusOnfFileById(task: Task, id: String) {
-        TaskFileHandler.getVirtualFileByProjectTaskId(project, task, id)?.let {
-            focusOnFile(it)
+    private fun focusOnfFileById(task: Task, id: String?) {
+        id?.let {
+            TaskFileHandler.getVirtualFileByProjectTaskId(project, task, id)?.let {
+                focusOnFile(it)
+            }
         } ?: TaskFileHandler.projectToTaskToFiles[project]?.get(task)?.first()?.let {
             focusOnFile(it)
         } ?: logger.error("Can't find any file for '$task' task")
@@ -168,6 +170,9 @@ class MainPluginPanelFactory : ToolWindowFactory {
             """
             const files = document.getElementsByClassName('file');  
             for (const file of files) {
+            file.addEventListener('click', function(event) {
+                event.preventDefault();
+            })
                 file.onclick = load_file
             }
                 function load_file (){

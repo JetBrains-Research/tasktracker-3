@@ -9,7 +9,7 @@ files:
     sourceSet: "SRC"
     templateFile: "b"
     id: "b"
-  - filename: с
+  - filename: c
     sourceSet: "SRC"
     templateFile: "c"
-    id: "с"
+    id: "c"

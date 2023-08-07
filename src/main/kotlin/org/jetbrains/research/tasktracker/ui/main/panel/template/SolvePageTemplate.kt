@@ -15,7 +15,7 @@ class SolvePageTemplate(val task: Task) : HtmlTemplateBase() {
         return FILE_PATTERN.replace(this) {
             val matchText = it.groupValues[1]
             val matchLink = it.groupValues[2]
-            """<a href="#" class="file" data-value="$matchLink">$matchText</a>"""
+            """<a href="$matchLink" class="file" data-value="$matchLink">$matchText</a>"""
         }
     }
 
