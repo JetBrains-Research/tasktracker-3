@@ -1,2 +1,22 @@
-name: hello world
-description: Write a program that will print 'hello world' to the console.
+tasks:
+  - name: hello world
+    description: Write a program that will print 'hello world' to the console.
+    language: "KOTLIN"
+    id: "hello"
+  - name: Readability Test
+    description: "In this task, we kindly request you to review three provided files and determine which one is the most readable and which one is the least readable. Files: [a.java](a), [b.java](b), [c.java](c)"
+    language: "JAVA"
+    id: "example"
+    files:
+      - filename: a
+        sourceSet: "SRC"
+        templateFile: "a"
+        id: "a"
+      - filename: b
+        sourceSet: "SRC"
+        templateFile: "b"
+        id: "b"
+      - filename: c
+        sourceSet: "SRC"
+        templateFile: "c"
+        id: "c"

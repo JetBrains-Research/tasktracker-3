@@ -14,7 +14,8 @@ data class MockTask(
     override val name: String,
     override val taskFiles: List<TaskFile>,
     override val root: String = "",
-    override val description: String = ""
+    override val description: String = "",
+    override val focusFileId: String? = null
 ) : Task
 
 data class MockTaskFile(

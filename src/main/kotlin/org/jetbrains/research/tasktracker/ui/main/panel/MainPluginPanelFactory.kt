@@ -11,7 +11,6 @@ import com.intellij.ui.components.JBPanel
 import com.intellij.ui.jcef.JBCefApp
 import com.intellij.util.ui.JBUI
 import org.jetbrains.research.tasktracker.TaskTrackerPlugin
-import org.jetbrains.research.tasktracker.models.Extension
 import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
 import org.jetbrains.research.tasktracker.tracking.task.Task
 import org.jetbrains.research.tasktracker.ui.main.panel.template.HtmlTemplateBase
@@ -80,17 +79,14 @@ class MainPluginPanelFactory : ToolWindowFactory {
      * Switches the panel to the task selection window.
      */
     private fun selectTask() {
-        // TODO taskContentConfig can be null?
         loadBasePage(
-            TasksPageTemplate(TaskTrackerPlugin.tasksInfoConfig.taskInfos),
+            TasksPageTemplate(TaskTrackerPlugin.taskIdTask.values.toList()),
             "ui.button.select",
             true
         )
         nextButton.addListener {
-            mainWindow.getElementValue("tasks").onSuccess { configDirectory ->
-                mainWindow.getElementValue("language").onSuccess { language ->
-                    processTask(configDirectory.toString(), language.toString())
-                }.onError { it.localizedMessage }
+            mainWindow.getElementValue("tasks").onSuccess { name ->
+                processTask(name.toString())
             }.onError {
                 error(it.localizedMessage)
             }
@@ -103,17 +99,14 @@ class MainPluginPanelFactory : ToolWindowFactory {
     /**
      * Loads configs by selected task and language
      */
-    private fun processTask(configDirectory: String, language: String) {
-        TaskTrackerPlugin.updateMainConfig(configDirectory)
-        val task = TaskTrackerPlugin.mainConfig.taskContentConfig?.getTask(
-            Extension.values().find { it.name == language.uppercase() }
-                ?: error("Cannot find extension $language")
-        )
-            ?: error("taskContentConfig is null")
+    private fun processTask(name: String) {
+        // TODO: change to study
+        val task = TaskTrackerPlugin.taskIdTask.values.find { it.name == name }
+            ?: error("Can't find task with name '$name'")
         ApplicationManager.getApplication().invokeAndWait {
             TaskFileHandler.initTask(project, task)
         }
-        TaskTrackerPlugin.mainConfig.taskContentConfig?.focusFileId.let { id ->
+        task.focusFileId?.let { id ->
             focusOnfFileById(task, id)
         }
         solveTask(task)
