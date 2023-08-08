@@ -15,9 +15,11 @@ import com.intellij.openapi.vfs.VfsUtilCore
 import com.intellij.openapi.vfs.VirtualFile
 import org.jetbrains.jps.model.serialization.PathMacroUtil
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig.Companion.PLUGIN_NAME
+import org.jetbrains.research.tasktracker.config.content.task.base.ITaskFileInfo
+import org.jetbrains.research.tasktracker.config.content.task.base.Task
+import org.jetbrains.research.tasktracker.config.content.task.base.TaskWithFiles
+import org.jetbrains.research.tasktracker.tracking.logger.DocumentLogger
 import org.jetbrains.research.tasktracker.tracking.task.SourceSet
-import org.jetbrains.research.tasktracker.tracking.task.Task
-import org.jetbrains.research.tasktracker.tracking.task.TaskFile
 import java.io.File
 import java.util.*
 
@@ -74,14 +76,17 @@ object TaskFileHandler {
         virtualFiles.forEach { file ->
             ApplicationManager.getApplication().invokeAndWait {
                 val document = FileDocumentManager.getInstance().getDocument(file)
-                document?.removeDocumentListener(listener)
+                document?.let {
+                    DocumentLogger.removeDocumentLogPrinter(document)
+                    document.removeDocumentListener(listener)
+                }
             }
         }
     }
 
     // TODO group tasks by sourceSet and make sourceSet once for each
-    private fun getOrCreateFiles(project: Project, task: Task): List<VirtualFile?> {
-        return task.taskFiles.map { taskFile ->
+    private fun getOrCreateFiles(project: Project, task: Task): List<VirtualFile?> = when (task) {
+        is TaskWithFiles -> task.files.map { taskFile ->
             ApplicationManager.getApplication().runWriteAction {
                 addSourceFolder(taskFile, ModuleManager.getInstance(project).modules.last())
             }
@@ -94,9 +99,11 @@ object TaskFileHandler {
                 }
             }
         }
+
+        else -> emptyList()
     }
 
-    private fun File.writeDefaultContent(taskFile: TaskFile, name: String) {
+    private fun File.writeDefaultContent(taskFile: ITaskFileInfo, name: String) {
         if (!exists()) {
             ApplicationManager.getApplication().runWriteAction {
                 FileUtil.createParentDirs(this)
@@ -110,12 +117,13 @@ object TaskFileHandler {
         }
     }
 
-    private fun getPath(project: Project, taskFile: TaskFile, task: Task): String =
-        "${project.basePath}/$PLUGIN_NAME/${taskFile.extension.name.lowercase(Locale.getDefault())}" +
-            "${task.root.pathOrEmpty()}/${taskFile.sourceSet.path}/${task.name.toPackageName()}" +
-            "${taskFile.relativePath.pathOrEmpty()}/${taskFile.filename}${taskFile.extension.ext}"
+    private fun getPath(project: Project, taskFile: ITaskFileInfo, task: TaskWithFiles): String = buildString {
+        append("${project.basePath}/$PLUGIN_NAME/${taskFile.extension?.name?.lowercase(Locale.getDefault()) ?: ""}")
+        append("${task.root.pathOrEmpty()}/${taskFile.sourceSet.path}/${task.name.toPackageName()}")
+        append("${taskFile.relativePath.pathOrEmpty()}/${taskFile.filename}${taskFile.extension?.ext ?: ""}")
+    }
 
-    private fun addSourceFolder(taskFile: TaskFile, module: Module) {
+    private fun addSourceFolder(taskFile: ITaskFileInfo, module: Module) {
         val directory = File(PathMacroUtil.getModuleDir(module.moduleFilePath), taskFile.relativePath)
         if (!directory.exists()) {
             directory.mkdirs()

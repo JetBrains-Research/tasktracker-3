@@ -11,7 +11,6 @@ import org.jetbrains.research.tasktracker.properties.PropertiesController.defaul
 import org.jetbrains.research.tasktracker.properties.PropertiesController.loadProps
 import org.jetbrains.research.tasktracker.properties.PropertiesController.toPluginProperties
 import org.jetbrains.research.tasktracker.properties.TestMode
-import org.jetbrains.research.tasktracker.tracking.task.Task
 import java.io.File
 import java.util.*
 
@@ -20,8 +19,7 @@ object TaskTrackerPlugin {
 
     // TODO: add a settings panel to update properties and the main config
     lateinit var mainConfig: MainTaskTrackerConfig
-    lateinit var initializationHandler: InitializationHandler
-    lateinit var taskIdTask: MutableMap<String, Task>
+    private lateinit var initializationHandler: InitializationHandler
 
     fun initPlugin() {
         val props = loadProps()

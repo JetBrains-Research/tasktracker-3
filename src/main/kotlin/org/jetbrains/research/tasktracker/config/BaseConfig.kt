@@ -1,3 +1,7 @@
 package org.jetbrains.research.tasktracker.config
 
-interface BaseConfig
+import org.jetbrains.research.tasktracker.handler.BaseHandler
+
+interface BaseConfig {
+    fun buildHandler(): BaseHandler? = null
+}

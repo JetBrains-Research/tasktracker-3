@@ -5,7 +5,7 @@ import org.jetbrains.research.tasktracker.models.Extension
 object DefaultContentProvider {
     private val lineSeparator = System.lineSeparator()
 
-    fun getDefaultContent(extension: Extension, path: String) = when (extension) {
+    fun getDefaultContent(extension: Extension?, path: String) = when (extension) {
         Extension.JAVA ->
             """
                 ${getPackage(extension, path)}

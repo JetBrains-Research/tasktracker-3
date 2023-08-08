@@ -1,18 +1,12 @@
+@file:Suppress("NoWildcardImports")
+
 package org.jetbrains.research.tasktracker.tracking
 
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig.Companion.PLUGIN_NAME
-import org.jetbrains.research.tasktracker.tracking.mock.task1
-import org.jetbrains.research.tasktracker.tracking.mock.task2
-import org.jetbrains.research.tasktracker.tracking.mock.task3
-import org.jetbrains.research.tasktracker.tracking.mock.task4
-import org.jetbrains.research.tasktracker.tracking.mock.taskFile1
-import org.jetbrains.research.tasktracker.tracking.mock.taskFile2Java
-import org.jetbrains.research.tasktracker.tracking.mock.taskFile2Kotlin
-import org.jetbrains.research.tasktracker.tracking.mock.taskFile3
-import org.jetbrains.research.tasktracker.tracking.mock.taskFile4
-import org.jetbrains.research.tasktracker.tracking.mock.toMockTask
-import org.jetbrains.research.tasktracker.tracking.task.Task
+import org.jetbrains.research.tasktracker.config.content.task.base.Task
+import org.jetbrains.research.tasktracker.config.content.task.base.TaskWithFiles
+import org.jetbrains.research.tasktracker.tracking.mock.*
 import kotlin.test.assertFailsWith
 
 class TaskFileHandlerTest : BasePlatformTestCase() {
@@ -55,7 +49,7 @@ class TaskFileHandlerTest : BasePlatformTestCase() {
         testDisposeTasks(tasks)
     }
 
-    private fun testInitTasks(tasks: List<Task>) {
+    private fun testInitTasks(tasks: List<TaskWithFiles>) {
         assertNoThrowable {
             tasks.forEach { task ->
                 TaskFileHandler.initTask(project, task)
@@ -65,10 +59,11 @@ class TaskFileHandlerTest : BasePlatformTestCase() {
             "Expected the size of 'projectToTaskToFiles' to be 1, but found ${projectToTaskToFiles.size}"
         }
         assertNotNull(projectToTaskToFiles[project])
-        assert(projectToTaskToFiles[project]?.let { it.size == tasks.size } ?: false) {
-            "Expected the size of 'projectToTaskToFiles[project]'" +
-                " to be ${tasks.size}, but found ${projectToTaskToFiles[project]?.size}"
+        val error = buildString {
+            append("Expected the size of 'projectToTaskToFiles[project]' to be ${tasks.size}, ")
+            append("but found ${projectToTaskToFiles[project]?.size}")
         }
+        assert(projectToTaskToFiles[project]?.let { it.size == tasks.size } ?: false) { error }
 
         tasks.forEach { task ->
             assert(
@@ -78,7 +73,7 @@ class TaskFileHandlerTest : BasePlatformTestCase() {
             }
         }
         tasks.forEach { task ->
-            val virtualFileTask = task.taskFiles.map { taskFile ->
+            val virtualFileTask = task.files.map { taskFile ->
                 "${project.basePath}/$PLUGIN_NAME/${relativePaths[taskFile]}".getVirtualFile()
             }.toMockTask(project)
             assert(
