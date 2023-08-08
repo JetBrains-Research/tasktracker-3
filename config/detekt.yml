@@ -8,6 +8,8 @@ build:
 style:
   ForbiddenComment:
     active: false
+  WildcardImport:
+    active: false
 
 complexity:
   TooManyFunctions:

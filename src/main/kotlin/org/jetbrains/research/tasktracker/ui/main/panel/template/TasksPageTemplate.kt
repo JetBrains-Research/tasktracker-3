@@ -1,6 +1,6 @@
 package org.jetbrains.research.tasktracker.ui.main.panel.template
 
-import org.jetbrains.research.tasktracker.tracking.task.Task
+import org.jetbrains.research.tasktracker.config.content.task.base.Task
 import org.jetbrains.research.tasktracker.ui.main.panel.models.Theme
 
 class TasksPageTemplate(private val tasks: List<Task>) : HtmlTemplateBase() {

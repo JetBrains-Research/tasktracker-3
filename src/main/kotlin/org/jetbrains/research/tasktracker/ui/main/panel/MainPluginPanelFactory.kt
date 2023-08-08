@@ -10,9 +10,10 @@ import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBPanel
 import com.intellij.ui.jcef.JBCefApp
 import com.intellij.util.ui.JBUI
-import org.jetbrains.research.tasktracker.TaskTrackerPlugin
+import org.jetbrains.research.tasktracker.config.content.task.base.Task
+import org.jetbrains.research.tasktracker.config.content.task.base.TaskWithFiles
 import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
-import org.jetbrains.research.tasktracker.tracking.task.Task
+import org.jetbrains.research.tasktracker.ui.main.panel.storage.MainPanelStorage
 import org.jetbrains.research.tasktracker.ui.main.panel.template.HtmlTemplateBase
 import org.jetbrains.research.tasktracker.ui.main.panel.template.MainPageTemplate
 import org.jetbrains.research.tasktracker.ui.main.panel.template.SolvePageTemplate
@@ -80,7 +81,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
      */
     private fun selectTask() {
         loadBasePage(
-            TasksPageTemplate(TaskTrackerPlugin.taskIdTask.values.toList()),
+            TasksPageTemplate(MainPanelStorage.taskIdTask.values.toList()),
             "ui.button.select",
             true
         )
@@ -101,12 +102,12 @@ class MainPluginPanelFactory : ToolWindowFactory {
      */
     private fun processTask(name: String) {
         // TODO: change to task by id
-        val task = TaskTrackerPlugin.taskIdTask.values.find { it.name == name }
+        val task = MainPanelStorage.taskIdTask.values.find { it.name == name }
             ?: error("Can't find task with name '$name'")
         ApplicationManager.getApplication().invokeAndWait {
             TaskFileHandler.initTask(project, task)
         }
-        task.focusFileId?.let { id ->
+        (task as? TaskWithFiles)?.focusFileId?.let { id ->
             focusOnfFileById(task, id)
         }
         solveTask(task)

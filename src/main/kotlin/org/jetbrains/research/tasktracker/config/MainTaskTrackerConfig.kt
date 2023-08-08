@@ -20,8 +20,12 @@ data class MainTaskTrackerConfig(
     var mainIdeConfig: MainIdeConfig? = null,
     var activityTrackingConfig: ActivityTrackingConfig? = null,
     var codeTrackingConfig: CodeTrackingConfig? = null,
+
     var scenarioConfig: ScenarioConfig? = null,
 ) {
+    fun getAllConfigs() =
+        listOf(taskContentConfig, mainIdeConfig, activityTrackingConfig, codeTrackingConfig, scenarioConfig)
+
     companion object {
         private val logger = Logger.getInstance(MainTaskTrackerConfig::class.java)
 
