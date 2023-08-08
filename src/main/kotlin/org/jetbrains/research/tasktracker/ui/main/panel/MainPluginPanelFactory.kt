@@ -100,7 +100,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
      * Loads configs by selected task and language
      */
     private fun processTask(name: String) {
-        // TODO: change to study
+        // TODO: change to task by id
         val task = TaskTrackerPlugin.taskIdTask.values.find { it.name == name }
             ?: error("Can't find task with name '$name'")
         ApplicationManager.getApplication().invokeAndWait {
@@ -140,13 +140,13 @@ class MainPluginPanelFactory : ToolWindowFactory {
      * It contains task name, description and I/O data.
      */
     private fun solveTask(task: Task) {
-        // TODO to selected config
         loadBasePage(
             SolvePageTemplate(task),
             "ui.button.submit",
             true
         )
         backButton.addListener {
+            TaskFileHandler.disposeTask(project, task)
             mainWindow.removeHandlers()
             selectTask()
         }

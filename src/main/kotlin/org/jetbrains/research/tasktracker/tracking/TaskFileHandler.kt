@@ -20,7 +20,6 @@ import org.jetbrains.research.tasktracker.tracking.task.Task
 import org.jetbrains.research.tasktracker.tracking.task.TaskFile
 import java.io.File
 import java.util.*
-import kotlin.collections.HashMap
 
 typealias ProjectTaskFileMap = MutableMap<Project, MutableMap<Task, MutableList<VirtualFile>>>
 typealias ProjectTaskIdFile = MutableMap<Project, MutableMap<Task, MutableMap<String, VirtualFile>>>
@@ -144,7 +143,7 @@ object TaskFileHandler {
         if (this.startsWith("/")) this else "/$this"
     } else {
         this
-    }
+    }.replace(" ", "")
 
     fun getVirtualFileByProjectTaskId(project: Project, task: Task, id: String) =
         projectTaskIdToFile[project]?.get(task)?.get(id)
