@@ -4,32 +4,35 @@ import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
+import org.jetbrains.research.tasktracker.config.content.task.base.ITaskFileInfo
+import org.jetbrains.research.tasktracker.config.content.task.base.TaskWithFiles
 import org.jetbrains.research.tasktracker.models.Extension
 import org.jetbrains.research.tasktracker.tracking.DefaultContentProvider
 import org.jetbrains.research.tasktracker.tracking.task.SourceSet
-import org.jetbrains.research.tasktracker.tracking.task.Task
-import org.jetbrains.research.tasktracker.tracking.task.TaskFile
 
 data class MockTask(
     override val name: String,
-    override val taskFiles: List<TaskFile>,
+    override val files: List<ITaskFileInfo>,
     override val root: String = "",
-    override val description: String = ""
-) : Task
+    override val description: String = "",
+    override val focusFileId: String? = null,
+    override val id: String = ""
+) : TaskWithFiles
 
 data class MockTaskFile(
     override val filename: String,
     override val extension: Extension,
     override val relativePath: String = "",
     override val content: String = DefaultContentProvider.getDefaultContent(extension, relativePath),
-) : TaskFile {
+    override val id: String? = null,
+    override val templateFile: String? = null,
+) : ITaskFileInfo {
     override val sourceSet: SourceSet = SourceSet.SRC
 }
 
 fun List<VirtualFile>.toMockTask(project: Project): MockTask {
     val firstFile = this.firstOrNull() ?: error("Empty list is unexpected")
     val taskFiles = map { file ->
-        println(file.path)
         MockTaskFile(
             file.nameWithoutExtension,
             file.extensionEnum(),

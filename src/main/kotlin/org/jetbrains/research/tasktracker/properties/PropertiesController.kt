@@ -14,7 +14,8 @@ object PropertiesController {
 
     private val propertiesFile =
         File("${MainTaskTrackerConfig.pluginFolderPath}/${MainTaskTrackerConfig.PLUGIN_PROPERTIES_FILE}")
-    val defaultConfigRoot = File("${MainTaskTrackerConfig.pluginFolderPath}/configs")
+    val configRoot = File("${MainTaskTrackerConfig.pluginFolderPath}/configs")
+    val defaultConfigRoot = File("$configRoot/default")
 
     fun loadProps() = Properties().also { props ->
         createPropertiesFile()

@@ -8,7 +8,10 @@ build:
 style:
   ForbiddenComment:
     active: false
+  WildcardImport:
+    active: false
 
 complexity:
   TooManyFunctions:
-    thresholdInObjects: 12
+    thresholdInObjects: 13
+    thresholdInClasses: 13

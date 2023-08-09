@@ -1,6 +1,7 @@
 package org.jetbrains.research.tasktracker.ui.main.panel
 
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
@@ -9,10 +10,10 @@ import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBPanel
 import com.intellij.ui.jcef.JBCefApp
 import com.intellij.util.ui.JBUI
-import org.jetbrains.research.tasktracker.TaskTrackerPlugin
-import org.jetbrains.research.tasktracker.models.Extension
+import org.jetbrains.research.tasktracker.config.content.task.base.Task
+import org.jetbrains.research.tasktracker.config.content.task.base.TaskWithFiles
 import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
-import org.jetbrains.research.tasktracker.tracking.task.Task
+import org.jetbrains.research.tasktracker.ui.main.panel.storage.MainPanelStorage
 import org.jetbrains.research.tasktracker.ui.main.panel.template.HtmlTemplateBase
 import org.jetbrains.research.tasktracker.ui.main.panel.template.MainPageTemplate
 import org.jetbrains.research.tasktracker.ui.main.panel.template.SolvePageTemplate
@@ -31,8 +32,10 @@ import javax.swing.JButton
  *
  */
 class MainPluginPanelFactory : ToolWindowFactory {
+    // TODO: init in other place, states can be saved between sessions
     private val nextButton = createJButton("ui.button.next")
     private val backButton = createJButton("ui.button.back", isVisibleProp = false)
+    private val logger: Logger = Logger.getInstance(MainPluginPanelFactory::class.java)
 
     private lateinit var mainWindow: MainPluginWindow
     private lateinit var project: Project
@@ -77,24 +80,14 @@ class MainPluginPanelFactory : ToolWindowFactory {
      * Switches the panel to the task selection window.
      */
     private fun selectTask() {
-        // TODO taskContentConfig can be null?
         loadBasePage(
-            TasksPageTemplate(listOf(TaskTrackerPlugin.mainConfig.taskContentConfig ?: error("TODO"))),
+            TasksPageTemplate(MainPanelStorage.taskIdTask.values.toList()),
             "ui.button.select",
             true
         )
         nextButton.addListener {
-            mainWindow.getElementValue("language").onSuccess { result ->
-                val task = TaskTrackerPlugin.mainConfig.taskContentConfig?.getTask(
-                    Extension.values().find { it.name == result?.uppercase() }
-                        ?: error("Cannot find extension $result")
-                )
-                    ?: error("taskContentConfig is null")
-                ApplicationManager.getApplication().invokeAndWait {
-                    TaskFileHandler.initTask(project, task)
-                }
-                focusOnFile(TaskFileHandler.projectToTaskToFiles[project]?.get(task)?.first() ?: error("Error"))
-                solveTask(task)
+            mainWindow.getElementValue("tasks").onSuccess { name ->
+                processTask(name.toString())
             }.onError {
                 error(it.localizedMessage)
             }
@@ -104,6 +97,35 @@ class MainPluginPanelFactory : ToolWindowFactory {
         }
     }
 
+    /**
+     * Loads configs by selected task and language
+     */
+    private fun processTask(name: String) {
+        // TODO: change to task by id
+        val task = MainPanelStorage.taskIdTask.values.find { it.name == name }
+            ?: error("Can't find task with name '$name'")
+        ApplicationManager.getApplication().invokeAndWait {
+            TaskFileHandler.initTask(project, task)
+        }
+        (task as? TaskWithFiles)?.focusFileId?.let { id ->
+            focusOnfFileById(task, id)
+        }
+        solveTask(task)
+    }
+
+    private fun focusOnfFileById(task: Task, id: String?) {
+        id?.let {
+            TaskFileHandler.getVirtualFileByProjectTaskId(project, task, id)?.let {
+                focusOnFile(it)
+            }
+        } ?: TaskFileHandler.projectToTaskToFiles[project]?.get(task)?.first()?.let {
+            focusOnFile(it)
+        } ?: logger.error("Can't find any file for '$task' task")
+    }
+
+    /**
+     * Switches the editor to the virtualFile.
+     */
     private fun focusOnFile(virtualFile: VirtualFile) {
         ApplicationManager.getApplication().invokeAndWait {
             FileEditorManager.getInstance(project)
@@ -119,18 +141,43 @@ class MainPluginPanelFactory : ToolWindowFactory {
      * It contains task name, description and I/O data.
      */
     private fun solveTask(task: Task) {
-        // TODO to selected config
         loadBasePage(
             SolvePageTemplate(task),
             "ui.button.submit",
             true
         )
         backButton.addListener {
+            TaskFileHandler.disposeTask(project, task)
+            mainWindow.removeHandlers()
             selectTask()
         }
         nextButton.addListener {
             TaskFileHandler.disposeTask(project, task)
+            mainWindow.removeHandlers()
             welcomePage()
+        }
+        listenFileRedirection(task)
+    }
+
+    private fun listenFileRedirection(task: Task) {
+        mainWindow.executeJavascript(
+            """
+            const files = document.getElementsByClassName('file');  
+            for (const file of files) {
+            file.addEventListener('click', function(event) {
+                event.preventDefault();
+            })
+                file.onclick = load_file
+            }
+                function load_file (){
+                 file_id = this.getAttribute('data-value');
+                
+            """,
+            "}",
+            "file_id"
+        ) {
+            focusOnfFileById(task, it)
+            null
         }
     }
 

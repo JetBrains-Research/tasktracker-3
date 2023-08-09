@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import org.jetbrains.research.tasktracker.config.BaseConfig
 import org.jetbrains.research.tasktracker.config.YamlConfigLoadStrategy
 import org.jetbrains.research.tasktracker.config.tracking.BaseTrackingConfig.Companion.DEFAULT_TRACKING_DELTA
+import org.jetbrains.research.tasktracker.handler.tracking.CodeTrackingHandler
 import java.io.File
 
 enum class CodeTrackingGranularity {
@@ -19,6 +20,8 @@ data class CodeTrackingConfig(
     // Additional files to track
     val filesPathToTrack: List<String> = emptyList(),
 ) : BaseTrackingConfig, BaseConfig {
+    override fun buildHandler() = CodeTrackingHandler(this)
+
     companion object {
         const val CONFIG_FILE_PREFIX: String = "code_tracking"
 

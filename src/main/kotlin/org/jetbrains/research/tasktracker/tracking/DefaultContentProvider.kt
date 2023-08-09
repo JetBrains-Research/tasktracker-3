@@ -5,7 +5,7 @@ import org.jetbrains.research.tasktracker.models.Extension
 object DefaultContentProvider {
     private val lineSeparator = System.lineSeparator()
 
-    fun getDefaultContent(extension: Extension, path: String) = when (extension) {
+    fun getDefaultContent(extension: Extension?, path: String) = when (extension) {
         Extension.JAVA ->
             """
                 ${getPackage(extension, path)}
@@ -49,9 +49,9 @@ object DefaultContentProvider {
         else -> ""
     }
 
-    private fun getPackage(extension: Extension, path: String): String {
+    fun getPackage(extension: Extension, path: String): String {
         val currentPackage =
-            "package ${path.relativePathToPackage()}"
+            "package ${path.toPackageName().relativePathToPackage()}"
         return when (extension) {
             Extension.JAVA -> "$currentPackage;$lineSeparator$lineSeparator"
             Extension.KOTLIN -> "$currentPackage$lineSeparator$lineSeparator"
@@ -60,6 +60,7 @@ object DefaultContentProvider {
     }
 
     private fun String.relativePathToPackage() = this
+        .replace("//", "/")
         .removePrefix("/")
         .removeSuffix("/")
         .replace("/", ".")

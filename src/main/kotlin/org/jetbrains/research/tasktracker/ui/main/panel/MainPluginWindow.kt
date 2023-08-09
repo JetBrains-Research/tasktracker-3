@@ -4,9 +4,15 @@ import com.intellij.ide.ui.LafManagerListener
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.util.Disposer
 import com.intellij.ui.jcef.JBCefBrowser
+import com.intellij.ui.jcef.JBCefBrowserBase
 import com.intellij.ui.jcef.JBCefClient
+import com.intellij.ui.jcef.JBCefJSQuery
 import com.intellij.ui.jcef.JsExpressionResult
 import com.intellij.ui.jcef.executeJavaScriptAsync
+import org.cef.browser.CefBrowser
+import org.cef.browser.CefFrame
+import org.cef.handler.CefLoadHandlerAdapter
+import org.intellij.lang.annotations.Language
 import org.jetbrains.concurrency.Promise
 import org.jetbrains.research.tasktracker.ui.main.panel.models.Theme
 import org.jetbrains.research.tasktracker.ui.main.panel.template.ErrorPageTemplate
@@ -19,6 +25,7 @@ class MainPluginWindow(service: MainWindowService) {
 
     private var currentTheme = Theme.currentIdeTheme()
     private var currentTemplate: HtmlTemplateBase = MainPageTemplate
+    private val handlers = mutableListOf<CefLoadHandlerAdapter>()
     val jComponent: JComponent
         get() = windowBrowser.component
 
@@ -43,6 +50,38 @@ class MainPluginWindow(service: MainWindowService) {
 
     fun getElementValue(elementId: String): Promise<JsExpressionResult> =
         windowBrowser.executeJavaScriptAsync("document.getElementById('$elementId').value")
+
+    fun executeJavascript(
+        @Language("JavaScript") codeBeforeInject: String = "",
+        @Language("JavaScript") codeAfterInject: String = "",
+        queryResult: String = "",
+        handler: (String) -> JBCefJSQuery.Response?
+    ) {
+        val jbCefJSQuery = JBCefJSQuery.create(windowBrowser as JBCefBrowserBase)
+        val code =
+            "${codeBeforeInject.trimIndent()} ${jbCefJSQuery.inject(queryResult)}; ${codeAfterInject.trimIndent()}"
+        Disposer.register(windowBrowser, jbCefJSQuery)
+        jbCefJSQuery.addHandler(handler)
+        val newLoadHandler = object : CefLoadHandlerAdapter() {
+            override fun onLoadEnd(browser: CefBrowser?, frame: CefFrame?, httpStatusCode: Int) {
+                windowBrowser.cefBrowser.executeJavaScript(
+                    code,
+                    windowBrowser.cefBrowser.url,
+                    0
+                )
+                super.onLoadEnd(browser, frame, httpStatusCode)
+            }
+        }
+        windowBrowser.jbCefClient.addLoadHandler(newLoadHandler, windowBrowser.cefBrowser)
+        handlers.add(newLoadHandler)
+    }
+
+    fun removeHandlers() {
+        handlers.forEach { handler ->
+            windowBrowser.jbCefClient.removeLoadHandler(handler, windowBrowser.cefBrowser)
+        }
+        handlers.clear()
+    }
 
     fun loadHtmlTemplate(template: HtmlTemplateBase) = windowBrowser
         .loadHTML(template.pageContent(theme = currentTheme)).also { currentTemplate = template }

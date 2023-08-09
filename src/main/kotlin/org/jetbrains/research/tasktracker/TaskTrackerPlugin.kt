@@ -3,6 +3,7 @@ package org.jetbrains.research.tasktracker
 import com.intellij.openapi.diagnostic.Logger
 import org.jetbrains.research.tasktracker.config.DefaultConfigsFactory
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
+import org.jetbrains.research.tasktracker.handler.init.InitializationHandler
 import org.jetbrains.research.tasktracker.properties.DataHandler
 import org.jetbrains.research.tasktracker.properties.PluginProperties
 import org.jetbrains.research.tasktracker.properties.PropertiesController.CONFIG_ROOT_PROPERTY_NAME
@@ -18,6 +19,7 @@ object TaskTrackerPlugin {
 
     // TODO: add a settings panel to update properties and the main config
     lateinit var mainConfig: MainTaskTrackerConfig
+    private lateinit var initializationHandler: InitializationHandler
 
     fun initPlugin() {
         val props = loadProps()
@@ -27,6 +29,7 @@ object TaskTrackerPlugin {
         }
         logger.info("Building the main config...")
         mainConfig = buildConfig(props, pluginProps)
+        initializationHandler = InitializationHandler(mainConfig).also { it.setupEnvironment() }
     }
 
     private fun buildConfig(props: Properties, pluginProps: PluginProperties): MainTaskTrackerConfig {

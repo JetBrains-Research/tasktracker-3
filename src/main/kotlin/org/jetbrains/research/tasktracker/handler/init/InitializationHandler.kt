@@ -2,10 +2,9 @@ package org.jetbrains.research.tasktracker.handler.init
 
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
 import org.jetbrains.research.tasktracker.handler.BaseHandler
-import org.jetbrains.research.tasktracker.handler.ide.IdeHandler
-import org.jetbrains.research.tasktracker.handler.tracking.CodeTrackingHandler
 
 class InitializationHandler(private val mainConfig: MainTaskTrackerConfig) {
+    // TODO maybe store handlers by type?
     private val handlers = mutableListOf<BaseHandler>()
 
     // Send data to the server/file, remove extra listeners, delete files etc
@@ -23,11 +22,7 @@ class InitializationHandler(private val mainConfig: MainTaskTrackerConfig) {
         destroyHandlers()
 
         handlers.addAll(
-            listOfNotNull(
-                mainConfig.mainIdeConfig?.let { IdeHandler(it) },
-                mainConfig.codeTrackingConfig?.let { CodeTrackingHandler(it) }
-                // TODO: add others
-            )
+            mainConfig.getAllConfigs().mapNotNull { it?.buildHandler() }
         )
         handlers.forEach { it.setup() }
     }
