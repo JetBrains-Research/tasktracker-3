@@ -47,7 +47,7 @@ private fun VirtualFile.getRoot(project: Project) =
     getRootAndRelativePath(project).first().takeIf { it != "src" }.orEmpty()
 
 private fun VirtualFile.getRelativePath(project: Project) =
-    getRootAndRelativePath(project).last().takeIf { it != nameWithoutExtension }.orEmpty()
+    getRootAndRelativePath(project).takeLastWhile { it != "src" }.joinToString("/")
 
 private fun VirtualFile.getRootAndRelativePath(project: Project): List<String> =
     path.removePrefix("${project.basePath}/${MainTaskTrackerConfig.PLUGIN_NAME}/${extensionEnum().name.lowercase()}/")

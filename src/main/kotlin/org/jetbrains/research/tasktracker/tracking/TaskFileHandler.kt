@@ -21,7 +21,6 @@ import org.jetbrains.research.tasktracker.config.content.task.base.TaskWithFiles
 import org.jetbrains.research.tasktracker.tracking.logger.DocumentLogger
 import org.jetbrains.research.tasktracker.tracking.task.SourceSet
 import java.io.File
-import java.util.*
 
 typealias ProjectTaskFileMap = MutableMap<Project, MutableMap<Task, MutableList<VirtualFile>>>
 typealias ProjectTaskIdFile = MutableMap<Project, MutableMap<Task, MutableMap<String, VirtualFile>>>
@@ -86,21 +85,32 @@ object TaskFileHandler {
 
     // TODO group tasks by sourceSet and make sourceSet once for each
     private fun getOrCreateFiles(project: Project, task: Task): List<VirtualFile?> = when (task) {
-        is TaskWithFiles -> task.files.map { taskFile ->
-            ApplicationManager.getApplication().runWriteAction {
-                addSourceFolder(taskFile, ModuleManager.getInstance(project).modules.last())
-            }
-            val path = getPath(project, taskFile, task)
-            val file = File(path)
-            file.writeDefaultContent(taskFile, task.name)
-            LocalFileSystem.getInstance().refreshAndFindFileByIoFile(file)?.also {
-                taskFile.id?.let { id ->
-                    projectTaskIdToFile[project]?.get(task)?.putIfAbsent(id, it)
+        is TaskWithFiles -> {
+            val files = task.files.map { taskFile ->
+                val path = getPath(project, taskFile, task)
+                val file = File(path)
+                file.writeDefaultContent(taskFile, task.name)
+                LocalFileSystem.getInstance().refreshAndFindFileByIoFile(file)?.also {
+                    taskFile.id?.let { id ->
+                        projectTaskIdToFile[project]?.get(task)?.putIfAbsent(id, it)
+                    }
                 }
             }
+            addSourceFolders(project, task)
+            files
         }
-
         else -> emptyList()
+    }
+
+    private fun addSourceFolders(project: Project, task: TaskWithFiles) {
+        val sourceFolders = task.files.map { Pair(it.extension, it.sourceSet) }.toSet().map {
+            "$PLUGIN_NAME/${it.first?.getFolderName()}/${task.root.pathOrEmpty()}/${it.second.path}"
+        }
+        sourceFolders.forEach {
+            ApplicationManager.getApplication().runWriteAction {
+                addSourceFolder(ModuleManager.getInstance(project).modules.last(), it)
+            }
+        }
     }
 
     private fun File.writeDefaultContent(taskFile: ITaskFileInfo, name: String) {
@@ -118,20 +128,21 @@ object TaskFileHandler {
     }
 
     private fun getPath(project: Project, taskFile: ITaskFileInfo, task: TaskWithFiles): String = buildString {
-        append("${project.basePath}/$PLUGIN_NAME/${taskFile.extension?.name?.lowercase(Locale.getDefault()) ?: ""}")
-        append("${task.root.pathOrEmpty()}/${taskFile.sourceSet.path}/${task.name.toPackageName()}")
-        append("${taskFile.relativePath.pathOrEmpty()}/${taskFile.filename}${taskFile.extension?.ext ?: ""}")
+        append("${project.basePath}/$PLUGIN_NAME/${taskFile.extension?.getFolderName() ?: ""}")
+        append("${task.root.pathOrEmpty()}/${taskFile.sourceSet.path}")
+        append("${taskFile.relativePath.toPackageName().pathOrEmpty()}/")
+        append("${taskFile.filename}${taskFile.extension?.ext ?: ""}")
     }
 
-    private fun addSourceFolder(taskFile: ITaskFileInfo, module: Module) {
-        val directory = File(PathMacroUtil.getModuleDir(module.moduleFilePath), taskFile.relativePath)
+    private fun addSourceFolder(module: Module, relativePath: String) {
+        val directory = File(PathMacroUtil.getModuleDir(module.moduleFilePath), relativePath)
         if (!directory.exists()) {
             directory.mkdirs()
         }
         val virtualFile = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(directory)
         virtualFile?.let {
             val rootModel = ModuleRootManager.getInstance(module).modifiableModel
-            getContentEntry(virtualFile, rootModel)?.addSourceFolder(it.url, taskFile.sourceSet == SourceSet.TEST)
+            getContentEntry(virtualFile, rootModel)?.addSourceFolder(it.url, relativePath.endsWith(SourceSet.TEST.path))
             rootModel.commit()
         }
     }

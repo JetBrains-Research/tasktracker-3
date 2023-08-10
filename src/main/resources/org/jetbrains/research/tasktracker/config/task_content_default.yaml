@@ -2,6 +2,10 @@ tasks:
   - name: hello world
     description: Write a program that will print 'hello world' to the console.
     language: "KOTLIN"
+    files:
+      - filename: main
+        sourceSet: "SRC"
+        id: "main"
     id: "hello"
   - name: "Example with several files"
     description: "In this task, we kindly request you to review three provided files and determine which one is the most readable and which one is the least readable. Files: [a.java](a), [b.java](b), [c.java](c)"
