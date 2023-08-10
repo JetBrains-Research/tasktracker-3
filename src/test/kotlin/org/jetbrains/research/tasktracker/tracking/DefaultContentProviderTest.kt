@@ -23,7 +23,7 @@ class DefaultContentProviderTest {
                     taskFile.loadContent(),
                     DefaultContentProvider.getDefaultContent(
                         taskFile.extension,
-                        "${task.name}/${taskFile.relativePath}"
+                        taskFile.relativePath
                     )
                 )
             }

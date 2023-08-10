@@ -42,7 +42,7 @@ interface ITaskFileInfo {
 data class TaskFileInfo(override val filename: String, override val sourceSet: SourceSet) : ITaskFileInfo {
     override var extension: Extension? = null
     override val templateFile: String? = null
-    override val relativePath: String = ""
+    override var relativePath: String = ""
 
     // TODO: can we avoid using var here?
     override var content: String? = gatherContent()
