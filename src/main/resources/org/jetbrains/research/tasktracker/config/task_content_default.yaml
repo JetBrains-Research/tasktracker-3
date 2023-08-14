@@ -2,6 +2,7 @@ tasks:
   - name: hello world
     description: Write a program that will print 'hello world' to the console.
     language: "KOTLIN"
+    focusFileId: "main"
     files:
       - filename: main
         sourceSet: "SRC"

@@ -102,6 +102,7 @@ object TaskFileHandler {
             addSourceFolders(project, task)
             files
         }
+
         else -> emptyList()
     }
 
