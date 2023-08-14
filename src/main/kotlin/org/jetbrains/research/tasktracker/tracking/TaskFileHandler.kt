@@ -66,8 +66,11 @@ object TaskFileHandler {
     private fun addVirtualFileListener(virtualFile: VirtualFile) {
         ApplicationManager.getApplication().invokeAndWait {
             val document = FileDocumentManager.getInstance().getDocument(virtualFile)
-            document?.addDocumentListener(listener)
-                ?: logger.warn("attempt to add listener for non-existing document: '$document'")
+            document?.let {
+                it.addDocumentListener(listener)
+                // Log the first state
+                DocumentLogger.log(it)
+            } ?: logger.warn("attempt to add listener for non-existing document: '$document'")
         }
     }
 
