@@ -1,22 +1,21 @@
 package org.jetbrains.research.tasktracker.tracking.activity
 
-import com.intellij.openapi.Disposable
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.ex.AnActionListener
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.util.Disposer
+import com.intellij.util.messages.MessageBusConnection
 import org.jetbrains.research.tasktracker.tracking.logger.ActivityLogger
-import org.joda.time.DateTime
 
-class ActivityTracker(project: Project) : Disposable {
+class ActivityTracker(project: Project) {
     private val activityLogger: ActivityLogger
+    private val messageBusConnections: MutableList<MessageBusConnection>
 
     init {
         activityLogger = ActivityLogger(project)
-        Disposer.register(project, this) // TODO
+        messageBusConnections = mutableListOf()
     }
 
     // TODO: add config to select activities to track
@@ -24,19 +23,19 @@ class ActivityTracker(project: Project) : Disposable {
         listenActions()
     }
 
+    fun stopTracking() {
+        messageBusConnections.forEach { it.disconnect() }
+    }
+
     private fun listenActions() {
         val actionListener = object : AnActionListener {
             override fun beforeActionPerformed(anAction: AnAction, event: AnActionEvent) {
                 val actionId = ActionManager.getInstance().getId(anAction) ?: return
-                activityLogger.log(ActivityEvent(DateTime.now(), Type.Action, actionId))
+                activityLogger.logAction(actionId)
             }
         }
-        ApplicationManager.getApplication()
-            .messageBus.connect()
-            .subscribe(AnActionListener.TOPIC, actionListener)
-    }
-
-    @Suppress("EmptyFunctionBlock")
-    override fun dispose() {
+        val connection = ApplicationManager.getApplication().messageBus.connect()
+        messageBusConnections.add(connection)
+        connection.subscribe(AnActionListener.TOPIC, actionListener)
     }
 }

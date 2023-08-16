@@ -142,6 +142,8 @@ class MainPluginPanelFactory : ToolWindowFactory {
      * It contains task name, description and I/O data.
      */
     private fun solveTask(task: Task) {
+        val activityTracker = ActivityTracker(project)
+        activityTracker.startTracking()
         loadBasePage(
             SolvePageTemplate(task),
             "ui.button.submit",
@@ -151,14 +153,15 @@ class MainPluginPanelFactory : ToolWindowFactory {
             TaskFileHandler.disposeTask(project, task)
             mainWindow.removeHandlers()
             selectTask()
+            activityTracker.stopTracking()
         }
         nextButton.addListener {
             TaskFileHandler.disposeTask(project, task)
             mainWindow.removeHandlers()
             welcomePage()
+            activityTracker.stopTracking()
         }
         listenFileRedirection(task)
-        ActivityTracker(project).startTracking()
     }
 
     private fun listenFileRedirection(task: Task) {

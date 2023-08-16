@@ -1,11 +1,15 @@
 package org.jetbrains.research.tasktracker.tracking.logger
 
+import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.io.FileUtil
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVPrinter
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
 import org.jetbrains.research.tasktracker.tracking.activity.ActivityEvent
+import org.jetbrains.research.tasktracker.tracking.activity.Type
+import org.joda.time.DateTime
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStreamWriter
@@ -22,9 +26,25 @@ class ActivityLogger(val project: Project) {
         logPrinter = LogPrinter(csvPrinter, fileWriter, logFile)
     }
 
-    fun log(activityEvent: ActivityEvent) {
+    fun logAction(info: String) {
+        log(ActivityEvent(DateTime.now(), Type.Action, info, getSelectedText()))
+    }
+
+    private fun log(activityEvent: ActivityEvent) {
         logPrinter.csvPrinter.printRecord(ActivityLoggedData.getData(activityEvent))
         logPrinter.csvPrinter.flush() // TODO
+    }
+
+    /**
+     * @return selected text in the currently open file
+     */
+    private fun getSelectedText(): String {
+        var selectedText = ""
+        ApplicationManager.getApplication().invokeAndWait {
+            selectedText = FileEditorManager.getInstance(project)
+                .selectedTextEditor?.selectionModel?.selectedText ?: ""
+        }
+        return selectedText
     }
 
     private fun createLogFile(): File {
