@@ -3,6 +3,7 @@ package org.jetbrains.research.tasktracker.tracking.logger
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.fileEditor.FileDocumentManager
 import org.jetbrains.research.tasktracker.TaskTrackerPlugin
+import org.jetbrains.research.tasktracker.tracking.activity.ActivityEvent
 import org.joda.time.DateTime
 
 data class LoggedDataGetter<T, S>(val header: String, val getData: (T) -> S)
@@ -27,5 +28,14 @@ object DocumentLoggedData : LoggedData<Document, String?>() {
         LoggedDataGetter("documentHashCode") { it.hashCode().toString() },
         LoggedDataGetter("fragment") { it.text },
         LoggedDataGetter("testMode") { TaskTrackerPlugin.mainConfig.pluginProperties.testMode.propValue }
+    )
+}
+
+object ActivityLoggedData : LoggedData<ActivityEvent, String?>() {
+    override val loggedDataGetters: List<LoggedDataGetter<ActivityEvent, String?>> = arrayListOf(
+        LoggedDataGetter("date") { it.time.toString() },
+        LoggedDataGetter("type") { it.type.name },
+        LoggedDataGetter("info") { it.info },
+        LoggedDataGetter("selected-text") { it.selectedText }
     )
 }

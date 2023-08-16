@@ -13,6 +13,7 @@ import com.intellij.util.ui.JBUI
 import org.jetbrains.research.tasktracker.config.content.task.base.Task
 import org.jetbrains.research.tasktracker.config.content.task.base.TaskWithFiles
 import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
+import org.jetbrains.research.tasktracker.tracking.activity.ActivityTracker
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.MainPanelStorage
 import org.jetbrains.research.tasktracker.ui.main.panel.template.HtmlTemplateBase
 import org.jetbrains.research.tasktracker.ui.main.panel.template.MainPageTemplate
@@ -157,6 +158,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
             welcomePage()
         }
         listenFileRedirection(task)
+        ActivityTracker(project).startTracking()
     }
 
     private fun listenFileRedirection(task: Task) {
