@@ -17,7 +17,7 @@ object DocumentLogger {
 
     fun removeDocumentLogPrinter(document: Document) {
         log(document)
-        getDocumentLogPrinter(document)?.getActiveLogPrinter(document)?.csvPrinter?.flush()
+        getDocumentLogPrinter(document)?.getLogFiles()
             ?: logger.error("attempt to flush non-existing csv printer for document '$document'")
         myDocumentsToPrinters.remove(document)
     }
