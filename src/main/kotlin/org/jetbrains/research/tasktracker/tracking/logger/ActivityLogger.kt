@@ -26,8 +26,8 @@ class ActivityLogger(val project: Project) {
         logPrinter = LogPrinter(csvPrinter, fileWriter, logFile)
     }
 
-    fun logAction(info: String) {
-        log(ActivityEvent(DateTime.now(), Type.Action, info, getSelectedText()))
+    fun log(type: Type, info: String) {
+        log(ActivityEvent(DateTime.now(), type, info, getSelectedText()))
     }
 
     private fun log(activityEvent: ActivityEvent) {

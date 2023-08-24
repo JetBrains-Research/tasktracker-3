@@ -11,5 +11,8 @@ data class ActivityEvent(
 
 enum class Type {
     Action,
-    Execution
+    Execution,
+    Shortcut,
+    KeyPressed,
+    KeyReleased
 }
