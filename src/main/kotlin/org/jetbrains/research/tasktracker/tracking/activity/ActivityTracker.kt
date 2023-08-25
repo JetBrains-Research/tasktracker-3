@@ -14,6 +14,7 @@ import com.intellij.openapi.actionSystem.IdeActions
 import com.intellij.openapi.actionSystem.ex.AnActionListener
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.Disposer
 import com.intellij.util.messages.MessageBusConnection
 import org.jetbrains.research.tasktracker.tracking.logger.ActivityLogger
 import java.awt.AWTEvent
@@ -22,6 +23,7 @@ import java.awt.event.KeyEvent
 class ActivityTracker(project: Project) {
     private val activityLogger: ActivityLogger
     private val messageBusConnections: MutableList<MessageBusConnection>
+    private var trackingDisposable: Disposable? = null
 
     init {
         activityLogger = ActivityLogger(project)
@@ -30,6 +32,7 @@ class ActivityTracker(project: Project) {
 
     // TODO: add config to select activities to track
     fun startTracking() {
+        trackingDisposable = Disposer.newDisposable()
         listenActions()
         listenKeyboard()
         listenExecution()
@@ -37,6 +40,7 @@ class ActivityTracker(project: Project) {
 
     fun stopTracking() {
         messageBusConnections.forEach { it.disconnect() }
+        trackingDisposable?.let { Disposer.dispose(it) }
     }
 
     private fun listenActions(listenShortcut: Boolean = true) {
@@ -98,7 +102,7 @@ class ActivityTracker(project: Project) {
                 activityLogger.log(Type.KeyReleased, "${awtEvent.id}:${awtEvent.keyChar}:${awtEvent.keyCode}")
             }
             false
-        }, Disposable { }) // TODO
+        }, trackingDisposable)
     }
 
     companion object {
