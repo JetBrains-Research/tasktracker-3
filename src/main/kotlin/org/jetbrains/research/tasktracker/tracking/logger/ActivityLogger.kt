@@ -24,10 +24,11 @@ class ActivityLogger(val project: Project) {
         val fileWriter = OutputStreamWriter(FileOutputStream(logFile), StandardCharsets.UTF_8)
         val csvPrinter = CSVPrinter(fileWriter, CSVFormat.DEFAULT)
         logPrinter = LogPrinter(csvPrinter, fileWriter, logFile)
+        logPrinter.csvPrinter.printRecord(ActivityLoggedData.headers)
     }
 
-    fun log(type: Type, info: String) {
-        log(ActivityEvent(DateTime.now(), type, info, getSelectedText()))
+    fun log(type: Type, info: String, id: Int? = null) {
+        log(ActivityEvent(DateTime.now(), type, info, getSelectedText(), id?.toString()))
     }
 
     private fun log(activityEvent: ActivityEvent) {
@@ -38,14 +39,11 @@ class ActivityLogger(val project: Project) {
     /**
      * @return selected text in the currently open file
      */
-    private fun getSelectedText(): String {
-        var selectedText = ""
-        ApplicationManager.getApplication().invokeAndWait {
-            selectedText = FileEditorManager.getInstance(project)
-                .selectedTextEditor?.selectionModel?.selectedText ?: ""
+    private fun getSelectedText(): String? =
+        ApplicationManager.getApplication().runReadAction<String> {
+            FileEditorManager.getInstance(project)
+                .selectedTextEditor?.selectionModel?.selectedText
         }
-        return selectedText
-    }
 
     private fun createLogFile(): File {
         // TODO: write headers

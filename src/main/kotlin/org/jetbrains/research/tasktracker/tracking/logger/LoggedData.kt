@@ -36,6 +36,7 @@ object ActivityLoggedData : LoggedData<ActivityEvent, String?>() {
         LoggedDataGetter("date") { it.time.toString() },
         LoggedDataGetter("type") { it.type.name },
         LoggedDataGetter("info") { it.info },
-        LoggedDataGetter("selected-text") { it.selectedText }
+        LoggedDataGetter("selected-text") { it.selectedText },
+        LoggedDataGetter("id") { it.id }
     )
 }
