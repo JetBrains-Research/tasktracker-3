@@ -108,7 +108,6 @@ class MainPluginPanelFactory : ToolWindowFactory {
             TaskFileHandler.initTask(project, task)
         }
         (task as? TaskWithFiles)?.focusFileId?.let { id ->
-            println("id : $id")
             focusOnfFileById(task, id)
         }
         solveTask(task)
