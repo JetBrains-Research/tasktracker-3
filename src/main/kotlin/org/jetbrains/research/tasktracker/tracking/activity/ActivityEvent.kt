@@ -10,10 +10,12 @@ data class ActivityEvent(
     val type: Type,
     /**
      * Information about the activity, depending on its type.
+     * Example for Type.Action - 'Run'.
+     * Example for Type.Shortcut - 'Meta 86'.
      */
     val info: String,
     /**
-     * Selected text in current project.
+     * Selected text in the current opened file.
      */
     val selectedText: String? = null,
     /**

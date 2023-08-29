@@ -66,10 +66,9 @@ class ActivityTracker(project: Project) {
         }
     }
 
-    private fun eventToShortcutInfo(event: KeyEvent): String {
-        val keys = Key.values().mapNotNull { it.check(event) }.map { it.name }.plus(event.keyCode.toString())
-        return keys.joinToString(" ")
-    }
+    private fun eventToShortcutInfo(event: KeyEvent): String =
+        Key.values().mapNotNull { it.check(event) }.map { it.name }
+            .plus(event.keyCode.toString()).joinToString(" ")
 
     private fun listenExecution() {
         val executionListener = object : ExecutionListener {
@@ -83,12 +82,6 @@ class ActivityTracker(project: Project) {
 
     private fun listenKeyboard() {
         IdeEventQueue.getInstance().addPostprocessor({ awtEvent: AWTEvent ->
-            if (awtEvent is KeyEvent && awtEvent.id == KeyEvent.KEY_PRESSED) {
-                activityLogger.log(Type.KeyPressed, awtEvent.info())
-            }
-            if (awtEvent is KeyEvent && awtEvent.id == KeyEvent.KEY_RELEASED) {
-                activityLogger.log(Type.KeyReleased, awtEvent.info())
-            }
             if (awtEvent is KeyEvent) {
                 when (awtEvent.id) {
                     KeyEvent.KEY_PRESSED -> activityLogger.log(Type.KeyPressed, awtEvent.info())
@@ -118,6 +111,6 @@ class ActivityTracker(project: Project) {
         Alt(KeyEvent::isAltDown),
         Shift(KeyEvent::isShiftDown);
 
-        fun check(event: KeyEvent): Key? = if (this@Key.f(event)) this@Key else null
+        fun check(event: KeyEvent): Key? = if (f(event)) this else null
     }
 }

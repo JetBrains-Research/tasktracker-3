@@ -33,14 +33,14 @@ class ActivityLogger(val project: Project) {
 
     private fun log(activityEvent: ActivityEvent) {
         logPrinter.csvPrinter.printRecord(ActivityLoggedData.getData(activityEvent))
-        logPrinter.csvPrinter.flush() // TODO
+        logPrinter.csvPrinter.flush() // TODO remove flush here, add it on activity tracking stop
     }
 
     /**
      * @return selected text in the currently open file
      */
     private fun getSelectedText(): String? =
-        ApplicationManager.getApplication().runReadAction<String> {
+        ApplicationManager.getApplication().runReadAction<String?> {
             FileEditorManager.getInstance(project)
                 .selectedTextEditor?.selectionModel?.selectedText
         }
