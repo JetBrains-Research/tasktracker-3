@@ -13,6 +13,7 @@ import com.intellij.util.ui.JBUI
 import org.jetbrains.research.tasktracker.config.content.task.base.Task
 import org.jetbrains.research.tasktracker.config.content.task.base.TaskWithFiles
 import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
+import org.jetbrains.research.tasktracker.tracking.activity.ActivityTracker
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.MainPanelStorage
 import org.jetbrains.research.tasktracker.ui.main.panel.template.HtmlTemplateBase
 import org.jetbrains.research.tasktracker.ui.main.panel.template.MainPageTemplate
@@ -141,6 +142,8 @@ class MainPluginPanelFactory : ToolWindowFactory {
      * It contains task name, description and I/O data.
      */
     private fun solveTask(task: Task) {
+        val activityTracker = ActivityTracker(project)
+        activityTracker.startTracking()
         loadBasePage(
             SolvePageTemplate(task),
             "ui.button.submit",
@@ -150,11 +153,13 @@ class MainPluginPanelFactory : ToolWindowFactory {
             TaskFileHandler.disposeTask(project, task)
             mainWindow.removeHandlers()
             selectTask()
+            activityTracker.stopTracking()
         }
         nextButton.addListener {
             TaskFileHandler.disposeTask(project, task)
             mainWindow.removeHandlers()
             welcomePage()
+            activityTracker.stopTracking()
         }
         listenFileRedirection(task)
     }
