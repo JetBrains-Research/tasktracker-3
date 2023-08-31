@@ -19,7 +19,7 @@ class MainIdeConfig : BaseConfig {
             val mainIdeConfig = MainIdeConfig()
             configFiles.forEach { configFile ->
                 when {
-                    configFile.startsWith(InspectionConfig.CONFIG_FILE_PREFIX) -> {
+                    configFile.name.startsWith(InspectionConfig.CONFIG_FILE_PREFIX) -> {
                         require(mainIdeConfig.inspectionConfig == null) {
                             "The inspections config was already parsed"
                         }

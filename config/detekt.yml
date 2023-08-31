@@ -15,3 +15,7 @@ complexity:
   TooManyFunctions:
     thresholdInObjects: 14
     thresholdInClasses: 13
+
+performance:
+  SpreadOperator:
+    active: false

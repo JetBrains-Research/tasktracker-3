@@ -7,7 +7,14 @@ import org.jetbrains.research.tasktracker.handler.ide.InspectionHandler
 import java.io.File
 
 @Serializable
-class InspectionConfig : BaseConfig {
+data class InspectionConfig(
+    val mode: InspectionMode,
+    /**
+     * list of inspection short names. List will be applied
+     * in accordance with the selected mode.
+     */
+    val inspectionNames: List<String> = emptyList()
+) : BaseConfig {
 
     override fun buildHandler() = InspectionHandler(this)
 
