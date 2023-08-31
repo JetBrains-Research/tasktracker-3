@@ -3,6 +3,7 @@ package org.jetbrains.research.tasktracker.handler.ide
 import com.intellij.codeInspection.ex.InspectionProfileImpl
 import com.intellij.codeInspection.ex.InspectionToolRegistrar
 import com.intellij.openapi.Disposable
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Disposer
 import com.intellij.profile.codeInspection.InspectionProfileManager
@@ -14,6 +15,8 @@ import org.jetbrains.research.tasktracker.handler.BaseHandler
 
 class InspectionHandler(override val config: InspectionConfig) : BaseHandler {
     private var inspectionDisposable: Disposable? = null
+    private val logger: Logger = Logger.getInstance(InspectionHandler::class.java)
+
     override fun setup(project: Project) {
         inspectionDisposable = Disposer.newDisposable()
         // creating a new profile to make changes only in the current project
@@ -38,7 +41,7 @@ class InspectionHandler(override val config: InspectionConfig) : BaseHandler {
 
                 InspectionMode.DISABLE_SELECTED -> {
                     val tools = config.inspectionNames.toInspectionTools(profile, project).map { it.tool }
-                    disableInspections(project, *tools.toTypedArray())
+                    disableInspections(project, inspections = tools.toTypedArray())
                 }
 
                 InspectionMode.ADD_SELECTED -> config.inspectionNames.enableInspections(profile, project)
@@ -60,7 +63,12 @@ class InspectionHandler(override val config: InspectionConfig) : BaseHandler {
         }
 
     private fun Collection<String>.toInspectionTools(profile: InspectionProfileImpl, project: Project) =
-        mapNotNull { profile.getInspectionTool(it, project) }
+        mapNotNull {
+            profile.getInspectionTool(it, project)
+                .also { inspection ->
+                    inspection ?: logger.warn("There are no inspection with short name '$it'")
+                }
+        }
 
     companion object {
         private const val PROFILE_NAME = "task"

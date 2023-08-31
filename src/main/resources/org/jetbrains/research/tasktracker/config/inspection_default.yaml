@@ -1,1 +1,6 @@
-mode: DEFAULT
+mode: DISABLE_SELECTED
+inspectionNames:
+  - "PyChainedComparisonsInspection"
+  - "PyPep8NamingInspection"
+  - "PyMissingOrEmptyDocstringInspection"
+  - "PyPep8Inspection"

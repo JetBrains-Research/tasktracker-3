@@ -17,17 +17,17 @@ enum class InspectionMode {
     DEFAULT,
 
     /**
-     * Enable only selected inspections.
+     * Enable only inspections from the config.
      */
     ENABLE_SELECTED,
 
     /**
-     * Keep user inspections without selected inspections.
+     * Keep user inspections with removing inspections from the config.
      */
     DISABLE_SELECTED,
 
     /**
-     * Keep user inspections with adding selected inspections.
+     * Keep user inspections with adding inspections from the config.
      */
     ADD_SELECTED
 }
