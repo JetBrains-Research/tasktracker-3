@@ -19,7 +19,7 @@ object TaskTrackerPlugin {
 
     // TODO: add a settings panel to update properties and the main config
     lateinit var mainConfig: MainTaskTrackerConfig
-    private lateinit var initializationHandler: InitializationHandler
+    lateinit var initializationHandler: InitializationHandler
 
     fun initPlugin() {
         val props = loadProps()
@@ -29,7 +29,7 @@ object TaskTrackerPlugin {
         }
         logger.info("Building the main config...")
         mainConfig = buildConfig(props, pluginProps)
-        initializationHandler = InitializationHandler(mainConfig).also { it.setupEnvironment() }
+        initializationHandler = InitializationHandler(mainConfig)
     }
 
     private fun buildConfig(props: Properties, pluginProps: PluginProperties): MainTaskTrackerConfig {

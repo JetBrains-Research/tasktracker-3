@@ -18,6 +18,7 @@ class InitActivity : StartupActivity {
 
     // TODO: show an error message to the user if an error occurs
     override fun runActivity(project: Project) {
+        TaskTrackerPlugin.initializationHandler.setupEnvironment(project) // TODO: move to the start point of the task
         TaskTrackerPlugin.mainConfig.scenarioConfig?.let { scenarioConf ->
             scenarioConf.scenario.getNextStep()?.let { scenarioStep ->
                 with(ScenarioHandler(TaskTrackerPlugin.mainConfig)) {

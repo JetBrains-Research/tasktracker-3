@@ -25,3 +25,13 @@ tasks:
         sourceSet: "SRC"
         templateFile: "c"
         id: "c"
+  - name: "python style checker"
+    description: "Modify the file to be more readable and compliant with PEP 8"
+    language: "PYTHON"
+    id: "style"
+    focusFileId: "main"
+    files:
+      - filename: "main"
+        sourceSet: "SRC"
+        templateFile: "comparison"
+        id: "main"

@@ -1,5 +1,6 @@
 package org.jetbrains.research.tasktracker.handler.init
 
+import com.intellij.openapi.project.Project
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
 import org.jetbrains.research.tasktracker.handler.BaseHandler
 
@@ -18,12 +19,12 @@ class InitializationHandler(private val mainConfig: MainTaskTrackerConfig) {
         TODO("Call extra content handler to get a test/intro/something else and show to the user")
     }
 
-    fun setupEnvironment() {
+    fun setupEnvironment(project: Project) {
         destroyHandlers()
 
         handlers.addAll(
             mainConfig.getAllConfigs().mapNotNull { it?.buildHandler() }
         )
-        handlers.forEach { it.setup() }
+        handlers.forEach { it.setup(project) }
     }
 }

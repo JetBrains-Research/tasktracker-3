@@ -2,7 +2,7 @@ package org.jetbrains.research.tasktracker.config
 
 import com.intellij.openapi.diagnostic.Logger
 import org.jetbrains.research.tasktracker.config.content.TaskContentConfig
-import org.jetbrains.research.tasktracker.config.ide.MainIdeConfig
+import org.jetbrains.research.tasktracker.config.ide.inspection.InspectionConfig
 import org.jetbrains.research.tasktracker.config.scenario.ScenarioConfig
 import org.jetbrains.research.tasktracker.config.tracking.ActivityTrackingConfig
 import org.jetbrains.research.tasktracker.config.tracking.CodeTrackingConfig
@@ -15,7 +15,7 @@ object DefaultConfigsFactory {
     private val configNames = listOf(
         ActivityTrackingConfig.CONFIG_FILE_PREFIX,
         CodeTrackingConfig.CONFIG_FILE_PREFIX,
-        MainIdeConfig.CONFIG_FILE_PREFIX,
+        InspectionConfig.CONFIG_FILE_PREFIX,
         TaskContentConfig.CONFIG_FILE_PREFIX,
         ScenarioConfig.CONFIG_FILE_PREFIX
     )

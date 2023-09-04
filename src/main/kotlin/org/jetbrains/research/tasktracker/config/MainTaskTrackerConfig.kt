@@ -60,12 +60,6 @@ data class MainTaskTrackerConfig(
                         mainConfig.activityTrackingConfig = ActivityTrackingConfig.buildConfig(configFile)
                     }
 
-                    fileName.startsWith(MainIdeConfig.CONFIG_FILE_PREFIX) -> {
-                        require(mainConfig.mainIdeConfig == null) { "The main IDE config was already parsed" }
-                        logger.info("Building config for ide...")
-                        mainConfig.mainIdeConfig = MainIdeConfig.buildConfig(configFile)
-                    }
-
                     fileName.startsWith(TaskContentConfig.CONFIG_FILE_PREFIX) -> {
                         require(mainConfig.taskContentConfig == null) {
                             "The task content config was already parsed"
@@ -83,7 +77,7 @@ data class MainTaskTrackerConfig(
                     }
                 }
             }
-
+            mainConfig.mainIdeConfig = MainIdeConfig.buildConfig(configFiles)
             return mainConfig
         }
     }
