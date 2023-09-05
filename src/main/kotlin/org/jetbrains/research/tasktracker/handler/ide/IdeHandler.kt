@@ -9,7 +9,7 @@ class IdeHandler(override val config: MainIdeConfig) : BaseHandler {
 
     init {
         with(config) {
-            childHandlers = listOfNotNull(inspectionConfig, completionConfig).map { it.buildHandler() }
+            childHandlers = listOfNotNull(inspectionConfig, settingsConfig).map { it.buildHandler() }
         }
     }
 
