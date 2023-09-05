@@ -2,17 +2,18 @@ package org.jetbrains.research.tasktracker.config.ide.settings
 
 enum class SettingMode {
     /**
-     * Keep users setting.
+     * This means that user settings remain unchanged,
+     * and they are not relevant to our research.
      */
     DEFAULT,
 
     /**
-     * Switch on setting.
+     * Switch setting on.
      */
     ON,
 
     /**
-     * Switch off setting.
+     * Switch setting off.
      */
     OFF
 }

@@ -8,7 +8,7 @@ import org.jetbrains.research.tasktracker.handler.BaseHandler
 
 class SettingsHandler(override val config: SettingsConfig) : BaseHandler {
     private val settings: CodeInsightSettings = CodeInsightSettings.getInstance()
-    private val defaultCompletion: Boolean = settings.AUTO_POPUP_COMPLETION_LOOKUP
+    private val defaultUserCompletion: Boolean = settings.AUTO_POPUP_COMPLETION_LOOKUP
 
     override fun setup(project: Project) {
         setupCodeCompletion()
@@ -21,6 +21,6 @@ class SettingsHandler(override val config: SettingsConfig) : BaseHandler {
     }
 
     override fun destroy() {
-        settings.AUTO_POPUP_COMPLETION_LOOKUP = defaultCompletion
+        settings.AUTO_POPUP_COMPLETION_LOOKUP = defaultUserCompletion
     }
 }

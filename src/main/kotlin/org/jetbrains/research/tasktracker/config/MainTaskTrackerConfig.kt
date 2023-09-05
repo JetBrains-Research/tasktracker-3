@@ -1,12 +1,12 @@
 package org.jetbrains.research.tasktracker.config
 
 import com.intellij.openapi.application.PathManager
-import com.intellij.openapi.diagnostic.Logger
 import org.jetbrains.research.tasktracker.config.content.TaskContentConfig
 import org.jetbrains.research.tasktracker.config.ide.MainIdeConfig
 import org.jetbrains.research.tasktracker.config.scenario.ScenarioConfig
 import org.jetbrains.research.tasktracker.config.tracking.ActivityTrackingConfig
 import org.jetbrains.research.tasktracker.config.tracking.CodeTrackingConfig
+import org.jetbrains.research.tasktracker.config.util.ConfigUtil
 import org.jetbrains.research.tasktracker.properties.PluginProperties
 import java.io.File
 
@@ -27,8 +27,6 @@ data class MainTaskTrackerConfig(
         listOf(taskContentConfig, mainIdeConfig, activityTrackingConfig, codeTrackingConfig, scenarioConfig)
 
     companion object {
-        private val logger = Logger.getInstance(MainTaskTrackerConfig::class.java)
-
         const val PLUGIN_NAME = "tasktracker"
         val pluginFolderPath = "${PathManager.getPluginsPath()}/$PLUGIN_NAME"
         const val PLUGIN_PROPERTIES_FILE = "$PLUGIN_NAME.properties"
@@ -45,35 +43,39 @@ data class MainTaskTrackerConfig(
                 val fileName = configFile.name
                 when {
                     fileName.startsWith(CodeTrackingConfig.CONFIG_FILE_PREFIX) -> {
-                        require(mainConfig.codeTrackingConfig == null) {
-                            "The code tracking config was already parsed"
-                        }
-                        logger.info("Building config for code tracking...")
-                        mainConfig.codeTrackingConfig = CodeTrackingConfig.buildConfig(configFile)
+                        mainConfig.codeTrackingConfig = ConfigUtil.buildConfig(
+                            mainConfig.codeTrackingConfig,
+                            "code_tracking",
+                            configFile,
+                            CodeTrackingConfig::buildConfig
+                        )
                     }
 
                     fileName.startsWith(ActivityTrackingConfig.CONFIG_FILE_PREFIX) -> {
-                        require(mainConfig.activityTrackingConfig == null) {
-                            "The activity tracking config was already parsed"
-                        }
-                        logger.info("Building config for activity tracking...")
-                        mainConfig.activityTrackingConfig = ActivityTrackingConfig.buildConfig(configFile)
+                        mainConfig.activityTrackingConfig = ConfigUtil.buildConfig(
+                            mainConfig.activityTrackingConfig,
+                            "activity_tracking",
+                            configFile,
+                            ActivityTrackingConfig::buildConfig
+                        )
                     }
 
                     fileName.startsWith(TaskContentConfig.CONFIG_FILE_PREFIX) -> {
-                        require(mainConfig.taskContentConfig == null) {
-                            "The task content config was already parsed"
-                        }
-                        logger.info("Building task content config...")
-                        mainConfig.taskContentConfig = TaskContentConfig.buildConfig(configFile)
+                        mainConfig.taskContentConfig = ConfigUtil.buildConfig(
+                            mainConfig.taskContentConfig,
+                            "task_content",
+                            configFile,
+                            TaskContentConfig::buildConfig
+                        )
                     }
 
                     fileName.startsWith(ScenarioConfig.CONFIG_FILE_PREFIX) -> {
-                        require(mainConfig.scenarioConfig == null) {
-                            "The scenario config was already parsed"
-                        }
-                        logger.info("Building scenario config...")
-                        mainConfig.scenarioConfig = ScenarioConfig.buildConfig(configFile)
+                        mainConfig.scenarioConfig = ConfigUtil.buildConfig(
+                            mainConfig.scenarioConfig,
+                            "scenario",
+                            configFile,
+                            ScenarioConfig::buildConfig
+                        )
                     }
                 }
             }
