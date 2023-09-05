@@ -7,7 +7,7 @@ import org.jetbrains.research.tasktracker.handler.ide.SettingsHandler
 import java.io.File
 
 @Serializable
-data class SettingsConfig(val enableCodeCompletion: Boolean) : BaseConfig {
+data class SettingsConfig(val enableCodeCompletion: SettingMode) : BaseConfig {
 
     override fun buildHandler() = SettingsHandler(this)
 
