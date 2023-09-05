@@ -14,5 +14,5 @@ fun String.getVirtualFile(): VirtualFile {
             file.createNewFile()
         }
     }
-    return LocalFileSystem.getInstance().findFileByIoFile(file) ?: error("File $this must exist")
+    return LocalFileSystem.getInstance().refreshAndFindFileByIoFile(file) ?: error("File $this must exist")
 }
