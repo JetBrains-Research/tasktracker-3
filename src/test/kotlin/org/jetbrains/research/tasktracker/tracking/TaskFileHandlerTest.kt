@@ -2,14 +2,15 @@
 
 package org.jetbrains.research.tasktracker.tracking
 
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.intellij.testFramework.builders.ModuleFixtureBuilder
+import com.intellij.testFramework.fixtures.CodeInsightFixtureTestCase
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig.Companion.PLUGIN_NAME
 import org.jetbrains.research.tasktracker.config.content.task.base.Task
 import org.jetbrains.research.tasktracker.config.content.task.base.TaskWithFiles
 import org.jetbrains.research.tasktracker.tracking.mock.*
 import kotlin.test.assertFailsWith
 
-class TaskFileHandlerTest : BasePlatformTestCase() {
+class TaskFileHandlerTest : CodeInsightFixtureTestCase<ModuleFixtureBuilder<*>>() {
 
     private val projectToTaskToFiles = TaskFileHandler.projectToTaskToFiles
 
