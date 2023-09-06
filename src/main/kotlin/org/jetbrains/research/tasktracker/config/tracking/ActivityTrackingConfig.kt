@@ -11,6 +11,9 @@ data class ActivityTrackingConfig(
     override val trackingDeltaSec: Double = BaseTrackingConfig.DEFAULT_TRACKING_DELTA,
 ) : BaseTrackingConfig, BaseConfig {
 
+    override val configName: String
+        get() = "activity_tracking"
+
     override fun buildHandler() = ActivityTrackingHandler(this)
 
     companion object {

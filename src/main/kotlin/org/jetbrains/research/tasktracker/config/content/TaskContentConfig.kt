@@ -14,6 +14,9 @@ import java.io.File
 @Serializable
 data class TaskContentConfig(val tasks: List<ProgrammingTask>) : BaseConfig {
 
+    override val configName: String
+        get() = "task_content"
+
     override fun buildHandler() = TaskContentHandler(this)
 
     companion object {

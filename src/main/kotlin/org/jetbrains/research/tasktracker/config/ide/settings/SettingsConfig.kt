@@ -9,6 +9,9 @@ import java.io.File
 @Serializable
 data class SettingsConfig(val enableCodeCompletion: SettingMode) : BaseConfig {
 
+    override val configName: String
+        get() = "settings"
+
     override fun buildHandler() = SettingsHandler(this)
 
     companion object {

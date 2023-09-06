@@ -20,6 +20,10 @@ data class CodeTrackingConfig(
     // Additional files to track
     val filesPathToTrack: List<String> = emptyList(),
 ) : BaseTrackingConfig, BaseConfig {
+
+    override val configName: String
+        get() = "code_tracking"
+
     override fun buildHandler() = CodeTrackingHandler(this)
 
     companion object {

@@ -1,12 +1,13 @@
 package org.jetbrains.research.tasktracker.config
 
 import com.intellij.openapi.application.PathManager
+import com.intellij.openapi.diagnostic.Logger
 import org.jetbrains.research.tasktracker.config.content.TaskContentConfig
 import org.jetbrains.research.tasktracker.config.ide.MainIdeConfig
 import org.jetbrains.research.tasktracker.config.scenario.ScenarioConfig
 import org.jetbrains.research.tasktracker.config.tracking.ActivityTrackingConfig
 import org.jetbrains.research.tasktracker.config.tracking.CodeTrackingConfig
-import org.jetbrains.research.tasktracker.config.util.ConfigUtil
+import org.jetbrains.research.tasktracker.config.util.buildBaseConfig
 import org.jetbrains.research.tasktracker.properties.PluginProperties
 import java.io.File
 
@@ -27,6 +28,8 @@ data class MainTaskTrackerConfig(
         listOf(taskContentConfig, mainIdeConfig, activityTrackingConfig, codeTrackingConfig, scenarioConfig)
 
     companion object {
+        val logger = Logger.getInstance(MainTaskTrackerConfig::class.java)
+
         const val PLUGIN_NAME = "tasktracker"
         val pluginFolderPath = "${PathManager.getPluginsPath()}/$PLUGIN_NAME"
         const val PLUGIN_PROPERTIES_FILE = "$PLUGIN_NAME.properties"
@@ -43,38 +46,38 @@ data class MainTaskTrackerConfig(
                 val fileName = configFile.name
                 when {
                     fileName.startsWith(CodeTrackingConfig.CONFIG_FILE_PREFIX) -> {
-                        mainConfig.codeTrackingConfig = ConfigUtil.buildConfig(
+                        mainConfig.codeTrackingConfig = buildBaseConfig(
                             mainConfig.codeTrackingConfig,
-                            "code_tracking",
                             configFile,
-                            CodeTrackingConfig::buildConfig
+                            CodeTrackingConfig::buildConfig,
+                            logger
                         )
                     }
 
                     fileName.startsWith(ActivityTrackingConfig.CONFIG_FILE_PREFIX) -> {
-                        mainConfig.activityTrackingConfig = ConfigUtil.buildConfig(
+                        mainConfig.activityTrackingConfig = buildBaseConfig(
                             mainConfig.activityTrackingConfig,
-                            "activity_tracking",
                             configFile,
-                            ActivityTrackingConfig::buildConfig
+                            ActivityTrackingConfig::buildConfig,
+                            logger
                         )
                     }
 
                     fileName.startsWith(TaskContentConfig.CONFIG_FILE_PREFIX) -> {
-                        mainConfig.taskContentConfig = ConfigUtil.buildConfig(
+                        mainConfig.taskContentConfig = buildBaseConfig(
                             mainConfig.taskContentConfig,
-                            "task_content",
                             configFile,
-                            TaskContentConfig::buildConfig
+                            TaskContentConfig::buildConfig,
+                            logger
                         )
                     }
 
                     fileName.startsWith(ScenarioConfig.CONFIG_FILE_PREFIX) -> {
-                        mainConfig.scenarioConfig = ConfigUtil.buildConfig(
+                        mainConfig.scenarioConfig = buildBaseConfig(
                             mainConfig.scenarioConfig,
-                            "scenario",
                             configFile,
-                            ScenarioConfig::buildConfig
+                            ScenarioConfig::buildConfig,
+                            logger
                         )
                     }
                 }
