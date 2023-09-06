@@ -7,7 +7,10 @@ import org.jetbrains.research.tasktracker.handler.ide.SettingsHandler
 import java.io.File
 
 @Serializable
-data class SettingsConfig(val enableCodeCompletion: SettingMode) : BaseConfig {
+data class SettingsConfig(
+    val enableCodeCompletion: SettingMode,
+    val enableZenMode: SettingMode
+) : BaseConfig {
 
     override val configName: String
         get() = "settings"
