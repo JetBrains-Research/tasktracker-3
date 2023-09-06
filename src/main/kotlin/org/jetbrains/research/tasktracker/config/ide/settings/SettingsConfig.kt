@@ -9,7 +9,8 @@ import java.io.File
 @Serializable
 data class SettingsConfig(
     val enableCodeCompletion: SettingMode,
-    val enableZenMode: SettingMode
+    val enableZenMode: SettingMode,
+    val theme: Theme
 ) : BaseConfig {
 
     override val configName: String

@@ -2,20 +2,26 @@ package org.jetbrains.research.tasktracker.handler.ide
 
 import com.intellij.codeInsight.CodeInsightSettings
 import com.intellij.ide.actions.ToggleZenModeAction
+import com.intellij.ide.ui.LafManager
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.Project
 import org.jetbrains.research.tasktracker.config.ide.settings.SettingMode
 import org.jetbrains.research.tasktracker.config.ide.settings.SettingsConfig
+import org.jetbrains.research.tasktracker.config.ide.settings.Theme
 import org.jetbrains.research.tasktracker.handler.BaseHandler
+import javax.swing.UIManager.LookAndFeelInfo
 
 class SettingsHandler(override val config: SettingsConfig) : BaseHandler {
     private val settings: CodeInsightSettings = CodeInsightSettings.getInstance()
     private val defaultUserCompletion: Boolean = settings.AUTO_POPUP_COMPLETION_LOOKUP
+    private val lafManager = LafManager.getInstance()
+    private val defaultLookAndFeel: LookAndFeelInfo = LafManager.getInstance().currentLookAndFeel
 
     override fun setup(project: Project) {
         setupCodeCompletion()
         setupZenMode(project)
+        setupTheme()
     }
 
     private fun setupCodeCompletion() = when (config.enableCodeCompletion) {
@@ -45,11 +51,33 @@ class SettingsHandler(override val config: SettingsConfig) : BaseHandler {
         }
     }
 
+    private fun setupTheme() {
+        when (config.theme) {
+            Theme.DEFAULT -> {}
+            Theme.LIGHT -> {
+                val lightTheme = lafManager.installedLookAndFeels.find { it.name == light }
+                    ?: error("light theme must exist")
+                lafManager.currentLookAndFeel = lightTheme
+            }
+
+            Theme.DARCULA -> {
+                val darculaTheme = lafManager.installedLookAndFeels.find { it.name == darcula }
+                    ?: error("darcula theme must exist")
+                lafManager.currentLookAndFeel = darculaTheme
+            }
+        }
+        lafManager.updateUI()
+    }
+
     override fun destroy() {
         settings.AUTO_POPUP_COMPLETION_LOOKUP = defaultUserCompletion
+        lafManager.currentLookAndFeel = defaultLookAndFeel
+        lafManager.updateUI()
     }
 
     companion object {
         const val zenModeActionId = "ToggleZenMode"
+        const val darcula = "Darcula"
+        const val light = "Light"
     }
 }
