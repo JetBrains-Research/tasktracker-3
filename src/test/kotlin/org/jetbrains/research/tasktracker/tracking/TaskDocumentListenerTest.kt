@@ -4,12 +4,13 @@ import com.intellij.openapi.application.ReadAction
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.fileEditor.FileDocumentManager
-import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.intellij.testFramework.builders.ModuleFixtureBuilder
+import com.intellij.testFramework.fixtures.CodeInsightFixtureTestCase
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
 import org.jetbrains.research.tasktracker.tracking.logger.DocumentLogger
 import java.io.File
 
-class TaskDocumentListenerTest : BasePlatformTestCase() {
+class TaskDocumentListenerTest : CodeInsightFixtureTestCase<ModuleFixtureBuilder<*>>() {
 
     fun testTaskDocumentListener() {
         val (logFile, document) = prepareDocument()

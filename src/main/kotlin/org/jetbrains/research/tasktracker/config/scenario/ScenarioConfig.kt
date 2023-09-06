@@ -8,6 +8,9 @@ import java.io.File
 @Serializable
 data class ScenarioConfig(val scenario: Scenario) : BaseConfig {
 
+    override val configName: String
+        get() = "scenario"
+
     val test: String = "" // TODO make real fields
     companion object {
         const val CONFIG_FILE_PREFIX: String = "scenario"

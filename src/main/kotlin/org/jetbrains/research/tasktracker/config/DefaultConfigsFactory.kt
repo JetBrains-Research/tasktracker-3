@@ -3,6 +3,7 @@ package org.jetbrains.research.tasktracker.config
 import com.intellij.openapi.diagnostic.Logger
 import org.jetbrains.research.tasktracker.config.content.TaskContentConfig
 import org.jetbrains.research.tasktracker.config.ide.inspection.InspectionConfig
+import org.jetbrains.research.tasktracker.config.ide.settings.SettingsConfig
 import org.jetbrains.research.tasktracker.config.scenario.ScenarioConfig
 import org.jetbrains.research.tasktracker.config.tracking.ActivityTrackingConfig
 import org.jetbrains.research.tasktracker.config.tracking.CodeTrackingConfig
@@ -16,6 +17,7 @@ object DefaultConfigsFactory {
         ActivityTrackingConfig.CONFIG_FILE_PREFIX,
         CodeTrackingConfig.CONFIG_FILE_PREFIX,
         InspectionConfig.CONFIG_FILE_PREFIX,
+        SettingsConfig.CONFIG_FILE_PREFIX,
         TaskContentConfig.CONFIG_FILE_PREFIX,
         ScenarioConfig.CONFIG_FILE_PREFIX
     )

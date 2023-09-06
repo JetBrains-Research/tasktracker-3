@@ -16,6 +16,9 @@ data class InspectionConfig(
     val inspectionNames: List<String> = emptyList()
 ) : BaseConfig {
 
+    override val configName: String
+        get() = "inspection"
+
     override fun buildHandler() = InspectionHandler(this)
 
     companion object {

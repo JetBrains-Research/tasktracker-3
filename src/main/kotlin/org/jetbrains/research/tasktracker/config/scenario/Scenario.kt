@@ -44,14 +44,15 @@ data class Scenario(
         var isValid: Boolean
         var step: ScenarioStep
         do {
+            if (steps.isEmpty()) {
+                logger.warn("No steps found!")
+                return null
+            }
+
             step = steps.poll()
             isValid = step.isValid()
             if (!isValid) {
                 logger.warn("Found useless step, all configs are null. Skip it")
-            }
-            if (steps.isEmpty()) {
-                logger.warn("No steps found!")
-                return null
             }
         } while (!isValid)
         return step

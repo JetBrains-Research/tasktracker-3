@@ -24,7 +24,7 @@ class InitActivity : StartupActivity {
                 with(ScenarioHandler(TaskTrackerPlugin.mainConfig)) {
                     scenarioStep.run()
                 }
-            } ?: logger.error("Try to init the plugin, but the scenario is empty or invalid")
-        } ?: logger.error("Please, provide a scenario for the plugin behaviour")
+            } ?: logger.warn("Try to init the plugin, but the scenario is empty or invalid")
+        } ?: logger.warn("Please, provide a scenario for the plugin behaviour")
     }
 }
