@@ -16,7 +16,7 @@ class SettingsHandler(override val config: SettingsConfig) : BaseHandler {
     private val settings: CodeInsightSettings = CodeInsightSettings.getInstance()
     private val defaultUserCompletion: Boolean = settings.AUTO_POPUP_COMPLETION_LOOKUP
     private val lafManager = LafManager.getInstance()
-    private val defaultLookAndFeel: LookAndFeelInfo = LafManager.getInstance().currentLookAndFeel
+    private val defaultUserLookAndFeel: LookAndFeelInfo? = LafManager.getInstance().currentLookAndFeel
 
     override fun setup(project: Project) {
         setupCodeCompletion()
@@ -71,7 +71,7 @@ class SettingsHandler(override val config: SettingsConfig) : BaseHandler {
 
     override fun destroy() {
         settings.AUTO_POPUP_COMPLETION_LOOKUP = defaultUserCompletion
-        lafManager.currentLookAndFeel = defaultLookAndFeel
+        lafManager.currentLookAndFeel = defaultUserLookAndFeel
         lafManager.updateUI()
     }
 
