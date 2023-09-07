@@ -54,19 +54,16 @@ class SettingsHandler(override val config: SettingsConfig) : BaseHandler {
     private fun setupTheme() {
         when (config.theme) {
             Theme.DEFAULT -> {}
-            Theme.LIGHT -> {
-                val lightTheme = lafManager.installedLookAndFeels.find { it.name == light }
-                    ?: error("light theme must exist")
-                lafManager.currentLookAndFeel = lightTheme
-            }
-
-            Theme.DARCULA -> {
-                val darculaTheme = lafManager.installedLookAndFeels.find { it.name == darcula }
-                    ?: error("darcula theme must exist")
-                lafManager.currentLookAndFeel = darculaTheme
-            }
+            Theme.LIGHT -> changeTheme(light)
+            Theme.DARCULA -> changeTheme(darcula)
         }
         lafManager.updateUI()
+    }
+
+    private fun changeTheme(themeName: String) {
+        val theme = lafManager.installedLookAndFeels.find { it.name == themeName }
+            ?: error("$themeName theme must exist")
+        lafManager.currentLookAndFeel = theme
     }
 
     override fun destroy() {
