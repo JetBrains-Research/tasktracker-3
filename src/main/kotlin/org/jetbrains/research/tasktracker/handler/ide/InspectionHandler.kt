@@ -6,7 +6,7 @@ import com.intellij.openapi.Disposable
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Disposer
-import com.intellij.profile.codeInspection.InspectionProfileManager
+import com.intellij.profile.codeInspection.ProjectInspectionProfileManager
 import com.intellij.testFramework.disableInspections
 import com.intellij.testFramework.enableInspectionTool
 import org.jetbrains.research.tasktracker.config.ide.inspection.InspectionConfig
@@ -20,15 +20,7 @@ class InspectionHandler(override val config: InspectionConfig) : BaseHandler {
     override fun setup(project: Project) {
         inspectionDisposable = Disposer.newDisposable()
         // creating a new profile to make changes only in the current project
-        val inspectionProfileManager = InspectionProfileManager.getInstance(project)
-        InspectionProfileImpl(
-            PROFILE_NAME,
-            InspectionToolRegistrar.getInstance(),
-            inspectionProfileManager.currentProfile
-        )
-        inspectionProfileManager.setRootProfile(PROFILE_NAME)
-
-        val profile = inspectionProfileManager.currentProfile
+        val profile = initTaskProfile(project)
         with(profile) {
             when (config.mode) {
                 InspectionMode.ALL -> enableAllTools(project)
@@ -47,6 +39,21 @@ class InspectionHandler(override val config: InspectionConfig) : BaseHandler {
                 InspectionMode.ADD_SELECTED -> config.inspectionNames.enableInspections(profile, project)
             }
         }
+    }
+
+    private fun initTaskProfile(project: Project): InspectionProfileImpl {
+        val inspectionProfileManager = ProjectInspectionProfileManager.getInstance(project)
+        val inspectionProfile = InspectionProfileImpl(
+            PROFILE_NAME,
+            InspectionToolRegistrar.getInstance(),
+            inspectionProfileManager
+        )
+        inspectionProfile.copyFrom(inspectionProfileManager.currentProfile)
+        inspectionProfile.isProjectLevel = true
+        inspectionProfile.name = PROFILE_NAME
+        inspectionProfileManager.addProfile(inspectionProfile)
+        inspectionProfileManager.setCurrentProfile(inspectionProfile)
+        return inspectionProfileManager.currentProfile
     }
 
     override fun destroy() {
