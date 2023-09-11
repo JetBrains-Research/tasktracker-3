@@ -1,34 +1,35 @@
 package org.jetbrains.research.tasktracker.config.ide.inspection
 
+import com.intellij.codeInsight.CodeInsightSettings
 import com.intellij.codeInspection.ex.InspectionProfileImpl
 import com.intellij.profile.codeInspection.InspectionProfileManager
 import com.intellij.profile.codeInspection.ProjectInspectionProfileManager
-import com.intellij.testFramework.builders.ModuleFixtureBuilder
-import com.intellij.testFramework.fixtures.CodeInsightFixtureTestCase
+import com.intellij.testFramework.LightPlatformTestCase
 import java.io.File
 import java.nio.file.Files
 import kotlin.io.path.writeText
 
-class InspectionConfigTest : CodeInsightFixtureTestCase<ModuleFixtureBuilder<*>>() {
+class InspectionConfigTest : LightPlatformTestCase() {
 
     override fun setUp() {
         super.setUp()
-        InspectionProfileImpl.INIT_INSPECTIONS = true
-        setupProjectProfile()
+        CodeInsightSettings.getInstance().AUTO_POPUP_COMPLETION_LOOKUP = true
     }
 
     fun testAllInspections() {
+        val profile = setupProjectProfile()
         val configFile = loadConfig("all")
-        applyConfig(configFile)
-        val profile = InspectionProfileManager.getInstance(project).currentProfile
-        assert(profile.getAllEnabledInspectionTools(project).size == profile.allTools.size) {
-            "all available tools must be enabled"
+        applyConfig(configFile, profile)
+        assert(profile.allTools.all { it.isEnabled }) {
+            "all available tools must be enabled, the list of disabled tools: ${profile.getAllDisabledToolIds()}"
         }
     }
 
-    private fun applyConfig(configFile: File) {
+    private fun InspectionProfileImpl.getAllDisabledToolIds() = allTools.filter { !it.isEnabled }.map { it.tool.id }
+
+    private fun applyConfig(configFile: File, profile: InspectionProfileImpl) {
         val inspectionConfig = InspectionConfig.buildConfig(configFile)
-        inspectionConfig.buildHandler().setup(project)
+        inspectionConfig.buildHandler().applyConfig(profile, project)
     }
 
     private fun loadConfig(name: String): File {
@@ -43,9 +44,11 @@ class InspectionConfigTest : CodeInsightFixtureTestCase<ModuleFixtureBuilder<*>>
     /**
      * copy inspections from the global profile to the project profile
      */
-    private fun setupProjectProfile() {
+    private fun setupProjectProfile(): InspectionProfileImpl {
+        InspectionProfileImpl.INIT_INSPECTIONS = true
         val inspectionProfileManager = ProjectInspectionProfileManager.getInstance(project)
         val profile = InspectionProfileManager.getInstance().currentProfile
         inspectionProfileManager.currentProfile.copyFrom(profile)
+        return InspectionProfileManager.getInstance().currentProfile
     }
 }
