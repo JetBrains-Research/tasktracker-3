@@ -1,0 +1,4 @@
+mode: DISABLE_SELECTED
+inspectionNames:
+  - "CheckTagEmptyBody"
+  - "RegExpRedundantEscape"
