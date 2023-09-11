@@ -45,10 +45,10 @@ class InspectionConfigTest : LightPlatformTestCase() {
      * copy inspections from the global profile to the project profile
      */
     private fun setupProjectProfile(): InspectionProfileImpl {
+        InspectionProfileImpl.INIT_INSPECTIONS = true
         val inspectionProfileManager = ProjectInspectionProfileManager.getInstance(project)
         val profile = InspectionProfileManager.getInstance().currentProfile
         inspectionProfileManager.currentProfile.copyFrom(profile)
-        InspectionProfileImpl.INIT_INSPECTIONS = true
         return InspectionProfileManager.getInstance().currentProfile
     }
 }
