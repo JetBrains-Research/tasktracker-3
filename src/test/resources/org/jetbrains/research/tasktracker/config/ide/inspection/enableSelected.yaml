@@ -1,0 +1,4 @@
+mode: ENABLE_SELECTED
+inspectionNames:
+  - "LongLine"
+  - "TodoComment"

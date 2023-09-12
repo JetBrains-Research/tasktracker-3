@@ -6,9 +6,7 @@ import com.intellij.openapi.Disposable
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Disposer
-import com.intellij.profile.codeInspection.InspectionProfileManager
-import com.intellij.testFramework.disableInspections
-import com.intellij.testFramework.enableInspectionTool
+import com.intellij.profile.codeInspection.ProjectInspectionProfileManager
 import org.jetbrains.research.tasktracker.config.ide.inspection.InspectionConfig
 import org.jetbrains.research.tasktracker.config.ide.inspection.InspectionMode
 import org.jetbrains.research.tasktracker.handler.BaseHandler
@@ -18,17 +16,13 @@ class InspectionHandler(override val config: InspectionConfig) : BaseHandler {
     private val logger: Logger = Logger.getInstance(InspectionHandler::class.java)
 
     override fun setup(project: Project) {
-        inspectionDisposable = Disposer.newDisposable()
         // creating a new profile to make changes only in the current project
-        val inspectionProfileManager = InspectionProfileManager.getInstance(project)
-        InspectionProfileImpl(
-            PROFILE_NAME,
-            InspectionToolRegistrar.getInstance(),
-            inspectionProfileManager.currentProfile
-        )
-        inspectionProfileManager.setRootProfile(PROFILE_NAME)
+        val profile = initTaskProfile(project)
+        applyConfig(profile, project)
+    }
 
-        val profile = inspectionProfileManager.currentProfile
+    fun applyConfig(profile: InspectionProfileImpl, project: Project) {
+        inspectionDisposable = inspectionDisposable ?: Disposer.newDisposable()
         with(profile) {
             when (config.mode) {
                 InspectionMode.ALL -> enableAllTools(project)
@@ -40,8 +34,7 @@ class InspectionHandler(override val config: InspectionConfig) : BaseHandler {
                 }
 
                 InspectionMode.DISABLE_SELECTED -> {
-                    val tools = config.inspectionNames.toInspectionTools(profile, project).map { it.tool }
-                    disableInspections(project, inspections = tools.toTypedArray())
+                    config.inspectionNames.disableInspections(profile, project)
                 }
 
                 InspectionMode.ADD_SELECTED -> config.inspectionNames.enableInspections(profile, project)
@@ -49,26 +42,41 @@ class InspectionHandler(override val config: InspectionConfig) : BaseHandler {
         }
     }
 
+    private fun initTaskProfile(project: Project): InspectionProfileImpl {
+        val inspectionProfileManager = ProjectInspectionProfileManager.getInstance(project)
+        val inspectionProfile = InspectionProfileImpl(
+            PROFILE_NAME,
+            InspectionToolRegistrar.getInstance(),
+            inspectionProfileManager
+        )
+        inspectionProfile.copyFrom(inspectionProfileManager.currentProfile)
+        inspectionProfile.isProjectLevel = true
+        inspectionProfile.name = PROFILE_NAME
+        inspectionProfileManager.addProfile(inspectionProfile)
+        inspectionProfileManager.setCurrentProfile(inspectionProfile)
+        return inspectionProfileManager.currentProfile
+    }
+
     override fun destroy() {
         inspectionDisposable?.let { Disposer.dispose(it) }
     }
 
     private fun Collection<String>.enableInspections(profile: InspectionProfileImpl, project: Project) =
-        toInspectionTools(profile, project).forEach {
-            enableInspectionTool(
-                project,
-                it,
-                inspectionDisposable ?: error("disposable must be initiated for this moment")
-            )
+        filterExistingInspections(profile).forEach {
+            profile.enableTool(it, project)
         }
 
-    private fun Collection<String>.toInspectionTools(profile: InspectionProfileImpl, project: Project) =
-        mapNotNull {
-            profile.getInspectionTool(it, project)
-                .also { inspection ->
-                    inspection ?: logger.warn("There are no inspection with short name '$it'")
-                }
+    private fun Collection<String>.disableInspections(profile: InspectionProfileImpl, project: Project) =
+        filterExistingInspections(profile).forEach {
+            profile.setToolEnabled(it, false, project)
         }
+
+    private fun Collection<String>.filterExistingInspections(profile: InspectionProfileImpl): List<String> =
+        partition { inspection -> inspection in profile.allTools.map { it.tool.shortName } }.apply {
+            second.forEach {
+                logger.warn("There are no inspection with short name '$it'")
+            }
+        }.first
 
     companion object {
         private const val PROFILE_NAME = "task"

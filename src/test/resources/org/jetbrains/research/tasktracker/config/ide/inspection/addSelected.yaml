@@ -1,0 +1,4 @@
+mode: ADD_SELECTED
+inspectionNames:
+  - "EmptyDirectory"
+  - "ProblematicWhitespace"
