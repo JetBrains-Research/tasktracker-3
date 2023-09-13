@@ -3,7 +3,7 @@ package org.jetbrains.research.tasktracker.ui.main.panel.template
 import org.jetbrains.research.tasktracker.ui.main.panel.models.Theme
 
 sealed class HtmlTemplateBase {
-    protected abstract val htmlFileName: String
+    protected abstract val htmlFileName: String?
 
     open fun pageContent(theme: Theme, vararg arguments: String) = pageTemplate(theme).format(*arguments)
 
@@ -11,9 +11,9 @@ sealed class HtmlTemplateBase {
         HtmlTemplateBase::class.java.getResource("css/$filename.css")?.readText()?.replace("%", "%%")
             ?: error("Cannot find $filename.css")
 
-    protected fun cssContent(theme: Theme) = loadCss(theme.cssFileName)
+    private fun cssContent(theme: Theme) = loadCss(theme.cssFileName)
 
-    protected fun baseCss() = loadCss("base")
+    private fun baseCss() = loadCss("base")
 
     private fun pageTemplate(theme: Theme): String {
         val currentTemplate = HtmlTemplateBase::class.java.getResource("$htmlFileName.html")?.readText()

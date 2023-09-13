@@ -25,19 +25,17 @@ class EmojiDialogWrapper(private val emotion: EmotionType) : DialogWrapper(null,
         icon.setVerticalAlignment(SwingConstants.TOP)
         icon.setBorder(JBUI.Borders.empty(20, 12, 0, 12))
         box.setBorder(JBUI.Borders.empty(20, 0, 0, 20))
-
         return JBUI.Panels.simplePanel().addToLeft(icon).addToCenter(box)
     }
 
-    private fun getText(): Box {
-        val box = Box.createVerticalBox()
-        box.add(label(emotion.getRandomAdviceDescription(), JBFont.medium()))
-        return box
+    override fun doOKAction() {
+        // TODO: make it better
+        EmojiAction.canBeChanged = true
+        super.doOKAction()
     }
 
-    private fun label(text: String, font: JBFont): JLabel {
-        val label = JBLabel(text).withFont(font)
-        label.setCopyable(true)
-        return label
-    }
+    private fun getText() = Box.createVerticalBox()
+        .also { it.add(label(emotion.getRandomAdviceDescription(), JBFont.medium())) }
+
+    private fun label(text: String, font: JBFont) = JBLabel(text).withFont(font).also { it.setCopyable(true) }
 }

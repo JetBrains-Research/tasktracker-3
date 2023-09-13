@@ -5,7 +5,7 @@ package org.jetbrains.research.tasktracker.actions.emoji
 import javax.swing.Icon
 
 enum class EmotionType(
-    val score: Int,
+    val modelScore: Int,
     private val affirmDescriptions: List<String>,
     private val adviceDescriptions: List<String> = emptyList(),
     val icon: Icon? = null,
