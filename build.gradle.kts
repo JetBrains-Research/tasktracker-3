@@ -53,15 +53,17 @@ allprojects {
         test {
             useJUnit()
         }
-
-        wrapper {
-            gradleVersion = properties("gradleVersion").get()
-        }
     }
 
     detekt {
         buildUponDefaultConfig = true
         allRules = false
         config = files("$rootDir/config/detekt.yml")
+    }
+}
+
+tasks {
+    wrapper {
+        gradleVersion = properties("gradleVersion").get()
     }
 }
