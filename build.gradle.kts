@@ -26,6 +26,7 @@ allprojects {
 
     repositories {
         mavenCentral()
+        maven("https://packages.jetbrains.team/maven/p/ki/maven")
     }
 
     dependencies {
