@@ -28,12 +28,6 @@ class EmojiDialogWrapper(private val emotion: EmotionType) : DialogWrapper(null,
         return JBUI.Panels.simplePanel().addToLeft(icon).addToCenter(box)
     }
 
-    override fun doOKAction() {
-        // TODO: make it better
-        EmojiAction.canBeChanged = true
-        super.doOKAction()
-    }
-
     private fun getText() = Box.createVerticalBox()
         .also { it.add(label(emotion.getRandomAdviceDescription(), JBFont.medium())) }
 
