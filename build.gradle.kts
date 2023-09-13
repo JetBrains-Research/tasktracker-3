@@ -30,9 +30,6 @@ allprojects {
 
     dependencies {
         detektPlugins(rootProject.libs.detekt.formatting)
-        implementation(rootProject.libs.kaml)
-        implementation(rootProject.libs.snakeyaml)
-        implementation(rootProject.libs.csv)
         implementation(rootProject.libs.joda)
         testImplementation(kotlin("test"))
     }

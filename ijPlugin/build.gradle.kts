@@ -8,6 +8,12 @@ plugins {
     alias(libs.plugins.intellij)
 }
 
+dependencies{
+    implementation(rootProject.libs.kaml)
+    implementation(rootProject.libs.snakeyaml)
+    implementation(rootProject.libs.csv)
+}
+
 intellij {
     pluginName.set(properties("pluginName"))
     version.set(properties("platformVersion"))
