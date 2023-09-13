@@ -21,7 +21,7 @@ class WebcamChoicePageTemplate(private val listOfCameras: List<WebCamInfo>) : Ht
     private fun generateTemplateForChoosingCamera() = listOfCameras.mapIndexed { i, info ->
         val value = getDeviceName(i)
         """
-            <option value="$value" id="${info.deviceNumber}">$value</option>
+            <option value="${info.deviceNumber}" id="${info.deviceNumber}">$value</option>
         """.trimIndent()
     }.joinToString(System.lineSeparator())
 
