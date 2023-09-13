@@ -8,6 +8,4 @@ import org.jetbrains.research.tasktracker.tracking.webcam.WebCamInfo
  */
 object MainPanelStorage {
     var taskIdTask: MutableMap<String, Task> = mutableMapOf()
-    val camerasInfo: MutableList<WebCamInfo> = mutableListOf()
-    var currentDeviceNumber: Int? = null
 }

@@ -19,6 +19,7 @@ import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
 import org.jetbrains.research.tasktracker.tracking.activity.ActivityTracker
 import org.jetbrains.research.tasktracker.tracking.webcam.WebCamTracker
 import org.jetbrains.research.tasktracker.tracking.webcam.collectAllDevices
+import org.jetbrains.research.tasktracker.ui.main.panel.storage.GlobalPluginStorage
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.MainPanelStorage
 import org.jetbrains.research.tasktracker.ui.main.panel.template.*
 import org.jetbrains.research.tasktracker.util.UIBundle
@@ -84,11 +85,11 @@ class MainPluginPanelFactory : ToolWindowFactory {
             project, UIBundle.message("ui.progress.webcam.title"), false
         ) {
             override fun run(indicator: ProgressIndicator) {
-                if (MainPanelStorage.camerasInfo.isEmpty()) {
-                    MainPanelStorage.camerasInfo.addAll(collectAllDevices())
+                if (GlobalPluginStorage.camerasInfo.isEmpty()) {
+                    GlobalPluginStorage.camerasInfo.addAll(collectAllDevices())
                 }
                 loadBasePage(
-                    WebcamChoicePageTemplate(MainPanelStorage.camerasInfo), "ui.button.select", true
+                    WebcamChoicePageTemplate(GlobalPluginStorage.camerasInfo), "ui.button.select", true
                 )
             }
         })
@@ -104,7 +105,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
         }
         nextButton.addListener {
             mainWindow.getElementValue("cameras").onSuccess { deviceNumber ->
-                MainPanelStorage.currentDeviceNumber = deviceNumber?.toInt()
+                GlobalPluginStorage.currentDeviceNumber = deviceNumber?.toInt()
                 // TODO: show a survey??
                 val webcamTracker = WebCamTracker(project)
                 webcamTracker.startTracking()
