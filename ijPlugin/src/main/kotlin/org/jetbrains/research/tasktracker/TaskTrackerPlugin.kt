@@ -22,6 +22,7 @@ object TaskTrackerPlugin {
     lateinit var initializationHandler: InitializationHandler
 
     fun initPlugin() {
+        initPluginFolder()
         val props = loadProps()
         val pluginProps = props.toPluginProperties()
         if (pluginProps.testMode == TestMode.ON) {
@@ -44,5 +45,9 @@ object TaskTrackerPlugin {
                 TODO("Get the server values (port, host) from properties")
             }
         }
+    }
+
+    fun initPluginFolder() {
+        File(MainTaskTrackerConfig.pluginFolderPath).mkdirs()
     }
 }

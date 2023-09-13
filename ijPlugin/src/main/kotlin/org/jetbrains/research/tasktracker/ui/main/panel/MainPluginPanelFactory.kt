@@ -3,6 +3,9 @@ package org.jetbrains.research.tasktracker.ui.main.panel
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.fileEditor.FileEditorManager
+import com.intellij.openapi.progress.ProgressIndicator
+import com.intellij.openapi.progress.ProgressManager
+import com.intellij.openapi.progress.Task.Modal
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.wm.ToolWindow
@@ -14,11 +17,9 @@ import org.jetbrains.research.tasktracker.config.content.task.base.Task
 import org.jetbrains.research.tasktracker.config.content.task.base.TaskWithFiles
 import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
 import org.jetbrains.research.tasktracker.tracking.activity.ActivityTracker
+import org.jetbrains.research.tasktracker.tracking.webcam.collectAllDevices
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.MainPanelStorage
-import org.jetbrains.research.tasktracker.ui.main.panel.template.HtmlTemplateBase
-import org.jetbrains.research.tasktracker.ui.main.panel.template.MainPageTemplate
-import org.jetbrains.research.tasktracker.ui.main.panel.template.SolvePageTemplate
-import org.jetbrains.research.tasktracker.ui.main.panel.template.TasksPageTemplate
+import org.jetbrains.research.tasktracker.ui.main.panel.template.*
 import org.jetbrains.research.tasktracker.util.UIBundle
 import java.awt.BorderLayout
 import java.awt.FlowLayout
@@ -32,6 +33,7 @@ import javax.swing.JButton
  * Note: This class requires JBCefApp to be supported for proper functioning.
  *
  */
+@Suppress("TooManyFunctions")
 class MainPluginPanelFactory : ToolWindowFactory {
     // TODO: init in other place, states can be saved between sessions
     private val nextButton = createJButton("ui.button.next")
@@ -45,7 +47,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
         mainWindow = project.getService(MainWindowService::class.java).mainWindow
         mainWindow.jComponent.size = JBUI.size(toolWindow.component.width, toolWindow.component.height)
         nextButton.addListener {
-            selectTask()
+            webCamPage()
         }
         val buttonPanel = JBPanel<JBPanel<*>>(FlowLayout()).apply {
             add(backButton)
@@ -70,9 +72,34 @@ class MainPluginPanelFactory : ToolWindowFactory {
      * Switches the panel to the plugin description window.
      */
     private fun welcomePage() {
-        loadBasePage(MainPageTemplate, "ui.button.next", false)
+        loadBasePage(MainPageTemplate.loadCurrentTemplate(), "ui.button.next", false)
         nextButton.addListener {
             selectTask()
+        }
+    }
+
+    private fun collectAllDevicesWithProgressBarAndShowNextPage(project: Project) {
+        ProgressManager.getInstance().run(object : Modal(
+            project, UIBundle.message("ui.progress.webcam.title"), false
+        ) {
+            override fun run(indicator: ProgressIndicator) {
+                if (MainPanelStorage.camerasInfo.isEmpty()) {
+                    MainPanelStorage.camerasInfo.addAll(collectAllDevices())
+                }
+                loadBasePage(
+                    WebcamChoicePageTemplate(MainPanelStorage.camerasInfo), "ui.button.select", true
+                )
+            }
+        })
+    }
+
+    /**
+     * Switches the panel to select a webcam.
+     */
+    private fun webCamPage() {
+        collectAllDevicesWithProgressBarAndShowNextPage(project)
+        backButton.addListener {
+            welcomePage()
         }
     }
 
@@ -82,9 +109,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
      */
     private fun selectTask() {
         loadBasePage(
-            TasksPageTemplate(MainPanelStorage.taskIdTask.values.toList()),
-            "ui.button.select",
-            true
+            TasksPageTemplate(MainPanelStorage.taskIdTask.values.toList()), "ui.button.select", true
         )
         nextButton.addListener {
             mainWindow.getElementValue("tasks").onSuccess { name ->
@@ -103,8 +128,8 @@ class MainPluginPanelFactory : ToolWindowFactory {
      */
     private fun processTask(name: String) {
         // TODO: change to task by id
-        val task = MainPanelStorage.taskIdTask.values.find { it.name == name }
-            ?: error("Can't find task with name '$name'")
+        val task =
+            MainPanelStorage.taskIdTask.values.find { it.name == name } ?: error("Can't find task with name '$name'")
         ApplicationManager.getApplication().invokeAndWait {
             TaskFileHandler.initTask(project, task)
         }
@@ -129,11 +154,9 @@ class MainPluginPanelFactory : ToolWindowFactory {
      */
     private fun focusOnFile(virtualFile: VirtualFile) {
         ApplicationManager.getApplication().invokeAndWait {
-            FileEditorManager.getInstance(project)
-                .openFile(
-                    virtualFile,
-                    false
-                )
+            FileEditorManager.getInstance(project).openFile(
+                virtualFile, false
+            )
         }
     }
 
@@ -145,9 +168,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
         val activityTracker = ActivityTracker(project)
         activityTracker.startTracking()
         loadBasePage(
-            SolvePageTemplate(task),
-            "ui.button.submit",
-            true
+            SolvePageTemplate(task), "ui.button.submit", true
         )
         backButton.addListener {
             TaskFileHandler.disposeTask(project, task)

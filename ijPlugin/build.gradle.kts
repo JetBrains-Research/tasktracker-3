@@ -12,6 +12,8 @@ dependencies{
     implementation(rootProject.libs.kaml)
     implementation(rootProject.libs.snakeyaml)
     implementation(rootProject.libs.csv)
+
+    implementation(rootProject.libs.javacv)
 }
 
 intellij {

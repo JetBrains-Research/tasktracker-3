@@ -11,16 +11,20 @@ sealed class HtmlTemplateBase {
         HtmlTemplateBase::class.java.getResource("css/$filename.css")?.readText()?.replace("%", "%%")
             ?: error("Cannot find $filename.css")
 
-    private fun cssContent(theme: Theme) = loadCss(theme.cssFileName)
+    protected fun cssContent(theme: Theme) = loadCss(theme.cssFileName)
 
-    private fun baseCss() = loadCss("base")
+    protected fun baseCss() = loadCss("base")
 
-    private fun pageTemplate(theme: Theme) = HtmlTemplateBase::class.java
-        .getResource("template.html")?.readText()?.format(
+    private fun pageTemplate(theme: Theme): String {
+        val currentTemplate = HtmlTemplateBase::class.java.getResource("$htmlFileName.html")?.readText()
+            ?: error("Cannot find default page with name $htmlFileName")
+        return pageTemplate(theme, currentTemplate)
+    }
+
+    protected fun pageTemplate(theme: Theme, template: String) =
+        HtmlTemplateBase::class.java.getResource("template.html")?.readText()?.format(
             baseCss(),
             cssContent(theme),
-            HtmlTemplateBase::class.java.getResource("$htmlFileName.html")?.readText()
-                ?: error("Cannot find default page with name $htmlFileName")
-        )
-        ?: error("Cannot find page template")
+            template
+        ) ?: error("Cannot find page template")
 }

@@ -46,8 +46,6 @@ class ActivityLogger(val project: Project) {
         }
 
     private fun createLogFile(): File {
-        // TODO: write headers
-        File(MainTaskTrackerConfig.pluginFolderPath).mkdirs()
         val logFileName =
             "activity_${project.hashCode()}_${project.name}.csv"
         val logFile = File("${MainTaskTrackerConfig.pluginFolderPath}/$logFileName")

@@ -10,13 +10,17 @@ snakeyaml = "2.0"
 csv = "1.10.0"
 joda = "2.12.4"
 
+# webcam
+javacv = "1.5.9"
+
 
 [libraries]
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 kaml = { module = "com.charleskorn.kaml:kaml", version.ref = "kaml" }
 snakeyaml = { module = "org.snakeyaml:snakeyaml-engine", version.ref = "snakeyaml" }
 csv = { module = "org.apache.commons:commons-csv", version.ref = "csv" }
-joda = {module = "joda-time:joda-time", version.ref = "joda"}
+joda = { module = "joda-time:joda-time", version.ref = "joda" }
+javacv = { module = "org.bytedeco:javacv-platform", version.ref = "javacv" }
 
 
 [plugins]
