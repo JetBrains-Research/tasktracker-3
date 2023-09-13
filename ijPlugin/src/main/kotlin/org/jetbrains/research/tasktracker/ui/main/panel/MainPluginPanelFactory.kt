@@ -17,6 +17,7 @@ import org.jetbrains.research.tasktracker.config.content.task.base.Task
 import org.jetbrains.research.tasktracker.config.content.task.base.TaskWithFiles
 import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
 import org.jetbrains.research.tasktracker.tracking.activity.ActivityTracker
+import org.jetbrains.research.tasktracker.tracking.webcam.WebCamTracker
 import org.jetbrains.research.tasktracker.tracking.webcam.collectAllDevices
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.MainPanelStorage
 import org.jetbrains.research.tasktracker.ui.main.panel.template.*
@@ -100,6 +101,16 @@ class MainPluginPanelFactory : ToolWindowFactory {
         collectAllDevicesWithProgressBarAndShowNextPage(project)
         backButton.addListener {
             welcomePage()
+        }
+        nextButton.addListener {
+            mainWindow.getElementValue("cameras").onSuccess { deviceNumber ->
+                MainPanelStorage.currentDeviceNumber = deviceNumber?.toInt()
+                // TODO: show a survey??
+                val webcamTracker = WebCamTracker(project)
+                webcamTracker.startTracking()
+            }.onError {
+                error(it.localizedMessage)
+            }
         }
     }
 
