@@ -7,3 +7,4 @@ pluginManagement {
 
 rootProject.name = "tasktracker-3"
 include("ijPlugin")
+include("ijServer")
