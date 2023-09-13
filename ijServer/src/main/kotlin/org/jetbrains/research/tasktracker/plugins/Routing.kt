@@ -2,6 +2,7 @@
 
 package org.jetbrains.research.tasktracker.plugins
 
+import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -37,6 +38,7 @@ fun Application.configureRouting() {
                     it[name] = formParameters["name"]!!
                 }
             }
+            call.respond(HttpStatusCode.Accepted)
         }
 
         post("upload-activity/{id}") {
@@ -52,6 +54,7 @@ fun Application.configureRouting() {
                     }
                 }
             }
+            call.respond(HttpStatusCode.Accepted)
         }
 
         post("upload-document/{id}") {
@@ -67,6 +70,7 @@ fun Application.configureRouting() {
                     }
                 }
             }
+            call.respond(HttpStatusCode.Accepted)
         }
     }
 }

@@ -10,4 +10,6 @@ object MainPanelStorage {
     var taskIdTask: MutableMap<String, Task> = mutableMapOf()
     val camerasInfo: MutableList<WebCamInfo> = mutableListOf()
     var currentDeviceNumber: Int? = null
+    var currentResearchId: Int? = null
+    var userId: Int? = null
 }
