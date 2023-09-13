@@ -5,7 +5,7 @@ body {
 }
 
 .big-font {
-    font-size: 12vmin;
+    font-size: 8vmin;
     margin-top: 2vmin;
     margin-bottom: 2vmin;
     font-family: 'Inter', sans-serif;
@@ -14,7 +14,7 @@ body {
 
 .small-font {
     font-family: 'Inter', sans-serif;
-    font-size: 5vmin;
+    font-size: 4vmin;
     margin-top: 0;
     margin-bottom: 2vmin;
 }
@@ -62,4 +62,31 @@ a:link {
 /* visited link */
 a:visited {
     color: #696969;
+}
+
+.webcam-info-container {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 4vmin;
+}
+
+.webcam-info-name {
+    margin-right: 2vmin;
+}
+
+.webcam-select-container {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.webcam-info-list {
+    margin-bottom: 2vmin;
+}
+
+.webcam-info-img {
+    width: 25vmin;
 }

@@ -11,6 +11,14 @@ style:
   WildcardImport:
     active: false
 
+formatting:
+  ArgumentListWrapping:
+    active: false
+  Indentation:
+    active: false
+  NoWildcardImports:
+    active: false
+
 complexity:
   TooManyFunctions:
     thresholdInObjects: 14

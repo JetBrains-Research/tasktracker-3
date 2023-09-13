@@ -1,0 +1,8 @@
+pluginName: Emotion Tracker
+pluginDescription: "
+This plugin is created to observe the emotions people go through while using JetBrains’ IDEs for programming.
+
+The plugin gathers data on your emotional state, actions, and interactions within the IDE. 
+It then shows your recorded emotions and provides helpful messages that are meant to assist you in staying focused and productive. 
+Simply click on these messages for support.
+"

@@ -3,12 +3,7 @@ package org.jetbrains.research.tasktracker.ui.main.panel
 import com.intellij.ide.ui.LafManagerListener
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.util.Disposer
-import com.intellij.ui.jcef.JBCefBrowser
-import com.intellij.ui.jcef.JBCefBrowserBase
-import com.intellij.ui.jcef.JBCefClient
-import com.intellij.ui.jcef.JBCefJSQuery
-import com.intellij.ui.jcef.JsExpressionResult
-import com.intellij.ui.jcef.executeJavaScriptAsync
+import com.intellij.ui.jcef.*
 import org.cef.browser.CefBrowser
 import org.cef.browser.CefFrame
 import org.cef.handler.CefLoadHandlerAdapter
@@ -24,7 +19,7 @@ class MainPluginWindow(service: MainWindowService) {
     private val windowBrowser: JBCefBrowser = JBCefBrowser()
 
     private var currentTheme = Theme.currentIdeTheme()
-    private var currentTemplate: HtmlTemplateBase = MainPageTemplate
+    private var currentTemplate: HtmlTemplateBase = MainPageTemplate.loadCurrentTemplate()
     private val handlers = mutableListOf<CefLoadHandlerAdapter>()
     val jComponent: JComponent
         get() = windowBrowser.component
@@ -65,9 +60,7 @@ class MainPluginWindow(service: MainWindowService) {
         val newLoadHandler = object : CefLoadHandlerAdapter() {
             override fun onLoadEnd(browser: CefBrowser?, frame: CefFrame?, httpStatusCode: Int) {
                 windowBrowser.cefBrowser.executeJavaScript(
-                    code,
-                    windowBrowser.cefBrowser.url,
-                    0
+                    code, windowBrowser.cefBrowser.url, 0
                 )
                 super.onLoadEnd(browser, frame, httpStatusCode)
             }
@@ -83,8 +76,8 @@ class MainPluginWindow(service: MainWindowService) {
         handlers.clear()
     }
 
-    fun loadHtmlTemplate(template: HtmlTemplateBase) = windowBrowser
-        .loadHTML(template.pageContent(theme = currentTheme)).also { currentTemplate = template }
+    fun loadHtmlTemplate(template: HtmlTemplateBase) =
+        windowBrowser.loadHTML(template.pageContent(theme = currentTheme)).also { currentTemplate = template }
 
     companion object {
         const val JS_QUERY_POOL_SIZE = 100
