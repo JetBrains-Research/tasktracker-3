@@ -1,49 +1,44 @@
 package org.jetbrains.research.tasktracker.modelInference
 
-import org.bytedeco.opencv.global.opencv_cudawarping.resize
-import org.bytedeco.opencv.global.opencv_imgcodecs.imread
-import org.bytedeco.opencv.global.opencv_imgcodecs.imwrite
+import org.bytedeco.javacv.Frame
+import org.bytedeco.javacv.OpenCVFrameConverter.ToMat
+import org.bytedeco.opencv.global.opencv_core
+import org.bytedeco.opencv.global.opencv_imgproc
+import org.bytedeco.opencv.global.opencv_imgproc.cvtColor
+import org.bytedeco.opencv.global.opencv_imgproc.resize
 import org.bytedeco.opencv.opencv_core.Mat
 import org.bytedeco.opencv.opencv_core.Size
 
-object ImageUtils {
 
-    fun resizeImage() {
-        // Load the input image
-        // Load the input image
-        val inputImage: Mat = imread("/Users/maria.tigina/IdeaProjects/emotional-monitoring/ijPlugin/src/main/resources/img/img.png")
-
-        // Check if the image was loaded successfully
-
-        // Check if the image was loaded successfully
-        if (inputImage.empty()) {
-            System.err.println("Could not load input image.")
-            System.exit(1)
-        }
-
-        // Create an output Mat with the desired size (64x64)
-
-        // Create an output Mat with the desired size (64x64)
-        val outputImage = Mat(64, 64, inputImage.type())
-
-        // Resize the input image to the desired size
-
-        // Resize the input image to the desired size
-        resize(inputImage, outputImage, Size(64, 64))
-
-        // Save the resized image to a file
-
-        // Save the resized image to a file
-        imwrite("/Users/maria.tigina/IdeaProjects/emotional-monitoring/ijPlugin/src/main/resources/img/img_out.png", outputImage)
-
-        // Release resources
-
-        // Release resources
-        inputImage.release()
-        outputImage.release()
-    }
+fun frameToMat(frame: Frame): Mat {
+    return ToMat().convert(frame)
 }
 
-fun main() {
-    ImageUtils.resizeImage()
+fun resizeImage(image: Mat): Mat {
+    val outputImage = Mat(64, 64, image.type())
+    resize(image, outputImage, Size(64, 64))
+
+    return outputImage
+}
+
+fun normalizeImage(image: Mat): Mat {
+    val outputImage = Mat(64, 64, image.type())
+    image.convertTo(outputImage, opencv_core.CV_8U);
+
+    return outputImage
+}
+
+fun prepareImage(image: Mat): Mat {
+    val gImage = grayImage(image)
+    val resImage = resizeImage(gImage)
+    val normImage = normalizeImage(resImage)
+
+    return normImage
+}
+
+fun grayImage(image: Mat): Mat {
+    val grayscaleMat = Mat()
+    cvtColor(image, grayscaleMat, opencv_imgproc.CV_BGR2GRAY)
+
+    return grayscaleMat
 }

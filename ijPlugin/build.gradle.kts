@@ -14,8 +14,15 @@ dependencies{
     implementation(rootProject.libs.csv)
     implementation(rootProject.libs.kinference)
     implementation(rootProject.libs.javacv)
-    implementation(rootProject.libs.ktorClientCio)
-    implementation(rootProject.libs.ktorClientCore)
+//    implementation(rootProject.libs.ktorClientCio)
+//    implementation(rootProject.libs.ktorClientCore)
+    implementation("io.ktor:ktor-client-core:2.3.3")
+    implementation("io.ktor:ktor-client-json:2.3.3")
+    implementation("io.ktor:ktor-client-cio:2.3.3")
+    implementation("io.ktor:ktor-client-serialization:2.3.3")
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.3")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.3")
+
     api(rootProject.libs.slf4j)
 }
 

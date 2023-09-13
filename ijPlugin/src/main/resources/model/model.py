@@ -9,10 +9,10 @@ def preprocess(image_path):
     img = Image.open(image_path)
     img = img.resize((64, 64), Image.LANCZOS)
     img.save("img_out_py.png")
-    
+
     img_data = np.array(img)
     img_data = np.resize(img_data, input_shape).astype(np.float32)
-    Image.fromarray(img_data.resize()).save("img_out_py.png")
+
     return img_data
 
 
