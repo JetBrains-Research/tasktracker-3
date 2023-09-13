@@ -3,6 +3,7 @@ package org.jetbrains.research.tasktracker.config
 import com.intellij.openapi.application.PathManager
 import com.intellij.openapi.diagnostic.Logger
 import org.jetbrains.research.tasktracker.config.content.MainPageContentConfig
+import org.jetbrains.research.tasktracker.config.content.SolveWebPageConfig
 import org.jetbrains.research.tasktracker.config.content.TaskContentConfig
 import org.jetbrains.research.tasktracker.config.ide.MainIdeConfig
 import org.jetbrains.research.tasktracker.config.scenario.ScenarioConfig
@@ -25,6 +26,7 @@ data class MainTaskTrackerConfig(
     var codeTrackingConfig: CodeTrackingConfig? = null,
     var webCamConfig: WebCamTrackingConfig? = null,
     var mainPageConfig: MainPageContentConfig? = null,
+    var solveWebPageConfig: SolveWebPageConfig? = null,
 
     var scenarioConfig: ScenarioConfig? = null,
 ) {
@@ -35,7 +37,8 @@ data class MainTaskTrackerConfig(
         codeTrackingConfig,
         scenarioConfig,
         webCamConfig,
-        mainPageConfig
+        mainPageConfig,
+        solveWebPageConfig
     )
 
     companion object {
@@ -89,6 +92,12 @@ data class MainTaskTrackerConfig(
                     fileName.startsWith(MainPageContentConfig.CONFIG_FILE_PREFIX) -> {
                         mainConfig.mainPageConfig = buildBaseConfig(
                             mainConfig.mainPageConfig, configFile, MainPageContentConfig::buildConfig, logger
+                        )
+                    }
+
+                    fileName.startsWith(SolveWebPageConfig.CONFIG_FILE_PREFIX) -> {
+                        mainConfig.solveWebPageConfig = buildBaseConfig(
+                            mainConfig.solveWebPageConfig, configFile, SolveWebPageConfig::buildConfig, logger
                         )
                     }
                 }
