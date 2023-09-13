@@ -14,6 +14,8 @@ dependencies{
     implementation(rootProject.libs.csv)
 
     implementation(rootProject.libs.javacv)
+    implementation(rootProject.libs.ktorClientCio)
+    implementation(rootProject.libs.ktorClientCore)
 }
 
 intellij {
@@ -26,4 +28,9 @@ intellij {
 tasks {
     withType<org.jetbrains.intellij.tasks.BuildSearchableOptionsTask>()
         .forEach { it.enabled = false }
+}
+
+
+configurations.all {
+    exclude("org.slf4j", "slf4j-api")
 }

@@ -9,6 +9,7 @@ serialization = "1.8.10"
 snakeyaml = "2.0"
 csv = "1.10.0"
 joda = "2.12.4"
+ktor = "2.3.4"
 
 # webcam
 javacv = "1.5.9"
@@ -21,6 +22,8 @@ snakeyaml = { module = "org.snakeyaml:snakeyaml-engine", version.ref = "snakeyam
 csv = { module = "org.apache.commons:commons-csv", version.ref = "csv" }
 joda = { module = "joda-time:joda-time", version.ref = "joda" }
 javacv = { module = "org.bytedeco:javacv-platform", version.ref = "javacv" }
+ktorClientCio = {module= "io.ktor:ktor-client-cio", version.ref = "ktor"}
+ktorClientCore = {module= "io.ktor:ktor-client-core", version.ref = "ktor"}
 
 
 [plugins]
