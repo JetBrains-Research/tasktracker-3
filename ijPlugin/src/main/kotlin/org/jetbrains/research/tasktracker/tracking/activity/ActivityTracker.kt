@@ -24,7 +24,7 @@ import java.awt.event.KeyEvent
 import java.util.concurrent.atomic.AtomicInteger
 
 class ActivityTracker(project: Project) {
-    private val activityLogger: ActivityLogger = ActivityLogger(project)
+    val activityLogger: ActivityLogger = ActivityLogger(project)
     private val messageBusConnections: MutableList<MessageBusConnection> = mutableListOf()
     private var trackingDisposable: Disposable? = null
     private val currentId: AtomicInteger = AtomicInteger(1)

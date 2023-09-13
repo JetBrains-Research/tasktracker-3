@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets
 
 class ActivityLogger(val project: Project) {
     // TODO: to list of printers
-    private val logPrinter: LogPrinter
+    val logPrinter: LogPrinter
 
     init {
         val logFile = createLogFile()

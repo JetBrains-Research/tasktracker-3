@@ -13,10 +13,18 @@ import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBPanel
 import com.intellij.ui.jcef.JBCefApp
 import com.intellij.util.ui.JBUI
+import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.request.*
+import io.ktor.client.request.forms.*
+import io.ktor.http.*
+import kotlinx.coroutines.runBlocking
 import org.jetbrains.research.tasktracker.config.content.task.base.Task
 import org.jetbrains.research.tasktracker.config.content.task.base.TaskWithFiles
 import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
 import org.jetbrains.research.tasktracker.tracking.activity.ActivityTracker
+import org.jetbrains.research.tasktracker.tracking.logger.ActivityLogger
 import org.jetbrains.research.tasktracker.tracking.webcam.WebCamTracker
 import org.jetbrains.research.tasktracker.tracking.webcam.collectAllDevices
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.GlobalPluginStorage
@@ -44,7 +52,10 @@ class MainPluginPanelFactory : ToolWindowFactory {
 
     private lateinit var mainWindow: MainPluginWindow
     private lateinit var project: Project
+
+    private val client = HttpClient(CIO)
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
+        MainPanelStorage.userId = getUserId()
         this.project = project
         mainWindow = project.getService(MainWindowService::class.java).mainWindow
         mainWindow.jComponent.size = JBUI.size(toolWindow.component.width, toolWindow.component.height)
@@ -99,11 +110,19 @@ class MainPluginPanelFactory : ToolWindowFactory {
      * Switches the panel to select a webcam.
      */
     private fun webCamPage() {
+        val activityTracker = ActivityTracker(project)
+        activityTracker.startTracking()
+        MainPanelStorage.currentResearchId = getResearchId()
+        with(MainPanelStorage) {
+            registerResearch(userId ?: error("TODO"), currentResearchId ?: error("TODO"))
+        }
         collectAllDevicesWithProgressBarAndShowNextPage(project)
         backButton.addListener {
             welcomePage()
         }
         nextButton.addListener {
+            activityTracker.stopTracking()
+            sendActivityFile(activityTracker.activityLogger)
             mainWindow.getElementValue("cameras").onSuccess { deviceNumber ->
                 GlobalPluginStorage.currentDeviceNumber = deviceNumber?.toInt()
                 // TODO: show a survey??
@@ -224,5 +243,44 @@ class MainPluginPanelFactory : ToolWindowFactory {
             removeActionListener(it)
         }
         addActionListener(listener)
+    }
+
+    private fun getUserId() = getId("get-user-id")
+    private fun getResearchId() = getId("get-research-id")
+    private fun getId(request: String): Int =
+        runBlocking { client.get("http://3.249.245.244:8888/$request").body() }
+
+    private fun sendActivityFile(activityLogger: ActivityLogger) {
+        runBlocking {
+            val file = activityLogger.logPrinter.logFile
+            client.submitFormWithBinaryData(
+                url = "http://3.249.245.244:8888/upload-activity/${MainPanelStorage.currentResearchId}",
+                formData = formData {
+                    append(
+                        "file",
+                        file.readBytes(),
+                        Headers.build {
+                            append(
+                                HttpHeaders.ContentDisposition,
+                                "filename=\"${file.name}\""
+                            )
+                        }
+                    )
+                }
+            )
+        }
+    }
+
+    private fun registerResearch(userId: Int, researchId: Int, name: String = "test") { // TODO name
+        runBlocking {
+            client.submitForm(
+                url = "http://3.249.245.244:8888/create-research",
+                formParameters = parameters {
+                    append("id", researchId.toString())
+                    append("user_id", userId.toString())
+                    append("name", name)
+                }
+            )
+        }
     }
 }

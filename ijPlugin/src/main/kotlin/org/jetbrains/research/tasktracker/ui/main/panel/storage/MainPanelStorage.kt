@@ -7,4 +7,6 @@ import org.jetbrains.research.tasktracker.config.content.task.base.Task
  */
 object MainPanelStorage {
     var taskIdTask: MutableMap<String, Task> = mutableMapOf()
+    var currentResearchId: Int? = null
+    var userId: Int? = null
 }
