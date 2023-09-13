@@ -6,7 +6,7 @@ import org.bytedeco.javacv.OpenCVFrameConverter
 import org.bytedeco.javacv.OpenCVFrameGrabber
 import org.bytedeco.opencv.global.opencv_imgcodecs
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
-import org.jetbrains.research.tasktracker.ui.main.panel.storage.MainPanelStorage
+import org.jetbrains.research.tasktracker.ui.main.panel.storage.GlobalPluginStorage
 import java.io.File
 
 @Suppress("TooGenericExceptionCaught", "SwallowedException")
@@ -34,7 +34,7 @@ fun collectAllDevices(): List<WebCamInfo> {
     return devices
 }
 
-internal fun makePhoto() = MainPanelStorage.currentDeviceNumber?.let {
+internal fun makePhoto() = GlobalPluginStorage.currentDeviceNumber?.let {
     val grabber = OpenCVFrameGrabber(it)
     grabber.start()
     val frame = grabber.grab()

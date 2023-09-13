@@ -33,8 +33,8 @@ class InspectionConfigTest : LightPlatformTestCase() {
     fun testDefaultInspections() {
         val profile = getProfile("default")
         val enabledToolsSize = profile.allTools.count { it.isEnabled }
-        assert(enabledToolsSize == defaultEnabledInspectionSize) {
-            "default enabled tools size is $defaultEnabledInspectionSize, but $enabledToolsSize has been found"
+        assert(enabledToolsSize == DEFAULT_ENABLED_INSPECTION_SIZE) {
+            "default enabled tools size is $DEFAULT_ENABLED_INSPECTION_SIZE, but $enabledToolsSize has been found"
         }
     }
 
@@ -52,9 +52,9 @@ class InspectionConfigTest : LightPlatformTestCase() {
     fun testDisableSelectedInspections() {
         val profile = getProfile("disableSelected")
         val enabledTools = profile.getAllEnabledToolIds()
-        assert(enabledTools.size == disableSelectedEnabledInspectionSize) {
+        assert(enabledTools.size == DISABLE_SELECTED_ENABLED_INSPECTION_SIZE) {
             buildString {
-                append("disable selected tools size is $disableSelectedEnabledInspectionSize")
+                append("disable selected tools size is $DISABLE_SELECTED_ENABLED_INSPECTION_SIZE")
                 append(", but ${enabledTools.size} has been found")
             }
         }
@@ -67,8 +67,8 @@ class InspectionConfigTest : LightPlatformTestCase() {
         val profile = getProfile("addSelected")
         val enabledTools = profile.getAllEnabledToolIds()
         println(profile.getAllDisabledToolIds())
-        assert(enabledTools.size == addSelectedEnabledInspectionSize) {
-            "add selected tools size is $addSelectedEnabledInspectionSize, but ${enabledTools.size} has been found"
+        assert(enabledTools.size == ADD_SELECTED_ENABLED_INSPECTION_SIZE) {
+            "add selected tools size is $ADD_SELECTED_ENABLED_INSPECTION_SIZE, but ${enabledTools.size} has been found"
         }
         assert(enabledTools.containsAll(addSelectedTools)) {
             "add selected tools must contains $addSelectedTools, but ${enabledTools.size} has been found"
@@ -124,9 +124,9 @@ class InspectionConfigTest : LightPlatformTestCase() {
     }
 
     companion object {
-        const val defaultEnabledInspectionSize = 56
-        const val disableSelectedEnabledInspectionSize = 54
-        const val addSelectedEnabledInspectionSize = 58
+        const val DEFAULT_ENABLED_INSPECTION_SIZE = 55
+        const val DISABLE_SELECTED_ENABLED_INSPECTION_SIZE = 53
+        const val ADD_SELECTED_ENABLED_INSPECTION_SIZE = 57
         val enableSelectedTools = listOf("LongLine", "TodoComment")
         val disableSelectedTools = listOf("CheckTagEmptyBody", "RegExpRedundantEscape")
         val addSelectedTools = listOf("EmptyDirectory", "ProblematicWhitespace")

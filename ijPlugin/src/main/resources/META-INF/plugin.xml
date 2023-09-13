@@ -12,4 +12,15 @@
         <toolWindow factoryClass="org.jetbrains.research.tasktracker.ui.main.panel.MainPluginPanelFactory" id="TaskTracker" anchor="right"/>
         <postStartupActivity implementation="org.jetbrains.research.tasktracker.activities.InitActivity"/>
     </extensions>
+
+    <actions>
+        <group text="MyNavBarGroup">
+            <add-to-group group-id="ToolbarRunGroup" relative-to-action="RunConfiguration" anchor="before"/>
+            <add-to-group group-id="TouchBarDefault" relative-to-action="RunConfiguration" anchor="before"/>
+            <add-to-group group-id="RightToolbarSideGroup" anchor="first"/>
+            <action id="org.jetbrains.research.tasktracker.actions.emoji.EmojiAction"
+                    class="org.jetbrains.research.tasktracker.actions.emoji.EmojiAction" icon="org.jetbrains.research.tasktracker.actions.emoji.EmojiActionIcons.defaultIcon"
+            />
+        </group>
+    </actions>
 </idea-plugin>
