@@ -4,8 +4,7 @@ import org.jetbrains.research.tasktracker.tracking.webcam.WebCamInfo
 import org.jetbrains.research.tasktracker.ui.main.panel.models.Theme
 
 class WebcamChoicePageTemplate(private val listOfCameras: List<WebCamInfo>) : HtmlTemplateBase() {
-    override val htmlFileName: String
-        get() = "webcam_choice"
+    override val htmlFileName: String? = null
 
     private fun generateTemplateForListOfCameras() = listOfCameras.mapIndexed { i, info ->
         """
@@ -30,9 +29,9 @@ class WebcamChoicePageTemplate(private val listOfCameras: List<WebCamInfo>) : Ht
     private fun buildPageTemplate() = """
         <div class="container">
             <div>
-                <p class="small-font">We've made test pictures from all included devices, please choose which one you prefer to use for the data collection:</p>
+                <p class="small-font">We've made test pictures from all connected devices, please choose which one you prefer to use to detect your emotions:</p>
                 ${generateTemplateForListOfCameras()}
-                <label class="webcam-info-list" for="tasks">Please, choose the correct option: </label>
+                <label class="webcam-info-list" for="tasks">Please, choose the preferable option: </label>
                 <div class="webcam-select-container">
                     <select name="cameras" id="cameras">
                     ${generateTemplateForChoosingCamera()}

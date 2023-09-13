@@ -9,7 +9,6 @@ import org.jetbrains.research.tasktracker.ui.main.panel.storage.GlobalPluginStor
 class EmojiAction : AnAction(), TooltipDescriptionProvider {
     override fun actionPerformed(e: AnActionEvent) {
         val emoji = GlobalPluginStorage.currentEmotion
-
         EmojiDialogWrapper(emoji).show()
     }
 

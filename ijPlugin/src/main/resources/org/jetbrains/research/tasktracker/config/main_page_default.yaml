@@ -5,4 +5,8 @@ This plugin is created to observe the emotions people go through while using Jet
 The plugin gathers data on your emotional state, actions, and interactions within the IDE. 
 It then shows your recorded emotions and provides helpful messages that are meant to assist you in staying focused and productive. 
 Simply click on these messages for support.
+
+
+<i>When you press the \"Select\" button, we will try to take photos on all detected devices, 
+so you can choose the camera you prefer.</i> 
 "
