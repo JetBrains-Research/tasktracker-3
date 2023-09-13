@@ -8,7 +8,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 object ResearchTable : Table() {
     val id = integer("id")
     val userId = integer("user_id")
-    val name = varchar("name", 128)
+    val name = text("name")
 
     override val primaryKey = PrimaryKey(id)
     fun maxUserId(): Int = transaction {

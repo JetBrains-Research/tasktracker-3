@@ -1,3 +1,5 @@
+@file:Suppress("NoWildcardImports", "UnsafeCallOnNullableType")
+
 package org.jetbrains.research.tasktracker.plugins
 
 import io.ktor.http.content.*
@@ -38,7 +40,8 @@ fun Application.configureRouting() {
         }
 
         post("upload-activity/{id}") {
-            this.createLogFile("activity"
+            this.createLogFile(
+                "activity"
             ) { name, index ->
                 run {
                     transaction {
@@ -52,7 +55,8 @@ fun Application.configureRouting() {
         }
 
         post("upload-document/{id}") {
-            this.createLogFile("activity"
+            this.createLogFile(
+                "activity"
             ) { name, index ->
                 run {
                     transaction {
@@ -91,7 +95,8 @@ suspend inline fun PipelineContext<Unit, ApplicationCall>.createLogFile(
 fun getFile(researchId: Int, filename: String, subDirectory: String): File {
     val directoryPath = "files/$researchId/$subDirectory"
     Files.createDirectories(Paths.get(directoryPath))
-    return File("$directoryPath/$filename").also { it.createNewFile()
-    println(it.absolutePath)
+    return File("$directoryPath/$filename").also {
+        it.createNewFile()
+        println(it.absolutePath)
     }
 }
