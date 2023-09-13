@@ -4,17 +4,13 @@ import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.ex.TooltipDescriptionProvider
-import com.intellij.openapi.ui.popup.JBPopupFactory
-import com.intellij.ui.components.JBScrollPane
-import com.intellij.ui.components.JBTextArea
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.GlobalPluginStorage
-
 
 class EmojiAction : AnAction(), TooltipDescriptionProvider {
     override fun actionPerformed(e: AnActionEvent) {
         val emoji = GlobalPluginStorage.currentEmotion
 
-        EmojiDialogWrapper(emoji).show();
+        EmojiDialogWrapper(emoji).show()
     }
 
     override fun getActionUpdateThread() = ActionUpdateThread.EDT
@@ -27,5 +23,4 @@ class EmojiAction : AnAction(), TooltipDescriptionProvider {
         e.presentation.description = emoji.getRandomAffirmDescription()
         super.update(e)
     }
-
 }

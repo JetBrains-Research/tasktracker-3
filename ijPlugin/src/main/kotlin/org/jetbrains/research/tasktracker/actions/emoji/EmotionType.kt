@@ -1,3 +1,5 @@
+@file:Suppress("MaximumLineLength", "MaxLineLength", "MagicNumber")
+
 package org.jetbrains.research.tasktracker.actions.emoji
 
 import javax.swing.Icon
@@ -6,7 +8,8 @@ enum class EmotionType(
     val score: Int,
     private val affirmDescriptions: List<String>,
     private val adviceDescriptions: List<String> = emptyList(),
-    val icon: Icon? = null
+    val icon: Icon? = null,
+    val modalWindowIcon: Icon? = null
 ) {
     DEFAULT(
         -1,
@@ -14,7 +17,8 @@ enum class EmotionType(
         listOf(
             "<p>Here, you’ll find advice on handling your current emotions.</p><p>Since you just started, we haven’t tracked your emotions yet.</p><p>Please check back later!</p>"
         ),
-        icon = EmojiActionIcons.defaultIcon
+        icon = EmojiActionIcons.defaultIcon,
+        modalWindowIcon = EmojiActionIcons.defaultModalIcon
     ),
     NEUTRAL(
         0,
@@ -24,11 +28,12 @@ enum class EmotionType(
             "It's okay to embrace moments of calm and tranquility."
         ),
         listOf(
-            "Value emotional stability and balance as signs of emotional maturity.",
-            "Neutral times can be ideal for setting and planning future objectives.",
-            "Use neutral moments for mindfulness. Pay attention to your thoughts, sensations, and surroundings without judgment."
+            "<p>Value emotional stability and balance</p><p>as signs of emotional maturity.</p>",
+            "<p>Neutral times can be ideal for setting</p><p>and planning future objectives.</p>",
+            "<p>Use neutral moments for mindfulness.</p><p>Pay attention to your thoughts, sensations,<p>and surroundings without judgment.</p>"
         ),
-        icon = EmojiActionIcons.relievedFaceIcon
+        icon = EmojiActionIcons.relievedFaceIcon,
+        modalWindowIcon = EmojiActionIcons.seedlingIcon
     ),
     HAPPINESS(
         1,
@@ -38,11 +43,12 @@ enum class EmotionType(
             "You deserve to feel joy."
         ),
         listOf(
-            "Objectively evaluate the situation to determine if there is a genuine threat.",
-            "Try to reframe your perception of the situation. What is the worst-case scenario, and how likely is it to happen?",
-            "Reflect on times when you've overcome similar fears. Use these experiences as sources of strength and confidence."
+            "<p>Objectively evaluate the situation to</p><p>determine if there is a genuine threat.</p>",
+            "<p>Try to reframe your perception of the situation.</p><p>What is the worst-case scenario,</p><p>and how likely is it to happen?</p>",
+            "<p>Reflect on times when you've overcome similar fears.</p><p>Use these experiences as sources of strength and confidence.</p>"
         ),
-        icon = EmojiActionIcons.frowningFaceWithOpenMouthIcon
+        icon = EmojiActionIcons.smilingFaceWithSmilingEyesIcon,
+        modalWindowIcon = EmojiActionIcons.glowingStarIcon
     ),
     SURPRISE(
         2,
@@ -52,11 +58,12 @@ enum class EmotionType(
             "Surprise is a completely natural and spontaneous emotion. It's a sign of your adaptability to unexpected situations."
         ),
         listOf(
-            "View surprises as adventures and avoid making judgments before experiencing them.",
-            "If the surprise is confusing or unsettling, ask questions to gain a better understanding.",
-            "In unsettling surprise, take a moment to collect your thoughts before reacting."
+            "<p>View surprises as adventures and avoid making</p><p>judgments before experiencing them.</p>",
+            "<p>If the surprise is confusing or unsettling,</p><p>ask questions to gain a better understanding.</p>",
+            "<p>In unsettling surprise, take a moment to</p><p>collect your thoughts before reacting.</p>"
         ),
-        icon = EmojiActionIcons.faceWithOpenMouthIcon
+        icon = EmojiActionIcons.faceWithOpenMouthIcon,
+        modalWindowIcon = EmojiActionIcons.wrappedGiftIcon
     ),
     SADNESS(
         3,
@@ -66,11 +73,12 @@ enum class EmotionType(
             "Sadness is a temporary state. It doesn't define your future; it's just a part of your journey."
         ),
         listOf(
-            "Reach out to others for comfort and perspective, recognizing that you don't have to face sadness alone.",
-            "Treat yourself with kindness and understanding during moments of sadness.",
-            "Set small, achievable goals for the day. Accomplishing even minor tasks can boost your mood."
+            "<p>Reach out to others for comfort and perspective,</p><p>recognizing that you don't have to face sadness alone.</p>",
+            "<p>Treat yourself with kindness and understanding</p><p>during moments of sadness.</p>",
+            "<p>Set small, achievable goals for the day.</p><p>Accomplishing even minor tasks can boost your mood.</p>"
         ),
-        icon = EmojiActionIcons.cryingFaceIcon
+        icon = EmojiActionIcons.pensiveFaceIcon,
+        modalWindowIcon = EmojiActionIcons.waterWaveIcon
     ),
     ANGER(
         4,
@@ -80,11 +88,12 @@ enum class EmotionType(
             "Feeling angry is a sign that you care about something."
         ),
         listOf(
-            "Inhale deeply and exhale slowly to calm your anger and regain control.",
-            "Take a deep breath and think about whether this situation is worth getting so upset about.",
-            "Take a step back, assess the situation objectively, and consider whether there's a different way to interpret it."
+            "<p>Inhale deeply and exhale slowly to</p><p>calm your anger and regain control.</p>",
+            "<p>Take a deep breath and think about whether</p><p>this situation is worth getting so upset about.</p>",
+            "<p>Take a step back, assess the situation objectively,</p><p>and consider whether there's a different way to interpret it.</p>"
         ),
-        icon = EmojiActionIcons.angryFaceIcon
+        icon = EmojiActionIcons.angryFaceIcon,
+        modalWindowIcon = EmojiActionIcons.doveIcon
     ),
     DISGUST(
         5,
@@ -94,11 +103,12 @@ enum class EmotionType(
             "Feeling disgust is a natural human response."
         ),
         listOf(
-            "Identify the specific aspect of the situation causing disgust to gain clarity.",
-            "Engage in an activity or focus your attention on something else to divert your thoughts away from the source of disgust.",
-            "If possible, remove yourself from the source of disgust or minimize exposure to it. Creating physical distance can help reduce the intensity of the emotion."
+            "<p>Identify the specific aspect of the situation</p><p>causing disgust to gain clarity.<p>",
+            "<p>Engage in an activity or focus your attention on</p><p>something else to divert your thoughts away</p><p>from the source of disgust.</p>",
+            "<p>If possible, remove yourself from the source of disgust</p><p>or minimize exposure to it. Creating physical distance can help</p><p>reduce the intensity of the emotion.</p>"
         ),
-        icon = EmojiActionIcons.confoundedFaceIcon
+        icon = EmojiActionIcons.confoundedFaceIcon,
+        modalWindowIcon = EmojiActionIcons.cherryBlossomIcon
     ),
     FEAR(
         6,
@@ -108,11 +118,12 @@ enum class EmotionType(
             "Anxiety is a common human emotion, and you're not alone in experiencing it."
         ),
         listOf(
-            "Objectively evaluate the situation to determine if there is a genuine threat.",
-            "Try to reframe your perception of the situation. What is the worst-case scenario, and how likely is it to happen?",
-            "Reflect on times when you've overcome similar fears. Use these experiences as sources of strength and confidence."
+            "<p>Objectively evaluate the situation</p><p>to determine if there is a genuine threat.</p>",
+            "<p>Try to reframe your perception of the situation.</p><p>What is the worst-case scenario,</p><p>and how likely is it to happen?</p>",
+            "<p>Reflect on times when you've overcome similar fears.</p><p>Use these experiences as sources of strength and confidence.</p>"
         ),
-        icon = EmojiActionIcons.frowningFaceWithOpenMouthIcon
+        icon = EmojiActionIcons.frowningFaceWithOpenMouthIcon,
+        modalWindowIcon = EmojiActionIcons.leafFlutteringIcon
     ),
     CONTEMPT(
         7,
@@ -122,11 +133,12 @@ enum class EmotionType(
             "Your feelings of contempt are a part of your emotional landscape, and you have the ability to navigate them wisely."
         ),
         listOf(
-            "Examine your assumptions and gather more information before passing judgment.",
-            "If the contemptuous situation becomes too heated, it's okay to take a break from it to cool off and regain perspective.",
-            "Take a moment to reflect on why you're feeling contempt. Understanding the source of your contempt is the first step."
+            "<p>Examine your assumptions and gather</p><p>more information before passing judgment.</p>",
+            "<p>If the contemptuous situation becomes too heated,</p><p>it's okay to take a break from it to</p><p>cool off and regain perspective.</p>",
+            "<p>Take a moment to reflect on why you're feeling contempt.</p><p>Understanding the source of your contempt is the first step.</p>"
         ),
-        icon = EmojiActionIcons.expressionlessFaceIcon
+        icon = EmojiActionIcons.expressionlessFaceIcon,
+        modalWindowIcon = EmojiActionIcons.foldedHandsIcon
     );
 
     fun getRandomAffirmDescription() = affirmDescriptions.random()
