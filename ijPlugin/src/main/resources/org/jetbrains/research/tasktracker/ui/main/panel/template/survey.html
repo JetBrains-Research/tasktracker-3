@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Emotion Tracker Feedback</title>
+  <style>
+    h4 {
+      color: #fefefe;
+    }
+    h3 {
+      color: #fefefe;
+    }
+    label {
+      color: #fefefe;
+    }
+  </style>
+</head>
+<body>
+
+<form>
+
+  <h3>1. Approximately how many hours did you use the plugin?</h3>
+  <input type="number" id="hours" name="hours" min="0" step="0.5" required>
+
+  <h3>2. On a scale of 1 (very unlikely) to 5 (very likely), how likely are you to continue using the Emotion Tracker in the future?</h3>
+  <input type="radio" id="likely1" name="likely" value="1">
+  <label for="likely1">1</label><br>
+  <input type="radio" id="likely2" name="likely" value="2">
+  <label for="likely2">2</label><br>
+  <input type="radio" id="likely3" name="likely" value="3">
+  <label for="likely3">3</label><br>
+  <input type="radio" id="likely4" name="likely" value="4">
+  <label for="likely4">4</label><br>
+  <input type="radio" id="likely5" name="likely" value="5">
+  <label for="likely5">5</label><br>
+
+  <h3>3. On a scale of 1 (not at all) to 5 (extremely), how much did the Emotion Tracker disrupt your workflow?</h3>
+  <input type="radio" id="disrupt1" name="disrupt" value="1">
+  <label for="disrupt1">1</label><br>
+  <input type="radio" id="disrupt2" name="disrupt" value="2">
+  <label for="disrupt2">2</label><br>
+  <input type="radio" id="disrupt3" name="disrupt" value="3">
+  <label for="disrupt3">3</label><br>
+  <input type="radio" id="disrupt4" name="disrupt" value="4">
+  <label for="disrupt4">4</label><br>
+  <input type="radio" id="disrupt5" name="disrupt" value="5">
+  <label for="disrupt5">5</label><br>
+
+  <h3>4. On a scale of 1 (very inaccurate) to 5 (very accurate), how accurately did the Emotion Tracker capture your emotions?</h3>
+  <input type="radio" id="accuracy1" name="accuracy" value="1">
+  <label for="accuracy1">1</label><br>
+  <input type="radio" id="accuracy2" name="accuracy" value="2">
+  <label for="accuracy2">2</label><br>
+  <input type="radio" id="accuracy3" name="accuracy" value="3">
+  <label for="accuracy3">3</label><br>
+  <input type="radio" id="accuracy4" name="accuracy" value="4">
+  <label for="accuracy4">4</label><br>
+  <input type="radio" id="accuracy5" name="accuracy" value="5">
+  <label for="accuracy5">5</label><br>
+
+  <h3>5. On a scale of 1 (not at all) to 5 (very comfortable), how comfortable were you with the plugin recording your emotions while coding?</h3>
+  <input type="radio" id="comfort1" name="comfort" value="1">
+  <label for="comfort1">1</label><br>
+  <input type="radio" id="comfort2" name="comfort" value="2">
+  <label for="comfort2">2</label><br>
+  <input type="radio" id="comfort3" name="comfort" value="3">
+  <label for="comfort3">3</label><br>
+  <input type="radio" id="comfort4" name="comfort" value="4">
+  <label for="comfort4">4</label><br>
+  <input type="radio" id="comfort5" name="comfort" value="5">
+  <label for="comfort5">5</label><br>
+
+  <h3>6. On a scale of 1 (not at all) to 5 (extremely), how helpful did you find the messages provided by the Emotion Tracker in aiding your self-regulation?</h3>
+  <input type="radio" id="helpful1" name="helpful" value="1">
+  <label for="helpful1">1</label><br>
+  <input type="radio" id="helpful2" name="helpful" value="2">
+  <label for="helpful2">2</label><br>
+  <input type="radio" id="helpful3" name="helpful" value="3">
+  <label for="helpful3">3</label><br>
+  <input type="radio" id="helpful4" name="helpful" value="4">
+  <label for="helpful4">4</label><br>
+  <input type="radio" id="helpful5" name="helpful" value="5">
+  <label for="helpful5">5</label><br>
+
+  <h3>7. During your experience with the Emotion Tracker, how often did you feel the following emotions?</h3>
+
+  <h4>Happiness</h4>
+  <input type="radio" id="never_happy" name="happiness" value="Never">
+  <label for="never_happy">Never</label><br>
+  <input type="radio" id="rarely_happy" name="happiness" value="Rarely">
+  <label for="rarely_happy">Rarely</label><br>
+  <input type="radio" id="sometimes_happy" name="happiness" value="Sometimes">
+  <label for="sometimes_happy">Sometimes</label><br>
+  <input type="radio" id="often_happy" name="happiness" value="Often">
+  <label for="often_happy">Often</label><br>
+  <input type="radio" id="most_happy" name="happiness" value="Most of the time">
+  <label for="most_happy">Most of the time</label><br>
+
+  <h4>Surprise</h4>
+  <input type="radio" id="never_surprise" name="surprise" value="Never">
+  <label for="never_surprise">Never</label><br>
+  <input type="radio" id="rarely_surprise" name="surprise" value="Rarely">
+  <label for="rarely_surprise">Rarely</label><br>
+  <input type="radio" id="sometimes_surprise" name="surprise" value="Sometimes">
+  <label for="sometimes_surprise">Sometimes</label><br>
+  <input type="radio" id="often_surprise" name="surprise" value="Often">
+  <label for="often_surprise">Often</label><br>
+  <input type="radio" id="most_surprise" name="surprise" value="Most of the time">
+  <label for="most_surprise">Most of the time</label><br>
+
+  <h4>Neutral</h4>
+  <input type="radio" id="never_neutral" name="neutral" value="Never">
+  <label for="never_neutral">Never</label><br>
+  <input type="radio" id="rarely_neutral" name="neutral" value="Rarely">
+  <label for="rarely_neutral">Rarely</label><br>
+  <input type="radio" id="sometimes_neutral" name="neutral" value="Sometimes">
+  <label for="sometimes_neutral">Sometimes</label><br>
+  <input type="radio" id="often_neutral" name="neutral" value="Often">
+  <label for="often_neutral">Often</label><br>
+  <input type="radio" id="most_neutral" name="neutral" value="Most of the time">
+  <label for="most_neutral">Most of the time</label><br>
+
+  <h4>Sadness</h4>
+  <input type="radio" id="never_sad" name="sadness" value="Never">
+  <label for="never_sad">Never</label><br>
+  <input type="radio" id="rarely_sad" name="sadness" value="Rarely">
+  <label for="rarely_sad">Rarely</label><br>
+  <input type="radio" id="sometimes_sad" name="sadness" value="Sometimes">
+  <label for="sometimes_sad">Sometimes</label><br>
+  <input type="radio" id="often_sad" name="sadness" value="Often">
+  <label for="often_sad">Often</label><br>
+  <input type="radio" id="most_sad" name="sadness" value="Most of the time">
+  <label for="most_sad">Most of the time</label><br>
+
+  <h4>Anger</h4>
+  <input type="radio" id="never_anger" name="anger" value="Never">
+  <label for="never_anger">Never</label><br>
+  <input type="radio" id="rarely_anger" name="anger" value="Rarely">
+  <label for="rarely_anger">Rarely</label><br>
+  <input type="radio" id="sometimes_anger" name="anger" value="Sometimes">
+  <label for="sometimes_anger">Sometimes</label><br>
+  <input type="radio" id="often_anger" name="anger" value="Often">
+  <label for="often_anger">Often</label><br>
+  <input type="radio" id="most_anger" name="anger" value="Most of the time">
+  <label for="most_anger">Most of the time</label><br>
+
+  <h4>Disgust</h4>
+  <input type="radio" id="never_disgust" name="disgust" value="Never">
+  <label for="never_disgust">Never</label><br>
+  <input type="radio" id="rarely_disgust" name="disgust" value="Rarely">
+  <label for="rarely_disgust">Rarely</label><br>
+  <input type="radio" id="sometimes_disgust" name="disgust" value="Sometimes">
+  <label for="sometimes_disgust">Sometimes</label><br>
+  <input type="radio" id="often_disgust" name="disgust" value="Often">
+  <label for="often_disgust">Often</label><br>
+  <input type="radio" id="most_disgust" name="disgust" value="Most of the time">
+  <label for="most_disgust">Most of the time</label><br>
+
+  <h4>Fear</h4>
+  <input type="radio" id="never_fear" name="fear" value="Never">
+  <label for="never_fear">Never</label><br>
+  <input type="radio" id="rarely_fear" name="fear" value="Rarely">
+  <label for="rarely_fear">Rarely</label><br>
+  <input type="radio" id="sometimes_fear" name="fear" value="Sometimes">
+  <label for="sometimes_fear">Sometimes</label><br>
+  <input type="radio" id="often_fear" name="fear" value="Often">
+  <label for="often_fear">Often</label><br>
+  <input type="radio" id="most_fear" name="fear" value="Most of the time">
+  <label for="most_fear">Most of the time</label><br>
+
+  <h4>Contempt</h4>
+  <input type="radio" id="never_contempt" name="contempt" value="Never">
+  <label for="never_contempt">Never</label><br>
+  <input type="radio" id="rarely_contempt" name="contempt" value="Rarely">
+  <label for="rarely_contempt">Rarely</label><br>
+  <input type="radio" id="sometimes_contempt" name="contempt" value="Sometimes">
+  <label for="sometimes_contempt">Sometimes</label><br>
+  <input type="radio" id="often_contempt" name="contempt" value="Often">
+  <label for="often_contempt">Often</label><br>
+  <input type="radio" id="most_contempt" name="contempt" value="Most of the time">
+  <label for="most_contempt">Most of the time</label><br>
+
+  <h3>8. Please share any additional thoughts or comments you have about your experience using the Emotion Tracker plugin.</h3>
+  <textarea name="additionalThoughts" rows="5" cols="50"></textarea>
+
+  <input type="submit" value="Submit">
+
+</form>
+
+</body>
+</html>

@@ -24,7 +24,6 @@ import org.jetbrains.research.tasktracker.config.content.task.base.Task
 import org.jetbrains.research.tasktracker.config.content.task.base.TaskWithFiles
 import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
 import org.jetbrains.research.tasktracker.tracking.activity.ActivityTracker
-import org.jetbrains.research.tasktracker.tracking.logger.ActivityLogger
 import org.jetbrains.research.tasktracker.tracking.webcam.WebCamTracker
 import org.jetbrains.research.tasktracker.tracking.webcam.collectAllDevices
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.GlobalPluginStorage
@@ -75,6 +74,31 @@ class MainPluginPanelFactory : ToolWindowFactory {
 
     override fun isApplicable(project: Project) = super.isApplicable(project) && JBCefApp.isSupported()
 
+    private fun webWelcomePage() {
+        nextButton.text = UIBundle.message("ui.button.next")
+        backButton.isVisible = false
+        mainWindow.loadHtmlTemplate(MainPageTemplate.loadCurrentTemplate())
+        nextButton.addListener {
+            webCamPage()
+        }
+    }
+
+    private fun webSolvePage() {
+        val activityTracker = ActivityTracker(project)
+        activityTracker.startTracking()
+        nextButton.text = UIBundle.message("ui.button.next")
+        backButton.isVisible = true
+        mainWindow.loadHtmlTemplate(SolveWebPageTemplate.loadCurrentTemplate())
+        backButton.addListener {
+            sendActivityFile(activityTracker)
+            webCamPage()
+        }
+        nextButton.addListener {
+            sendActivityFile(activityTracker)
+            survey()
+        }
+    }
+
     private fun loadBasePage(template: HtmlTemplateBase, buttonTextKey: String, isVisibleBackButton: Boolean) {
         mainWindow.loadHtmlTemplate(template)
         nextButton.text = UIBundle.message(buttonTextKey)
@@ -110,22 +134,20 @@ class MainPluginPanelFactory : ToolWindowFactory {
      * Switches the panel to select a webcam.
      */
     private fun webCamPage() {
-        val activityTracker = ActivityTracker(project)
-        activityTracker.startTracking()
         MainPanelStorage.currentResearchId = getResearchId()
         with(MainPanelStorage) {
             registerResearch(userId ?: error("TODO"), currentResearchId ?: error("TODO"))
         }
         collectAllDevicesWithProgressBarAndShowNextPage(project)
+        nextButton.text = UIBundle.message("ui.button.select")
+        backButton.isVisible = true
         backButton.addListener {
-            welcomePage()
+            webWelcomePage()
         }
         nextButton.addListener {
-            activityTracker.stopTracking()
-            sendActivityFile(activityTracker.activityLogger)
             mainWindow.getElementValue("cameras").onSuccess { deviceNumber ->
                 GlobalPluginStorage.currentDeviceNumber = deviceNumber?.toInt()
-                // TODO: show a survey??
+                webSolvePage()
                 val webcamTracker = WebCamTracker(project)
                 webcamTracker.startTracking()
             }.onError {
@@ -191,6 +213,18 @@ class MainPluginPanelFactory : ToolWindowFactory {
         }
     }
 
+    private fun survey() {
+        loadBasePage(
+            SurveyTemplate(), "ui.button.submit", true
+        )
+        nextButton.addListener {
+            // TODO send data from this moment
+        }
+        backButton.addListener {
+            webSolvePage()
+        }
+    }
+
     /**
      * Switches the panel to the task solving window.
      * It contains task name, description and I/O data.
@@ -248,13 +282,15 @@ class MainPluginPanelFactory : ToolWindowFactory {
     private fun getUserId() = getId("get-user-id")
     private fun getResearchId() = getId("get-research-id")
     private fun getId(request: String): Int =
-        runBlocking { client.get("http://3.249.245.244:8888/$request").body() }
+        runBlocking { client.get("$domain/$request").body() }
 
-    private fun sendActivityFile(activityLogger: ActivityLogger) {
+    private fun sendActivityFile(activityTracker: ActivityTracker) {
+        val file = activityTracker.activityLogger.logPrinter.logFile
+        activityTracker.stopTracking()
+
         runBlocking {
-            val file = activityLogger.logPrinter.logFile
             client.submitFormWithBinaryData(
-                url = "http://3.249.245.244:8888/upload-activity/${MainPanelStorage.currentResearchId}",
+                url = "$domain/upload-activity/${MainPanelStorage.currentResearchId}",
                 formData = formData {
                     append(
                         "file",
@@ -274,7 +310,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
     private fun registerResearch(userId: Int, researchId: Int, name: String = "test") { // TODO name
         runBlocking {
             client.submitForm(
-                url = "http://3.249.245.244:8888/create-research",
+                url = "$domain/create-research",
                 formParameters = parameters {
                     append("id", researchId.toString())
                     append("user_id", userId.toString())
@@ -282,5 +318,9 @@ class MainPluginPanelFactory : ToolWindowFactory {
                 }
             )
         }
+    }
+
+    companion object {
+        const val domain = "http://3.249.245.244:8888"
     }
 }
