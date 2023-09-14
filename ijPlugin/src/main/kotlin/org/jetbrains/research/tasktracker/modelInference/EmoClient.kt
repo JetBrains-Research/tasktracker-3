@@ -17,8 +17,6 @@ import org.jetbrains.research.tasktracker.modelInference.prepareImage
 
 @Serializable
 data class ImageData(val image: List<List<Double>>)
-
-
 class EmoClient(private var serverUrl: String = "http://localhost:5230/predict") : EmoPredictor {
 
     private val client = HttpClient(CIO) {
@@ -69,4 +67,3 @@ fun main() {
         println(results)
     }
 }
-

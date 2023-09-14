@@ -10,7 +10,6 @@ import org.bytedeco.opencv.global.opencv_imgcodecs
 import org.bytedeco.opencv.opencv_core.Mat
 import kotlin.math.exp
 
-
 class EmoModel : EmoPredictor {
 
     private fun softmax(input: FloatArray): FloatArray {
@@ -31,11 +30,10 @@ class EmoModel : EmoPredictor {
     }
 
     override suspend fun predict(image: Mat): EmoPrediction {
-
         val prepImage = prepareImage(image)
 
-        val tensor = FloatNDArray(INPUT_SHAPE) { it: IntArray ->
-            prepImage.ptr(it[2], it[3]).float
+        val tensor = FloatNDArray(INPUT_SHAPE) {
+            getPixel(it as IntArray, prepImage)
         }.asTensor("Input3")
 
         val prediction = model.predict(listOf(tensor))["Plus692_Output_0"]!! as KITensor
