@@ -29,14 +29,14 @@ class WebcamChoicePageTemplate(private val listOfCameras: List<WebCamInfo>) : Ht
     private fun buildPageTemplate() = """
         <div class="container">
             <div>
-                <p class="small-font">We've made test pictures from all connected devices, please choose which one you prefer to use to detect your emotions:</p>
-                ${generateTemplateForListOfCameras()}
-                <label class="webcam-info-list" for="tasks">Please, choose the preferable option: </label>
-                <div class="webcam-select-container">
-                    <select name="cameras" id="cameras">
-                    ${generateTemplateForChoosingCamera()}
-                    </select>
-                </div>
+            <p class="small-font">We have captured test pictures from all connected devices. Please select the one you prefer to use for registering your emotions:</p>
+            ${generateTemplateForListOfCameras()}
+            <label class="webcam-info-list" for="tasks">Please select your preferred option: </label>
+            <div class="webcam-select-container">
+                <select name="cameras" id="cameras">
+                ${generateTemplateForChoosingCamera()}
+                </select>
+            </div>
             </div>
         </div>
     """.trimIndent()

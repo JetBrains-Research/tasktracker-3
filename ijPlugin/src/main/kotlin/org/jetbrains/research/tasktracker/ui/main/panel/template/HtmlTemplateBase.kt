@@ -11,6 +11,12 @@ sealed class HtmlTemplateBase {
         HtmlTemplateBase::class.java.getResource("css/$filename.css")?.readText()?.replace("%", "%%")
             ?: error("Cannot find $filename.css")
 
+    protected fun String.wrapToSmallText() = lines().joinToString(System.lineSeparator()) {
+        """
+            <p class="small-font">$it</p>
+        """.trimIndent()
+    }
+
     private fun cssContent(theme: Theme) = loadCss(theme.cssFileName)
 
     private fun baseCss() = loadCss("base")

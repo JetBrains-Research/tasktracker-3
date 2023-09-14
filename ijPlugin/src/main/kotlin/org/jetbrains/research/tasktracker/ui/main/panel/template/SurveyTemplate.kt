@@ -12,5 +12,5 @@ object SurveyTemplate : HtmlTemplateBase() {
         return super.pageContent(theme, *arguments, request())
     }
 
-    private fun request() = "${MainPluginPanelFactory.domain}/confirm-survey?id=${MainPanelStorage.currentResearchId}"
+    private fun request() = "${MainPluginPanelFactory.DOMAIN}/confirm-survey?id=${MainPanelStorage.currentResearchId}"
 }

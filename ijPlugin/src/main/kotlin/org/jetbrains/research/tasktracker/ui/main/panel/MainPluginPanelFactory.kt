@@ -12,7 +12,6 @@ import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBPanel
 import com.intellij.ui.jcef.JBCefApp
-import com.intellij.ui.jcef.executeJavaScriptAsync
 import com.intellij.util.ui.JBUI
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -92,11 +91,10 @@ class MainPluginPanelFactory : ToolWindowFactory {
         backButton.isVisible = true
         mainWindow.loadHtmlTemplate(SolveWebPageTemplate.loadCurrentTemplate())
         backButton.addListener {
-            sendActivityFile(activityTracker)
             webCamPage()
         }
         nextButton.addListener {
-            sendActivityFile(activityTracker)
+            // sendActivityFile(activityTracker)
             survey()
         }
     }
@@ -138,7 +136,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
     private fun webCamPage() {
         MainPanelStorage.currentResearchId = getResearchId()
         with(MainPanelStorage) {
-            registerResearch(userId ?: error("TODO"), currentResearchId ?: error("TODO"))
+            registerResearch(userId, currentResearchId)
         }
         collectAllDevicesWithProgressBarAndShowNextPage(project)
         nextButton.text = UIBundle.message("ui.button.select")
@@ -220,8 +218,9 @@ class MainPluginPanelFactory : ToolWindowFactory {
             SurveyTemplate, "ui.button.submit", true
         )
         nextButton.addListener {
+//            sendActivityFile(activityTracker)
             mainWindow.executeJavaScriptAsync("document.getElementById(\"theForm\").submit();")
-            webWelcomePage()
+//            webWelcomePage() // end page
         }
         backButton.addListener {
             webSolvePage()
@@ -284,9 +283,19 @@ class MainPluginPanelFactory : ToolWindowFactory {
 
     private fun getUserId() = getId("get-user-id")
     private fun getResearchId() = getId("get-research-id")
-    private fun getId(request: String): Int =
-        runBlocking { client.get("$domain/$request").body() }
 
+    @Suppress("TooGenericExceptionCaught")
+    private fun getId(request: String): Int? =
+        runBlocking {
+            try {
+                client.get("$DOMAIN/$request").body()
+            } catch (e: Exception) {
+                logger.warn("Server interaction error! Request: $request", e)
+                null
+            }
+        }
+
+    @Suppress("UnusedPrivateMember")
     private fun sendActivityFile(activityTracker: ActivityTracker) {
         val file = activityTracker.activityLogger.logPrinter.logFile
         activityTracker.stopTracking()
@@ -296,7 +305,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
     private fun sendFile(file: File, subdir: String) {
         runBlocking {
             client.submitFormWithBinaryData(
-                url = "$domain/upload-document/${MainPanelStorage.currentResearchId}?subdir=$subdir",
+                url = "$DOMAIN/upload-document/${MainPanelStorage.currentResearchId}?subdir=$subdir",
                 formData = formData {
                     append(
                         "file",
@@ -313,20 +322,33 @@ class MainPluginPanelFactory : ToolWindowFactory {
         }
     }
 
-    private fun registerResearch(userId: Int, researchId: Int, name: String = "test") { // TODO name
-        runBlocking {
-            client.submitForm(
-                url = "$domain/create-research",
-                formParameters = parameters {
-                    append("id", researchId.toString())
-                    append("user_id", userId.toString())
-                    append("name", name)
-                }
+    @Suppress("TooGenericExceptionCaught")
+    private fun registerResearch(userId: Int?, researchId: Int?, name: String = "hackathon2023") { // TODO name
+        if (userId == null || researchId == null) {
+            logger.warn(
+                "Found problems with the server connection! " +
+                    "Continue doing this research offline. userId=$userId, researchId=$researchId"
             )
+            return
+        }
+        runBlocking {
+            val url = "$DOMAIN/create-research"
+            try {
+                client.submitForm(
+                    url = url,
+                    formParameters = parameters {
+                        append("id", researchId.toString())
+                        append("user_id", userId.toString())
+                        append("name", name)
+                    }
+                )
+            } catch (e: Exception) {
+                logger.warn("Server interaction error! Url: $url", e)
+            }
         }
     }
 
     companion object {
-        const val domain = "http://3.249.245.244:8888"
+        const val DOMAIN = "http://3.249.245.244:8888"
     }
 }
