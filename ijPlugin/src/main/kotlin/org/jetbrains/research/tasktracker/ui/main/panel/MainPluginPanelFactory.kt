@@ -109,7 +109,15 @@ class MainPluginPanelFactory : ToolWindowFactory {
             return
         }
         trackers.clear()
-        trackers.addAll(listOf(ActivityTracker(project), WebCamTracker(project), ToolWindowTracker(project)))
+        // TODO: make better shared loggers
+        val webCamTracker = WebCamTracker(project, GlobalPluginStorage.emoPredictor)
+        trackers.addAll(
+            listOf(
+                ActivityTracker(project),
+                ToolWindowTracker(project, GlobalPluginStorage.emoPredictor, webCamTracker.webcamLogger),
+                webCamTracker
+            )
+        )
         trackers.forEach { it.startTracking() }
     }
 
