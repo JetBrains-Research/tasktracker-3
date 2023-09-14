@@ -92,9 +92,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
         backButton.isVisible = true
         mainWindow.loadHtmlTemplate(SolveWebPageTemplate.loadCurrentTemplate())
 
-        trackers.clear()
-        trackers.addAll(listOf(ActivityTracker(project), WebCamTracker(project)))
-        trackers.forEach { it.startTracking() }
+        startTracking()
 
         backButton.addListener {
             webCamPage()
@@ -102,6 +100,12 @@ class MainPluginPanelFactory : ToolWindowFactory {
         nextButton.addListener {
             survey()
         }
+    }
+
+    private fun startTracking() {
+        trackers.clear()
+        trackers.addAll(listOf(ActivityTracker(project), WebCamTracker(project)))
+        trackers.forEach { it.startTracking() }
     }
 
     private fun loadBasePage(template: HtmlTemplateBase, buttonTextKey: String, isVisibleBackButton: Boolean) {
