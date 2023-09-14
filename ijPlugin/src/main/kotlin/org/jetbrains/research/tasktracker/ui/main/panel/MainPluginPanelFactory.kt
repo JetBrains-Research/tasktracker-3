@@ -22,6 +22,7 @@ import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.research.tasktracker.config.content.task.base.Task
 import org.jetbrains.research.tasktracker.config.content.task.base.TaskWithFiles
+import org.jetbrains.research.tasktracker.tracking.BaseTracker
 import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
 import org.jetbrains.research.tasktracker.tracking.activity.ActivityTracker
 import org.jetbrains.research.tasktracker.tracking.webcam.WebCamTracker
@@ -49,6 +50,8 @@ class MainPluginPanelFactory : ToolWindowFactory {
     private val nextButton = createJButton("ui.button.next")
     private val backButton = createJButton("ui.button.back", isVisibleProp = false)
     private val logger: Logger = Logger.getInstance(MainPluginPanelFactory::class.java)
+
+    private val trackers: MutableList<BaseTracker> = mutableListOf()
 
     private lateinit var mainWindow: MainPluginWindow
     private lateinit var project: Project
@@ -85,8 +88,8 @@ class MainPluginPanelFactory : ToolWindowFactory {
     }
 
     private fun webSolvePage() {
-        val activityTracker = ActivityTracker(project)
-        activityTracker.startTracking()
+        trackers.add(ActivityTracker(project))
+        trackers.forEach { it.startTracking() }
         nextButton.text = UIBundle.message("ui.button.next")
         backButton.isVisible = true
         mainWindow.loadHtmlTemplate(SolveWebPageTemplate.loadCurrentTemplate())
@@ -94,7 +97,6 @@ class MainPluginPanelFactory : ToolWindowFactory {
             webCamPage()
         }
         nextButton.addListener {
-            // sendActivityFile(activityTracker)
             survey()
         }
     }
@@ -148,8 +150,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
             mainWindow.getElementValue("cameras").onSuccess { deviceNumber ->
                 GlobalPluginStorage.currentDeviceNumber = deviceNumber?.toInt()
                 webSolvePage()
-                val webcamTracker = WebCamTracker(project)
-                webcamTracker.startTracking()
+                trackers.add(WebCamTracker(project))
             }.onError {
                 error(it.localizedMessage)
             }
@@ -218,12 +219,49 @@ class MainPluginPanelFactory : ToolWindowFactory {
             SurveyTemplate, "ui.button.submit", true
         )
         nextButton.addListener {
-//            sendActivityFile(activityTracker)
-            mainWindow.executeJavaScriptAsync("document.getElementById(\"theForm\").submit();")
-//            webWelcomePage() // end page
+            // TODO
+//            mainWindow.executeJavaScriptAsync("document.getElementById(\"theForm\").submit();")
+            trackers.forEach {
+                // TODO: make it better
+                //
+                val isSuccessful = when (it) {
+                    is ActivityTracker -> sendActivityFiles(it)
+                    is WebCamTracker -> sendWebcamFiles(it)
+                    else -> false
+                }
+                if (!isSuccessful) {
+                    serverErrorPage()
+                }
+                it.stopTracking()
+            }
+            resetAllIds()
+            webFinalPage()
         }
         backButton.addListener {
             webSolvePage()
+        }
+    }
+
+    private fun resetAllIds() {
+        MainPanelStorage.currentResearchId = null
+        MainPanelStorage.userId = null
+    }
+
+    private fun serverErrorPage() {
+        loadBasePage(
+            ServerErrorPageTemplate(), "ui.button.welcome", false
+        )
+        nextButton.isVisible = false
+    }
+
+    private fun webFinalPage() {
+        nextButton.text = UIBundle.message("ui.button.welcome")
+        backButton.isVisible = false
+
+        // TODO: load content
+
+        nextButton.addListener {
+            welcomePage()
         }
     }
 
@@ -285,25 +323,26 @@ class MainPluginPanelFactory : ToolWindowFactory {
     private fun getResearchId() = getId("get-research-id")
 
     @Suppress("TooGenericExceptionCaught")
-    private fun getId(request: String): Int? =
-        runBlocking {
-            try {
-                client.get("$DOMAIN/$request").body()
-            } catch (e: Exception) {
-                logger.warn("Server interaction error! Request: $request", e)
-                null
-            }
+    private fun getId(request: String): Int? = runBlocking {
+        try {
+            client.get("$DOMAIN/$request").body()
+        } catch (e: Exception) {
+            logger.warn("Server interaction error! Request: $request", e)
+            null
         }
-
-    @Suppress("UnusedPrivateMember")
-    private fun sendActivityFile(activityTracker: ActivityTracker) {
-        val file = activityTracker.activityLogger.logPrinter.logFile
-        activityTracker.stopTracking()
-        sendFile(file, "activity")
     }
 
-    private fun sendFile(file: File, subdir: String) {
-        runBlocking {
+    private fun sendActivityFiles(activityTracker: ActivityTracker) = activityTracker.getLogFiles().all {
+        sendFile(it, "activity")
+    }
+
+    // TODO: implement
+    @Suppress("FunctionOnlyReturningConstant", "UnusedPrivateMember")
+    private fun sendWebcamFiles(webCamTracker: WebCamTracker) = false
+
+    @Suppress("TooGenericExceptionCaught")
+    private fun sendFile(file: File, subdir: String) = runBlocking {
+        try {
             client.submitFormWithBinaryData(
                 url = "$DOMAIN/upload-document/${MainPanelStorage.currentResearchId}?subdir=$subdir",
                 formData = formData {
@@ -312,13 +351,16 @@ class MainPluginPanelFactory : ToolWindowFactory {
                         file.readBytes(),
                         Headers.build {
                             append(
-                                HttpHeaders.ContentDisposition,
-                                "filename=\"${file.name}\""
+                                HttpHeaders.ContentDisposition, "filename=\"${file.name}\""
                             )
                         }
                     )
                 }
             )
+            true
+        } catch (e: Exception) {
+            logger.warn("Server interaction error! File to send: ${file.path}", e)
+            false
         }
     }
 
@@ -327,7 +369,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
         if (userId == null || researchId == null) {
             logger.warn(
                 "Found problems with the server connection! " +
-                    "Continue doing this research offline. userId=$userId, researchId=$researchId"
+                        "Continue doing this research offline. userId=$userId, researchId=$researchId"
             )
             return
         }

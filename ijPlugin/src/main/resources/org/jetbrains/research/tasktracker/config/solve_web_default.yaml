@@ -1,5 +1,8 @@
 text: "Feel free to work in your development environment for as long as you'd like, and we'll continue monitoring your emotions. 
 
-After one hour, you'll receive a pop-up inviting you to take a feedback survey. However, if you'd like to provide feedback earlier, you can do so by clicking on the \"Next\" button.
+In one hour, a pop-up will appear, inviting you to participate in a feedback survey. If you prefer to give feedback before that time, you can click the \"Next\" button located within this panel. 
 
-<i>Please note that we only receive the data from your participation when you submit the survey.</i>"
+<i>Please note that we only receive the data from your participation when you submit the survey.</i>
+
+You can fold this panel for now and easily access it by clicking on the \"TaskTracker\" panel in the upper right corner of your IDE.
+"
