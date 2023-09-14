@@ -1,12 +1,12 @@
 package org.jetbrains.research.tasktracker.tracking.webcam
 
-import EmoClient
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.Project
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.research.tasktracker.actions.emoji.EmotionType
 import org.jetbrains.research.tasktracker.actions.tracking.NotificationIcons
 import org.jetbrains.research.tasktracker.actions.tracking.NotificationWrapper
+import org.jetbrains.research.tasktracker.modelInference.EmoModel
 import org.jetbrains.research.tasktracker.modelInference.EmoPredictor
 import org.jetbrains.research.tasktracker.tracking.BaseTracker
 import org.jetbrains.research.tasktracker.tracking.logger.WebCamLogger
@@ -20,7 +20,7 @@ class WebCamTracker(project: Project) : BaseTracker {
     private val webcamLogger: WebCamLogger = WebCamLogger(project)
 
     private val timerToMakePhoto = Timer()
-    private val emoPredictor: EmoPredictor = EmoClient()
+    private val emoPredictor: EmoPredictor = EmoModel()
 
     @Suppress("MagicNumber", "TooGenericExceptionCaught", "SwallowedException")
     override fun startTracking() {
