@@ -4,6 +4,7 @@ import com.intellij.openapi.editor.Document
 import com.intellij.openapi.fileEditor.FileDocumentManager
 import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.tracking.activity.ActivityEvent
+import org.jetbrains.research.tasktracker.tracking.fileEditor.FileEditorData
 import org.jetbrains.research.tasktracker.tracking.survey.SurveyData
 import org.jetbrains.research.tasktracker.tracking.toolWindow.ToolWindowData
 import org.jetbrains.research.tasktracker.tracking.webcam.WebCamData
@@ -68,5 +69,14 @@ object SurveyLoggedData : LoggedData<SurveyData, String?>() {
         LoggedDataGetter("question") { it.question },
         LoggedDataGetter("option") { it.option ?: "" },
         LoggedDataGetter("answer") { it.answer },
+    )
+}
+
+object FileEditorLoggedData : LoggedData<FileEditorData, String?>() {
+    override val loggedDataGetters: List<LoggedDataGetter<FileEditorData, String?>> = arrayListOf(
+        LoggedDataGetter("date") { it.time.toString() },
+        LoggedDataGetter("action") { it.fileEditorAction.name },
+        LoggedDataGetter("old_file") { it.oldFileName },
+        LoggedDataGetter("new_file") { it.newFileName },
     )
 }
