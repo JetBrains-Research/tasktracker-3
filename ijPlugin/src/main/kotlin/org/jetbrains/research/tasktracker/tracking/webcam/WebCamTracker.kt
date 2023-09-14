@@ -1,14 +1,13 @@
 package org.jetbrains.research.tasktracker.tracking.webcam
 
-import EmoClient
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.Project
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.research.tasktracker.actions.emoji.EmotionType
 import org.jetbrains.research.tasktracker.actions.tracking.NotificationIcons
 import org.jetbrains.research.tasktracker.actions.tracking.NotificationWrapper
+import org.jetbrains.research.tasktracker.modelInference.EmoModel
 import org.jetbrains.research.tasktracker.modelInference.EmoPredictor
-import org.jetbrains.research.tasktracker.modelInference.frameToMat
 import org.jetbrains.research.tasktracker.tracking.BaseTracker
 import org.jetbrains.research.tasktracker.tracking.logger.WebCamLogger
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.GlobalPluginStorage
@@ -21,7 +20,7 @@ class WebCamTracker(project: Project) : BaseTracker {
     private val webcamLogger: WebCamLogger = WebCamLogger(project)
 
     private val timerToMakePhoto = Timer()
-    private val emoPredictor: EmoPredictor = EmoClient()
+    private val emoPredictor: EmoPredictor = EmoModel()
 
     @Suppress("MagicNumber", "TooGenericExceptionCaught", "SwallowedException")
     override fun startTracking() {
@@ -34,7 +33,7 @@ class WebCamTracker(project: Project) : BaseTracker {
                     runBlocking {
                         try {
                             val photoDate = DateTime.now()
-                            val prediction = emoPredictor.predict(frameToMat(it))
+                            val prediction = emoPredictor.predict(it)
                             val modelScore = prediction.getPrediction()
                             EmotionType.byModelScore(modelScore).also {
                                 webcamLogger.log(it, prediction.probabilities, true, photoDate)

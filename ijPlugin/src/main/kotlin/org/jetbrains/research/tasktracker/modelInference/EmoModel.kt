@@ -6,8 +6,8 @@ import io.kinference.core.data.tensor.asTensor
 import io.kinference.core.model.KIModel
 import io.kinference.ndarray.arrays.FloatNDArray
 import kotlinx.coroutines.runBlocking
-import org.bytedeco.opencv.global.opencv_imgcodecs
-import org.bytedeco.opencv.opencv_core.Mat
+import org.opencv.core.Mat
+import org.opencv.imgcodecs.Imgcodecs
 import kotlin.math.exp
 
 class EmoModel : EmoPredictor {
@@ -24,6 +24,12 @@ class EmoModel : EmoPredictor {
         private val INPUT_SHAPE = intArrayOf(1, 1, 64, 64)
     }
 
+    init {
+        runBlocking {
+            load()
+        }
+    }
+
     private lateinit var model: KIModel
     suspend fun load() {
         model = KIEngine.loadModel(EmoModel::class.java.getResource(MODEL_PATH).readBytes())
@@ -31,27 +37,27 @@ class EmoModel : EmoPredictor {
 
     override suspend fun predict(image: Mat): EmoPrediction {
         val prepImage = prepareImage(image)
+        val tensor = FloatNDArray(INPUT_SHAPE) { idx: IntArray ->
+            getPixel(idx, prepImage)
+        }
 
-        val tensor = FloatNDArray(INPUT_SHAPE) {
-            getPixel(it as IntArray, prepImage)
-        }.asTensor("Input3")
+        val outputs = model.predict(listOf(tensor.asTensor("Input3")))
+        val output = outputs["Plus692_Output_0"]
+        val softmaxedOutput = ((output as KITensor).data as FloatNDArray).softmax()
+        val outputArray = softmaxedOutput.array.toArray()
 
-        val prediction = model.predict(listOf(tensor))["Plus692_Output_0"]!! as KITensor
-        val probabilities = softmax((prediction.data as FloatNDArray).array.blocks[0])
-            .mapIndexed { index: Int, prob: Float -> index to prob.toDouble() }.toMap()
-
+        val probabilities = outputArray.mapIndexed { index: Int, prob: Float -> index to prob.toDouble() }.toMap()
+        println(probabilities)
         return EmoPrediction(probabilities)
     }
 }
 
 fun main() {
     val dir = "/Users/maria.tigina/IdeaProjects/emotional-monitoring/ijPlugin/src/main/resources/img/"
-    val inputImage: Mat =
-        opencv_imgcodecs.imread(dir + "img.png")
+    val inputImage: Mat = Imgcodecs.imread(dir + "img.png")
 
     runBlocking {
         val model = EmoModel()
-        model.load()
         val results = model.predict(inputImage)
         println(results)
     }
