@@ -21,11 +21,13 @@ class WebCamTracker(project: Project) : BaseTracker {
         // TODO: make it better
         funtimer.scheduleAtFixedRate(
             timerTask {
-                runBlocking {
-                    val prediction = emoPredictor.predict(frameToMat(it))
-                    val modelScore = prediction.getPrediction()
-                    GlobalPluginStorage.currentEmotion = EmotionType.byModelScore(modelScore)
-                    println("A photo was made!!")
+                makePhoto()?.let {
+                    runBlocking {
+                        val prediction = emoPredictor.predict(frameToMat(it))
+                        val modelScore = prediction.getPrediction()
+                        GlobalPluginStorage.currentEmotion = EmotionType.byModelScore(modelScore)
+                        println("A photo was made!!")
+                    }
                 }
             },
             5000,
