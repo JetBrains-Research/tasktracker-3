@@ -20,8 +20,8 @@ dependencies{
     implementation(rootProject.libs.ktor.client.serialization)
     implementation(rootProject.libs.ktor.client.content.negotiation)
     implementation(rootProject.libs.ktor.serialization.kotlinx.json)
-
-    api(rootProject.libs.slf4j)
+    implementation(rootProject.libs.slf4j)
+    implementation(rootProject.libs.opencv)
 }
 
 intellij {
@@ -36,7 +36,6 @@ tasks {
         .forEach { it.enabled = false }
 }
 
-
-configurations.all {
-    exclude("org.slf4j", "slf4j-api")
-}
+//configurations.all {
+//    exclude("org.slf4j", "slf4j-api")
+//}

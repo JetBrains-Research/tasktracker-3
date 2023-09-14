@@ -1,9 +1,20 @@
 package org.jetbrains.research.tasktracker.modelInference
 
-import org.bytedeco.opencv.opencv_core.Mat
+import org.opencv.core.Mat
 
 class EmoPrediction(val probabilities: Map<Int, Double>) {
+
+    companion object {
+        private const val THRESHOLD = 0.1
+        private val SENSITIVE_RANGE: List<Int> = (7 downTo 2).toList()
+    }
     fun getPrediction(): Int {
+        for (i in SENSITIVE_RANGE) {
+            if (probabilities[i]!! >= THRESHOLD) {
+                return i
+            }
+        }
+
         return probabilities.maxBy { it.value }.key
     }
 }
