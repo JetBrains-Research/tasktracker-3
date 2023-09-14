@@ -22,13 +22,16 @@ import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
 
+@Suppress("LongMethod")
 fun Application.configureRouting() {
     routing {
         get("/get-user-id") {
             call.respondText(currentUserId.toString())
+            call.respond(HttpStatusCode.Accepted)
         }
         get("/get-research-id") {
             call.respondText(currentResearchId.toString())
+            call.respond(HttpStatusCode.Accepted)
         }
 
         post("/create-research") {
@@ -64,6 +67,7 @@ fun Application.configureRouting() {
             getFile(researchId, "survey$currentSurveyId.txt", "survey").writeText(
                 call.receiveParameters().toString()
             )
+            call.respond(HttpStatusCode.Accepted)
         }
 
         post("upload-activity/{id}") {
@@ -103,6 +107,7 @@ suspend inline fun PipelineContext<Unit, ApplicationCall>.createLogFile(
         }
         part.dispose()
     }
+    call.respond(HttpStatusCode.Accepted)
 }
 
 fun getFile(researchId: Int, filename: String, subDirectory: String): File {

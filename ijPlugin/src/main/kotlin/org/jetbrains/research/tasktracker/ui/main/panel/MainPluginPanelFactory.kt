@@ -25,6 +25,7 @@ import org.jetbrains.research.tasktracker.config.content.task.base.TaskWithFiles
 import org.jetbrains.research.tasktracker.tracking.BaseTracker
 import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
 import org.jetbrains.research.tasktracker.tracking.activity.ActivityTracker
+import org.jetbrains.research.tasktracker.tracking.toolWindow.ToolWindowTracker
 import org.jetbrains.research.tasktracker.tracking.webcam.WebCamTracker
 import org.jetbrains.research.tasktracker.tracking.webcam.collectAllDevices
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.GlobalPluginStorage
@@ -103,8 +104,11 @@ class MainPluginPanelFactory : ToolWindowFactory {
     }
 
     private fun startTracking() {
+        if (trackers.isNotEmpty()) { // Otherwise we can lose data
+            return
+        }
         trackers.clear()
-        trackers.addAll(listOf(ActivityTracker(project), WebCamTracker(project)))
+        trackers.addAll(listOf(ActivityTracker(project), WebCamTracker(project), ToolWindowTracker(project)))
         trackers.forEach { it.startTracking() }
     }
 
@@ -234,6 +238,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
                 val isSuccessful = when (it) {
                     is ActivityTracker -> sendActivityFiles(it)
                     is WebCamTracker -> sendWebcamFiles(it)
+                    is ToolWindowTracker -> sendToolWindowFiles(it)
                     else -> false
                 }
                 if (!isSuccessful) {
@@ -255,8 +260,8 @@ class MainPluginPanelFactory : ToolWindowFactory {
     }
 
     private fun serverErrorPage() {
-        resetAllIds()
-        trackers.clear()
+//        resetAllIds()
+//        trackers.clear() // TODO
         loadBasePage(
             ServerErrorPageTemplate(), "ui.button.welcome", false
         )
@@ -339,6 +344,10 @@ class MainPluginPanelFactory : ToolWindowFactory {
             logger.warn("Server interaction error! Request: $request", e)
             null
         }
+    }
+
+    private fun sendToolWindowFiles(toolWindowTracker: ToolWindowTracker) = toolWindowTracker.getLogFiles().all {
+        sendFile(it, "toolWindow")
     }
 
     private fun sendActivityFiles(activityTracker: ActivityTracker) = activityTracker.getLogFiles().all {
