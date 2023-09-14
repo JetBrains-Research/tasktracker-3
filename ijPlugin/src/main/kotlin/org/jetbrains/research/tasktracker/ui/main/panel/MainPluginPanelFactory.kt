@@ -278,11 +278,9 @@ class MainPluginPanelFactory : ToolWindowFactory {
     }
 
     private fun webFinalPage() {
-        nextButton.text = UIBundle.message("ui.button.welcome")
-        backButton.isVisible = false
-
-        // TODO: load content
-
+        loadBasePage(
+            FinalPageTemplate(), "ui.button.welcome", false
+        )
         nextButton.addListener {
             welcomePage()
         }
