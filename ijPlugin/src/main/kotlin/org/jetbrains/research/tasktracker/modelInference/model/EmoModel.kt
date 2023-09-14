@@ -39,7 +39,7 @@ class EmoModel : EmoPredictor {
 //        model = KIEngine.loadModel(EmoModel::class.java.getResource(MODEL_PATH).readBytes())
         model = KIEngine.loadModel(
             EmoModel::class.java
-            .getResource(MODEL_PATH)?.readBytes()?: error("$MODEL_PATH must exist")
+                .getResource(MODEL_PATH)?.readBytes() ?: error("$MODEL_PATH must exist")
         )
     }
 

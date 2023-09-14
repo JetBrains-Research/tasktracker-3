@@ -118,7 +118,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
                 ActivityTracker(project),
                 ToolWindowTracker(project, GlobalPluginStorage.emoPredictor, webCamTracker.webcamLogger),
                 webCamTracker,
-                FileEditorTracker(project)
+                FileEditorTracker(project, GlobalPluginStorage.emoPredictor, webCamTracker.webcamLogger)
             )
         )
         trackers.forEach { it.startTracking() }
