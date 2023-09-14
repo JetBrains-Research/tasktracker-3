@@ -19,12 +19,13 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
 import io.ktor.http.*
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import org.jetbrains.research.tasktracker.config.content.task.base.Task
 import org.jetbrains.research.tasktracker.config.content.task.base.TaskWithFiles
 import org.jetbrains.research.tasktracker.tracking.BaseTracker
 import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
 import org.jetbrains.research.tasktracker.tracking.activity.ActivityTracker
+import org.jetbrains.research.tasktracker.tracking.survey.SurveyParser
 import org.jetbrains.research.tasktracker.tracking.webcam.WebCamTracker
 import org.jetbrains.research.tasktracker.tracking.webcam.collectAllDevices
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.GlobalPluginStorage
@@ -225,24 +226,27 @@ class MainPluginPanelFactory : ToolWindowFactory {
             SurveyTemplate, "ui.button.submit", true
         )
         nextButton.addListener {
-            // TODO
-//            mainWindow.executeJavaScriptAsync("document.getElementById(\"theForm\").submit();")
-            trackers.forEach {
-                it.stopTracking()
-            }
-            trackers.forEach {
-                val isSuccessful = when (it) {
-                    is ActivityTracker -> sendActivityFiles(it)
-                    is WebCamTracker -> sendWebcamFiles(it)
-                    else -> false
+            val surveyParser = SurveyParser(mainWindow, project)
+            // TODO: rewrite
+            GlobalScope.launch {
+                surveyParser.parseAndLog()
+                trackers.forEach {
+                    it.stopTracking()
                 }
-                if (!isSuccessful) {
-                    serverErrorPage()
+                trackers.forEach {
+                    val isSuccessful = when (it) {
+                        is ActivityTracker -> sendActivityFiles(it)
+                        is WebCamTracker -> sendWebcamFiles(it)
+                        else -> false
+                    }
+                    if (!isSuccessful) {
+                        serverErrorPage()
+                    }
                 }
+                trackers.clear()
+                resetAllIds()
+                webFinalPage()
             }
-            trackers.clear()
-            resetAllIds()
-            webFinalPage()
         }
         backButton.addListener {
             webSolvePage()

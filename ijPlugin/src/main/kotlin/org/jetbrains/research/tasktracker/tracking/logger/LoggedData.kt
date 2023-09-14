@@ -4,6 +4,7 @@ import com.intellij.openapi.editor.Document
 import com.intellij.openapi.fileEditor.FileDocumentManager
 import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.tracking.activity.ActivityEvent
+import org.jetbrains.research.tasktracker.tracking.survey.SurveyData
 import org.jetbrains.research.tasktracker.tracking.webcam.WebCamData
 import org.joda.time.DateTime
 
@@ -48,5 +49,15 @@ object WebcamLoggedData : LoggedData<WebCamData, String?>() {
         LoggedDataGetter("emotion_shown") { it.emotionShown.name },
         LoggedDataGetter("is_regular") { it.isRegular.toString() },
         LoggedDataGetter("scores") { it.scores.toString() },
+    )
+}
+
+object SurveyLoggedData : LoggedData<SurveyData, String?>() {
+    override val loggedDataGetters: List<LoggedDataGetter<SurveyData, String?>> = arrayListOf(
+        LoggedDataGetter("date") { it.time.toString() },
+        LoggedDataGetter("question_id") { it.questionId.toString() },
+        LoggedDataGetter("question") { it.question },
+        LoggedDataGetter("option") { it.option ?: "" },
+        LoggedDataGetter("answer") { it.answer },
     )
 }

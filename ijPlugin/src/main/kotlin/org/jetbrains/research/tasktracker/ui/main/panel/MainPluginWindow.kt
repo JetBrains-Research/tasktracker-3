@@ -43,8 +43,13 @@ class MainPluginWindow(service: MainWindowService) {
         Disposer.register(service, windowBrowser)
     }
 
+    private fun getJsElementByIdCommand(elementId: String) = "document.getElementById('$elementId')"
+
     fun getElementValue(elementId: String): Promise<JsExpressionResult> =
-        windowBrowser.executeJavaScriptAsync("document.getElementById('$elementId').value")
+        windowBrowser.executeJavaScriptAsync("${getJsElementByIdCommand(elementId)}.value")
+
+    fun checkIfRadioButtonChecked(elementId: String): Promise<JsExpressionResult> =
+        windowBrowser.executeJavaScriptAsync("${getJsElementByIdCommand(elementId)}.checked")
 
     fun executeJavaScriptAsync(code: String) = windowBrowser.executeJavaScriptAsync(code)
 
