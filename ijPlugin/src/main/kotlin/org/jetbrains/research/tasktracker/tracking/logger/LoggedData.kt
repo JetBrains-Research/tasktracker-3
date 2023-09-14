@@ -4,6 +4,7 @@ import com.intellij.openapi.editor.Document
 import com.intellij.openapi.fileEditor.FileDocumentManager
 import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.tracking.activity.ActivityEvent
+import org.jetbrains.research.tasktracker.tracking.webcam.WebCamData
 import org.joda.time.DateTime
 
 data class LoggedDataGetter<T, S>(val header: String, val getData: (T) -> S)
@@ -38,5 +39,14 @@ object ActivityLoggedData : LoggedData<ActivityEvent, String?>() {
         LoggedDataGetter("info") { it.info },
         LoggedDataGetter("selected-text") { it.selectedText },
         LoggedDataGetter("id") { it.id }
+    )
+}
+
+object WebcamLoggedData : LoggedData<WebCamData, String?>() {
+    override val loggedDataGetters: List<LoggedDataGetter<WebCamData, String?>> = arrayListOf(
+        LoggedDataGetter("date") { it.time.toString() },
+        LoggedDataGetter("emotion_shown") { it.emotionShown.name },
+        LoggedDataGetter("is_regular") { it.isRegular.toString() },
+        LoggedDataGetter("scores") { it.scores.toString() },
     )
 }
