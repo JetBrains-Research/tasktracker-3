@@ -12,6 +12,7 @@ import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBPanel
 import com.intellij.ui.jcef.JBCefApp
+import com.intellij.ui.jcef.executeJavaScriptAsync
 import com.intellij.util.ui.JBUI
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -33,6 +34,7 @@ import org.jetbrains.research.tasktracker.util.UIBundle
 import java.awt.BorderLayout
 import java.awt.FlowLayout
 import java.awt.event.ActionListener
+import java.io.File
 import javax.swing.JButton
 
 /**
@@ -215,10 +217,11 @@ class MainPluginPanelFactory : ToolWindowFactory {
 
     private fun survey() {
         loadBasePage(
-            SurveyTemplate(), "ui.button.submit", true
+            SurveyTemplate, "ui.button.submit", true
         )
         nextButton.addListener {
-            // TODO send data from this moment
+            mainWindow.executeJavaScriptAsync("document.getElementById(\"theForm\").submit();")
+            webWelcomePage()
         }
         backButton.addListener {
             webSolvePage()
@@ -287,10 +290,13 @@ class MainPluginPanelFactory : ToolWindowFactory {
     private fun sendActivityFile(activityTracker: ActivityTracker) {
         val file = activityTracker.activityLogger.logPrinter.logFile
         activityTracker.stopTracking()
+        sendFile(file, "activity")
+    }
 
+    private fun sendFile(file: File, subdir: String) {
         runBlocking {
             client.submitFormWithBinaryData(
-                url = "$domain/upload-activity/${MainPanelStorage.currentResearchId}",
+                url = "$domain/upload-document/${MainPanelStorage.currentResearchId}?subdir=$subdir",
                 formData = formData {
                     append(
                         "file",

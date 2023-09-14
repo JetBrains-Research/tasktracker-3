@@ -46,6 +46,8 @@ class MainPluginWindow(service: MainWindowService) {
     fun getElementValue(elementId: String): Promise<JsExpressionResult> =
         windowBrowser.executeJavaScriptAsync("document.getElementById('$elementId').value")
 
+    fun executeJavaScriptAsync(code: String) = windowBrowser.executeJavaScriptAsync(code)
+
     fun executeJavascript(
         @Language("JavaScript") codeBeforeInject: String = "",
         @Language("JavaScript") codeAfterInject: String = "",

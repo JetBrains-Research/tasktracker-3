@@ -16,7 +16,7 @@
 </head>
 <body>
 
-<form>
+<form id="theForm" action="%s" method="post" target="hiddenFrame">
 
   <h3>1. Approximately how many hours did you use the plugin?</h3>
   <input type="number" id="hours" name="hours" min="0" step="0.5" required>
@@ -182,9 +182,7 @@
   <h3>8. Please share any additional thoughts or comments you have about your experience using the Emotion Tracker plugin.</h3>
   <textarea name="additionalThoughts" rows="5" cols="50"></textarea>
 
-  <input type="submit" value="Submit">
-
 </form>
-
+<iframe name="hiddenFrame" width="0" height="0" border="0" style="display: none;"></iframe>
 </body>
 </html>
