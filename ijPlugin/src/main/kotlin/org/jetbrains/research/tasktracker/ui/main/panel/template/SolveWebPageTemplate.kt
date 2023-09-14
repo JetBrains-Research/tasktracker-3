@@ -3,6 +3,7 @@ package org.jetbrains.research.tasktracker.ui.main.panel.template
 import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.config.content.SolveWebPageConfig
 import org.jetbrains.research.tasktracker.ui.main.panel.models.Theme
+import org.jetbrains.research.tasktracker.ui.main.panel.template.ErrorPageTemplate.wrapToSmallText
 
 class SolveWebPageTemplate(private val config: SolveWebPageConfig) : HtmlTemplateBase() {
     override val htmlFileName: String? = null
@@ -13,7 +14,7 @@ class SolveWebPageTemplate(private val config: SolveWebPageConfig) : HtmlTemplat
         <div class="container">
             <p class="big-font">Task</p>
             <br>
-            <p class="small-font">${config.text}</p>
+            <p class="small-font">${config.text.wrapToSmallText()}</p>
         </div>
     """.trimIndent()
 

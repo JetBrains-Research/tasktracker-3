@@ -12,15 +12,9 @@ class MainPageTemplate(private val pluginName: String, private val pluginDescrip
         <div class="container">
             <p class="big-font">$pluginName</p>
             <br>
-            ${buildDescription()}
+            ${pluginDescription.wrapToSmallText()}
         </div>
     """.trimIndent()
-
-    private fun buildDescription() = pluginDescription.lines().joinToString(System.lineSeparator()) {
-        """
-            <p class="small-font">$it</p>
-        """.trimIndent()
-    }
 
     companion object {
         fun loadCurrentTemplate(): MainPageTemplate {
