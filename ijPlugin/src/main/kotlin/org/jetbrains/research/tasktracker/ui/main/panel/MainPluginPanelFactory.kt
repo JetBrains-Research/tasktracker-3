@@ -25,6 +25,7 @@ import org.jetbrains.research.tasktracker.config.content.task.base.TaskWithFiles
 import org.jetbrains.research.tasktracker.tracking.BaseTracker
 import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
 import org.jetbrains.research.tasktracker.tracking.activity.ActivityTracker
+import org.jetbrains.research.tasktracker.tracking.fileEditor.FileEditorTracker
 import org.jetbrains.research.tasktracker.tracking.survey.SurveyParser
 import org.jetbrains.research.tasktracker.tracking.toolWindow.ToolWindowTracker
 import org.jetbrains.research.tasktracker.tracking.webcam.WebCamTracker
@@ -109,13 +110,15 @@ class MainPluginPanelFactory : ToolWindowFactory {
             return
         }
         trackers.clear()
+
         // TODO: make better shared loggers
         val webCamTracker = WebCamTracker(project, GlobalPluginStorage.emoPredictor)
         trackers.addAll(
             listOf(
                 ActivityTracker(project),
                 ToolWindowTracker(project, GlobalPluginStorage.emoPredictor, webCamTracker.webcamLogger),
-                webCamTracker
+                webCamTracker,
+                FileEditorTracker(project)
             )
         )
         trackers.forEach { it.startTracking() }
@@ -255,6 +258,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
                         is ActivityTracker -> sendActivityFiles(it)
                         is WebCamTracker -> sendWebcamFiles(it)
                         is ToolWindowTracker -> sendToolWindowFiles(it)
+                        is FileEditorTracker -> sendFileEditorFiles(it)
                         else -> false
                     }
                     if (!isSuccessful) {
@@ -367,6 +371,10 @@ class MainPluginPanelFactory : ToolWindowFactory {
 
     private fun sendActivityFiles(activityTracker: ActivityTracker) = activityTracker.getLogFiles().all {
         sendFile(it, "activity")
+    }
+
+    private fun sendFileEditorFiles(fileEditorTracker: FileEditorTracker) = fileEditorTracker.getLogFiles().all {
+        sendFile(it, "fileEditor")
     }
 
     private fun sendWebcamFiles(webCamTracker: WebCamTracker) = webCamTracker.getLogFiles().all {
