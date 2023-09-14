@@ -12,10 +12,16 @@ dependencies{
     implementation(rootProject.libs.kaml)
     implementation(rootProject.libs.snakeyaml)
     implementation(rootProject.libs.csv)
-
+    implementation(rootProject.libs.kinference)
     implementation(rootProject.libs.javacv)
-    implementation(rootProject.libs.ktorClientCio)
-    implementation(rootProject.libs.ktorClientCore)
+    implementation(rootProject.libs.ktor.client.cio)
+    implementation(rootProject.libs.ktor.client.core)
+    implementation(rootProject.libs.ktor.client.json)
+    implementation(rootProject.libs.ktor.client.serialization)
+    implementation(rootProject.libs.ktor.client.content.negotiation)
+    implementation(rootProject.libs.ktor.serialization.kotlinx.json)
+
+    api(rootProject.libs.slf4j)
 }
 
 intellij {

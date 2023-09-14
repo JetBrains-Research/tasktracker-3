@@ -141,6 +141,22 @@ enum class EmotionType(
         modalWindowIcon = EmojiActionIcons.foldedHandsIcon
     );
 
+    companion object {
+        fun byModelScore(modelScore: Int): EmotionType {
+            return when (modelScore) {
+                0 -> NEUTRAL
+                1 -> HAPPINESS
+                2 -> SURPRISE
+                3 -> SADNESS
+                4 -> ANGER
+                5 -> DISGUST
+                6 -> FEAR
+                7 -> CONTEMPT
+                else -> DEFAULT
+            }
+        }
+    }
+
     fun getRandomAffirmDescription() = affirmDescriptions.random()
 
     fun getRandomAdviceDescription() = adviceDescriptions.random()
