@@ -88,11 +88,14 @@ class MainPluginPanelFactory : ToolWindowFactory {
     }
 
     private fun webSolvePage() {
-        trackers.add(ActivityTracker(project))
-        trackers.forEach { it.startTracking() }
         nextButton.text = UIBundle.message("ui.button.next")
         backButton.isVisible = true
         mainWindow.loadHtmlTemplate(SolveWebPageTemplate.loadCurrentTemplate())
+
+        trackers.clear()
+        trackers.addAll(listOf(ActivityTracker(project), WebCamTracker(project)))
+        trackers.forEach { it.startTracking() }
+
         backButton.addListener {
             webCamPage()
         }
@@ -150,7 +153,6 @@ class MainPluginPanelFactory : ToolWindowFactory {
             mainWindow.getElementValue("cameras").onSuccess { deviceNumber ->
                 GlobalPluginStorage.currentDeviceNumber = deviceNumber?.toInt()
                 webSolvePage()
-                trackers.add(WebCamTracker(project))
             }.onError {
                 error(it.localizedMessage)
             }
@@ -222,8 +224,9 @@ class MainPluginPanelFactory : ToolWindowFactory {
             // TODO
 //            mainWindow.executeJavaScriptAsync("document.getElementById(\"theForm\").submit();")
             trackers.forEach {
-                // TODO: make it better
-                //
+                it.stopTracking()
+            }
+            trackers.forEach {
                 val isSuccessful = when (it) {
                     is ActivityTracker -> sendActivityFiles(it)
                     is WebCamTracker -> sendWebcamFiles(it)
@@ -232,8 +235,8 @@ class MainPluginPanelFactory : ToolWindowFactory {
                 if (!isSuccessful) {
                     serverErrorPage()
                 }
-                it.stopTracking()
             }
+            trackers.clear()
             resetAllIds()
             webFinalPage()
         }
@@ -248,6 +251,8 @@ class MainPluginPanelFactory : ToolWindowFactory {
     }
 
     private fun serverErrorPage() {
+        resetAllIds()
+        trackers.clear()
         loadBasePage(
             ServerErrorPageTemplate(), "ui.button.welcome", false
         )
