@@ -1,8 +1,13 @@
 package org.jetbrains.research.tasktracker.tracking.webcam
 
+import kotlinx.coroutines.runBlocking
 import nu.pattern.OpenCV
+import org.jetbrains.research.tasktracker.actions.emoji.EmotionType
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
+import org.jetbrains.research.tasktracker.modelInference.EmoPredictor
+import org.jetbrains.research.tasktracker.tracking.logger.WebCamLogger
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.GlobalPluginStorage
+import org.joda.time.DateTime
 import org.opencv.core.Mat
 import org.opencv.imgcodecs.Imgcodecs
 import org.opencv.videoio.VideoCapture
@@ -77,3 +82,26 @@ fun Mat.saveSelfie(path: String): Boolean {
 private fun getBaseTestSelfiePath() = "${MainTaskTrackerConfig.pluginFolderPath}/test"
 
 private fun getTestSelfiePath(deviceNumber: Int) = "${getBaseTestSelfiePath()}/selfie_$deviceNumber.jpg"
+
+@Suppress("TooGenericExceptionCaught", "SwallowedException")
+suspend fun Mat.guessEmotionAndLog(emoPredictor: EmoPredictor, webcamLogger: WebCamLogger, isRegular: Boolean = true) {
+    try {
+        val photoDate = DateTime.now()
+        val prediction = emoPredictor.predict(this)
+        val modelScore = prediction.getPrediction()
+        EmotionType.byModelScore(modelScore).also {
+            webcamLogger.log(it, prediction.probabilities, isRegular, photoDate)
+            GlobalPluginStorage.currentEmotion = it
+        }
+    } catch (e: Exception) {
+        // do nothing
+    }
+}
+
+fun makePhotoAndLogEmotion(emoPredictor: EmoPredictor, webcamLogger: WebCamLogger, isRegular: Boolean) {
+    makePhoto()?.let {
+        runBlocking {
+            it.guessEmotionAndLog(emoPredictor, webcamLogger, isRegular = isRegular)
+        }
+    }
+}
