@@ -9,7 +9,7 @@ import org.jetbrains.research.tasktracker.ui.main.panel.MainPluginWindow
 
 // TODO: move somewhere and add a config + generate a survey by config
 class SurveyParser(private val mainWindow: MainPluginWindow, project: Project) {
-    private val surveyLogger = SurveyLogger(project)
+    val surveyLogger = SurveyLogger(project)
 
    private val items = listOf(
         SurveyItem(

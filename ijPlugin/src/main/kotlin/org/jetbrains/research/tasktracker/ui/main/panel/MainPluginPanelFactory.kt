@@ -234,6 +234,11 @@ class MainPluginPanelFactory : ToolWindowFactory {
             // TODO: rewrite
             GlobalScope.launch {
                 surveyParser.parseAndLog()
+                // TODO: unify
+                val isSuccessful = sendSurvey(surveyParser.surveyLogger.logPrinter.logFile)
+                if (!isSuccessful) {
+                    serverErrorPage()
+                }
                 trackers.forEach {
                     it.stopTracking()
                 }
@@ -361,6 +366,8 @@ class MainPluginPanelFactory : ToolWindowFactory {
     private fun sendWebcamFiles(webCamTracker: WebCamTracker) = webCamTracker.getLogFiles().all {
         sendFile(it, "webCam")
     }
+
+    private fun sendSurvey(surveyFile: File) = sendFile(surveyFile, "survey")
 
     @Suppress("TooGenericExceptionCaught")
     private fun sendFile(file: File, subdir: String) = runBlocking {
