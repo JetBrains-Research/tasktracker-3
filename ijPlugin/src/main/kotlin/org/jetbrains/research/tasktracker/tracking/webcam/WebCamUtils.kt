@@ -8,23 +8,19 @@ import org.opencv.imgcodecs.Imgcodecs
 import org.opencv.videoio.VideoCapture
 import java.io.File
 
-@Suppress("TooGenericExceptionCaught", "SwallowedException")
+@Suppress("TooGenericExceptionCaught", "SwallowedException", "MagicNumber")
 fun collectAllDevices(): List<WebCamInfo> {
     OpenCV.loadShared()
 
     getBaseTestSelfiePath().also { File(it).mkdirs() }
     val devices = mutableListOf<WebCamInfo>()
 
-    for (deviceNumber in 0..10) {
+    for (deviceNumber in (0..10)) {
         val camera = VideoCapture(deviceNumber)
 
-        if (!camera.isOpened) {
-            camera.release()
-            continue
-        }
-
         val frame = Mat()
-        if (!makePhoto(camera, frame)) {
+
+        if (!camera.isOpened || !makePhoto(camera, frame)) {
             camera.release()
             continue
         }
@@ -65,6 +61,7 @@ internal fun makePhoto(deviceNumber: Int, mat: Mat): Boolean {
     return makePhoto(camera, mat).also { camera.release() }
 }
 
+@Suppress("MagicNumber", "UnusedPrivateMember")
 internal fun makePhoto(camera: VideoCapture, mat: Mat): Boolean {
     for (i in 0..10) {
         camera.read(mat)

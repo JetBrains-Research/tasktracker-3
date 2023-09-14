@@ -38,7 +38,7 @@ class EmoModel : EmoPredictor {
     override suspend fun predict(image: Mat): EmoPrediction {
         val prepImage = prepareImage(image)
         val tensor = FloatNDArray(INPUT_SHAPE) { idx: IntArray ->
-            prepImage.get(idx[2], idx[3])[0].toFloat()
+            getPixel(idx, prepImage)
         }
 
         val outputs = model.predict(listOf(tensor.asTensor("Input3")))

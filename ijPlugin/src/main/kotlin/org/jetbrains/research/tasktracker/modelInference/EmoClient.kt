@@ -6,14 +6,12 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
-import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import org.jetbrains.research.tasktracker.modelInference.EmoPrediction
 import org.jetbrains.research.tasktracker.modelInference.EmoPredictor
 import org.jetbrains.research.tasktracker.modelInference.prepareImage
 import org.opencv.core.Mat
-import org.opencv.imgcodecs.Imgcodecs
 
 @Serializable
 data class ImageData(val image: List<List<Double>>)
@@ -53,15 +51,5 @@ class EmoClient(private var serverUrl: String = "http://localhost:5230/predict")
         println("Emotion Probabilities: $response")
 
         return EmoPrediction(response)
-    }
-}
-
-fun main() {
-    val inputImage: Mat = Imgcodecs.imread("/Users/maria.tigina/IdeaProjects/emotional-monitoring/ijPlugin/src/main/resources/img/img.png")
-
-    runBlocking {
-        val model = EmoClient()
-        val results = model.predict(inputImage)
-        println(results)
     }
 }
