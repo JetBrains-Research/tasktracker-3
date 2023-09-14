@@ -34,7 +34,7 @@ class WebCamTracker(project: Project) : BaseTracker {
                     runBlocking {
                         try {
                             val photoDate = DateTime.now()
-                            val prediction = emoPredictor.predict(frameToMat(it))
+                            val prediction = emoPredictor.predict(it)
                             val modelScore = prediction.getPrediction()
                             EmotionType.byModelScore(modelScore).also {
                                 webcamLogger.log(it, prediction.probabilities, true, photoDate)

@@ -1,46 +1,37 @@
 package org.jetbrains.research.tasktracker.modelInference
 
 import org.bytedeco.javacv.Frame
-import org.bytedeco.javacv.OpenCVFrameConverter.ToMat
-import org.bytedeco.opencv.global.opencv_core
-import org.bytedeco.opencv.global.opencv_imgproc
-import org.bytedeco.opencv.global.opencv_imgproc.cvtColor
-import org.bytedeco.opencv.global.opencv_imgproc.resize
-import org.bytedeco.opencv.opencv_core.Mat
-import org.bytedeco.opencv.opencv_core.Size
+import org.bytedeco.javacv.OpenCVFrameConverter
+import org.opencv.core.Mat
+import org.opencv.core.Size
+import org.opencv.imgproc.Imgproc
+
 
 fun frameToMat(frame: Frame): Mat {
-    return ToMat().convert(frame)
+    return Mat(OpenCVFrameConverter.ToMat().convert(frame).address())
 }
 
-fun resizeImage(image: Mat, pixels: Int = 64): Mat {
-    val outputImage = Mat(pixels, pixels, image.type())
-    resize(image, outputImage, Size(pixels, pixels))
+fun resizeImage(image: Mat, pixels: Double = 64.0): Mat {
+    val resizedImage = Mat()
+    Imgproc.resize(image, resizedImage, Size(pixels, pixels))
 
-    return outputImage
-}
-
-fun normalizeImage(image: Mat): Mat {
-    val outputImage = Mat(image.cols(), image.rows(), image.type())
-    image.convertTo(outputImage, opencv_core.CV_8U)
-
-    return outputImage
+    return resizedImage
 }
 
 fun prepareImage(image: Mat): Mat {
-    val resImage = resizeImage(image)
-    val gImage = grayImage(resImage)
+    val gImage = grayImage(image)
+    val resImage = resizeImage(gImage)
 
-    return gImage
+    return resImage
 }
 
 fun grayImage(image: Mat): Mat {
-    val grayscaleMat = Mat(image.cols(), image.rows())
-    cvtColor(image, grayscaleMat, opencv_imgproc.CV_BGR2GRAY)
+    val grayImage = Mat()
+    Imgproc.cvtColor(image, grayImage, Imgproc.COLOR_RGB2GRAY)
 
-    return grayscaleMat
+    return grayImage
 }
 
 fun getPixel(tensor: IntArray, image: Mat, i: Int = 2, j: Int = 3): Float {
-    return image.ptr(tensor[i], tensor[j]).float
+    return image.get(tensor[i], tensor[j])[0].toFloat()
 }

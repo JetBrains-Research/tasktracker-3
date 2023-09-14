@@ -9,11 +9,11 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import org.bytedeco.opencv.global.opencv_imgcodecs
-import org.bytedeco.opencv.opencv_core.Mat
 import org.jetbrains.research.tasktracker.modelInference.EmoPrediction
 import org.jetbrains.research.tasktracker.modelInference.EmoPredictor
 import org.jetbrains.research.tasktracker.modelInference.prepareImage
+import org.opencv.core.Mat
+import org.opencv.imgcodecs.Imgcodecs
 
 @Serializable
 data class ImageData(val image: List<List<Double>>)
@@ -37,7 +37,7 @@ class EmoClient(private var serverUrl: String = "http://localhost:5230/predict")
         for (row in 0 until prepImage.rows()) {
             val rowList = mutableListOf<Double>()
             for (col in 0 until prepImage.cols()) {
-                val pixelValue = prepImage.ptr(row, col)[0].toDouble()
+                val pixelValue = prepImage.get(row, col)[0]
                 rowList.add(pixelValue)
             }
             imageList.add(rowList)
@@ -57,9 +57,7 @@ class EmoClient(private var serverUrl: String = "http://localhost:5230/predict")
 }
 
 fun main() {
-    val dir = "/Users/maria.tigina/IdeaProjects/emotional-monitoring/ijPlugin/src/main/resources/img/"
-    val inputImage: Mat =
-        opencv_imgcodecs.imread(dir + "img.png")
+    val inputImage: Mat = Imgcodecs.imread("/Users/maria.tigina/IdeaProjects/emotional-monitoring/ijPlugin/src/main/resources/img/img.png")
 
     runBlocking {
         val model = EmoClient()
