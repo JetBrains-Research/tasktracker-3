@@ -229,8 +229,6 @@ class MainPluginPanelFactory : ToolWindowFactory {
             SurveyTemplate, "ui.button.submit", true
         )
         nextButton.addListener {
-            // TODO
-//            mainWindow.executeJavaScriptAsync("document.getElementById(\"theForm\").submit();")
             trackers.forEach {
                 it.stopTracking()
             }
@@ -245,6 +243,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
                     serverErrorPage()
                 }
             }
+            mainWindow.executeJavaScriptAsync("document.getElementById(\"theForm\").submit();")
             trackers.clear()
             resetAllIds()
             webFinalPage()
@@ -260,8 +259,8 @@ class MainPluginPanelFactory : ToolWindowFactory {
     }
 
     private fun serverErrorPage() {
-//        resetAllIds()
-//        trackers.clear() // TODO
+        resetAllIds()
+        trackers.clear()
         loadBasePage(
             ServerErrorPageTemplate(), "ui.button.welcome", false
         )
@@ -356,7 +355,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
 
     // TODO: implement
     @Suppress("FunctionOnlyReturningConstant", "UnusedPrivateMember")
-    private fun sendWebcamFiles(webCamTracker: WebCamTracker) = false
+    private fun sendWebcamFiles(webCamTracker: WebCamTracker) = true
 
     @Suppress("TooGenericExceptionCaught")
     private fun sendFile(file: File, subdir: String) = runBlocking {
