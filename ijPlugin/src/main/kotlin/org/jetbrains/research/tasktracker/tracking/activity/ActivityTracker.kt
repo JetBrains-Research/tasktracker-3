@@ -16,28 +16,32 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Disposer
 import com.intellij.util.messages.MessageBusConnection
 import com.intellij.util.messages.Topic
+import org.jetbrains.research.tasktracker.tracking.BaseTracker
 import org.jetbrains.research.tasktracker.tracking.activity.actions.MovingActions
 import org.jetbrains.research.tasktracker.tracking.activity.actions.TypingActions
 import org.jetbrains.research.tasktracker.tracking.logger.ActivityLogger
 import java.awt.AWTEvent
 import java.awt.event.KeyEvent
+import java.io.File
 import java.util.concurrent.atomic.AtomicInteger
 
-class ActivityTracker(project: Project) {
+class ActivityTracker(project: Project) : BaseTracker {
     val activityLogger: ActivityLogger = ActivityLogger(project)
     private val messageBusConnections: MutableList<MessageBusConnection> = mutableListOf()
     private var trackingDisposable: Disposable? = null
     private val currentId: AtomicInteger = AtomicInteger(1)
 
+    override fun getLogFiles(): List<File> = listOf(activityLogger.logPrinter.logFile)
+
     // TODO: add config to select activities to track
-    fun startTracking() {
+    override fun startTracking() {
         trackingDisposable = Disposer.newDisposable()
         listenActions()
         listenKeyboard()
         listenExecution()
     }
 
-    fun stopTracking() {
+    override fun stopTracking() {
         messageBusConnections.forEach { it.disconnect() }
         trackingDisposable?.let { Disposer.dispose(it) }
     }
