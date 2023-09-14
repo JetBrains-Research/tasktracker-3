@@ -8,7 +8,6 @@ import org.jetbrains.research.tasktracker.actions.emoji.EmotionType
 import org.jetbrains.research.tasktracker.actions.tracking.NotificationIcons
 import org.jetbrains.research.tasktracker.actions.tracking.NotificationWrapper
 import org.jetbrains.research.tasktracker.modelInference.EmoPredictor
-import org.jetbrains.research.tasktracker.modelInference.frameToMat
 import org.jetbrains.research.tasktracker.tracking.BaseTracker
 import org.jetbrains.research.tasktracker.tracking.logger.WebCamLogger
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.GlobalPluginStorage
