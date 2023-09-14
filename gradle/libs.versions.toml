@@ -22,8 +22,12 @@ csv = { module = "org.apache.commons:commons-csv", version.ref = "csv" }
 joda = {module = "joda-time:joda-time", version.ref = "joda"}
 kinference = { module = "io.kinference:inference-core-jvm", version.ref = "kinference" }
 javacv = { module = "org.bytedeco:javacv-platform", version.ref = "javacv" }
-ktorClientCio = {module= "io.ktor:ktor-client-cio", version.ref = "ktor"}
-ktorClientCore = {module= "io.ktor:ktor-client-core", version.ref = "ktor"}
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-json = { module = "io.ktor:ktor-client-json", version.ref = "ktor" }
+ktor-client-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 slf4j = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
 
 [plugins]
