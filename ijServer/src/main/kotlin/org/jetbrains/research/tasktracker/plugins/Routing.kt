@@ -10,8 +10,10 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.util.pipeline.*
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.research.tasktracker.currentResearchId
+import org.jetbrains.research.tasktracker.currentSurveyId
 import org.jetbrains.research.tasktracker.currentUserId
 import org.jetbrains.research.tasktracker.database.models.ActivityFileTable
 import org.jetbrains.research.tasktracker.database.models.DocumentFileTable
@@ -41,9 +43,9 @@ fun Application.configureRouting() {
             call.respond(HttpStatusCode.Accepted)
         }
 
-        post("upload-activity/{id}") {
+        post("upload-document/{id}") {
             this.createLogFile(
-                "activity"
+                call.request.queryParameters["subdir"] ?: "default"
             ) { name, index ->
                 run {
                     transaction {
@@ -57,7 +59,14 @@ fun Application.configureRouting() {
             call.respond(HttpStatusCode.Accepted)
         }
 
-        post("upload-document/{id}") {
+        post("confirm-survey") {
+            val researchId = call.request.queryParameters["id"]?.toInt() ?: 0
+            getFile(researchId, "survey$currentSurveyId.txt", "survey").writeText(
+                call.receiveParameters().toString()
+            )
+        }
+
+        post("upload-activity/{id}") {
             this.createLogFile(
                 "activity"
             ) { name, index ->
@@ -97,10 +106,10 @@ suspend inline fun PipelineContext<Unit, ApplicationCall>.createLogFile(
 }
 
 fun getFile(researchId: Int, filename: String, subDirectory: String): File {
-    val directoryPath = "files/$researchId/$subDirectory"
+    val userId = transaction { ResearchTable.select { ResearchTable.id.eq(researchId) }.first()[ResearchTable.userId] }
+    val directoryPath = "files/$userId/$researchId/$subDirectory"
     Files.createDirectories(Paths.get(directoryPath))
     return File("$directoryPath/$filename").also {
         it.createNewFile()
-        println(it.absolutePath)
     }
 }
