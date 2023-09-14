@@ -26,6 +26,7 @@ import org.jetbrains.research.tasktracker.tracking.BaseTracker
 import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
 import org.jetbrains.research.tasktracker.tracking.activity.ActivityTracker
 import org.jetbrains.research.tasktracker.tracking.survey.SurveyParser
+import org.jetbrains.research.tasktracker.tracking.toolWindow.ToolWindowTracker
 import org.jetbrains.research.tasktracker.tracking.webcam.WebCamTracker
 import org.jetbrains.research.tasktracker.tracking.webcam.collectAllDevices
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.GlobalPluginStorage
@@ -104,8 +105,11 @@ class MainPluginPanelFactory : ToolWindowFactory {
     }
 
     private fun startTracking() {
+        if (trackers.isNotEmpty()) { // Otherwise we can lose data
+            return
+        }
         trackers.clear()
-        trackers.addAll(listOf(ActivityTracker(project), WebCamTracker(project)))
+        trackers.addAll(listOf(ActivityTracker(project), WebCamTracker(project), ToolWindowTracker(project)))
         trackers.forEach { it.startTracking() }
     }
 
@@ -237,6 +241,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
                     val isSuccessful = when (it) {
                         is ActivityTracker -> sendActivityFiles(it)
                         is WebCamTracker -> sendWebcamFiles(it)
+                        is ToolWindowTracker -> sendToolWindowFiles(it)
                         else -> false
                     }
                     if (!isSuccessful) {
@@ -345,13 +350,17 @@ class MainPluginPanelFactory : ToolWindowFactory {
         }
     }
 
+    private fun sendToolWindowFiles(toolWindowTracker: ToolWindowTracker) = toolWindowTracker.getLogFiles().all {
+        sendFile(it, "toolWindow")
+    }
+
     private fun sendActivityFiles(activityTracker: ActivityTracker) = activityTracker.getLogFiles().all {
         sendFile(it, "activity")
     }
 
-    // TODO: implement
-    @Suppress("FunctionOnlyReturningConstant", "UnusedPrivateMember")
-    private fun sendWebcamFiles(webCamTracker: WebCamTracker) = false
+    private fun sendWebcamFiles(webCamTracker: WebCamTracker) = webCamTracker.getLogFiles().all {
+        sendFile(it, "webCam")
+    }
 
     @Suppress("TooGenericExceptionCaught")
     private fun sendFile(file: File, subdir: String) = runBlocking {
