@@ -19,12 +19,13 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
 import io.ktor.http.*
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import org.jetbrains.research.tasktracker.config.content.task.base.Task
 import org.jetbrains.research.tasktracker.config.content.task.base.TaskWithFiles
 import org.jetbrains.research.tasktracker.tracking.BaseTracker
 import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
 import org.jetbrains.research.tasktracker.tracking.activity.ActivityTracker
+import org.jetbrains.research.tasktracker.tracking.survey.SurveyParser
 import org.jetbrains.research.tasktracker.tracking.toolWindow.ToolWindowTracker
 import org.jetbrains.research.tasktracker.tracking.webcam.WebCamTracker
 import org.jetbrains.research.tasktracker.tracking.webcam.collectAllDevices
@@ -229,24 +230,33 @@ class MainPluginPanelFactory : ToolWindowFactory {
             SurveyTemplate, "ui.button.submit", true
         )
         nextButton.addListener {
-            trackers.forEach {
-                it.stopTracking()
-            }
-            trackers.forEach {
-                val isSuccessful = when (it) {
-                    is ActivityTracker -> sendActivityFiles(it)
-                    is WebCamTracker -> sendWebcamFiles(it)
-                    is ToolWindowTracker -> sendToolWindowFiles(it)
-                    else -> false
-                }
+            val surveyParser = SurveyParser(mainWindow, project)
+            // TODO: rewrite
+            GlobalScope.launch {
+                surveyParser.parseAndLog()
+                // TODO: unify
+                val isSuccessful = sendSurvey(surveyParser.surveyLogger.logPrinter.logFile)
                 if (!isSuccessful) {
                     serverErrorPage()
                 }
+                trackers.forEach {
+                    it.stopTracking()
+                }
+                trackers.forEach {
+                    val isSuccessful = when (it) {
+                        is ActivityTracker -> sendActivityFiles(it)
+                        is WebCamTracker -> sendWebcamFiles(it)
+                        is ToolWindowTracker -> sendToolWindowFiles(it)
+                        else -> false
+                    }
+                    if (!isSuccessful) {
+                        serverErrorPage()
+                    }
+                }
+                trackers.clear()
+                resetAllIds()
+                webFinalPage()
             }
-            mainWindow.executeJavaScriptAsync("document.getElementById(\"theForm\").submit();")
-            trackers.clear()
-            resetAllIds()
-            webFinalPage()
         }
         backButton.addListener {
             webSolvePage()
@@ -353,9 +363,11 @@ class MainPluginPanelFactory : ToolWindowFactory {
         sendFile(it, "activity")
     }
 
-    // TODO: implement
-    @Suppress("FunctionOnlyReturningConstant", "UnusedPrivateMember")
-    private fun sendWebcamFiles(webCamTracker: WebCamTracker) = true
+    private fun sendWebcamFiles(webCamTracker: WebCamTracker) = webCamTracker.getLogFiles().all {
+        sendFile(it, "webCam")
+    }
+
+    private fun sendSurvey(surveyFile: File) = sendFile(surveyFile, "survey")
 
     @Suppress("TooGenericExceptionCaught")
     private fun sendFile(file: File, subdir: String) = runBlocking {
