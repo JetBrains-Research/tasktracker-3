@@ -9,6 +9,8 @@
 
 CodeMood – the revolutionary plugin that understands and affirms your emotions while you code!
 
+The demo is available on [YouTube](https://youtu.be/C_uL0dI5aW4).
+
 To install the plugin, download the `zip` archive by the following [link](https://drive.google.com/drive/folders/1lvUvGNJgW26vTn6QOJPiSj53VP1E2HLG?usp=sharing) and install thought the plugins section.
 If you have any difficulties, follow the official [documentation](https://www.jetbrains.com/help/idea/managing-plugins.html#install_plugin_from_disk).
 
