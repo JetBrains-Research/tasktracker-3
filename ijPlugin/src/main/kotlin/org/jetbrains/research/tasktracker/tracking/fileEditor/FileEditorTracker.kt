@@ -26,7 +26,7 @@ class FileEditorTracker(
             override fun selectionChanged(event: FileEditorManagerEvent) {
                 super.selectionChanged(event)
                 makePhotoAndLogEmotion(emoPredictor, webcamLogger, false)
-                logger.log(FileEditorAction.FOCUS, event.oldFile.name, event.newFile.name)
+                logger.log(FileEditorAction.FOCUS, event.oldFile?.name, event.newFile?.name)
             }
 
             override fun fileOpened(source: FileEditorManager, file: VirtualFile) {

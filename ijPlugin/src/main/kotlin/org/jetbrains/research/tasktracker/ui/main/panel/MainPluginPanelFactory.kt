@@ -22,6 +22,7 @@ import io.ktor.http.*
 import kotlinx.coroutines.*
 import org.jetbrains.research.tasktracker.config.content.task.base.Task
 import org.jetbrains.research.tasktracker.config.content.task.base.TaskWithFiles
+import org.jetbrains.research.tasktracker.modelInference.model.EmoModel
 import org.jetbrains.research.tasktracker.tracking.BaseTracker
 import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
 import org.jetbrains.research.tasktracker.tracking.activity.ActivityTracker
@@ -112,13 +113,14 @@ class MainPluginPanelFactory : ToolWindowFactory {
         trackers.clear()
 
         // TODO: make better shared loggers
-        val webCamTracker = WebCamTracker(project, GlobalPluginStorage.emoPredictor)
+        GlobalPluginStorage.emoPredictor = EmoModel()
+        val webCamTracker = WebCamTracker(project, GlobalPluginStorage.emoPredictor!!)
         trackers.addAll(
             listOf(
                 ActivityTracker(project),
-                ToolWindowTracker(project, GlobalPluginStorage.emoPredictor, webCamTracker.webcamLogger),
+                ToolWindowTracker(project, GlobalPluginStorage.emoPredictor!!, webCamTracker.webcamLogger),
                 webCamTracker,
-                FileEditorTracker(project, GlobalPluginStorage.emoPredictor, webCamTracker.webcamLogger)
+                FileEditorTracker(project, GlobalPluginStorage.emoPredictor!!, webCamTracker.webcamLogger)
             )
         )
         trackers.forEach { it.startTracking() }
