@@ -1,3 +1,5 @@
+import org.jetbrains.changelog.markdownToHTML
+
 group = rootProject.group
 version = rootProject.version
 
@@ -8,7 +10,7 @@ plugins {
     alias(libs.plugins.intellij)
 }
 
-dependencies{
+dependencies {
     implementation(rootProject.libs.kaml)
     implementation(rootProject.libs.snakeyaml)
     implementation(rootProject.libs.csv)
@@ -34,6 +36,24 @@ intellij {
 tasks {
     withType<org.jetbrains.intellij.tasks.BuildSearchableOptionsTask>()
         .forEach { it.enabled = false }
+
+    patchPluginXml {
+        val description = """
+            CodeMood – the revolutionary plugin that understands and affirms your emotions while you code!
+
+            The plugin will ask you permission to record the coding session using one of available video devices.
+            _We don't send the photos to a server and handle them locally._
+            During the session, you can click on the plugin icon to pop up a dashboard with
+            an emoticon reflecting the programmer's current emotion.
+            In the end of the coding session you might fill out a short survey about your feelings.
+
+            **Download CodeMood today and start coding with emotions in harmony.**
+        """.trimIndent()
+        pluginDescription.set(description.run { markdownToHTML(this) })
+
+        sinceBuild.set(properties("pluginSinceBuild"))
+        untilBuild.set(properties("pluginUntilBuild"))
+    }
 }
 
 //configurations.all {
