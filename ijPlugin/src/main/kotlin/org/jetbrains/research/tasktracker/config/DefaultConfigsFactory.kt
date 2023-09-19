@@ -2,7 +2,6 @@ package org.jetbrains.research.tasktracker.config
 
 import com.intellij.openapi.diagnostic.Logger
 import org.jetbrains.research.tasktracker.config.content.MainPageContentConfig
-import org.jetbrains.research.tasktracker.config.content.SolveWebPageConfig
 import org.jetbrains.research.tasktracker.config.content.TaskContentConfig
 import org.jetbrains.research.tasktracker.config.ide.inspection.InspectionConfig
 import org.jetbrains.research.tasktracker.config.ide.settings.SettingsConfig
@@ -25,7 +24,6 @@ object DefaultConfigsFactory {
         ScenarioConfig.CONFIG_FILE_PREFIX,
         WebCamTrackingConfig.CONFIG_FILE_PREFIX,
         MainPageContentConfig.CONFIG_FILE_PREFIX,
-        SolveWebPageConfig.CONFIG_FILE_PREFIX
     )
 
     fun createDefaultConfigs() {

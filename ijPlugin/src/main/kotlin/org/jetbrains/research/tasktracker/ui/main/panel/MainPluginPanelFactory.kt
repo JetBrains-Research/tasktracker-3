@@ -67,7 +67,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
         mainWindow = project.getService(MainWindowService::class.java).mainWindow
         mainWindow.jComponent.size = JBUI.size(toolWindow.component.width, toolWindow.component.height)
         nextButton.addListener {
-            webCamPage()
+            welcomePage()
         }
         val buttonPanel = JBPanel<JBPanel<*>>(FlowLayout()).apply {
             add(backButton)
@@ -94,7 +94,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
     private fun webSolvePage() {
         nextButton.text = UIBundle.message("ui.button.next")
         backButton.isVisible = true
-        mainWindow.loadHtmlTemplate(SolveWebPageTemplate.loadCurrentTemplate())
+//        mainWindow.loadHtmlTemplate(SolveWebPageTemplate.loadCurrentTemplate()) // TODO replace to the solvePage
 
         startTracking()
 
@@ -273,7 +273,6 @@ class MainPluginPanelFactory : ToolWindowFactory {
             }
         }
         backButton.addListener {
-            webSolvePage()
         }
     }
 
