@@ -1,15 +1,12 @@
 package org.jetbrains.research.tasktracker.ui.main.panel.template
 
 import org.jetbrains.research.tasktracker.config.content.task.base.Task
-import org.jetbrains.research.tasktracker.ui.main.panel.models.Theme
 
-class TasksPageTemplate(private val tasks: List<Task>) : HtmlTemplateBase() {
-    override val htmlFileName: String
+class TasksPageTemplate(private val tasks: List<Task>) : HtmlBaseFileTemplate() {
+    override val contentFilename: String
         get() = "tasks"
-
-    override fun pageContent(theme: Theme, vararg arguments: String): String {
-        return super.pageContent(theme, *arguments, optionTags())
-    }
+    override val arguments: Array<String>
+        get() = arrayOf(optionTags())
 
     // TODO: change to select by id
     private fun optionTags() =

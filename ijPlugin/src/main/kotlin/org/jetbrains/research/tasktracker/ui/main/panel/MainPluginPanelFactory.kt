@@ -126,7 +126,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
         trackers.forEach { it.startTracking() }
     }
 
-    private fun loadBasePage(template: HtmlTemplateBase, buttonTextKey: String, isVisibleBackButton: Boolean) {
+    private fun loadBasePage(template: HtmlTemplate, buttonTextKey: String, isVisibleBackButton: Boolean) {
         mainWindow.loadHtmlTemplate(template)
         nextButton.text = UIBundle.message(buttonTextKey)
         backButton.isVisible = isVisibleBackButton

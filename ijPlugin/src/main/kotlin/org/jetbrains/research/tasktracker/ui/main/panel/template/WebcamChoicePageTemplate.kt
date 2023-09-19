@@ -1,10 +1,10 @@
 package org.jetbrains.research.tasktracker.ui.main.panel.template
 
 import org.jetbrains.research.tasktracker.tracking.webcam.WebCamInfo
-import org.jetbrains.research.tasktracker.ui.main.panel.models.Theme
 
-class WebcamChoicePageTemplate(private val listOfCameras: List<WebCamInfo>) : HtmlTemplateBase() {
-    override val htmlFileName: String? = null
+class WebcamChoicePageTemplate(private val listOfCameras: List<WebCamInfo>) : HtmlBaseTemplate() {
+    override val content: String
+        get() = buildPageTemplate()
 
     private fun generateTemplateForListOfCameras() = listOfCameras.mapIndexed { i, info ->
         """
@@ -23,8 +23,6 @@ class WebcamChoicePageTemplate(private val listOfCameras: List<WebCamInfo>) : Ht
             <option value="${info.deviceNumber}" id="${info.deviceNumber}">$value</option>
         """.trimIndent()
     }.joinToString(System.lineSeparator())
-
-    override fun pageContent(theme: Theme, vararg arguments: String) = pageTemplate(theme, buildPageTemplate())
 
     private fun buildPageTemplate() = """
         <div class="container">

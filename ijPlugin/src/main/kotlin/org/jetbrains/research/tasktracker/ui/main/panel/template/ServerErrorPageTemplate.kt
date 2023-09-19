@@ -1,13 +1,11 @@
 package org.jetbrains.research.tasktracker.ui.main.panel.template
 
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
-import org.jetbrains.research.tasktracker.ui.main.panel.models.Theme
 
 // TODO: add a config with userMessage instead of DEFAULT_TEXT
-class ServerErrorPageTemplate(private val userMessage: String = defaultText) : HtmlTemplateBase() {
-    override val htmlFileName: String? = null
-
-    override fun pageContent(theme: Theme, vararg arguments: String) = pageTemplate(theme, buildPageTemplate())
+class ServerErrorPageTemplate(private val userMessage: String = defaultText) : HtmlBaseTemplate() {
+    override val content: String
+        get() = buildPageTemplate()
 
     private fun buildPageTemplate() = """
         <div class="container">
