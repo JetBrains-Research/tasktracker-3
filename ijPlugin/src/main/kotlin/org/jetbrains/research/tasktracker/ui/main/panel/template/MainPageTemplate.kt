@@ -1,22 +1,13 @@
 package org.jetbrains.research.tasktracker.ui.main.panel.template
 
 import org.jetbrains.research.tasktracker.TaskTrackerPlugin
-import org.jetbrains.research.tasktracker.ui.main.panel.models.Theme
 
-class MainPageTemplate(private val pluginName: String, private val pluginDescription: String) : HtmlTemplateBase() {
-    override val htmlFileName: String
+class MainPageTemplate(private val pluginName: String, private val pluginDescription: String) : HtmlBaseFileTemplate() {
+    override val contentFilename: String
         get() = "main"
 
-    override fun pageContent(theme: Theme, vararg arguments: String) =
-        super.pageContent(theme, *arguments, pluginName, pluginDescription)
-
-//    private fun buildPageTemplate() = """
-//        <div class="container">
-//            <p class="big-font">$pluginName</p>
-//            <br>
-//            ${pluginDescription.wrapToSmallText()}
-//        </div>
-//    """.trimIndent()
+    override val arguments: Array<String>
+        get() = arrayOf(pluginName, pluginDescription)
 
     companion object {
         fun loadCurrentTemplate(): MainPageTemplate {

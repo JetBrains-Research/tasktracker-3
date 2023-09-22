@@ -9,7 +9,7 @@ sealed class HtmlBaseFileTemplate : HtmlBaseTemplate() {
     protected open val arguments: Array<String> = emptyArray()
 
     final override val content: String
-        get() = getFileContentFromResources("$contentFilename.html").format(arguments)
+        get() = getFileContentFromResources("$contentFilename.html").format(args = arguments)
 
     final override val css: String?
         get() = cssFilename?.let { loadCssFromFile(it) }
