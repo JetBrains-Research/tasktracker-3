@@ -13,7 +13,7 @@ sealed class HtmlTemplateBase {
 
     protected fun String.wrapToSmallText() = lines().wrapToSmallText()
 
-    protected fun List<String>.wrapToSmallText() = joinToString(System.lineSeparator()) {
+    private fun List<String>.wrapToSmallText() = joinToString(System.lineSeparator()) {
         """
             <p class="small-font">$it</p>
         """.trimIndent()

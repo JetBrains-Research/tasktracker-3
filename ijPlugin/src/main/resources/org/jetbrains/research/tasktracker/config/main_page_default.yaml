@@ -1,10 +1,2 @@
-pluginName: Emotion Tracker
-pluginDescription: "
-This plugin is designed to track the emotions people experience when using JetBrains' IDEs.
-
-It collects information about your emotional state, actions, and interactions within the IDE. Also, it displays your recorded emotions and offers helpful messages to assist you in managing your emotional state.
-
-You can easily access these messages by hovering over the emoji, and if you click on the emoji, you can receive some advice.
-
-<i>When you press the \"Next\" button, we will try to take photos from all the detected devices so that you can choose the camera you want us to use to register your emotions.</i> 
-"
+pluginName: TaskTracker
+pluginDescription: "TaskTracker is a plugin designed to track code changes during programming problem-solving. It monitors the modifications made to the code throughout the process of problem resolution."
