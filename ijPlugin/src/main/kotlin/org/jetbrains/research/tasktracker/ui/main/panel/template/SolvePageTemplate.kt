@@ -1,15 +1,12 @@
 package org.jetbrains.research.tasktracker.ui.main.panel.template
 
 import org.jetbrains.research.tasktracker.config.content.task.base.Task
-import org.jetbrains.research.tasktracker.ui.main.panel.models.Theme
 
-class SolvePageTemplate(val task: Task) : HtmlTemplateBase() {
-    override val htmlFileName: String
+class SolvePageTemplate(val task: Task) : HtmlBaseFileTemplate() {
+    override val contentFilename: String
         get() = "solve"
-
-    override fun pageContent(theme: Theme, vararg arguments: String): String {
-        return super.pageContent(theme, *arguments, task.name, task.description).reformFileLinks()
-    }
+    override val arguments: Array<String>
+        get() = arrayOf(task.name, task.description.reformFileLinks())
 
     private fun String.reformFileLinks(): String {
         return FILE_PATTERN.replace(this) {

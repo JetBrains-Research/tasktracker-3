@@ -11,7 +11,7 @@ import org.intellij.lang.annotations.Language
 import org.jetbrains.concurrency.Promise
 import org.jetbrains.research.tasktracker.ui.main.panel.models.Theme
 import org.jetbrains.research.tasktracker.ui.main.panel.template.ErrorPageTemplate
-import org.jetbrains.research.tasktracker.ui.main.panel.template.HtmlTemplateBase
+import org.jetbrains.research.tasktracker.ui.main.panel.template.HtmlTemplate
 import org.jetbrains.research.tasktracker.ui.main.panel.template.MainPageTemplate
 import javax.swing.JComponent
 
@@ -19,7 +19,7 @@ class MainPluginWindow(service: MainWindowService) {
     private val windowBrowser: JBCefBrowser = JBCefBrowser()
 
     private var currentTheme = Theme.currentIdeTheme()
-    private var currentTemplate: HtmlTemplateBase = MainPageTemplate.loadCurrentTemplate()
+    private var currentTemplate: HtmlTemplate = MainPageTemplate.loadCurrentTemplate()
     private val handlers = mutableListOf<CefLoadHandlerAdapter>()
     val jComponent: JComponent
         get() = windowBrowser.component
@@ -27,7 +27,7 @@ class MainPluginWindow(service: MainWindowService) {
     init {
         windowBrowser.jbCefClient.setProperty(JBCefClient.Properties.JS_QUERY_POOL_SIZE, JS_QUERY_POOL_SIZE)
         windowBrowser.setErrorPage { errorCode, errorText, failedUrl ->
-            ErrorPageTemplate.pageContent(theme = currentTheme, errorCode.code.toString(), errorText, failedUrl)
+            ErrorPageTemplate(errorCode.code.toString(), errorText, failedUrl).htmlContent
         }
         loadHtmlTemplate(currentTemplate)
         val app = ApplicationManager.getApplication().messageBus
@@ -83,8 +83,8 @@ class MainPluginWindow(service: MainWindowService) {
         handlers.clear()
     }
 
-    fun loadHtmlTemplate(template: HtmlTemplateBase) =
-        windowBrowser.loadHTML(template.pageContent(theme = currentTheme)).also { currentTemplate = template }
+    fun loadHtmlTemplate(template: HtmlTemplate) =
+        windowBrowser.loadHTML(template.htmlContent).also { currentTemplate = template }
 
     companion object {
         const val JS_QUERY_POOL_SIZE = 100

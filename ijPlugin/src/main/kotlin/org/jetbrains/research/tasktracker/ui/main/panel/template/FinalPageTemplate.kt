@@ -1,12 +1,9 @@
 package org.jetbrains.research.tasktracker.ui.main.panel.template
 
-import org.jetbrains.research.tasktracker.ui.main.panel.models.Theme
-
 // TODO: add conf
-class FinalPageTemplate : HtmlTemplateBase() {
-    override val htmlFileName: String? = null
-
-    override fun pageContent(theme: Theme, vararg arguments: String) = pageTemplate(theme, buildPageTemplate())
+class FinalPageTemplate : HtmlBaseTemplate() {
+    override val content: String
+        get() = buildPageTemplate()
 
     private fun buildPageTemplate() = """
         <div class="container">
