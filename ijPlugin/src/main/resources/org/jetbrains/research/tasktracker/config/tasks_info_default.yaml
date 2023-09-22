@@ -1,7 +1,0 @@
-taskInfos:
-  - name: "hello world"
-    configDirectory: "default"
-  - name: "Readability task"
-    configDirectory: "readability"
-    languages:
-      - "JAVA"

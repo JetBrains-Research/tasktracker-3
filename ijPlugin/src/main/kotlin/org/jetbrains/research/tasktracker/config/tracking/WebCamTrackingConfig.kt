@@ -12,8 +12,9 @@ enum class WebCamTrackingGranularity {
 
 @Serializable
 data class WebCamTrackingConfig(
+    override val trackingDeltaSec: Double = BaseTrackingConfig.DEFAULT_TRACKING_DELTA,
     val granularity: WebCamTrackingGranularity = WebCamTrackingGranularity.ALWAYS,
-) : BaseConfig {
+) : BaseConfig, BaseTrackingConfig {
     override val configName: String
         get() = "webcam_tracking"
 
