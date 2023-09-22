@@ -13,13 +13,12 @@ import java.util.*
 import kotlin.concurrent.timerTask
 
 class WebCamTracker(project: Project, private val emoPredictor: EmoPredictor) : BaseTracker {
-    val webcamLogger: WebCamLogger = WebCamLogger(project)
+    private val webcamLogger: WebCamLogger = WebCamLogger(project)
 
     private val timerToMakePhoto = Timer()
 
-    @Suppress("MagicNumber")
     override fun startTracking() {
-        var photosMade = 0L
+        var photosMade = 0
         // TODO: make it better
         timerToMakePhoto.scheduleAtFixedRate(
             timerTask {
@@ -29,7 +28,6 @@ class WebCamTracker(project: Project, private val emoPredictor: EmoPredictor) : 
                         it.guessEmotionAndLog(emoPredictor, webcamLogger)
                     }
                     if (photosMade == PHOTOS_MADE_BEFORE_NOTIFICATION) {
-                        // TODO: Put into a coroutine scope to call
                         showNotification()
                     }
                 }
@@ -61,6 +59,6 @@ class WebCamTracker(project: Project, private val emoPredictor: EmoPredictor) : 
         // 5 sec
         private const val TIME_TO_PHOTO_DELAY = 5000L
 
-        private const val PHOTOS_MADE_BEFORE_NOTIFICATION = 60 * 60 / (TIME_TO_PHOTO_DELAY / 1000)
+        private const val PHOTOS_MADE_BEFORE_NOTIFICATION: Int = (60 * 60 / (TIME_TO_PHOTO_DELAY / 1000)).toInt()
     }
 }
