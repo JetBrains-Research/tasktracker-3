@@ -292,7 +292,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
 
     private fun webFinalPage() {
         loadBasePage(
-            FinalPageTemplate(), "ui.button.welcome", false
+            FinalPageTemplate.loadCurrentTemplate(), "ui.button.welcome", false
         )
         nextButton.addListener {
             welcomePage()

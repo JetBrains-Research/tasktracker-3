@@ -11,8 +11,8 @@ class MainPageTemplate(private val pluginName: String, private val pluginDescrip
 
     companion object {
         fun loadCurrentTemplate(): MainPageTemplate {
-            requireNotNull(TaskTrackerPlugin.mainConfig.mainPageConfig) { "mainPageConfig has not initialized yet!" }
-            val config = TaskTrackerPlugin.mainConfig.mainPageConfig ?: error("TODO")
+            val config = TaskTrackerPlugin.mainConfig.mainPageConfig
+                ?: error("mainPageConfig has not initialized yet!")
             return MainPageTemplate(config.pluginName, config.pluginDescription)
         }
     }
