@@ -8,12 +8,11 @@ import org.jetbrains.research.tasktracker.actions.tracking.NotificationWrapper
 import org.jetbrains.research.tasktracker.modelInference.EmoPredictor
 import org.jetbrains.research.tasktracker.tracking.BaseTracker
 import org.jetbrains.research.tasktracker.tracking.logger.WebCamLogger
-import java.io.File
 import java.util.*
 import kotlin.concurrent.timerTask
 
-class WebCamTracker(project: Project, private val emoPredictor: EmoPredictor) : BaseTracker {
-    private val webcamLogger: WebCamLogger = WebCamLogger(project)
+class WebCamTracker(project: Project, private val emoPredictor: EmoPredictor) : BaseTracker() {
+    override val trackerLogger: WebCamLogger = WebCamLogger(project)
 
     private val timerToMakePhoto = Timer()
 
@@ -25,7 +24,7 @@ class WebCamTracker(project: Project, private val emoPredictor: EmoPredictor) : 
                 makePhoto()?.let {
                     photosMade++
                     runBlocking {
-                        it.guessEmotionAndLog(emoPredictor, webcamLogger)
+                        it.guessEmotionAndLog(emoPredictor, trackerLogger)
                     }
                     if (photosMade == PHOTOS_MADE_BEFORE_NOTIFICATION) {
                         showNotification()
@@ -48,8 +47,6 @@ class WebCamTracker(project: Project, private val emoPredictor: EmoPredictor) : 
             }
         }
     }
-
-    override fun getLogFiles(): List<File> = listOf(webcamLogger.logPrinter.logFile)
 
     override fun stopTracking() {
         timerToMakePhoto.cancel()

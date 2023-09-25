@@ -6,10 +6,9 @@ import org.jetbrains.research.tasktracker.tracking.fileEditor.FileEditorData
 import org.joda.time.DateTime
 
 class FileEditorLogger(project: Project) : BaseLogger() {
-    override val logPrinter: LogPrinter = initLogPrinter("file_editor_${project.hashCode()}_${project.name}")
-        .also {
-            it.csvPrinter.printRecord(FileEditorLoggedData.headers)
-        }
+    override val logPrinterFilename: String = "file_editor_${project.hashCode()}_${project.name}"
+    override val loggedData: LoggedData<*, *>
+        get() = FileEditorLoggedData
 
     fun log(
         action: FileEditorAction,

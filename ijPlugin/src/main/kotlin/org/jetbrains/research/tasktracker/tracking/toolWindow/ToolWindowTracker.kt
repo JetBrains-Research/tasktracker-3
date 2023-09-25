@@ -7,20 +7,19 @@ import com.intellij.openapi.wm.ex.ToolWindowManagerListener
 import com.intellij.util.messages.MessageBusConnection
 import org.jetbrains.research.tasktracker.tracking.BaseTracker
 import org.jetbrains.research.tasktracker.tracking.logger.ToolWindowLogger
-import java.io.File
 
 // TODO make photos and log Emotions if webcam switched on
 class ToolWindowTracker(
     private val project: Project,
-) : BaseTracker {
-    private val toolWindowLogger: ToolWindowLogger = ToolWindowLogger(project)
+) : BaseTracker() {
+    override val trackerLogger: ToolWindowLogger = ToolWindowLogger(project)
     private var messageBusConnection: MessageBusConnection? = null
 
     override fun startTracking() {
         val toolWindowListener = object : ToolWindowManagerListener {
             override fun toolWindowShown(toolWindow: ToolWindow) {
                 super.toolWindowShown(toolWindow)
-                toolWindowLogger.log(toolWindow.id, ToolWindowAction.OPENED)
+                trackerLogger.log(toolWindow.id, ToolWindowAction.OPENED)
             }
 
             override fun stateChanged(
@@ -29,7 +28,7 @@ class ToolWindowTracker(
             ) {
                 super.stateChanged(toolWindowManager, changeType)
                 if (changeType == ToolWindowManagerListener.ToolWindowManagerEventType.ActivateToolWindow) {
-                    toolWindowLogger.log(toolWindowManager.activeToolWindowId ?: "", ToolWindowAction.FOCUSED)
+                    trackerLogger.log(toolWindowManager.activeToolWindowId ?: "", ToolWindowAction.FOCUSED)
                 }
                 // TODO find solution to track another eventTypes
             }
@@ -41,6 +40,4 @@ class ToolWindowTracker(
     override fun stopTracking() {
         messageBusConnection?.disconnect()
     }
-
-    override fun getLogFiles(): List<File> = listOf(toolWindowLogger.logPrinter.logFile)
 }

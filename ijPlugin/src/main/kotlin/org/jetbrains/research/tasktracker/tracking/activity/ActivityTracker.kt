@@ -22,16 +22,13 @@ import org.jetbrains.research.tasktracker.tracking.activity.actions.TypingAction
 import org.jetbrains.research.tasktracker.tracking.logger.ActivityLogger
 import java.awt.AWTEvent
 import java.awt.event.KeyEvent
-import java.io.File
 import java.util.concurrent.atomic.AtomicInteger
 
-class ActivityTracker(project: Project) : BaseTracker {
-    private val activityLogger: ActivityLogger = ActivityLogger(project)
+class ActivityTracker(project: Project) : BaseTracker() {
+    override val trackerLogger = ActivityLogger(project)
     private val messageBusConnections: MutableList<MessageBusConnection> = mutableListOf()
     private var trackingDisposable: Disposable? = null
     private val currentId: AtomicInteger = AtomicInteger(1)
-
-    override fun getLogFiles(): List<File> = listOf(activityLogger.logPrinter.logFile)
 
     // TODO: add config to select activities to track
     override fun startTracking() {
@@ -55,7 +52,7 @@ class ActivityTracker(project: Project) : BaseTracker {
                 if (listenShortcut) {
                     actionId.extractShortcut(event, id)
                 }
-                activityLogger.log(Type.Action, actionId, id)
+                trackerLogger.log(Type.Action, actionId, id)
             }
         }
         actionListener.connect(AnActionListener.TOPIC)
@@ -65,7 +62,7 @@ class ActivityTracker(project: Project) : BaseTracker {
         if (!movingActions.contains(this) && !typingActions.contains(this)) {
             val input = event.inputEvent
             if (input is KeyEvent) {
-                activityLogger.log(Type.Shortcut, eventToShortcutInfo(input), id)
+                trackerLogger.log(Type.Shortcut, eventToShortcutInfo(input), id)
             }
         }
     }
@@ -78,7 +75,7 @@ class ActivityTracker(project: Project) : BaseTracker {
         val executionListener = object : ExecutionListener {
             override fun processStarting(executorId: String, env: ExecutionEnvironment, handler: ProcessHandler) {
                 val commandLine = (handler as? BaseProcessHandler<*>)?.commandLine ?: ""
-                activityLogger.log(Type.Execution, "$executorId:'${env.runProfile}':$commandLine")
+                trackerLogger.log(Type.Execution, "$executorId:'${env.runProfile}':$commandLine")
             }
         }
         executionListener.connect(ExecutionManager.EXECUTION_TOPIC)
@@ -88,8 +85,8 @@ class ActivityTracker(project: Project) : BaseTracker {
         IdeEventQueue.getInstance().addPostprocessor({ awtEvent: AWTEvent ->
             if (awtEvent is KeyEvent) {
                 when (awtEvent.id) {
-                    KeyEvent.KEY_PRESSED -> activityLogger.log(Type.KeyPressed, awtEvent.info())
-                    KeyEvent.KEY_RELEASED -> activityLogger.log(Type.KeyReleased, awtEvent.info())
+                    KeyEvent.KEY_PRESSED -> trackerLogger.log(Type.KeyPressed, awtEvent.info())
+                    KeyEvent.KEY_RELEASED -> trackerLogger.log(Type.KeyReleased, awtEvent.info())
                 }
             }
             false
