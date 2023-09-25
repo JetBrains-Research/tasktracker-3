@@ -6,11 +6,9 @@ import org.jetbrains.research.tasktracker.tracking.webcam.WebCamData
 import org.joda.time.DateTime
 
 class WebCamLogger(val project: Project) : BaseLogger() {
-    // TODO: to list of printers
-    override val logPrinter: LogPrinter = initLogPrinter("emotions_${project.hashCode()}_${project.name}")
-        .also {
-            it.csvPrinter.printRecord(WebcamLoggedData.headers)
-        }
+    override val logPrinterFilename: String = "emotions_${project.hashCode()}_${project.name}"
+    override val loggedData: LoggedData<*, *>
+        get() = WebcamLoggedData
 
     fun log(
         emotion: EmotionType,

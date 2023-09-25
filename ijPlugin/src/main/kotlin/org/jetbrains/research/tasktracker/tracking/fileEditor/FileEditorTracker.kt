@@ -8,30 +8,29 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.util.messages.MessageBusConnection
 import org.jetbrains.research.tasktracker.tracking.BaseTracker
 import org.jetbrains.research.tasktracker.tracking.logger.FileEditorLogger
-import java.io.File
 
 // TODO make photos and log Emotions if webcam switched on
 class FileEditorTracker(
     private val project: Project,
-) : BaseTracker {
+) : BaseTracker() {
     private var messageBusConnection: MessageBusConnection? = null
-    private val logger = FileEditorLogger(project)
+    override val trackerLogger = FileEditorLogger(project)
 
     override fun startTracking() {
         val fileEditorListener = object : FileEditorManagerListener {
             override fun selectionChanged(event: FileEditorManagerEvent) {
                 super.selectionChanged(event)
-                logger.log(FileEditorAction.FOCUS, event.oldFile?.name, event.newFile?.name)
+                trackerLogger.log(FileEditorAction.FOCUS, event.oldFile?.name, event.newFile?.name)
             }
 
             override fun fileOpened(source: FileEditorManager, file: VirtualFile) {
                 super.fileOpened(source, file)
-                logger.log(FileEditorAction.OPEN, null, file.name)
+                trackerLogger.log(FileEditorAction.OPEN, null, file.name)
             }
 
             override fun fileClosed(source: FileEditorManager, file: VirtualFile) {
                 super.fileClosed(source, file)
-                logger.log(FileEditorAction.CLOSE, file.name)
+                trackerLogger.log(FileEditorAction.CLOSE, file.name)
             }
         }
         messageBusConnection = project.messageBus.connect()
@@ -41,6 +40,4 @@ class FileEditorTracker(
     override fun stopTracking() {
         messageBusConnection?.disconnect()
     }
-
-    override fun getLogFiles(): List<File> = listOf(logger.logPrinter.logFile)
 }
