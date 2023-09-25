@@ -7,7 +7,6 @@ import org.jetbrains.research.tasktracker.tracking.logger.SurveyLoggedData
 import org.joda.time.DateTime
 
 class SurveyLogger(val project: Project) : BaseLogger() {
-    // TODO: to list of printers
     override val logPrinter: LogPrinter = initLogPrinter("survey_${project.hashCode()}_${project.name}")
         .also {
             it.csvPrinter.printRecord(SurveyLoggedData.headers)

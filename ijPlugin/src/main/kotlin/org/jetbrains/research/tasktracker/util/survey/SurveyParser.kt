@@ -7,7 +7,6 @@ import org.jetbrains.research.tasktracker.config.survey.InputType
 import org.jetbrains.research.tasktracker.config.survey.SurveyItem
 import org.jetbrains.research.tasktracker.ui.main.panel.MainPluginWindow
 
-// TODO: move somewhere and add a config + generate a survey by config
 class SurveyParser(private val mainWindow: MainPluginWindow, project: Project) {
     val surveyLogger = SurveyLogger(project)
 
