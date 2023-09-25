@@ -1,4 +1,6 @@
-package org.jetbrains.research.tasktracker.tracking.survey
+package org.jetbrains.research.tasktracker.config.survey
+
+import kotlinx.serialization.Serializable
 
 enum class InputType {
     Simple,
@@ -6,7 +8,7 @@ enum class InputType {
     TextArea
 }
 
-// TODO: decomposition
+@Serializable
 data class SurveyItem(
     val elementId: String,
     val inputType: InputType,

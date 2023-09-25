@@ -6,6 +6,7 @@ import org.jetbrains.research.tasktracker.config.content.MainPageContentConfig
 import org.jetbrains.research.tasktracker.config.content.TaskContentConfig
 import org.jetbrains.research.tasktracker.config.ide.MainIdeConfig
 import org.jetbrains.research.tasktracker.config.scenario.ScenarioConfig
+import org.jetbrains.research.tasktracker.config.survey.SurveyConfig
 import org.jetbrains.research.tasktracker.config.tracking.ActivityTrackingConfig
 import org.jetbrains.research.tasktracker.config.tracking.CodeTrackingConfig
 import org.jetbrains.research.tasktracker.config.tracking.WebCamTrackingConfig
@@ -27,6 +28,7 @@ data class MainTaskTrackerConfig(
     var mainPageConfig: MainPageContentConfig? = null,
 
     var scenarioConfig: ScenarioConfig? = null,
+    var surveyConfig: SurveyConfig? = null,
 ) {
     fun getAllConfigs() = listOf(
         taskContentConfig,
@@ -89,6 +91,12 @@ data class MainTaskTrackerConfig(
                     fileName.startsWith(MainPageContentConfig.CONFIG_FILE_PREFIX) -> {
                         mainConfig.mainPageConfig = buildBaseConfig(
                             mainConfig.mainPageConfig, configFile, MainPageContentConfig::buildConfig, logger
+                        )
+                    }
+
+                    fileName.startsWith(SurveyConfig.CONFIG_FILE_PREFIX) -> {
+                        mainConfig.surveyConfig = buildBaseConfig(
+                            mainConfig.surveyConfig, configFile, SurveyConfig::buildConfig, logger
                         )
                     }
                 }

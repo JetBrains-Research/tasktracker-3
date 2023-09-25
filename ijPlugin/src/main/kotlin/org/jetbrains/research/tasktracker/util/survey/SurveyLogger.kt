@@ -1,7 +1,9 @@
-package org.jetbrains.research.tasktracker.tracking.logger
+package org.jetbrains.research.tasktracker.util.survey
 
 import com.intellij.openapi.project.Project
-import org.jetbrains.research.tasktracker.tracking.survey.SurveyData
+import org.jetbrains.research.tasktracker.tracking.logger.BaseLogger
+import org.jetbrains.research.tasktracker.tracking.logger.LogPrinter
+import org.jetbrains.research.tasktracker.tracking.logger.SurveyLoggedData
 import org.joda.time.DateTime
 
 class SurveyLogger(val project: Project) : BaseLogger() {

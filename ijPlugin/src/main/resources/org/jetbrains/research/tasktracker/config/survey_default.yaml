@@ -1,0 +1,200 @@
+surveyItems:
+  - elementId: hours
+    inputType: Simple
+    question: Approximately how many hours did you use the plugin?
+  - elementId: ""
+    inputType: Radio
+    question: >-
+      On a scale of 1 (very unlikely) to 5 (very likely), how likely are you to
+      continue using the Emotion Tracker in the future?
+    subtypes:
+      - elementId: likely1
+        inputType: Radio
+      - elementId: likely2
+        inputType: Radio
+      - elementId: likely3
+        inputType: Radio
+      - elementId: likely4
+        inputType: Radio
+      - elementId: likely5
+        inputType: Radio
+  - elementId: ""
+    inputType: Radio
+    question: >-
+      On a scale of 1 (not at all) to 5 (extremely), how much did the Emotion
+      Tracker disrupt your workflow?
+    subtypes:
+      - elementId: disrupt1
+        inputType: Radio
+      - elementId: disrupt2
+        inputType: Radio
+      - elementId: disrupt3
+        inputType: Radio
+      - elementId: disrupt4
+        inputType: Radio
+      - elementId: disrupt5
+        inputType: Radio
+  - elementId: ""
+    inputType: Radio
+    question: >-
+      On a scale of 1 (very inaccurate) to 5 (very accurate), how accurately did
+      the Emotion Tracker capture your emotions?
+    subtypes:
+      - elementId: accuracy1
+        inputType: Radio
+      - elementId: accuracy2
+        inputType: Radio
+      - elementId: accuracy3
+        inputType: Radio
+      - elementId: accuracy4
+        inputType: Radio
+      - elementId: accuracy5
+        inputType: Radio
+  - elementId: ""
+    inputType: Radio
+    question: >-
+      On a scale of 1 (not at all) to 5 (very comfortable), how comfortable were
+      you with the plugin recording your emotions while coding?
+    subtypes:
+      - elementId: comfort1
+        inputType: Radio
+      - elementId: comfort2
+        inputType: Radio
+      - elementId: comfort3
+        inputType: Radio
+      - elementId: comfort4
+        inputType: Radio
+      - elementId: comfort5
+        inputType: Radio
+  - elementId: ""
+    inputType: Radio
+    question: >-
+      On a scale of 1 (not at all) to 5 (extremely), how helpful did you find the
+      messages provided by the Emotion Tracker in aiding your self-regulation?
+    subtypes:
+      - elementId: helpful1
+        inputType: Radio
+      - elementId: helpful2
+        inputType: Radio
+      - elementId: helpful3
+        inputType: Radio
+      - elementId: helpful4
+        inputType: Radio
+      - elementId: helpful5
+        inputType: Radio
+  - elementId: ""
+    inputType: Radio
+    question: During your experience with the Emotion Tracker, how often did you feel the following emotions? Happiness
+    subtypes:
+      - elementId: never_happy
+        inputType: Radio
+      - elementId: rarely_happy
+        inputType: Radio
+      - elementId: sometimes_happy
+        inputType: Radio
+      - elementId: often_happy
+        inputType: Radio
+      - elementId: most_happy
+        inputType: Radio
+  - elementId: ""
+    inputType: Radio
+    question: During your experience with the Emotion Tracker, how often did you feel the following emotions? Surprise
+    subtypes:
+      - elementId: never_surprise
+        inputType: Radio
+      - elementId: rarely_surprise
+        inputType: Radio
+      - elementId: sometimes_surprise
+        inputType: Radio
+      - elementId: often_surprise
+        inputType: Radio
+      - elementId: most_surprise
+        inputType: Radio
+  - elementId: ""
+    inputType: Radio
+    question: During your experience with the Emotion Tracker, how often did you feel the following emotions? Neutral
+    subtypes:
+      - elementId: never_neutral
+        inputType: Radio
+      - elementId: rarely_neutral
+        inputType: Radio
+      - elementId: sometimes_neutral
+        inputType: Radio
+      - elementId: often_neutral
+        inputType: Radio
+      - elementId: most_neutral
+        inputType: Radio
+  - elementId: ""
+    inputType: Radio
+    question: During your experience with the Emotion Tracker, how often did you feel the following emotions? Sadness
+    subtypes:
+      - elementId: never_sad
+        inputType: Radio
+      - elementId: rarely_sad
+        inputType: Radio
+      - elementId: sometimes_sad
+        inputType: Radio
+      - elementId: often_sad
+        inputType: Radio
+      - elementId: most_sad
+        inputType: Radio
+  - elementId: ""
+    inputType: Radio
+    question: During your experience with the Emotion Tracker, how often did you feel the following emotions? Anger
+    subtypes:
+      - elementId: never_anger
+        inputType: Radio
+      - elementId: rarely_anger
+        inputType: Radio
+      - elementId: sometimes_anger
+        inputType: Radio
+      - elementId: often_anger
+        inputType: Radio
+      - elementId: most_anger
+        inputType: Radio
+  - elementId: ""
+    inputType: Radio
+    question: During your experience with the Emotion Tracker, how often did you feel the following emotions? Disgust
+    subtypes:
+      - elementId: never_disgust
+        inputType: Radio
+      - elementId: rarely_disgust
+        inputType: Radio
+      - elementId: sometimes_disgust
+        inputType: Radio
+      - elementId: often_disgust
+        inputType: Radio
+      - elementId: most_disgust
+        inputType: Radio
+  - elementId: ""
+    inputType: Radio
+    question: During your experience with the Emotion Tracker, how often did you feel the following emotions? Fear
+    subtypes:
+      - elementId: never_fear
+        inputType: Radio
+      - elementId: rarely_fear
+        inputType: Radio
+      - elementId: sometimes_fear
+        inputType: Radio
+      - elementId: often_fear
+        inputType: Radio
+      - elementId: most_fear
+        inputType: Radio
+  - elementId: ""
+    inputType: Radio
+    question: During your experience with the Emotion Tracker, how often did you feel the following emotions? Contempt
+    subtypes:
+      - elementId: never_contempt
+        inputType: Radio
+      - elementId: rarely_contempt
+        inputType: Radio
+      - elementId: sometimes_contempt
+        inputType: Radio
+      - elementId: often_contempt
+        inputType: Radio
+      - elementId: most_contempt
+        inputType: Radio
+  - elementId: additionalThoughts
+    inputType: TextArea
+    question: Please share any additional thoughts or comments you have about your experience using the Emotion Tracker plugin.
+
