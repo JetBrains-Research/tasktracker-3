@@ -3,16 +3,32 @@ package org.jetbrains.research.tasktracker.config.survey
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+/**
+ * Radio button id and value
+ */
 @Serializable
 data class RadioInfo(val id: String, val value: String)
 
+/**
+ * This is a class that constructs an input field of a specified type in HTML.
+ */
 @Serializable
 sealed class HtmlQuestion {
+    /**
+     * `h` tag text
+     */
     abstract val text: String
     abstract val elementId: String
+
+    /**
+     * `h` tag size. For example, h1, h2, and so on.
+     */
     private val textSize: Int = defaultTextSize
         get() = if (field < minTextSize || field > maxTextSize) defaultTextSize else field
 
+    /**
+     * Sets 'required' on the input if this field is mandatory to fill out.
+     */
     @SerialName("required")
     private val isRequired: Boolean = false
     abstract fun toHtml(): String
@@ -33,9 +49,21 @@ sealed class HtmlQuestion {
 data class InputHtmlQuestion(
     override val text: String,
     override val elementId: String,
-    private val type: String = defaultType, // TODO enum?
+    /**
+     * input type. text, number, etc.
+     */
+    private val type: String = defaultType,
+    /**
+     * min parameter in the input.
+     */
     private val min: Int? = null,
+    /**
+     * max parameter in the input.
+     */
     private val max: Int? = null,
+    /**
+     * step parameter in the input.
+     */
     private val step: Float? = null
 ) :
     HtmlQuestion() {
@@ -55,6 +83,9 @@ data class InputHtmlQuestion(
 @SerialName("Radio")
 data class RadioHtmlQuestion(
     override val text: String,
+    /**
+     * **ElementId** here is radio button **name**!!!.
+     */
     override val elementId: String,
     @SerialName("info") val infos: List<RadioInfo>
 ) : HtmlQuestion() {
@@ -73,7 +104,13 @@ data class RadioHtmlQuestion(
 data class TextAreaHtmlQuestion(
     override val text: String,
     override val elementId: String,
+    /**
+     * rows parameter in the input.
+     */
     val rows: Int? = null,
+    /**
+     * cols parameter in the input.
+     */
     val cols: Int? = null
 ) : HtmlQuestion() {
     override fun toHtml(): String = buildString {
@@ -83,6 +120,9 @@ data class TextAreaHtmlQuestion(
     }
 }
 
+/**
+ * Represents container in which tou can store sub questions with general title.
+ */
 @Serializable
 @SerialName("Container")
 data class HtmlQuestionContainer(override val text: String) : HtmlQuestion() {
