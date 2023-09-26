@@ -3,27 +3,35 @@ package org.jetbrains.research.tasktracker.util.survey
 import com.intellij.openapi.project.Project
 import org.jetbrains.concurrency.await
 import org.jetbrains.research.tasktracker.TaskTrackerPlugin
-import org.jetbrains.research.tasktracker.config.survey.InputType
-import org.jetbrains.research.tasktracker.config.survey.SurveyItem
+import org.jetbrains.research.tasktracker.config.survey.*
 import org.jetbrains.research.tasktracker.ui.main.panel.MainPluginWindow
 
 class SurveyParser(private val mainWindow: MainPluginWindow, project: Project) {
     val surveyLogger = SurveyLogger(project)
 
-    private val items = TaskTrackerPlugin.mainConfig.surveyConfig?.surveyItems ?: emptyList()
+    private val items = TaskTrackerPlugin.mainConfig.surveyConfig?.htmlQuestions ?: emptyList()
 
     suspend fun parseAndLog() = items.forEachIndexed { index, surveyItem -> parseAndLog(surveyItem, index) }
 
-    private suspend fun parseAndLog(item: SurveyItem, id: Int) {
-        when (item.inputType) {
-            InputType.Simple, InputType.TextArea -> {
+    private suspend fun parseAndLog(item: HtmlQuestion, id: Int) {
+        when (item) {
+            is InputHtmlQuestion -> {
                 val result = mainWindow.getElementValue(item.elementId).await()
-                surveyLogger.log(item.question, result.toString(), questionId = id)
+                surveyLogger.log(item.text, result.toString(), questionId = id)
             }
 
-            InputType.Radio -> item.subtypes?.forEach { radioItem ->
-                val result = mainWindow.checkIfRadioButtonChecked(radioItem.elementId).await()
-                surveyLogger.log(item.question, result.toString(), option = radioItem.elementId, questionId = id)
+            is TextAreaHtmlQuestion -> {
+                val result = mainWindow.getElementValue(item.elementId).await()
+                surveyLogger.log(item.text, result.toString(), questionId = id)
+            }
+
+            is RadioHtmlQuestion -> item.infos.forEach { info ->
+                val result = mainWindow.checkIfRadioButtonChecked(info.id).await()
+                surveyLogger.log(item.text, result.toString(), option = info.id, questionId = id)
+            }
+
+            is HtmlQuestionContainer -> item.subQuestions.forEach {
+                parseAndLog(it, id)
             }
         }
     }

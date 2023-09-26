@@ -242,7 +242,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
 
     private fun survey() {
         loadBasePage(
-            SurveyTemplate, "ui.button.submit", true
+            SurveyTemplate.loadCurrentTemplate(), "ui.button.submit", true
         )
         nextButton.addListener {
             val surveyParser = SurveyParser(mainWindow, project)
