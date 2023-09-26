@@ -45,7 +45,7 @@ class TaskDocumentListenerTest : CodeInsightFixtureTestCase<ModuleFixtureBuilder
             ?: error("document with path '${virtualFile.path}' must exist")
         val logFileName =
             "${virtualFile.nameWithoutExtension}_${virtualFile.hashCode()}_${document.hashCode()}_0.csv"
-        val logFile = File("${MainTaskTrackerConfig.pluginFolderPath}/$logFileName")
+        val logFile = File("${MainTaskTrackerConfig.logFilesFolder}/$logFileName")
         document.addDocumentListener(TaskDocumentListener())
         assert(!logFile.exists()) {
             "log file with path '${logFile.path}' should be created on first event in TaskDocumentListener"

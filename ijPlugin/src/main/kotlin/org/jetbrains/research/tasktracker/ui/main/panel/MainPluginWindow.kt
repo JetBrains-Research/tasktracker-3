@@ -10,7 +10,7 @@ import org.cef.handler.CefLoadHandlerAdapter
 import org.intellij.lang.annotations.Language
 import org.jetbrains.concurrency.Promise
 import org.jetbrains.research.tasktracker.ui.main.panel.models.Theme
-import org.jetbrains.research.tasktracker.ui.main.panel.template.ErrorPageTemplate
+import org.jetbrains.research.tasktracker.ui.main.panel.template.DefaultErrorPage
 import org.jetbrains.research.tasktracker.ui.main.panel.template.HtmlTemplate
 import org.jetbrains.research.tasktracker.ui.main.panel.template.MainPageTemplate
 import javax.swing.JComponent
@@ -27,7 +27,7 @@ class MainPluginWindow(service: MainWindowService) {
     init {
         windowBrowser.jbCefClient.setProperty(JBCefClient.Properties.JS_QUERY_POOL_SIZE, JS_QUERY_POOL_SIZE)
         windowBrowser.setErrorPage { errorCode, errorText, failedUrl ->
-            ErrorPageTemplate(errorCode.code.toString(), errorText, failedUrl).htmlContent
+            DefaultErrorPage(errorCode.code.toString(), errorText, failedUrl).htmlContent
         }
         loadHtmlTemplate(currentTemplate)
         val app = ApplicationManager.getApplication().messageBus

@@ -2,7 +2,9 @@ package org.jetbrains.research.tasktracker.config
 
 import com.intellij.openapi.application.PathManager
 import com.intellij.openapi.diagnostic.Logger
+import org.jetbrains.research.tasktracker.config.content.FinalPageContentConfig
 import org.jetbrains.research.tasktracker.config.content.MainPageContentConfig
+import org.jetbrains.research.tasktracker.config.content.ServerErrorPageConfig
 import org.jetbrains.research.tasktracker.config.content.TaskContentConfig
 import org.jetbrains.research.tasktracker.config.ide.MainIdeConfig
 import org.jetbrains.research.tasktracker.config.scenario.ScenarioConfig
@@ -25,6 +27,8 @@ data class MainTaskTrackerConfig(
     var codeTrackingConfig: CodeTrackingConfig? = null,
     var webCamConfig: WebCamTrackingConfig? = null,
     var mainPageConfig: MainPageContentConfig? = null,
+    var finalPageConfig: FinalPageContentConfig? = null,
+    var serverErrorPageConfig: ServerErrorPageConfig? = null,
 
     var scenarioConfig: ScenarioConfig? = null,
 ) {
@@ -36,6 +40,8 @@ data class MainTaskTrackerConfig(
         scenarioConfig,
         webCamConfig,
         mainPageConfig,
+        finalPageConfig,
+        serverErrorPageConfig
     )
 
     companion object {
@@ -43,6 +49,7 @@ data class MainTaskTrackerConfig(
 
         const val PLUGIN_NAME = "tasktracker"
         val pluginFolderPath = "${PathManager.getPluginsPath()}/$PLUGIN_NAME"
+        val logFilesFolder = "$pluginFolderPath/logs"
         const val PLUGIN_PROPERTIES_FILE = "$PLUGIN_NAME.properties"
 
         private fun File.isConfigFile() = this.extension == "yaml"
@@ -89,6 +96,18 @@ data class MainTaskTrackerConfig(
                     fileName.startsWith(MainPageContentConfig.CONFIG_FILE_PREFIX) -> {
                         mainConfig.mainPageConfig = buildBaseConfig(
                             mainConfig.mainPageConfig, configFile, MainPageContentConfig::buildConfig, logger
+                        )
+                    }
+
+                    fileName.startsWith(FinalPageContentConfig.CONFIG_FILE_PREFIX) -> {
+                        mainConfig.finalPageConfig = buildBaseConfig(
+                            mainConfig.finalPageConfig, configFile, FinalPageContentConfig::buildConfig, logger
+                        )
+                    }
+
+                    fileName.startsWith(ServerErrorPageConfig.CONFIG_FILE_PREFIX) -> {
+                        mainConfig.serverErrorPageConfig = buildBaseConfig(
+                            mainConfig.serverErrorPageConfig, configFile, ServerErrorPageConfig::buildConfig, logger
                         )
                     }
                 }
