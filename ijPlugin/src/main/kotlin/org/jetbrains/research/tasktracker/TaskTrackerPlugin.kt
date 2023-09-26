@@ -48,6 +48,6 @@ object TaskTrackerPlugin {
     }
 
     fun initPluginFolder() {
-        File(MainTaskTrackerConfig.pluginFolderPath).mkdirs()
+        File(MainTaskTrackerConfig.logFilesFolder).mkdirs()
     }
 }

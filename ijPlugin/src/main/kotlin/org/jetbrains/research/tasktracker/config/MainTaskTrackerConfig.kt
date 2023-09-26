@@ -49,6 +49,7 @@ data class MainTaskTrackerConfig(
 
         const val PLUGIN_NAME = "tasktracker"
         val pluginFolderPath = "${PathManager.getPluginsPath()}/$PLUGIN_NAME"
+        val logFilesFolder = "$pluginFolderPath/logs"
         const val PLUGIN_PROPERTIES_FILE = "$PLUGIN_NAME.properties"
 
         private fun File.isConfigFile() = this.extension == "yaml"

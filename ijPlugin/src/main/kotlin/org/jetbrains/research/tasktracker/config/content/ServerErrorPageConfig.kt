@@ -16,7 +16,7 @@ class ServerErrorPageConfig(private val defaultMessageTemplate: String) : BaseCo
         get() = CONFIG_FILE_PREFIX
 
     val defaultMessage: String
-            get() = defaultMessageTemplate.format(MainTaskTrackerConfig.pluginFolderPath)
+            get() = defaultMessageTemplate.format(MainTaskTrackerConfig.logFilesFolder)
 
     companion object {
         const val CONFIG_FILE_PREFIX: String = "server_error"
