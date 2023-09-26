@@ -17,6 +17,8 @@ body {
     font-size: 4vmin;
     margin-top: 0;
     margin-bottom: 2vmin;
+    overflow-wrap: break-word;
+    word-break: break-all;
 }
 
 .container {
@@ -27,11 +29,6 @@ body {
     align-items: center;
     text-align: center;
     justify-content: center;
-}
-
-.portable {
-    overflow-wrap: break-word;
-    word-break: break-all;
 }
 
 label {

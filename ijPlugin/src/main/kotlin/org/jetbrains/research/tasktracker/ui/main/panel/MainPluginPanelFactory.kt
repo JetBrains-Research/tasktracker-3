@@ -66,9 +66,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
         this.project = project
         mainWindow = project.getService(MainWindowService::class.java).mainWindow
         mainWindow.jComponent.size = JBUI.size(toolWindow.component.width, toolWindow.component.height)
-        nextButton.addListener {
-            welcomePage()
-        }
+        welcomePage()
         val buttonPanel = JBPanel<JBPanel<*>>(FlowLayout()).apply {
             add(backButton)
             add(nextButton)
@@ -285,7 +283,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
         resetAllIds()
         trackers.clear()
         loadBasePage(
-            ServerErrorPageTemplate(), "ui.button.welcome", false
+            ServerErrorPage(), "ui.button.welcome", false
         )
         nextButton.isVisible = false
     }

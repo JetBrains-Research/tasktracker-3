@@ -2,12 +2,11 @@ package org.jetbrains.research.tasktracker.ui.main.panel.template
 
 import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 
-class ServerErrorPageTemplate(private val userMessage: String = defaultText) : HtmlBaseFileTemplate() {
-override val contentFilename: String
-    get() = "serverError"
-
-    override val arguments: Array<String>
-        get() = arrayOf(userMessage)
+class ServerErrorPage(private val userMessage: String = defaultText) : ErrorPageTemplate() {
+    override val title: String
+        get() = "Oops, it looks like there's been a hiccup with our server."
+    override val description: String
+        get() = userMessage
 
     companion object {
         val config = TaskTrackerPlugin.mainConfig.serverErrorPageConfig
