@@ -1,16 +1,13 @@
-package org.jetbrains.research.tasktracker.util.survey
+package org.jetbrains.research.tasktracker.tracking.logger
 
 import com.intellij.openapi.project.Project
-import org.jetbrains.research.tasktracker.tracking.logger.BaseLogger
-import org.jetbrains.research.tasktracker.tracking.logger.LogPrinter
-import org.jetbrains.research.tasktracker.tracking.logger.SurveyLoggedData
+import org.jetbrains.research.tasktracker.tracking.survey.SurveyData
 import org.joda.time.DateTime
 
 class SurveyLogger(val project: Project) : BaseLogger() {
-    override val logPrinter: LogPrinter = initLogPrinter("survey_${project.hashCode()}_${project.name}")
-        .also {
-            it.csvPrinter.printRecord(SurveyLoggedData.headers)
-        }
+    override val logPrinterFilename: String = "survey_${project.hashCode()}_${project.name}"
+    override val loggedData: LoggedData<*, *>
+        get() = SurveyLoggedData
 
     fun log(
         question: String,

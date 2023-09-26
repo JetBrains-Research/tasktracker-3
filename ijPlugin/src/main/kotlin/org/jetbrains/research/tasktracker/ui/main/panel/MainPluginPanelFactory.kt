@@ -68,9 +68,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
         this.project = project
         mainWindow = project.getService(MainWindowService::class.java).mainWindow
         mainWindow.jComponent.size = JBUI.size(toolWindow.component.width, toolWindow.component.height)
-        nextButton.addListener {
-            welcomePage()
-        }
+        welcomePage()
         val buttonPanel = JBPanel<JBPanel<*>>(FlowLayout()).apply {
             add(backButton)
             add(nextButton)
@@ -250,7 +248,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
             GlobalScope.launch {
                 surveyParser.parseAndLog()
                 // TODO: unify
-                val isSuccessful = sendSurvey(surveyParser.surveyLogger.logPrinter.logFile)
+                val isSuccessful = sendSurvey(surveyParser.surveyLogger.getLogFiles())
                 if (!isSuccessful) {
                     serverErrorPage()
                 }
@@ -287,14 +285,14 @@ class MainPluginPanelFactory : ToolWindowFactory {
         resetAllIds()
         trackers.clear()
         loadBasePage(
-            ServerErrorPageTemplate(), "ui.button.welcome", false
+            ServerErrorPage(), "ui.button.welcome", false
         )
         nextButton.isVisible = false
     }
 
     private fun webFinalPage() {
         loadBasePage(
-            FinalPageTemplate(), "ui.button.welcome", false
+            FinalPageTemplate.loadCurrentTemplate(), "ui.button.welcome", false
         )
         nextButton.addListener {
             welcomePage()
@@ -384,7 +382,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
         sendFile(it, "webCam")
     }
 
-    private fun sendSurvey(surveyFile: File) = sendFile(surveyFile, "survey")
+    private fun sendSurvey(surveyFiles: List<File>) = surveyFiles.all { sendFile(it, "survey") }
 
     @Suppress("TooGenericExceptionCaught")
     private fun sendFile(file: File, subdir: String) = runBlocking {

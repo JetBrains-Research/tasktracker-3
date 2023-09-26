@@ -6,10 +6,9 @@ import org.jetbrains.research.tasktracker.tracking.toolWindow.ToolWindowData
 import org.joda.time.DateTime
 
 class ToolWindowLogger(val project: Project) : BaseLogger() {
-    override val logPrinter: LogPrinter = initLogPrinter("tool_window_${project.hashCode()}_${project.name}")
-        .also {
-            it.csvPrinter.printRecord(ToolWindowLoggedData.headers)
-        }
+    override val logPrinterFilename: String = "tool_window_${project.hashCode()}_${project.name}"
+    override val loggedData: LoggedData<*, *>
+        get() = ToolWindowLoggedData
 
     fun log(
         windowId: String,

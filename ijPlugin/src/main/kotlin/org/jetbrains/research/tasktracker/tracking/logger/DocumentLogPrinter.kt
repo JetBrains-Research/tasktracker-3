@@ -51,13 +51,13 @@ class DocumentLogPrinter {
     }
 
     private fun createLogFile(document: Document): File {
-        File(MainTaskTrackerConfig.pluginFolderPath).mkdirs()
+        File(MainTaskTrackerConfig.logFilesFolder).mkdirs()
         val trackedFile = FileDocumentManager.getInstance().getFile(document)
         logger.info("${MainTaskTrackerConfig.PLUGIN_NAME}: create log file for tracked file ${trackedFile?.name}")
         val logFilesNumber = logPrinters.size
         val logFileName =
             "${trackedFile?.nameWithoutExtension}_${trackedFile.hashCode()}_${document.hashCode()}_$logFilesNumber.csv"
-        val logFile = File("${MainTaskTrackerConfig.pluginFolderPath}/$logFileName")
+        val logFile = File("${MainTaskTrackerConfig.logFilesFolder}/$logFileName")
         FileUtil.createIfDoesntExist(logFile)
         return logFile
     }

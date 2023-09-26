@@ -1,11 +1,15 @@
 package org.jetbrains.research.tasktracker.tracking
 
+import org.jetbrains.research.tasktracker.tracking.logger.BaseLogger
 import java.io.File
 
-interface BaseTracker {
-    fun startTracking()
+abstract class BaseTracker {
 
-    fun stopTracking()
+    protected abstract val trackerLogger: BaseLogger
 
-    fun getLogFiles(): List<File>
+    abstract fun startTracking()
+
+    abstract fun stopTracking()
+
+    fun getLogFiles(): List<File> = trackerLogger.getLogFiles()
 }
