@@ -1,5 +1,6 @@
 package org.jetbrains.research.tasktracker.tracking.webcam
 
+import com.intellij.openapi.diagnostic.Logger
 import kotlinx.coroutines.runBlocking
 import nu.pattern.OpenCV
 import org.jetbrains.research.tasktracker.actions.emoji.EmotionType
@@ -13,14 +14,17 @@ import org.opencv.imgcodecs.Imgcodecs
 import org.opencv.videoio.VideoCapture
 import java.io.File
 
-@Suppress("TooGenericExceptionCaught", "SwallowedException", "MagicNumber")
+object WebCamUtils {
+    val logger: Logger = Logger.getInstance(WebCamUtils::class.java)
+}
+
 fun collectAllDevices(): List<WebCamInfo> {
     OpenCV.loadShared()
 
     getBaseTestSelfiePath().also { File(it).mkdirs() }
     val devices = mutableListOf<WebCamInfo>()
 
-    for (deviceNumber in (0..10)) {
+    for (deviceNumber in (MIN_CAMERA_QUANTITY..MAX_CAMERA_QUANTITY)) {
         val camera = VideoCapture(deviceNumber)
 
         val frame = Mat()
@@ -66,15 +70,13 @@ internal fun makePhoto(deviceNumber: Int, mat: Mat): Boolean {
     return makePhoto(camera, mat).also { camera.release() }
 }
 
-@Suppress("MagicNumber", "UnusedPrivateMember")
 internal fun makePhoto(camera: VideoCapture, mat: Mat): Boolean {
-    for (i in 0..10) {
+    repeat(MAX_CAMERA_QUANTITY - MIN_CAMERA_QUANTITY) {
         camera.read(mat)
     }
     return camera.grab()
 }
 
-@Suppress("TooGenericExceptionCaught", "SwallowedException")
 fun Mat.saveSelfie(path: String): Boolean {
     return Imgcodecs.imwrite(path, this)
 }
@@ -83,7 +85,6 @@ private fun getBaseTestSelfiePath() = "${MainTaskTrackerConfig.pluginFolderPath}
 
 private fun getTestSelfiePath(deviceNumber: Int) = "${getBaseTestSelfiePath()}/selfie_$deviceNumber.jpg"
 
-@Suppress("TooGenericExceptionCaught", "SwallowedException")
 suspend fun Mat.guessEmotionAndLog(emoPredictor: EmoPredictor, webcamLogger: WebCamLogger, isRegular: Boolean = true) {
     try {
         val photoDate = DateTime.now()
@@ -93,8 +94,8 @@ suspend fun Mat.guessEmotionAndLog(emoPredictor: EmoPredictor, webcamLogger: Web
             webcamLogger.log(it, prediction.probabilities, isRegular, photoDate)
             GlobalPluginStorage.currentEmotion = it
         }
-    } catch (e: Exception) {
-        // do nothing
+    } catch (e: IllegalStateException) {
+        WebCamUtils.logger.error(e)
     }
 }
 
@@ -105,3 +106,6 @@ fun makePhotoAndLogEmotion(emoPredictor: EmoPredictor, webcamLogger: WebCamLogge
         }
     }
 }
+
+const val MIN_CAMERA_QUANTITY = 0
+const val MAX_CAMERA_QUANTITY = 10
