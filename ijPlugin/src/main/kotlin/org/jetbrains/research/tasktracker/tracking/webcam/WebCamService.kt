@@ -33,6 +33,7 @@ class WebCamService : Disposable {
                     }
                     if (photosMade == PHOTOS_MADE_BEFORE_NOTIFICATION) {
                         showNotification()
+                        photosMade = 0
                     }
                 }
             },

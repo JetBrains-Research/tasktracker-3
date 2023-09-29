@@ -31,7 +31,7 @@ fun collectAllDevices(): List<WebCamInfo> {
 
         if (!camera.isOpened || !makePhoto(camera, frame)) {
             camera.release()
-            continue
+            break
         }
 
         getTestSelfiePath(deviceNumber).also {
@@ -71,7 +71,7 @@ internal fun makePhoto(deviceNumber: Int, mat: Mat): Boolean {
 }
 
 internal fun makePhoto(camera: VideoCapture, mat: Mat): Boolean {
-    repeat(MAX_CAMERA_QUANTITY - MIN_CAMERA_QUANTITY) {
+    repeat(ATTEMPTS_TO_TAKE_PHOTO) {
         camera.read(mat)
     }
     return camera.grab()
@@ -109,3 +109,4 @@ fun makePhotoAndLogEmotion(emoPredictor: EmoPredictor, webcamLogger: WebCamLogge
 
 const val MIN_CAMERA_QUANTITY = 0
 const val MAX_CAMERA_QUANTITY = 10
+const val ATTEMPTS_TO_TAKE_PHOTO = 10
