@@ -5,9 +5,9 @@ import com.intellij.openapi.fileEditor.FileDocumentManager
 import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.tracking.activity.ActivityEvent
 import org.jetbrains.research.tasktracker.tracking.fileEditor.FileEditorData
-import org.jetbrains.research.tasktracker.tracking.survey.SurveyData
 import org.jetbrains.research.tasktracker.tracking.toolWindow.ToolWindowData
 import org.jetbrains.research.tasktracker.tracking.webcam.WebCamData
+import org.jetbrains.research.tasktracker.util.survey.SurveyData
 import org.joda.time.DateTime
 
 data class LoggedDataGetter<T, S>(val header: String, val getData: (T) -> S)

@@ -19,7 +19,9 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
 import io.ktor.http.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.jetbrains.research.tasktracker.config.content.task.base.Task
 import org.jetbrains.research.tasktracker.config.content.task.base.TaskWithFiles
 import org.jetbrains.research.tasktracker.modelInference.model.EmoModel
@@ -27,7 +29,6 @@ import org.jetbrains.research.tasktracker.tracking.BaseTracker
 import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
 import org.jetbrains.research.tasktracker.tracking.activity.ActivityTracker
 import org.jetbrains.research.tasktracker.tracking.fileEditor.FileEditorTracker
-import org.jetbrains.research.tasktracker.tracking.survey.SurveyParser
 import org.jetbrains.research.tasktracker.tracking.toolWindow.ToolWindowTracker
 import org.jetbrains.research.tasktracker.tracking.webcam.WebCamTracker
 import org.jetbrains.research.tasktracker.tracking.webcam.collectAllDevices
@@ -35,6 +36,7 @@ import org.jetbrains.research.tasktracker.ui.main.panel.storage.GlobalPluginStor
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.MainPanelStorage
 import org.jetbrains.research.tasktracker.ui.main.panel.template.*
 import org.jetbrains.research.tasktracker.util.UIBundle
+import org.jetbrains.research.tasktracker.util.survey.SurveyParser
 import java.awt.BorderLayout
 import java.awt.FlowLayout
 import java.awt.event.ActionListener
@@ -238,7 +240,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
 
     private fun survey() {
         loadBasePage(
-            SurveyTemplate, "ui.button.submit", true
+            SurveyTemplate.loadCurrentTemplate(), "ui.button.submit", true
         )
         nextButton.addListener {
             val surveyParser = SurveyParser(mainWindow, project)

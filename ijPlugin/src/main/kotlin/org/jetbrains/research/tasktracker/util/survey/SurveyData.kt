@@ -1,4 +1,4 @@
-package org.jetbrains.research.tasktracker.tracking.survey
+package org.jetbrains.research.tasktracker.util.survey
 
 import org.joda.time.DateTime
 
