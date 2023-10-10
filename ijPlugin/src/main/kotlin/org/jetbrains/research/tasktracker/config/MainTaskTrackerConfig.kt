@@ -6,6 +6,7 @@ import org.jetbrains.research.tasktracker.config.content.FinalPageContentConfig
 import org.jetbrains.research.tasktracker.config.content.MainPageContentConfig
 import org.jetbrains.research.tasktracker.config.content.ServerErrorPageConfig
 import org.jetbrains.research.tasktracker.config.content.TaskContentConfig
+import org.jetbrains.research.tasktracker.config.emoji.EmojiConfig
 import org.jetbrains.research.tasktracker.config.ide.MainIdeConfig
 import org.jetbrains.research.tasktracker.config.scenario.ScenarioConfig
 import org.jetbrains.research.tasktracker.config.survey.SurveyConfig
@@ -30,6 +31,7 @@ data class MainTaskTrackerConfig(
     var mainPageConfig: MainPageContentConfig? = null,
     var finalPageConfig: FinalPageContentConfig? = null,
     var serverErrorPageConfig: ServerErrorPageConfig? = null,
+    var emojiConfig: EmojiConfig? = null,
 
     var scenarioConfig: ScenarioConfig? = null,
     var surveyConfig: SurveyConfig? = null,
@@ -43,7 +45,8 @@ data class MainTaskTrackerConfig(
         webCamConfig,
         mainPageConfig,
         finalPageConfig,
-        serverErrorPageConfig
+        serverErrorPageConfig,
+        emojiConfig
     )
 
     companion object {
@@ -116,6 +119,12 @@ data class MainTaskTrackerConfig(
                     fileName.startsWith(SurveyConfig.CONFIG_FILE_PREFIX) -> {
                         mainConfig.surveyConfig = buildBaseConfig(
                             mainConfig.surveyConfig, configFile, SurveyConfig::buildConfig, logger
+                        )
+                    }
+
+                    fileName.startsWith(EmojiConfig.CONFIG_FILE_PREFIX) -> {
+                        mainConfig.emojiConfig = buildBaseConfig(
+                            mainConfig.emojiConfig, configFile, EmojiConfig::buildConfig, logger
                         )
                     }
                 }
