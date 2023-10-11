@@ -1,11 +1,11 @@
 package org.jetbrains.research.tasktracker.tracking.webcam
 
-import org.jetbrains.research.tasktracker.actions.emoji.EmotionType
+import org.jetbrains.research.tasktracker.config.emoji.Emotion
 import org.joda.time.DateTime
 
 data class WebCamData(
     val time: DateTime,
-    val emotionShown: EmotionType,
+    val emotionShown: Emotion,
     /**
      * false – when collected because an active window changed, true – when collected on the minute basis
      */

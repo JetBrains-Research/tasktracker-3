@@ -5,7 +5,7 @@ import org.jetbrains.research.tasktracker.config.content.FinalPageContentConfig
 import org.jetbrains.research.tasktracker.config.content.MainPageContentConfig
 import org.jetbrains.research.tasktracker.config.content.ServerErrorPageConfig
 import org.jetbrains.research.tasktracker.config.content.TaskContentConfig
-import org.jetbrains.research.tasktracker.config.emoji.EmojiConfig
+import org.jetbrains.research.tasktracker.config.emoji.EmotionConfig
 import org.jetbrains.research.tasktracker.config.ide.inspection.InspectionConfig
 import org.jetbrains.research.tasktracker.config.ide.settings.SettingsConfig
 import org.jetbrains.research.tasktracker.config.scenario.ScenarioConfig
@@ -31,7 +31,7 @@ object DefaultConfigsFactory {
         FinalPageContentConfig.CONFIG_FILE_PREFIX,
         ServerErrorPageConfig.CONFIG_FILE_PREFIX,
         SurveyConfig.CONFIG_FILE_PREFIX,
-        EmojiConfig.CONFIG_FILE_PREFIX
+        EmotionConfig.CONFIG_FILE_PREFIX
     )
 
     fun createDefaultConfigs() {

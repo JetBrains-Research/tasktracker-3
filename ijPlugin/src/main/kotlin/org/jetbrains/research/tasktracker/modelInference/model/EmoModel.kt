@@ -43,10 +43,8 @@ class EmoModel : EmoPredictor {
         return EmoPrediction(probabilities)
     }
 
-
     companion object {
         private const val MODEL_PATH = "emotion-ferplus-18.onnx"
         private val INPUT_SHAPE = intArrayOf(1, 1, 64, 64)
     }
-
 }

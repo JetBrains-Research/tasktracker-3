@@ -1,12 +1,12 @@
-emojis:
+emotions:
   - modelPosition: -1
     name: "DEFAULT"
     affirmDescriptions:
       - "New beginnings bring the promise of unexplored opportunities and the chance to create a brighter future."
     adviceDescriptions:
       - "<p>Here, you’ll find advice on handling your current emotions.</p><p>Since you just started, we haven’t tracked your emotions yet.</p><p>Please check back later!</p>"
-    iconName: "defaultIcon.png"
-    modalWindowIconName: "defaultModalIcon.png"
+    iconName: "sun_with_face.png"
+    modalWindowIconName: "modal_sun_with_face.png"
 
   - modelPosition: 0
     name: "NEUTRAL"
@@ -18,8 +18,8 @@ emojis:
       - "<p>Value emotional stability and balance</p><p>as signs of emotional maturity.</p>"
       - "<p>Neutral times can be ideal for setting</p><p>and planning future objectives.</p>"
       - "<p>Use neutral moments for mindfulness.</p><p>Pay attention to your thoughts, sensations,<p>and surroundings without judgment.</p>"
-    iconName: "relievedFaceIcon.png"
-    modalWindowIconName: "seedlingIcon.png"
+    iconName: "relieved_face.png"
+    modalWindowIconName: "modal_seedling.png"
 
   - modelPosition: 1
     name: "HAPPINESS"
@@ -31,8 +31,8 @@ emojis:
       - "<p>Objectively evaluate the situation to</p><p>determine if there is a genuine threat.</p>"
       - "<p>Try to reframe your perception of the situation.</p><p>What is the worst-case scenario,</p><p>and how likely is it to happen?</p>"
       - "<p>Reflect on times when you've overcome similar fears.</p><p>Use these experiences as sources of strength and confidence.</p>"
-    iconName: "smilingFaceWithSmilingEyesIcon.png"
-    modalWindowIconName: "glowingStarIcon.png"
+    iconName: "smiling_face_with_smiling_eyes.png"
+    modalWindowIconName: "modal_glowing_star.png"
 
   - modelPosition: 2
     name: "SURPRISE"
@@ -44,8 +44,8 @@ emojis:
       - "<p>View surprises as adventures and avoid making</p><p>judgments before experiencing them.</p>"
       - "<p>If the surprise is confusing or unsettling,</p><p>ask questions to gain a better understanding.</p>"
       - "<p>In unsettling surprise, take a moment to</p><p>collect your thoughts before reacting.</p>"
-    iconName: "faceWithOpenMouthIcon.png"
-    modalWindowIconName: "wrappedGiftIcon.png"
+    iconName: "face_with_open_mouth.png"
+    modalWindowIconName: "modal_wrapped_gift.png"
 
   - modelPosition: 3
     name: "SADNESS"
@@ -57,8 +57,8 @@ emojis:
       - "<p>Reach out to others for comfort and perspective,</p><p>recognizing that you don't have to face sadness alone.</p>"
       - "<p>Treat yourself with kindness and understanding</p><p>during moments of sadness.</p>"
       - "<p>Set small, achievable goals for the day.</p><p>Accomplishing even minor tasks can boost your mood.</p>"
-    iconName: "pensiveFaceIcon.png"
-    modalWindowIconName: "waterWaveIcon.png"
+    iconName: "pensive_face.png"
+    modalWindowIconName: "modal_water_wave.png"
 
   - modelPosition: 4
     name: "ANGER"
@@ -70,8 +70,8 @@ emojis:
       - "<p>Inhale deeply and exhale slowly to</p><p>calm your anger and regain control.</p>"
       - "<p>Take a deep breath and think about whether</p><p>this situation is worth getting so upset about.</p>"
       - "<p>Take a step back, assess the situation objectively,</p><p>and consider whether there's a different way to interpret it.</p>"
-    iconName: "angryFaceIcon.png"
-    modalWindowIconName: "doveIcon.png"
+    iconName: "angry_face.png"
+    modalWindowIconName: "modal_dove.png"
 
   - modelPosition: 5
     name: "DISGUST"
@@ -83,8 +83,8 @@ emojis:
       - "<p>Identify the specific aspect of the situation</p><p>causing disgust to gain clarity.</p>"
       - "<p>Engage in an activity or focus your attention on</p><p>something else to divert your thoughts away</p><p>from the source of disgust.</p>"
       - "<p>If possible, remove yourself from the source of disgust</p><p>or minimize exposure to it. Creating physical distance can help</p><p>reduce the intensity of the emotion.</p>"
-    iconName: "confoundedFaceIcon.png"
-    modalWindowIconName: "cherryBlossomIcon.png"
+    iconName: "confounded_face.png"
+    modalWindowIconName: "modal_cherry_blossom.png"
 
   - modelPosition: 6
     name: "FEAR"
@@ -96,8 +96,8 @@ emojis:
       - "<p>Objectively evaluate the situation</p><p>to determine if there is a genuine threat.</p>"
       - "<p>Try to reframe your perception of the situation.</p><p>What is the worst-case scenario,</p><p>and how likely is it to happen?</p>"
       - "<p>Reflect on times when you've overcome similar fears.</p><p>Use these experiences as sources of strength and confidence.</p>"
-    iconName: "frowningFaceWithOpenMouthIcon.png"
-    modalWindowIconName: "leafFlutteringIcon.png"
+    iconName: "frowning_face_with_open_mouth.png"
+    modalWindowIconName: "modal_leaf_fluttering.png"
 
   - modelPosition: 7
     name: "CONTEMPT"
@@ -109,5 +109,5 @@ emojis:
       - "<p>Examine your assumptions and gather</p><p>more information before passing judgment.</p>"
       - "<p>If the contemptuous situation becomes too heated,</p><p>it's okay to take a break from it to</p><p>cool off and regain perspective.</p>"
       - "<p>Take a moment to reflect on why you're feeling contempt.</p><p>Understanding the source of your contempt is the first step.</p>"
-    iconName: "expressionlessFaceIcon.png"
-    modalWindowIconName: "foldedHandsIcon.png"
+    iconName: "expressionless_face.png"
+    modalWindowIconName: "modal_folded_hands.png"

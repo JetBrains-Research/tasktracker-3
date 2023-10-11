@@ -15,11 +15,11 @@ class EmojiAction : AnAction(), TooltipDescriptionProvider {
     override fun getActionUpdateThread() = ActionUpdateThread.EDT
 
     override fun update(e: AnActionEvent) {
-        val emoji = GlobalPluginStorage.currentEmotion
-        e.presentation.icon = emoji.icon
+        val emotion = GlobalPluginStorage.currentEmotion
+        e.presentation.icon = emotion.icon
         // To be able to show the description in several lines
         e.presentation.text = ""
-        e.presentation.description = emoji.getRandomAffirmDescription()
+        e.presentation.description = emotion.randomAffirmDescription
         super.update(e)
     }
 }

@@ -6,20 +6,20 @@ import kotlinx.serialization.Transient
 import javax.swing.Icon
 
 @Serializable
-data class Emoji(
+open class Emotion(
     val modelPosition: Int,
     val name: String,
     private val affirmDescriptions: List<String>,
     private val adviceDescriptions: List<String> = emptyList()
 ) {
-    private val iconName: String? = null
-    private val modalWindowIconName: String? = null
+    protected open val iconName: String? = null
+    protected open val modalWindowIconName: String? = null
 
     @Transient
-    val icon: Icon? = iconName?.let { IconLoader.getIcon(it, Emoji::class.java) }
+    val icon: Icon? = iconName?.let { IconLoader.getIcon(it, Emotion::class.java) }
 
     @Transient
-    val modalWindowIcon: Icon? = modalWindowIconName?.let { IconLoader.getIcon(it, Emoji::class.java) }
+    val modalWindowIcon: Icon? = modalWindowIconName?.let { IconLoader.getIcon(it, Emotion::class.java) }
 
     val randomAffirmDescription
         get() = affirmDescriptions.random()

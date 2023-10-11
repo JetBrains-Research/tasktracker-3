@@ -1,11 +1,12 @@
 package org.jetbrains.research.tasktracker.actions.emoji
 
 import org.jetbrains.research.tasktracker.actions.BaseWrapper
-import javax.swing.*
+import org.jetbrains.research.tasktracker.config.emoji.Emotion
+import javax.swing.Icon
 
-class EmojiDialogWrapper(emotion: EmotionType) : BaseWrapper() {
+class EmojiDialogWrapper(emotion: Emotion) : BaseWrapper() {
     override val icon: Icon? = emotion.modalWindowIcon
-    override val text: String = emotion.getRandomAdviceDescription()
+    override val text: String = emotion.randomAdviceDescription
 
     init {
         isResizable = false

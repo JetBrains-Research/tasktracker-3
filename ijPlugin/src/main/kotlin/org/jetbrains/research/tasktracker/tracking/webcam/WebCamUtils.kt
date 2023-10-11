@@ -2,7 +2,7 @@ package org.jetbrains.research.tasktracker.tracking.webcam
 
 import kotlinx.coroutines.runBlocking
 import nu.pattern.OpenCV
-import org.jetbrains.research.tasktracker.actions.emoji.EmotionType
+import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
 import org.jetbrains.research.tasktracker.modelInference.EmoPredictor
 import org.jetbrains.research.tasktracker.tracking.logger.WebCamLogger
@@ -89,7 +89,8 @@ suspend fun Mat.guessEmotionAndLog(emoPredictor: EmoPredictor, webcamLogger: Web
         val photoDate = DateTime.now()
         val prediction = emoPredictor.predict(this)
         val modelScore = prediction.getPrediction()
-        EmotionType.byModelScore(modelScore).also {
+        // TODO
+        TaskTrackerPlugin.mainConfig.emotionConfig!!.emotions.find { it.modelPosition == modelScore }!!.let {
             webcamLogger.log(it, prediction.probabilities, isRegular, photoDate)
             GlobalPluginStorage.currentEmotion = it
         }
