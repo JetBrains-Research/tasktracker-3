@@ -23,8 +23,8 @@ fun collectAllDevices(): List<WebCamInfo> {
 
     getBaseTestSelfiePath().also { File(it).mkdirs() }
     val devices = mutableListOf<WebCamInfo>()
-
-    for (deviceNumber in (MIN_CAMERA_QUANTITY..MAX_CAMERA_QUANTITY)) {
+    var deviceNumber = 0
+    do {
         val camera = VideoCapture(deviceNumber)
 
         val frame = Mat()
@@ -39,10 +39,9 @@ fun collectAllDevices(): List<WebCamInfo> {
                 devices.add(WebCamInfo(deviceNumber, it))
             }
         }
-
+        deviceNumber++
         camera.release()
-    }
-
+    } while (!camera.isOpened || !makePhoto(camera, frame))
     return devices
 }
 
@@ -107,6 +106,4 @@ fun makePhotoAndLogEmotion(emoPredictor: EmoPredictor, webcamLogger: WebCamLogge
     }
 }
 
-const val MIN_CAMERA_QUANTITY = 0
-const val MAX_CAMERA_QUANTITY = 10
 const val ATTEMPTS_TO_TAKE_PHOTO = 10
