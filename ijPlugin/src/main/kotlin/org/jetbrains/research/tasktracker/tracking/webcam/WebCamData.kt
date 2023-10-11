@@ -1,6 +1,6 @@
 package org.jetbrains.research.tasktracker.tracking.webcam
 
-import org.jetbrains.research.tasktracker.config.emoji.Emotion
+import org.jetbrains.research.tasktracker.config.emotion.Emotion
 import org.joda.time.DateTime
 
 data class WebCamData(

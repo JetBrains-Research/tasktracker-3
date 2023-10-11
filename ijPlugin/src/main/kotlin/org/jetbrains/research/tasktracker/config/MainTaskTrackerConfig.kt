@@ -6,7 +6,7 @@ import org.jetbrains.research.tasktracker.config.content.FinalPageContentConfig
 import org.jetbrains.research.tasktracker.config.content.MainPageContentConfig
 import org.jetbrains.research.tasktracker.config.content.ServerErrorPageConfig
 import org.jetbrains.research.tasktracker.config.content.TaskContentConfig
-import org.jetbrains.research.tasktracker.config.emoji.EmotionConfig
+import org.jetbrains.research.tasktracker.config.emotion.EmotionConfig
 import org.jetbrains.research.tasktracker.config.ide.MainIdeConfig
 import org.jetbrains.research.tasktracker.config.scenario.ScenarioConfig
 import org.jetbrains.research.tasktracker.config.survey.SurveyConfig

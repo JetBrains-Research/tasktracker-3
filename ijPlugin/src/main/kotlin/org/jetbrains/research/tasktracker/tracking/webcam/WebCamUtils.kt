@@ -92,7 +92,6 @@ suspend fun Mat.guessEmotionAndLog(emoPredictor: EmoPredictor, webcamLogger: Web
         // TODO
         TaskTrackerPlugin.mainConfig.emotionConfig!!.emotions.find { it.modelPosition == modelScore }!!.let {
             webcamLogger.log(it, prediction.probabilities, isRegular, photoDate)
-            GlobalPluginStorage.currentEmotion = it
         }
     } catch (e: Exception) {
         // do nothing

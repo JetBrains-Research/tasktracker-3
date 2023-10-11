@@ -1,4 +1,4 @@
-package org.jetbrains.research.tasktracker.config.emoji
+package org.jetbrains.research.tasktracker.config.emotion
 
 import kotlinx.serialization.Serializable
 

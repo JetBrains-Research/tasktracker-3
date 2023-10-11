@@ -1,4 +1,4 @@
-package org.jetbrains.research.tasktracker.config.emoji
+package org.jetbrains.research.tasktracker.config.emotion
 
 import kotlinx.serialization.Serializable
 import org.jetbrains.research.tasktracker.config.BaseConfig
@@ -9,7 +9,7 @@ import java.io.File
 
 @Serializable
 data class EmotionConfig(
-    val emotions: List<Emotion>
+    val emotions: List<Emotion>,
 ) : BaseConfig {
     override val configName: String
         get() = "emotion"
