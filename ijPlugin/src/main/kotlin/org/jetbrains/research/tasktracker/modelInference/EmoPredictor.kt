@@ -8,9 +8,11 @@ class EmoPrediction(val probabilities: Map<Int, Double>) {
         private const val THRESHOLD = 0.1
         private val SENSITIVE_RANGE: List<Int> = (7 downTo 2).toList()
     }
+
     fun getPrediction(): Int {
         for (i in SENSITIVE_RANGE) {
-            if (probabilities[i]!! >= THRESHOLD) {
+            val probability = probabilities[i] ?: error("probability by index `$i` should exist")
+            if (probability >= THRESHOLD) {
                 return i
             }
         }
