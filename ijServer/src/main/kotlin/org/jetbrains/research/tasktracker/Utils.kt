@@ -5,6 +5,7 @@ import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
+import io.ktor.server.util.*
 import io.ktor.util.pipeline.*
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -33,13 +34,12 @@ fun initializeIds() {
     currentSurveyIdAtomic = AtomicInteger(0)
 }
 
-
 suspend inline fun PipelineContext<Unit, ApplicationCall>.createLogFile(
     subDirectory: String,
     crossinline insert: (name: String, researchId: Int) -> Unit
 ) {
     val multipartData = call.receiveMultipart()
-    val researchIndex = call.parameters["id"]?.toInt() ?: 0 // TODO
+    val researchIndex = call.parameters.getOrFail<Int>("id")
     multipartData.forEachPart { part ->
         when (part) {
             is PartData.FileItem -> {

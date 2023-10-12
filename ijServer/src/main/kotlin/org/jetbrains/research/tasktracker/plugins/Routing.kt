@@ -7,7 +7,6 @@ import org.jetbrains.research.tasktracker.plugins.requests.getResearchId
 import org.jetbrains.research.tasktracker.plugins.requests.getUserId
 import org.jetbrains.research.tasktracker.plugins.requests.uploadFile
 
-@Suppress("LongMethod")
 fun Application.configureRouting() {
     routing {
         getUserId()

@@ -9,17 +9,19 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.research.tasktracker.createLogFile
 import org.jetbrains.research.tasktracker.database.models.ActivityFileTable
 
-fun Routing.uploadFile(){
-    post("upload-document/{id}") { // TODO rename path
+private const val DEFAULT_FOLDER = "default"
+
+fun Routing.uploadFile() {
+    post("upload-document/{id}") {
         this.createLogFile(
-            call.request.queryParameters["subdir"] ?: "default"
+            call.request.queryParameters["subdir"] ?: DEFAULT_FOLDER
         ) { name, index ->
             run {
                 transaction {
                     ActivityFileTable.insert {
                         it[ActivityFileTable.name] = name
                         it[researchId] = index
-                    } get ActivityFileTable.id
+                    }
                 }
             }
         }
