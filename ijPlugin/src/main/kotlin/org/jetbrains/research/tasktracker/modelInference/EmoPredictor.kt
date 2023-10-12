@@ -1,19 +1,15 @@
 package org.jetbrains.research.tasktracker.modelInference
 
+import org.jetbrains.research.tasktracker.config.emotion.EmotionConfig
 import org.opencv.core.Mat
 
-class EmoPrediction(val probabilities: Map<Int, Double>) {
-
-    companion object {
-        private const val THRESHOLD = 0.1
-        private val SENSITIVE_RANGE: List<Int> = (7 downTo 2).toList()
-    }
+class EmoPrediction(val probabilities: Map<Int, Double>, private val thresholds: Map<Int, Double>) {
 
     fun getPrediction(): Int {
-        for (i in SENSITIVE_RANGE) {
-            val probability = probabilities[i] ?: error("probability by index `$i` should exist")
-            if (probability >= THRESHOLD) {
-                return i
+        for (threshold in thresholds.entries) {
+            val probability = probabilities[threshold.key] ?: error("probability by index `$threshold` should exist")
+            if (probability >= threshold.value) {
+                return threshold.key
             }
         }
 
@@ -22,5 +18,8 @@ class EmoPrediction(val probabilities: Map<Int, Double>) {
 }
 
 interface EmoPredictor {
+
+    val emotionConfig: EmotionConfig
+
     suspend fun predict(image: Mat): EmoPrediction
 }
