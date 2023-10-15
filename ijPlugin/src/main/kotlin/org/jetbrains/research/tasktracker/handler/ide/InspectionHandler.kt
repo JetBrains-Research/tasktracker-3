@@ -18,10 +18,10 @@ class InspectionHandler(override val config: InspectionConfig, override val proj
     override fun setup() {
         // creating a new profile to make changes only in the current project
         val profile = initTaskProfile(project)
-        applyConfig(profile, project)
+        applyConfig(profile)
     }
 
-    fun applyConfig(profile: InspectionProfileImpl, project: Project) {
+    fun applyConfig(profile: InspectionProfileImpl) {
         inspectionDisposable = inspectionDisposable ?: Disposer.newDisposable()
         with(profile) {
             when (config.mode) {
