@@ -1,6 +1,7 @@
 package org.jetbrains.research.tasktracker.handler.init
 
 import com.intellij.openapi.project.Project
+import org.jetbrains.research.tasktracker.config.BaseProjectConfig
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
 import org.jetbrains.research.tasktracker.handler.BaseHandler
 
@@ -23,8 +24,14 @@ class InitializationHandler(private val mainConfig: MainTaskTrackerConfig) {
         destroyHandlers()
 
         handlers.addAll(
-            mainConfig.getAllConfigs().mapNotNull { it?.buildHandler() }
+            mainConfig.getAllConfigs().mapNotNull {
+                when (it) {
+                    is BaseProjectConfig -> it.buildHandler(project)
+                    is BaseHandler -> it.buildHandler()
+                    else -> null
+                }
+            }
         )
-        handlers.forEach { it.setup(project) }
+        handlers.forEach { it.setup() }
     }
 }

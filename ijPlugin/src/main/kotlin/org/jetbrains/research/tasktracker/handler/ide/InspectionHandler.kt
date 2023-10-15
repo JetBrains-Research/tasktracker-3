@@ -9,13 +9,13 @@ import com.intellij.openapi.util.Disposer
 import com.intellij.profile.codeInspection.ProjectInspectionProfileManager
 import org.jetbrains.research.tasktracker.config.ide.inspection.InspectionConfig
 import org.jetbrains.research.tasktracker.config.ide.inspection.InspectionMode
-import org.jetbrains.research.tasktracker.handler.BaseHandler
+import org.jetbrains.research.tasktracker.handler.BaseProjectHandler
 
-class InspectionHandler(override val config: InspectionConfig) : BaseHandler {
+class InspectionHandler(override val config: InspectionConfig, override val project: Project) : BaseProjectHandler {
     private var inspectionDisposable: Disposable? = null
     private val logger: Logger = Logger.getInstance(InspectionHandler::class.java)
 
-    override fun setup(project: Project) {
+    override fun setup() {
         // creating a new profile to make changes only in the current project
         val profile = initTaskProfile(project)
         applyConfig(profile, project)
