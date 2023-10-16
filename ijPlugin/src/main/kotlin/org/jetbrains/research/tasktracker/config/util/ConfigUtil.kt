@@ -5,14 +5,11 @@ import org.jetbrains.research.tasktracker.config.BaseConfig
 import java.io.File
 
 inline fun <reified T : BaseConfig> buildBaseConfig(
-    config: T?,
     configFile: File,
     configBuilder: (File) -> T,
     logger: Logger
 ): T {
-    require(config == null) {
-        "The ${config?.configName} config was already parsed"
-    }
-    logger.info("Building ${config?.configName} config...")
-    return configBuilder(configFile)
+    val config = configBuilder(configFile)
+    logger.info("config ${config.configName} has been built...")
+    return config
 }

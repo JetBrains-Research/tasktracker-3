@@ -26,7 +26,6 @@ class MainIdeConfig : BaseConfig {
                 when {
                     configFile.name.startsWith(InspectionConfig.CONFIG_FILE_PREFIX) -> {
                         mainIdeConfig.inspectionConfig = buildBaseConfig(
-                            mainIdeConfig.inspectionConfig,
                             configFile,
                             InspectionConfig::buildConfig,
                             logger
@@ -35,7 +34,6 @@ class MainIdeConfig : BaseConfig {
 
                     configFile.name.startsWith(SettingsConfig.CONFIG_FILE_PREFIX) -> {
                         mainIdeConfig.settingsConfig = buildBaseConfig(
-                            mainIdeConfig.settingsConfig,
                             configFile,
                             SettingsConfig::buildConfig,
                             logger

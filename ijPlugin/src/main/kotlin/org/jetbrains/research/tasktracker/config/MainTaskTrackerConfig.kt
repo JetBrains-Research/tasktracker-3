@@ -67,55 +67,55 @@ data class MainTaskTrackerConfig(
                 when {
                     fileName.startsWith(CodeTrackingConfig.CONFIG_FILE_PREFIX) -> {
                         mainConfig.codeTrackingConfig = buildBaseConfig(
-                            mainConfig.codeTrackingConfig, configFile, CodeTrackingConfig::buildConfig, logger
+                            configFile, CodeTrackingConfig::buildConfig, logger
                         )
                     }
 
                     fileName.startsWith(ActivityTrackingConfig.CONFIG_FILE_PREFIX) -> {
                         mainConfig.activityTrackingConfig = buildBaseConfig(
-                            mainConfig.activityTrackingConfig, configFile, ActivityTrackingConfig::buildConfig, logger
+                            configFile, ActivityTrackingConfig::buildConfig, logger
                         )
                     }
 
                     fileName.startsWith(TaskContentConfig.CONFIG_FILE_PREFIX) -> {
                         mainConfig.taskContentConfig = buildBaseConfig(
-                            mainConfig.taskContentConfig, configFile, TaskContentConfig::buildConfig, logger
+                            configFile, TaskContentConfig::buildConfig, logger
                         )
                     }
 
                     fileName.startsWith(ScenarioConfig.CONFIG_FILE_PREFIX) -> {
                         mainConfig.scenarioConfig = buildBaseConfig(
-                            mainConfig.scenarioConfig, configFile, ScenarioConfig::buildConfig, logger
+                            configFile, ScenarioConfig::buildConfig, logger
                         )
                     }
 
                     fileName.startsWith(WebCamTrackingConfig.CONFIG_FILE_PREFIX) -> {
                         mainConfig.webCamConfig = buildBaseConfig(
-                            mainConfig.webCamConfig, configFile, WebCamTrackingConfig::buildConfig, logger
+                            configFile, WebCamTrackingConfig::buildConfig, logger
                         )
                     }
 
                     fileName.startsWith(MainPageContentConfig.CONFIG_FILE_PREFIX) -> {
                         mainConfig.mainPageConfig = buildBaseConfig(
-                            mainConfig.mainPageConfig, configFile, MainPageContentConfig::buildConfig, logger
+                            configFile, MainPageContentConfig::buildConfig, logger
                         )
                     }
 
                     fileName.startsWith(FinalPageContentConfig.CONFIG_FILE_PREFIX) -> {
                         mainConfig.finalPageConfig = buildBaseConfig(
-                            mainConfig.finalPageConfig, configFile, FinalPageContentConfig::buildConfig, logger
+                            configFile, FinalPageContentConfig::buildConfig, logger
                         )
                     }
 
                     fileName.startsWith(ServerErrorPageConfig.CONFIG_FILE_PREFIX) -> {
                         mainConfig.serverErrorPageConfig = buildBaseConfig(
-                            mainConfig.serverErrorPageConfig, configFile, ServerErrorPageConfig::buildConfig, logger
+                            configFile, ServerErrorPageConfig::buildConfig, logger
                         )
                     }
 
                     fileName.startsWith(SurveyConfig.CONFIG_FILE_PREFIX) -> {
                         mainConfig.surveyConfig = buildBaseConfig(
-                            mainConfig.surveyConfig, configFile, SurveyConfig::buildConfig, logger
+                            configFile, SurveyConfig::buildConfig, logger
                         )
                     }
                 }
