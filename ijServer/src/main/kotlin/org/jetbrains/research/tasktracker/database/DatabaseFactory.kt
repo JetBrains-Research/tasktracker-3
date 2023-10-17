@@ -5,8 +5,7 @@ import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.research.tasktracker.database.models.ActivityFileTable
 import org.jetbrains.research.tasktracker.database.models.DocumentFileTable
-import org.jetbrains.research.tasktracker.database.models.ResearchTable
-import org.jetbrains.research.tasktracker.initializeIds
+import org.jetbrains.research.tasktracker.database.models.Researches
 
 object DatabaseFactory {
     fun init() {
@@ -19,9 +18,8 @@ object DatabaseFactory {
         transaction(database) {
             SchemaUtils.create(ActivityFileTable)
             SchemaUtils.create(DocumentFileTable)
-            SchemaUtils.create(ResearchTable)
+            SchemaUtils.create(Researches)
             commit()
-            initializeIds()
         }
     }
 }

@@ -7,32 +7,11 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.util.*
 import io.ktor.util.pipeline.*
-import org.jetbrains.exposed.sql.select
-import org.jetbrains.exposed.sql.transactions.transaction
-import org.jetbrains.research.tasktracker.database.models.ResearchTable
+import org.jetbrains.research.tasktracker.database.models.Research
 import java.io.File
-import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.Paths
-import java.util.concurrent.atomic.AtomicInteger
-
-private lateinit var currentUserIdAtomic: AtomicInteger
-private lateinit var currentResearchIdAtomic: AtomicInteger
-private lateinit var currentSurveyIdAtomic: AtomicInteger
-
-val currentUserId: Int
-    get() = currentResearchIdAtomic.getAndIncrement()
-
-val currentResearchId: Int
-    get() = currentResearchIdAtomic.getAndIncrement()
-
-val currentSurveyId: Int
-    get() = currentResearchIdAtomic.getAndIncrement()
-
-fun initializeIds() {
-    currentUserIdAtomic = AtomicInteger(ResearchTable.maxUserId() + 1)
-    currentResearchIdAtomic = AtomicInteger(ResearchTable.maxId() + 1)
-    currentSurveyIdAtomic = AtomicInteger(0)
-}
+import kotlin.io.path.createDirectories
 
 suspend inline fun PipelineContext<Unit, ApplicationCall>.createLogFile(
     subDirectory: String,
@@ -41,26 +20,26 @@ suspend inline fun PipelineContext<Unit, ApplicationCall>.createLogFile(
     val multipartData = call.receiveMultipart()
     val researchIndex = call.parameters.getOrFail<Int>("id")
     multipartData.forEachPart { part ->
-        when (part) {
-            is PartData.FileItem -> {
-                val fileName = part.originalFileName as String
-                val fileBytes = part.streamProvider().readBytes()
-                insert(fileName, researchIndex)
-                getFile(researchIndex, fileName, subDirectory).writeBytes(fileBytes)
-            }
-
-            else -> {}
+        if (part is PartData.FileItem) {
+            val fileName = part.originalFileName as String
+            val fileBytes = part.streamProvider().readBytes()
+            insert(fileName, researchIndex)
+            val directoryPath = createDirectoryPath(researchIndex, subDirectory)
+            getAndCreateFile(directoryPath, fileName).writeBytes(fileBytes)
         }
         part.dispose()
     }
     call.respond(HttpStatusCode.Accepted)
 }
 
-fun getFile(researchId: Int, filename: String, subDirectory: String): File {
-    val userId = transaction { ResearchTable.select { ResearchTable.id.eq(researchId) }.first()[ResearchTable.userId] }
-    val directoryPath = "files/$userId/$researchId/$subDirectory"
-    Files.createDirectories(Paths.get(directoryPath))
-    return File("$directoryPath/$filename").also {
-        it.createNewFile()
-    }
+fun createDirectoryPath(researchId: Int, subDirectory: String): Path {
+    val userId = Research.findById(researchId)?.userId
+        ?: error("There are no research with id `$researchId`")
+    val directoryPath = Paths.get("files/$researchId/$userId/$subDirectory")
+    directoryPath.createDirectories()
+    return directoryPath
+}
+
+fun getAndCreateFile(root: Path, filename: String): File {
+    return root.resolve(filename).toFile().also { it.createNewFile() }
 }
