@@ -3,7 +3,6 @@ package org.jetbrains.research.tasktracker.tracking.webcam
 import com.intellij.openapi.diagnostic.Logger
 import kotlinx.coroutines.runBlocking
 import nu.pattern.OpenCV
-import org.jetbrains.research.tasktracker.actions.emoji.EmotionType
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
 import org.jetbrains.research.tasktracker.modelInference.EmoPredictor
 import org.jetbrains.research.tasktracker.tracking.logger.WebCamLogger
@@ -89,10 +88,9 @@ suspend fun Mat.guessEmotionAndLog(emoPredictor: EmoPredictor, webcamLogger: Web
         val photoDate = DateTime.now()
         val prediction = emoPredictor.predict(this)
         val modelScore = prediction.getPrediction()
-        EmotionType.byModelScore(modelScore).also {
+        emoPredictor.emotionConfig.getEmotion(modelScore)?.let {
             webcamLogger.log(it, prediction.probabilities, isRegular, photoDate)
-            GlobalPluginStorage.currentEmotion = it
-        }
+        } ?: error("can't find emotion with model position `$modelScore`")
     } catch (e: IllegalStateException) {
         WebCamUtils.logger.error(e)
     }

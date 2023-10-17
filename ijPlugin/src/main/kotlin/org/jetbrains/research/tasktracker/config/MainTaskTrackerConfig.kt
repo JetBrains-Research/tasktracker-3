@@ -6,6 +6,7 @@ import org.jetbrains.research.tasktracker.config.content.FinalPageContentConfig
 import org.jetbrains.research.tasktracker.config.content.MainPageContentConfig
 import org.jetbrains.research.tasktracker.config.content.ServerErrorPageConfig
 import org.jetbrains.research.tasktracker.config.content.TaskContentConfig
+import org.jetbrains.research.tasktracker.config.emotion.EmotionConfig
 import org.jetbrains.research.tasktracker.config.ide.MainIdeConfig
 import org.jetbrains.research.tasktracker.config.scenario.ScenarioConfig
 import org.jetbrains.research.tasktracker.config.survey.SurveyConfig
@@ -30,6 +31,7 @@ data class MainTaskTrackerConfig(
     var mainPageConfig: MainPageContentConfig? = null,
     var finalPageConfig: FinalPageContentConfig? = null,
     var serverErrorPageConfig: ServerErrorPageConfig? = null,
+    var emotionConfig: EmotionConfig? = null,
 
     var scenarioConfig: ScenarioConfig? = null,
     var surveyConfig: SurveyConfig? = null,
@@ -43,7 +45,8 @@ data class MainTaskTrackerConfig(
         webCamConfig,
         mainPageConfig,
         finalPageConfig,
-        serverErrorPageConfig
+        serverErrorPageConfig,
+        emotionConfig
     )
 
     companion object {
@@ -57,6 +60,7 @@ data class MainTaskTrackerConfig(
         private fun File.isConfigFile() = this.extension == "yaml"
 
         // TODO: add a builder for server-based properties
+        @Suppress("LongMethod")
         fun buildConfig(pluginProperties: PluginProperties, configRoot: File): MainTaskTrackerConfig {
             val mainConfig = MainTaskTrackerConfig(pluginProperties)
 
@@ -116,6 +120,12 @@ data class MainTaskTrackerConfig(
                     fileName.startsWith(SurveyConfig.CONFIG_FILE_PREFIX) -> {
                         mainConfig.surveyConfig = buildBaseConfig(
                             mainConfig.surveyConfig, configFile, SurveyConfig::buildConfig, logger
+                        )
+                    }
+
+                    fileName.startsWith(EmotionConfig.CONFIG_FILE_PREFIX) -> {
+                        mainConfig.emotionConfig = buildBaseConfig(
+                            mainConfig.emotionConfig, configFile, EmotionConfig::buildConfig, logger
                         )
                     }
                 }

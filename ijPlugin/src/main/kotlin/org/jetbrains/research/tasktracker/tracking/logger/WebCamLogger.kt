@@ -1,7 +1,7 @@
 package org.jetbrains.research.tasktracker.tracking.logger
 
 import com.intellij.openapi.project.Project
-import org.jetbrains.research.tasktracker.actions.emoji.EmotionType
+import org.jetbrains.research.tasktracker.config.emotion.Emotion
 import org.jetbrains.research.tasktracker.tracking.webcam.WebCamData
 import org.joda.time.DateTime
 
@@ -11,7 +11,7 @@ class WebCamLogger(val project: Project) : BaseLogger() {
         get() = WebcamLoggedData
 
     fun log(
-        emotion: EmotionType,
+        emotion: Emotion,
         scores: Map<Int, Double>,
         isRegular: Boolean,
         date: DateTime = DateTime.now()

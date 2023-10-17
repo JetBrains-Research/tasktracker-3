@@ -22,6 +22,7 @@ import io.ktor.http.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.config.content.task.base.Task
 import org.jetbrains.research.tasktracker.config.content.task.base.TaskWithFiles
 import org.jetbrains.research.tasktracker.modelInference.model.EmoModel
@@ -113,7 +114,9 @@ class MainPluginPanelFactory : ToolWindowFactory {
         trackers.clear()
 
         // TODO: make better shared loggers
-        GlobalPluginStorage.emoPredictor = EmoModel()
+        TaskTrackerPlugin.mainConfig.emotionConfig?.let {
+            GlobalPluginStorage.emoPredictor = EmoModel(it)
+        } ?: error("emotion config must exist by this moment")
         val webCamTracker = WebCamTracker(project, GlobalPluginStorage.emoPredictor!!)
         trackers.addAll(
             listOf(
