@@ -9,16 +9,16 @@ import com.intellij.openapi.project.Project
 import org.jetbrains.research.tasktracker.config.ide.settings.SettingMode
 import org.jetbrains.research.tasktracker.config.ide.settings.SettingsConfig
 import org.jetbrains.research.tasktracker.config.ide.settings.Theme
-import org.jetbrains.research.tasktracker.handler.BaseHandler
+import org.jetbrains.research.tasktracker.handler.BaseProjectHandler
 import javax.swing.UIManager.LookAndFeelInfo
 
-class SettingsHandler(override val config: SettingsConfig) : BaseHandler {
+class SettingsHandler(override val config: SettingsConfig, override val project: Project) : BaseProjectHandler {
     private val settings: CodeInsightSettings = CodeInsightSettings.getInstance()
     private val defaultUserCompletion: Boolean = settings.AUTO_POPUP_COMPLETION_LOOKUP
     private val lafManager = LafManager.getInstance()
     private val defaultUserLookAndFeel: LookAndFeelInfo? = LafManager.getInstance().currentLookAndFeel
 
-    override fun setup(project: Project) {
+    override fun setup() {
         setupCodeCompletion()
         setupZenMode(project)
         setupTheme()

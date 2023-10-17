@@ -1,21 +1,22 @@
 package org.jetbrains.research.tasktracker.config.ide
 
 import com.intellij.openapi.diagnostic.Logger
-import org.jetbrains.research.tasktracker.config.BaseConfig
+import com.intellij.openapi.project.Project
+import org.jetbrains.research.tasktracker.config.BaseProjectConfig
 import org.jetbrains.research.tasktracker.config.ide.inspection.InspectionConfig
 import org.jetbrains.research.tasktracker.config.ide.settings.SettingsConfig
 import org.jetbrains.research.tasktracker.config.util.buildBaseConfig
-import org.jetbrains.research.tasktracker.handler.BaseHandler
+import org.jetbrains.research.tasktracker.handler.BaseProjectHandler
 import org.jetbrains.research.tasktracker.handler.ide.IdeHandler
 import java.io.File
 
-class MainIdeConfig : BaseConfig {
+class MainIdeConfig : BaseProjectConfig {
     var inspectionConfig: InspectionConfig? = null
     var settingsConfig: SettingsConfig? = null
     override val configName: String
         get() = "main_ide"
 
-    override fun buildHandler(): BaseHandler = IdeHandler(this)
+    override fun buildHandler(project: Project): BaseProjectHandler = IdeHandler(this, project)
 
     companion object {
         private val logger = Logger.getInstance(MainIdeConfig::class.java)

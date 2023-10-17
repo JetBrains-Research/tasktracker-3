@@ -88,7 +88,7 @@ class InspectionConfigTest : LightPlatformTestCase() {
 
     private fun applyConfig(configFile: File, profile: InspectionProfileImpl) {
         val inspectionConfig = InspectionConfig.buildConfig(configFile)
-        inspectionConfig.buildHandler().applyConfig(profile, project)
+        inspectionConfig.buildHandler(project).applyConfig(profile)
     }
 
     private fun loadConfig(name: String): File {
