@@ -11,16 +11,14 @@ fun resizeImage(image: Mat, pixels: Double = 64.0): Mat {
     return resizedImage
 }
 
-fun prepareImage(image: Mat): Mat {
-    val gImage = grayImage(image)
-    val resImage = resizeImage(gImage)
-
-    return resImage
+fun Mat.prepare(): Mat {
+    val gImage = this.toGrayImage()
+    return resizeImage(gImage)
 }
 
-fun grayImage(image: Mat): Mat {
+fun Mat.toGrayImage(): Mat {
     val grayImage = Mat()
-    Imgproc.cvtColor(image, grayImage, Imgproc.COLOR_RGB2GRAY)
+    Imgproc.cvtColor(this, grayImage, Imgproc.COLOR_RGB2GRAY)
 
     return grayImage
 }

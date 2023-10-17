@@ -1,8 +1,8 @@
 package org.jetbrains.research.tasktracker.tracking.webcam
 
+import com.intellij.openapi.diagnostic.Logger
 import kotlinx.coroutines.runBlocking
 import nu.pattern.OpenCV
-import org.jetbrains.research.tasktracker.actions.emoji.EmotionType
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
 import org.jetbrains.research.tasktracker.modelInference.EmoPredictor
 import org.jetbrains.research.tasktracker.tracking.logger.WebCamLogger
@@ -13,21 +13,24 @@ import org.opencv.imgcodecs.Imgcodecs
 import org.opencv.videoio.VideoCapture
 import java.io.File
 
-@Suppress("TooGenericExceptionCaught", "SwallowedException", "MagicNumber")
+object WebCamUtils {
+    val logger: Logger = Logger.getInstance(WebCamUtils::class.java)
+}
+
 fun collectAllDevices(): List<WebCamInfo> {
     OpenCV.loadShared()
 
     getBaseTestSelfiePath().also { File(it).mkdirs() }
     val devices = mutableListOf<WebCamInfo>()
-
-    for (deviceNumber in (0..10)) {
+    var deviceNumber = 0
+    do {
         val camera = VideoCapture(deviceNumber)
 
         val frame = Mat()
 
         if (!camera.isOpened || !makePhoto(camera, frame)) {
             camera.release()
-            continue
+            break
         }
 
         getTestSelfiePath(deviceNumber).also {
@@ -35,10 +38,9 @@ fun collectAllDevices(): List<WebCamInfo> {
                 devices.add(WebCamInfo(deviceNumber, it))
             }
         }
-
+        deviceNumber++
         camera.release()
-    }
-
+    } while (!camera.isOpened || !makePhoto(camera, frame))
     return devices
 }
 
@@ -66,15 +68,13 @@ internal fun makePhoto(deviceNumber: Int, mat: Mat): Boolean {
     return makePhoto(camera, mat).also { camera.release() }
 }
 
-@Suppress("MagicNumber", "UnusedPrivateMember")
 internal fun makePhoto(camera: VideoCapture, mat: Mat): Boolean {
-    for (i in 0..10) {
+    repeat(ATTEMPTS_TO_TAKE_PHOTO) {
         camera.read(mat)
     }
     return camera.grab()
 }
 
-@Suppress("TooGenericExceptionCaught", "SwallowedException")
 fun Mat.saveSelfie(path: String): Boolean {
     return Imgcodecs.imwrite(path, this)
 }
@@ -83,18 +83,16 @@ private fun getBaseTestSelfiePath() = "${MainTaskTrackerConfig.pluginFolderPath}
 
 private fun getTestSelfiePath(deviceNumber: Int) = "${getBaseTestSelfiePath()}/selfie_$deviceNumber.jpg"
 
-@Suppress("TooGenericExceptionCaught", "SwallowedException")
 suspend fun Mat.guessEmotionAndLog(emoPredictor: EmoPredictor, webcamLogger: WebCamLogger, isRegular: Boolean = true) {
     try {
         val photoDate = DateTime.now()
         val prediction = emoPredictor.predict(this)
         val modelScore = prediction.getPrediction()
-        EmotionType.byModelScore(modelScore).also {
+        emoPredictor.emotionConfig.getEmotion(modelScore)?.let {
             webcamLogger.log(it, prediction.probabilities, isRegular, photoDate)
-            GlobalPluginStorage.currentEmotion = it
-        }
-    } catch (e: Exception) {
-        // do nothing
+        } ?: error("can't find emotion with model position `$modelScore`")
+    } catch (e: IllegalStateException) {
+        WebCamUtils.logger.error(e)
     }
 }
 
@@ -105,3 +103,5 @@ fun makePhotoAndLogEmotion(emoPredictor: EmoPredictor, webcamLogger: WebCamLogge
         }
     }
 }
+
+const val ATTEMPTS_TO_TAKE_PHOTO = 10

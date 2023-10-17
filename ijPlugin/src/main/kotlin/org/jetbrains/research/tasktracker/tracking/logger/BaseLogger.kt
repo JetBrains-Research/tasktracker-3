@@ -53,8 +53,7 @@ abstract class BaseLogger {
     }
 
     private fun createLogFile(fileName: String): File {
-        val logFileName = "$fileName.csv"
-        val logFile = File("${MainTaskTrackerConfig.logFilesFolder}/$logFileName")
+        val logFile = File("${MainTaskTrackerConfig.logFilesFolder}/$fileName")
         FileUtil.createIfDoesntExist(logFile)
         return logFile
     }

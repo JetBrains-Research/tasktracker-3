@@ -1,26 +1,46 @@
 [![Gradle Build](https://github.com/JetBrains-Research/tasktracker-3/actions/workflows/build.yml/badge.svg)](https://github.com/JetBrains-Research/tasktracker-3/actions/workflows/build.yml)
 
-# JetBrains Hackathon 2023
+# TaskTracker 3.0
 
-> **Warning**
->
-> The current version of the plugin was developed during the hackathon and can be unstable. 
-> We tested the plugin with IntelliJ IDEA 2022.2.4. 
+The main goal of this project is to create a plugin for intellij-based IDEs 
+to be able to collect more rare and usually not accessible data like change logs, 
+code quality and other. This will allow us to conduct better studies, produce more precise 
+ux-studies and potentially speed up user-testing for experimental features. 
 
-CodeMood – the revolutionary plugin that understands and affirms your emotions while you code!
 
-The demo is available on [YouTube](https://youtu.be/C_uL0dI5aW4).
+We want to develop a plugin with the following functionality:
 
-To install the plugin, download the `zip` archive by the following [link](https://drive.google.com/drive/folders/1lvUvGNJgW26vTn6QOJPiSj53VP1E2HLG?usp=sharing) and install thought the plugins section.
-If you have any difficulties, follow the official [documentation](https://www.jetbrains.com/help/idea/managing-plugins.html#install_plugin_from_disk).
+- [ ] It will be able to ask small, singular, questions to user in popup window;
+- [ ] It will be able to suggest users to participate in two types of studies:
+  - [ ] “Questionnaire” study – which will open questionnaire in side window of IDE& Questionnaire 
+   in this case could be any web content, for example diary record or some attention experiment.
+  - [ ] “Task” study – which will open file inside ide with some task and will record the process of task solution
+  - [ ]“Replay” study – which will play a given set of actions in the IDE and users will be asked a few questions about it.
+- [ ] It will be able to configure IDE in arbitrary pre-defined way;
+- [ ] It will be able to suggest this task based on IDE logs – on given time or after a particular event.
+- [ ] Send all resulting data to the remote server.
 
-The plugin will ask you permission to record the coding session using one of available video devices.
-_We don't send the photos to a server and handle them locally._
+Here we want to notice that the plugin will not collect any of the user data outside given tasks.
 
-You can click on the plugin icon to pop up a dashboard with an emoticon reflecting the programmer's current emotion:
+The previous versions of the plugin:
 
-![Emotions pop up](./readme/emotions.gif)
+- The first version - [repository](https://github.com/JetBrains-Research/task-tracker-plugin)
+- The second version - TODO: add a link
 
-In the end of the coding session you might fill out a short survey about your feelings. 
+## Getting started
 
-**Download CodeMood today and start coding with emotions in harmony.**
+### Developer mode
+
+Just clone the repository and build the project:
+
+```text
+./gradlew build
+```
+
+Next, to run the plugin, run the `runIde` intellij task:
+
+```text
+./gradlew runIde
+```
+
+You can use the run IDE plugin configuration: [configuration file](./.run/Run%20IDE%20with%20Plugin.run.xml).
