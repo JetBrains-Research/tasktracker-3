@@ -4,5 +4,5 @@ import org.jetbrains.exposed.dao.id.IntIdTable
 
 object DocumentFileTable : IntIdTable() {
     val name = text("name")
-    val researchId = integer("research_id").references(ResearchTable.id)
+    val researchId = integer("research_id").references(Researches.id)
 }
