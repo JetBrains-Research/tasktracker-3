@@ -1,7 +1,8 @@
 package org.jetbrains.research.tasktracker.config.ide.settings
 
+import com.intellij.openapi.project.Project
 import kotlinx.serialization.Serializable
-import org.jetbrains.research.tasktracker.config.BaseConfig
+import org.jetbrains.research.tasktracker.config.BaseProjectConfig
 import org.jetbrains.research.tasktracker.config.YamlConfigLoadStrategy
 import org.jetbrains.research.tasktracker.handler.ide.SettingsHandler
 import java.io.File
@@ -11,12 +12,12 @@ data class SettingsConfig(
     val enableCodeCompletion: SettingMode,
     val enableZenMode: SettingMode,
     val theme: Theme
-) : BaseConfig {
+) : BaseProjectConfig {
 
     override val configName: String
         get() = "settings"
 
-    override fun buildHandler() = SettingsHandler(this)
+    override fun buildHandler(project: Project) = SettingsHandler(this, project)
 
     companion object {
         const val CONFIG_FILE_PREFIX: String = "settings"

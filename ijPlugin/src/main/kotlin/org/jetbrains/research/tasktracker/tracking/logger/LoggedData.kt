@@ -4,6 +4,10 @@ import com.intellij.openapi.editor.Document
 import com.intellij.openapi.fileEditor.FileDocumentManager
 import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.tracking.activity.ActivityEvent
+import org.jetbrains.research.tasktracker.tracking.fileEditor.FileEditorData
+import org.jetbrains.research.tasktracker.tracking.toolWindow.ToolWindowData
+import org.jetbrains.research.tasktracker.tracking.webcam.WebCamData
+import org.jetbrains.research.tasktracker.util.survey.SurveyData
 import org.joda.time.DateTime
 
 data class LoggedDataGetter<T, S>(val header: String, val getData: (T) -> S)
@@ -38,5 +42,41 @@ object ActivityLoggedData : LoggedData<ActivityEvent, String?>() {
         LoggedDataGetter("info") { it.info },
         LoggedDataGetter("selected-text") { it.selectedText },
         LoggedDataGetter("id") { it.id }
+    )
+}
+
+object WebcamLoggedData : LoggedData<WebCamData, String?>() {
+    override val loggedDataGetters: List<LoggedDataGetter<WebCamData, String?>> = arrayListOf(
+        LoggedDataGetter("date") { it.time.toString() },
+        LoggedDataGetter("emotion_shown") { it.emotionShown.name },
+        LoggedDataGetter("is_regular") { it.isRegular.toString() },
+        LoggedDataGetter("scores") { it.scores.toString() },
+    )
+}
+
+object ToolWindowLoggedData : LoggedData<ToolWindowData, String?>() {
+    override val loggedDataGetters: List<LoggedDataGetter<ToolWindowData, String?>> = arrayListOf(
+        LoggedDataGetter("date") { it.time.toString() },
+        LoggedDataGetter("action") { it.action.name },
+        LoggedDataGetter("active_window") { it.activeWindow },
+    )
+}
+
+object SurveyLoggedData : LoggedData<SurveyData, String?>() {
+    override val loggedDataGetters: List<LoggedDataGetter<SurveyData, String?>> = arrayListOf(
+        LoggedDataGetter("date") { it.time.toString() },
+        LoggedDataGetter("question_id") { it.questionId.toString() },
+        LoggedDataGetter("question") { it.question },
+        LoggedDataGetter("option") { it.option ?: "" },
+        LoggedDataGetter("answer") { it.answer },
+    )
+}
+
+object FileEditorLoggedData : LoggedData<FileEditorData, String?>() {
+    override val loggedDataGetters: List<LoggedDataGetter<FileEditorData, String?>> = arrayListOf(
+        LoggedDataGetter("date") { it.time.toString() },
+        LoggedDataGetter("action") { it.fileEditorAction.name },
+        LoggedDataGetter("old_file") { it.oldFileName },
+        LoggedDataGetter("new_file") { it.newFileName },
     )
 }

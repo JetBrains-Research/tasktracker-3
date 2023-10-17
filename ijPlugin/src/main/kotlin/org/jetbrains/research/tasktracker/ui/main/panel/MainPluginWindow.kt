@@ -3,20 +3,15 @@ package org.jetbrains.research.tasktracker.ui.main.panel
 import com.intellij.ide.ui.LafManagerListener
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.util.Disposer
-import com.intellij.ui.jcef.JBCefBrowser
-import com.intellij.ui.jcef.JBCefBrowserBase
-import com.intellij.ui.jcef.JBCefClient
-import com.intellij.ui.jcef.JBCefJSQuery
-import com.intellij.ui.jcef.JsExpressionResult
-import com.intellij.ui.jcef.executeJavaScriptAsync
+import com.intellij.ui.jcef.*
 import org.cef.browser.CefBrowser
 import org.cef.browser.CefFrame
 import org.cef.handler.CefLoadHandlerAdapter
 import org.intellij.lang.annotations.Language
 import org.jetbrains.concurrency.Promise
 import org.jetbrains.research.tasktracker.ui.main.panel.models.Theme
-import org.jetbrains.research.tasktracker.ui.main.panel.template.ErrorPageTemplate
-import org.jetbrains.research.tasktracker.ui.main.panel.template.HtmlTemplateBase
+import org.jetbrains.research.tasktracker.ui.main.panel.template.DefaultErrorPage
+import org.jetbrains.research.tasktracker.ui.main.panel.template.HtmlTemplate
 import org.jetbrains.research.tasktracker.ui.main.panel.template.MainPageTemplate
 import javax.swing.JComponent
 
@@ -24,7 +19,7 @@ class MainPluginWindow(service: MainWindowService) {
     private val windowBrowser: JBCefBrowser = JBCefBrowser()
 
     private var currentTheme = Theme.currentIdeTheme()
-    private var currentTemplate: HtmlTemplateBase = MainPageTemplate
+    private var currentTemplate: HtmlTemplate = MainPageTemplate.loadCurrentTemplate()
     private val handlers = mutableListOf<CefLoadHandlerAdapter>()
     val jComponent: JComponent
         get() = windowBrowser.component
@@ -32,7 +27,7 @@ class MainPluginWindow(service: MainWindowService) {
     init {
         windowBrowser.jbCefClient.setProperty(JBCefClient.Properties.JS_QUERY_POOL_SIZE, JS_QUERY_POOL_SIZE)
         windowBrowser.setErrorPage { errorCode, errorText, failedUrl ->
-            ErrorPageTemplate.pageContent(theme = currentTheme, errorCode.code.toString(), errorText, failedUrl)
+            DefaultErrorPage(errorCode.code.toString(), errorText, failedUrl).htmlContent
         }
         loadHtmlTemplate(currentTemplate)
         val app = ApplicationManager.getApplication().messageBus
@@ -48,8 +43,15 @@ class MainPluginWindow(service: MainWindowService) {
         Disposer.register(service, windowBrowser)
     }
 
+    private fun getJsElementByIdCommand(elementId: String) = "document.getElementById('$elementId')"
+
     fun getElementValue(elementId: String): Promise<JsExpressionResult> =
-        windowBrowser.executeJavaScriptAsync("document.getElementById('$elementId').value")
+        windowBrowser.executeJavaScriptAsync("${getJsElementByIdCommand(elementId)}.value")
+
+    fun checkIfRadioButtonChecked(elementId: String): Promise<JsExpressionResult> =
+        windowBrowser.executeJavaScriptAsync("${getJsElementByIdCommand(elementId)}.checked")
+
+    fun executeJavaScriptAsync(code: String) = windowBrowser.executeJavaScriptAsync(code)
 
     fun executeJavascript(
         @Language("JavaScript") codeBeforeInject: String = "",
@@ -65,9 +67,7 @@ class MainPluginWindow(service: MainWindowService) {
         val newLoadHandler = object : CefLoadHandlerAdapter() {
             override fun onLoadEnd(browser: CefBrowser?, frame: CefFrame?, httpStatusCode: Int) {
                 windowBrowser.cefBrowser.executeJavaScript(
-                    code,
-                    windowBrowser.cefBrowser.url,
-                    0
+                    code, windowBrowser.cefBrowser.url, 0
                 )
                 super.onLoadEnd(browser, frame, httpStatusCode)
             }
@@ -83,8 +83,8 @@ class MainPluginWindow(service: MainWindowService) {
         handlers.clear()
     }
 
-    fun loadHtmlTemplate(template: HtmlTemplateBase) = windowBrowser
-        .loadHTML(template.pageContent(theme = currentTheme)).also { currentTemplate = template }
+    fun loadHtmlTemplate(template: HtmlTemplate) =
+        windowBrowser.loadHTML(template.htmlContent).also { currentTemplate = template }
 
     companion object {
         const val JS_QUERY_POOL_SIZE = 100

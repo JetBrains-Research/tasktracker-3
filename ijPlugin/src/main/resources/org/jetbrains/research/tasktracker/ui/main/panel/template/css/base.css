@@ -5,18 +5,20 @@ body {
 }
 
 .big-font {
-    font-size: 12vmin;
+    font-size: 9vmin;
     margin-top: 2vmin;
-    margin-bottom: 2vmin;
+    margin-bottom: 5vmin;
     font-family: 'Inter', sans-serif;
     font-weight: 900;
 }
 
 .small-font {
     font-family: 'Inter', sans-serif;
-    font-size: 5vmin;
+    font-size: 4vmin;
     margin-top: 0;
     margin-bottom: 2vmin;
+    overflow-wrap: break-word;
+    word-break: break-all;
 }
 
 .container {
@@ -27,11 +29,6 @@ body {
     align-items: center;
     text-align: center;
     justify-content: center;
-}
-
-.portable {
-    overflow-wrap: break-word;
-    word-break: break-all;
 }
 
 label {
@@ -62,4 +59,32 @@ a:link {
 /* visited link */
 a:visited {
     color: #696969;
+}
+
+.webcam-info-container {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 5vmin;
+}
+
+.webcam-info-name {
+    margin-right: 2vmin;
+}
+
+.webcam-select-container {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.webcam-info-list {
+    margin-bottom: 2vmin;
+    margin-top: 5vmin;
+}
+
+.webcam-info-img {
+    width: 25vmin;
 }

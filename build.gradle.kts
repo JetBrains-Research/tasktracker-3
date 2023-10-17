@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.buildconfig) apply false
     alias(libs.plugins.detekt)
     alias(libs.plugins.serialization)
+    alias(libs.plugins.changelog)
 }
 
 group = properties("pluginGroup").get()
@@ -20,12 +21,13 @@ val jdkVersion = libs.versions.jdk.get()
 allprojects {
     apply {
         with(rootProject.libs.plugins) {
-            listOf(kotlin.jvm, buildconfig, detekt, serialization).map { it.get().pluginId }.forEach(::plugin)
+            listOf(kotlin.jvm, buildconfig, detekt, serialization, changelog).map { it.get().pluginId }.forEach(::plugin)
         }
     }
 
     repositories {
         mavenCentral()
+        maven("https://packages.jetbrains.team/maven/p/ki/maven")
     }
 
     dependencies {

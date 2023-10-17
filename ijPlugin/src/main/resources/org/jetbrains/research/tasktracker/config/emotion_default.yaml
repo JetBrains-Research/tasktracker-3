@@ -1,0 +1,39 @@
+modelFilename: "emotion-ferplus-18.onnx"
+modelInputGate: "Input3"
+modelOutputGate: "Plus692_Output_0"
+emotions:
+  - modelPosition: -1
+    name: "DEFAULT"
+    threshold: 0.9
+
+  - modelPosition: 0
+    name: "NEUTRAL"
+    threshold: 0.9
+
+  - modelPosition: 1
+    name: "HAPPINESS"
+    threshold: 0.9
+
+  - modelPosition: 2
+    name: "SURPRISE"
+    threshold: 0.1
+
+  - modelPosition: 3
+    name: "SADNESS"
+    threshold: 0.1
+
+  - modelPosition: 4
+    name: "ANGER"
+    threshold: 0.1
+
+  - modelPosition: 5
+    name: "DISGUST"
+    threshold: 0.1
+
+  - modelPosition: 6
+    name: "FEAR"
+    threshold: 0.1
+
+  - modelPosition: 7
+    name: "CONTEMPT"
+    threshold: 0.1

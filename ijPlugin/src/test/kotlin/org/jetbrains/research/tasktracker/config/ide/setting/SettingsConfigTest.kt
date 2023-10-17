@@ -23,7 +23,7 @@ class SettingsConfigTest : LightPlatformTestCase() {
     private fun applyConfig(configName: String) {
         val configFile = loadConfig(configName)
         val settingsConfig = SettingsConfig.buildConfig(configFile)
-        settingsConfig.buildHandler().setup(project)
+        settingsConfig.buildHandler(project).setup()
     }
 
     private fun loadConfig(name: String): File {

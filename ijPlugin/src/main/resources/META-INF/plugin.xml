@@ -1,8 +1,8 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>org.jetbrains.research.tasktracker</id>
-    <name>TaskTracker</name>
-    <vendor>egor-bogomolov</vendor>
+    <name>CodeMood</name>
+    <vendor>JetBrains Research</vendor>
 
     <depends>com.intellij.modules.platform</depends>
 
@@ -12,4 +12,12 @@
         <toolWindow factoryClass="org.jetbrains.research.tasktracker.ui.main.panel.MainPluginPanelFactory" id="TaskTracker" anchor="right"/>
         <postStartupActivity implementation="org.jetbrains.research.tasktracker.activities.InitActivity"/>
     </extensions>
+
+    <actions>
+        <group text="MyNavBarGroup">
+            <add-to-group group-id="ToolbarRunGroup" relative-to-action="RunConfiguration" anchor="before"/>
+            <add-to-group group-id="TouchBarDefault" relative-to-action="RunConfiguration" anchor="before"/>
+            <add-to-group group-id="RightToolbarSideGroup" anchor="first"/>
+        </group>
+    </actions>
 </idea-plugin>

@@ -16,6 +16,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Disposer
 import com.intellij.util.messages.MessageBusConnection
 import com.intellij.util.messages.Topic
+import org.jetbrains.research.tasktracker.tracking.BaseTracker
 import org.jetbrains.research.tasktracker.tracking.activity.actions.MovingActions
 import org.jetbrains.research.tasktracker.tracking.activity.actions.TypingActions
 import org.jetbrains.research.tasktracker.tracking.logger.ActivityLogger
@@ -23,21 +24,21 @@ import java.awt.AWTEvent
 import java.awt.event.KeyEvent
 import java.util.concurrent.atomic.AtomicInteger
 
-class ActivityTracker(project: Project) {
-    private val activityLogger: ActivityLogger = ActivityLogger(project)
+class ActivityTracker(project: Project) : BaseTracker() {
+    override val trackerLogger = ActivityLogger(project)
     private val messageBusConnections: MutableList<MessageBusConnection> = mutableListOf()
     private var trackingDisposable: Disposable? = null
     private val currentId: AtomicInteger = AtomicInteger(1)
 
     // TODO: add config to select activities to track
-    fun startTracking() {
+    override fun startTracking() {
         trackingDisposable = Disposer.newDisposable()
         listenActions()
         listenKeyboard()
         listenExecution()
     }
 
-    fun stopTracking() {
+    override fun stopTracking() {
         messageBusConnections.forEach { it.disconnect() }
         trackingDisposable?.let { Disposer.dispose(it) }
     }
@@ -51,7 +52,7 @@ class ActivityTracker(project: Project) {
                 if (listenShortcut) {
                     actionId.extractShortcut(event, id)
                 }
-                activityLogger.log(Type.Action, actionId, id)
+                trackerLogger.log(Type.Action, actionId, id)
             }
         }
         actionListener.connect(AnActionListener.TOPIC)
@@ -61,7 +62,7 @@ class ActivityTracker(project: Project) {
         if (!movingActions.contains(this) && !typingActions.contains(this)) {
             val input = event.inputEvent
             if (input is KeyEvent) {
-                activityLogger.log(Type.Shortcut, eventToShortcutInfo(input), id)
+                trackerLogger.log(Type.Shortcut, eventToShortcutInfo(input), id)
             }
         }
     }
@@ -74,7 +75,7 @@ class ActivityTracker(project: Project) {
         val executionListener = object : ExecutionListener {
             override fun processStarting(executorId: String, env: ExecutionEnvironment, handler: ProcessHandler) {
                 val commandLine = (handler as? BaseProcessHandler<*>)?.commandLine ?: ""
-                activityLogger.log(Type.Execution, "$executorId:'${env.runProfile}':$commandLine")
+                trackerLogger.log(Type.Execution, "$executorId:'${env.runProfile}':$commandLine")
             }
         }
         executionListener.connect(ExecutionManager.EXECUTION_TOPIC)
@@ -84,8 +85,8 @@ class ActivityTracker(project: Project) {
         IdeEventQueue.getInstance().addPostprocessor({ awtEvent: AWTEvent ->
             if (awtEvent is KeyEvent) {
                 when (awtEvent.id) {
-                    KeyEvent.KEY_PRESSED -> activityLogger.log(Type.KeyPressed, awtEvent.info())
-                    KeyEvent.KEY_RELEASED -> activityLogger.log(Type.KeyReleased, awtEvent.info())
+                    KeyEvent.KEY_PRESSED -> trackerLogger.log(Type.KeyPressed, awtEvent.info())
+                    KeyEvent.KEY_RELEASED -> trackerLogger.log(Type.KeyReleased, awtEvent.info())
                 }
             }
             false
