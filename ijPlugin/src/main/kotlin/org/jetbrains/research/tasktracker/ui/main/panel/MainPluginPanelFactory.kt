@@ -13,13 +13,9 @@ import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBPanel
 import com.intellij.ui.jcef.JBCefApp
 import com.intellij.util.ui.JBUI
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.config.content.task.base.Task
-import org.jetbrains.research.tasktracker.config.content.task.base.TaskWithFiles
 import org.jetbrains.research.tasktracker.modelInference.model.EmoModel
-import org.jetbrains.research.tasktracker.requests.FileRequests.send
 import org.jetbrains.research.tasktracker.tracking.BaseTracker
 import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
 import org.jetbrains.research.tasktracker.tracking.activity.ActivityTracker
@@ -27,11 +23,10 @@ import org.jetbrains.research.tasktracker.tracking.fileEditor.FileEditorTracker
 import org.jetbrains.research.tasktracker.tracking.toolWindow.ToolWindowTracker
 import org.jetbrains.research.tasktracker.tracking.webcam.WebCamTracker
 import org.jetbrains.research.tasktracker.tracking.webcam.collectAllDevices
+import org.jetbrains.research.tasktracker.ui.main.panel.panelStates.welcomePage
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.GlobalPluginStorage
-import org.jetbrains.research.tasktracker.ui.main.panel.storage.MainPanelStorage
 import org.jetbrains.research.tasktracker.ui.main.panel.template.*
 import org.jetbrains.research.tasktracker.util.UIBundle
-import org.jetbrains.research.tasktracker.util.survey.SurveyParser
 import java.awt.BorderLayout
 import java.awt.FlowLayout
 import java.awt.event.ActionListener
@@ -51,10 +46,10 @@ class MainPluginPanelFactory : ToolWindowFactory {
     private val backButton = createJButton("ui.button.back", isVisibleProp = false)
     private val logger: Logger = Logger.getInstance(MainPluginPanelFactory::class.java)
 
-    private val trackers: MutableList<BaseTracker> = mutableListOf()
+    val trackers: MutableList<BaseTracker> = mutableListOf()
 
-    private lateinit var mainWindow: MainPluginWindow
-    private lateinit var project: Project
+    lateinit var mainWindow: MainPluginWindow
+    lateinit var project: Project
 
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
         this.project = project
@@ -74,7 +69,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
 
     override fun isApplicable(project: Project) = super.isApplicable(project) && JBCefApp.isSupported()
 
-    private fun startTracking() {
+    fun startTracking() {
         if (trackers.isNotEmpty()) { // Otherwise we can lose data
             return
         }
@@ -95,19 +90,19 @@ class MainPluginPanelFactory : ToolWindowFactory {
         trackers.forEach { it.startTracking() }
     }
 
-    private fun loadBasePage(template: HtmlTemplate, buttonTextKey: String, isVisibleBackButton: Boolean) {
+    fun loadBasePage(
+        template: HtmlTemplate,
+        buttonTextKey: String,
+        isVisibleBackButton: Boolean = true,
+        backButtonText: String? = null,
+        isVisibleNextButton: Boolean = true
+    ) {
         mainWindow.loadHtmlTemplate(template)
         nextButton.text = UIBundle.message(buttonTextKey)
         backButton.isVisible = isVisibleBackButton
-    }
-
-    /**
-     * Switches the panel to the plugin description window.
-     */
-    private fun welcomePage() {
-        loadBasePage(MainPageTemplate.loadCurrentTemplate(), "ui.button.next", false)
-        nextButton.addListener {
-            selectTask()
+        nextButton.isVisible = isVisibleNextButton
+        backButtonText?.let {
+            backButton.text = backButtonText
         }
     }
 
@@ -127,44 +122,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
         })
     }
 
-    // TODO refactor it for many configs
-    /**
-     * Switches the panel to the task selection window.
-     */
-    private fun selectTask() {
-        loadBasePage(
-            TasksPageTemplate(MainPanelStorage.taskIdTask.values.toList()), "ui.button.select", true
-        )
-        nextButton.addListener {
-            mainWindow.getElementValue("tasks").onSuccess { name ->
-                processTask(name.toString())
-            }.onError {
-                error(it.localizedMessage)
-            }
-        }
-        backButton.addListener {
-            welcomePage()
-        }
-    }
-
-    /**
-     * Loads configs by selected task and language
-     */
-    private fun processTask(name: String) {
-        startTracking()
-        // TODO: change to task by id
-        val task =
-            MainPanelStorage.taskIdTask.values.find { it.name == name } ?: error("Can't find task with name '$name'")
-        ApplicationManager.getApplication().invokeAndWait {
-            TaskFileHandler.initTask(project, task)
-        }
-        (task as? TaskWithFiles)?.focusFileId?.let { id ->
-            focusOnfFileById(task, id)
-        }
-        solveTask(task)
-    }
-
-    private fun focusOnfFileById(task: Task, id: String?) {
+    fun focusOnfFileById(task: Task, id: String?) {
         id?.let {
             TaskFileHandler.getVirtualFileByProjectTaskId(project, task, id)?.let {
                 focusOnFile(it)
@@ -185,69 +143,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
         }
     }
 
-    private fun survey() {
-        loadBasePage(
-            SurveyTemplate.loadCurrentTemplate(), "ui.button.submit", true
-        )
-        nextButton.addListener {
-            val surveyParser = SurveyParser(mainWindow, project)
-            // TODO: rewrite
-            GlobalScope.launch {
-                surveyParser.parseAndLog()
-                // TODO: unify
-                val isSuccessful = surveyParser.send()
-                if (!isSuccessful) {
-                    serverErrorPage()
-                }
-                trackers.forEach {
-                    it.stopTracking()
-                }
-                trackers.forEach {
-                    if (!it.send()) {
-                        serverErrorPage()
-                    }
-                }
-                trackers.clear()
-            }
-        }
-        backButton.addListener {
-        }
-    }
-
-    private fun serverErrorPage() {
-        trackers.clear()
-        loadBasePage(
-            ServerErrorPage(), "ui.button.welcome", false
-        )
-        nextButton.isVisible = false
-    }
-
-    /**
-     * Switches the panel to the task solving window.
-     * It contains task name, description and I/O data.
-     */
-    private fun solveTask(task: Task) {
-        val activityTracker = ActivityTracker(project)
-        activityTracker.startTracking()
-        loadBasePage(
-            SolvePageTemplate(task), "ui.button.submit", true
-        )
-        backButton.addListener {
-            TaskFileHandler.disposeTask(project, task)
-            mainWindow.removeHandlers()
-            selectTask()
-            activityTracker.stopTracking()
-        }
-        nextButton.addListener {
-            TaskFileHandler.disposeTask(project, task)
-            mainWindow.removeHandlers()
-            welcomePage()
-            activityTracker.stopTracking()
-        }
-        listenFileRedirection(task)
-    }
-
-    private fun listenFileRedirection(task: Task) {
+    fun listenFileRedirection(task: Task) {
         mainWindow.executeJavascript(
             """
             const files = document.getElementsByClassName('file');  
@@ -268,6 +164,10 @@ class MainPluginPanelFactory : ToolWindowFactory {
             null
         }
     }
+
+    fun setNextAction(listener: ActionListener) = nextButton.addListener(listener)
+
+    fun setBackAction(listener: ActionListener) = backButton.addListener(listener)
 
     private fun JButton.addListener(listener: ActionListener) {
         actionListeners.forEach {

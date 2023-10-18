@@ -9,7 +9,7 @@ import org.jetbrains.research.tasktracker.ui.main.panel.MainPluginWindow
 import java.io.File
 
 class SurveyParser(private val mainWindow: MainPluginWindow, project: Project) : Loggable {
-    val surveyLogger = SurveyLogger(project)
+    private val surveyLogger = SurveyLogger(project)
 
     private val items = TaskTrackerPlugin.mainConfig.surveyConfig?.htmlQuestions ?: emptyList()
 
