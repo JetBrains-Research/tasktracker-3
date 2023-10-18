@@ -11,7 +11,7 @@ import org.jetbrains.research.tasktracker.tracking.logger.ToolWindowLogger
 // TODO make photos and log Emotions if webcam switched on
 class ToolWindowTracker(
     private val project: Project,
-) : BaseTracker() {
+) : BaseTracker("toolWindow") {
     override val trackerLogger: ToolWindowLogger = ToolWindowLogger(project)
     private var messageBusConnection: MessageBusConnection? = null
 

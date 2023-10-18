@@ -24,7 +24,7 @@ import java.awt.AWTEvent
 import java.awt.event.KeyEvent
 import java.util.concurrent.atomic.AtomicInteger
 
-class ActivityTracker(project: Project) : BaseTracker() {
+class ActivityTracker(project: Project) : BaseTracker("activity") {
     override val trackerLogger = ActivityLogger(project)
     private val messageBusConnections: MutableList<MessageBusConnection> = mutableListOf()
     private var trackingDisposable: Disposable? = null

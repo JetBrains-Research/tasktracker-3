@@ -5,7 +5,7 @@ import org.jetbrains.research.tasktracker.modelInference.EmoPredictor
 import org.jetbrains.research.tasktracker.tracking.BaseTracker
 import org.jetbrains.research.tasktracker.tracking.logger.WebCamLogger
 
-class WebCamTracker(private val project: Project, private val emoPredictor: EmoPredictor) : BaseTracker() {
+class WebCamTracker(private val project: Project, private val emoPredictor: EmoPredictor) : BaseTracker("webCam") {
     override val trackerLogger: WebCamLogger = WebCamLogger(project)
 
     override fun startTracking() {

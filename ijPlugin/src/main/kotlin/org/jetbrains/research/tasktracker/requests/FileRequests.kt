@@ -6,10 +6,7 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.request.forms.*
 import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
-import org.jetbrains.research.tasktracker.tracking.activity.ActivityTracker
-import org.jetbrains.research.tasktracker.tracking.fileEditor.FileEditorTracker
-import org.jetbrains.research.tasktracker.tracking.toolWindow.ToolWindowTracker
-import org.jetbrains.research.tasktracker.tracking.webcam.WebCamTracker
+import org.jetbrains.research.tasktracker.tracking.Loggable
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.MainPanelStorage
 import java.io.File
 
@@ -18,23 +15,9 @@ object FileRequests {
     private val client = HttpClient(CIO)
     private val logger: Logger = Logger.getInstance(FileRequests::class.java)
 
-    fun sendToolWindowFiles(toolWindowTracker: ToolWindowTracker) = toolWindowTracker.getLogFiles().all {
-        sendFile(it, "toolWindow")
+    fun Loggable.send() = this.getLogFiles().all {
+        sendFile(it, this.subDir)
     }
-
-    fun sendActivityFiles(activityTracker: ActivityTracker) = activityTracker.getLogFiles().all {
-        sendFile(it, "activity")
-    }
-
-    fun sendFileEditorFiles(fileEditorTracker: FileEditorTracker) = fileEditorTracker.getLogFiles().all {
-        sendFile(it, "fileEditor")
-    }
-
-    fun sendWebcamFiles(webCamTracker: WebCamTracker) = webCamTracker.getLogFiles().all {
-        sendFile(it, "webCam")
-    }
-
-    fun sendSurvey(surveyFiles: List<File>) = surveyFiles.all { sendFile(it, "survey") }
 
     @Suppress("TooGenericExceptionCaught")
     private fun sendFile(file: File, subdir: String) = runBlocking {

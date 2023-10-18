@@ -19,11 +19,7 @@ import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.config.content.task.base.Task
 import org.jetbrains.research.tasktracker.config.content.task.base.TaskWithFiles
 import org.jetbrains.research.tasktracker.modelInference.model.EmoModel
-import org.jetbrains.research.tasktracker.requests.FileRequests.sendActivityFiles
-import org.jetbrains.research.tasktracker.requests.FileRequests.sendFileEditorFiles
-import org.jetbrains.research.tasktracker.requests.FileRequests.sendSurvey
-import org.jetbrains.research.tasktracker.requests.FileRequests.sendToolWindowFiles
-import org.jetbrains.research.tasktracker.requests.FileRequests.sendWebcamFiles
+import org.jetbrains.research.tasktracker.requests.FileRequests.send
 import org.jetbrains.research.tasktracker.tracking.BaseTracker
 import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
 import org.jetbrains.research.tasktracker.tracking.activity.ActivityTracker
@@ -199,7 +195,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
             GlobalScope.launch {
                 surveyParser.parseAndLog()
                 // TODO: unify
-                val isSuccessful = sendSurvey(surveyParser.surveyLogger.getLogFiles())
+                val isSuccessful = surveyParser.send()
                 if (!isSuccessful) {
                     serverErrorPage()
                 }
@@ -207,14 +203,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
                     it.stopTracking()
                 }
                 trackers.forEach {
-                    val isSuccessful = when (it) {
-                        is ActivityTracker -> sendActivityFiles(it)
-                        is WebCamTracker -> sendWebcamFiles(it)
-                        is ToolWindowTracker -> sendToolWindowFiles(it)
-                        is FileEditorTracker -> sendFileEditorFiles(it)
-                        else -> false
-                    }
-                    if (!isSuccessful) {
+                    if (!it.send()) {
                         serverErrorPage()
                     }
                 }

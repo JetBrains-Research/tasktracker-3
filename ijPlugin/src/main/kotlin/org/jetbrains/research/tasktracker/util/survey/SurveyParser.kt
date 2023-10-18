@@ -4,9 +4,11 @@ import com.intellij.openapi.project.Project
 import org.jetbrains.concurrency.await
 import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.config.survey.*
+import org.jetbrains.research.tasktracker.tracking.Loggable
 import org.jetbrains.research.tasktracker.ui.main.panel.MainPluginWindow
+import java.io.File
 
-class SurveyParser(private val mainWindow: MainPluginWindow, project: Project) {
+class SurveyParser(private val mainWindow: MainPluginWindow, project: Project) : Loggable {
     val surveyLogger = SurveyLogger(project)
 
     private val items = TaskTrackerPlugin.mainConfig.surveyConfig?.htmlQuestions ?: emptyList()
@@ -35,4 +37,9 @@ class SurveyParser(private val mainWindow: MainPluginWindow, project: Project) {
             }
         }
     }
+
+    override val subDir: String
+        get() = "survey"
+
+    override fun getLogFiles(): List<File> = surveyLogger.getLogFiles()
 }

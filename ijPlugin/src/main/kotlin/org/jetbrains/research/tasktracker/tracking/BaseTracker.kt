@@ -3,7 +3,7 @@ package org.jetbrains.research.tasktracker.tracking
 import org.jetbrains.research.tasktracker.tracking.logger.BaseLogger
 import java.io.File
 
-abstract class BaseTracker {
+abstract class BaseTracker(override val subDir: String = "") : Loggable {
 
     protected abstract val trackerLogger: BaseLogger
 
@@ -11,5 +11,5 @@ abstract class BaseTracker {
 
     abstract fun stopTracking()
 
-    fun getLogFiles(): List<File> = trackerLogger.getLogFiles()
+    override fun getLogFiles(): List<File> = trackerLogger.getLogFiles()
 }
