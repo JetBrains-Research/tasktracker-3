@@ -12,7 +12,7 @@ import org.jetbrains.research.tasktracker.tracking.logger.FileEditorLogger
 // TODO make photos and log Emotions if webcam switched on
 class FileEditorTracker(
     private val project: Project,
-) : BaseTracker() {
+) : BaseTracker("fileEditor") {
     private var messageBusConnection: MessageBusConnection? = null
     override val trackerLogger = FileEditorLogger(project)
 

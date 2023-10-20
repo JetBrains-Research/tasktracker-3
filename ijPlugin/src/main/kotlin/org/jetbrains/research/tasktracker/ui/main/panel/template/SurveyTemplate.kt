@@ -2,7 +2,7 @@ package org.jetbrains.research.tasktracker.ui.main.panel.template
 
 import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.config.survey.SurveyConfig
-import org.jetbrains.research.tasktracker.ui.main.panel.MainPluginPanelFactory
+import org.jetbrains.research.tasktracker.requests.FileRequests
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.MainPanelStorage
 
 class SurveyTemplate(val config: SurveyConfig) : HtmlBaseFileTemplate() {
@@ -15,7 +15,7 @@ class SurveyTemplate(val config: SurveyConfig) : HtmlBaseFileTemplate() {
     override val arguments: Array<String>
         get() = arrayOf(request(), config.toHtml())
 
-    private fun request() = "${MainPluginPanelFactory.DOMAIN}/confirm-survey?id=${MainPanelStorage.currentResearchId}"
+    private fun request() = "${FileRequests.DOMAIN}/confirm-survey?id=${MainPanelStorage.currentResearchId}"
 
     companion object {
         fun loadCurrentTemplate(): SurveyTemplate {
