@@ -15,13 +15,16 @@ javacv = "1.5.9"
 slf4j = "1.7.35"
 opencv = "4.7.0-0"
 changelog = "2.1.2"
+postgres = "42.3.1"
+logback = "1.4.11"
+exposed = "0.44.0"
 
 [libraries]
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 kaml = { module = "com.charleskorn.kaml:kaml", version.ref = "kaml" }
 snakeyaml = { module = "org.snakeyaml:snakeyaml-engine", version.ref = "snakeyaml" }
 csv = { module = "org.apache.commons:commons-csv", version.ref = "csv" }
-joda = {module = "joda-time:joda-time", version.ref = "joda"}
+joda = { module = "joda-time:joda-time", version.ref = "joda" }
 kinference = { module = "io.kinference:inference-core-jvm", version.ref = "kinference" }
 javacv = { module = "org.bytedeco:javacv-platform", version.ref = "javacv" }
 opencv = { module = "org.openpnp:opencv", version.ref = "opencv" }
@@ -31,7 +34,17 @@ ktor-client-json = { module = "io.ktor:ktor-client-json", version.ref = "ktor" }
 ktor-client-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-server-core = {module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor"}
+ktor-server-netty = {module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor"}
+ktor-server-tests = {module = "io.ktor:ktor-server-tests-jvm", version.ref = "ktor"}
+
 slf4j = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+postgres = { module = "org.postgresql:postgresql", version.ref = "postgres" }
+logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
+exposed-dao = { module = "org.jetbrains.exposed:exposed-dao", version.ref = "exposed" }
+exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
+
 
 [plugins]
 intellij = { id = "org.jetbrains.intellij", version.ref = "intellij" }
@@ -40,3 +53,4 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildconfig" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serialization" }
 changelog = { id = "org.jetbrains.changelog", version.ref = "changelog" }
+ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
