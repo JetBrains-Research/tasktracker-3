@@ -55,7 +55,3 @@ tasks {
         untilBuild.set(properties("pluginUntilBuild"))
     }
 }
-
-//configurations.all {
-//    exclude("org.slf4j", "slf4j-api")
-//}
