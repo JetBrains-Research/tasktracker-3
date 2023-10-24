@@ -2,6 +2,7 @@ package org.jetbrains.research.tasktracker.config
 
 import com.intellij.openapi.application.PathManager
 import com.intellij.openapi.diagnostic.Logger
+import org.jetbrains.research.tasktracker.config.agreement.AgreementConfig
 import org.jetbrains.research.tasktracker.config.content.FinalPageContentConfig
 import org.jetbrains.research.tasktracker.config.content.MainPageContentConfig
 import org.jetbrains.research.tasktracker.config.content.ServerErrorPageConfig
@@ -35,6 +36,7 @@ data class MainTaskTrackerConfig(
 
     var scenarioConfig: ScenarioConfig? = null,
     var surveyConfig: SurveyConfig? = null,
+    var agreementConfig: AgreementConfig? = null
 ) {
     fun getAllConfigs() = listOf(
         taskContentConfig,
@@ -46,7 +48,8 @@ data class MainTaskTrackerConfig(
         mainPageConfig,
         finalPageConfig,
         serverErrorPageConfig,
-        emotionConfig
+        emotionConfig,
+        agreementConfig
     )
 
     companion object {
@@ -126,6 +129,12 @@ data class MainTaskTrackerConfig(
                     fileName.startsWith(EmotionConfig.CONFIG_FILE_PREFIX) -> {
                         mainConfig.emotionConfig = buildBaseConfig(
                             mainConfig.emotionConfig, configFile, EmotionConfig::buildConfig, logger
+                        )
+                    }
+
+                    fileName.startsWith(AgreementConfig.CONFIG_FILE_PREFIX) -> {
+                        mainConfig.agreementConfig = buildBaseConfig(
+                            mainConfig.agreementConfig, configFile, AgreementConfig::buildConfig, logger
                         )
                     }
                 }

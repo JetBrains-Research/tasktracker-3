@@ -1,6 +1,7 @@
 package org.jetbrains.research.tasktracker.config
 
 import com.intellij.openapi.diagnostic.Logger
+import org.jetbrains.research.tasktracker.config.agreement.AgreementConfig
 import org.jetbrains.research.tasktracker.config.content.FinalPageContentConfig
 import org.jetbrains.research.tasktracker.config.content.MainPageContentConfig
 import org.jetbrains.research.tasktracker.config.content.ServerErrorPageConfig
@@ -31,7 +32,8 @@ object DefaultConfigsFactory {
         FinalPageContentConfig.CONFIG_FILE_PREFIX,
         ServerErrorPageConfig.CONFIG_FILE_PREFIX,
         SurveyConfig.CONFIG_FILE_PREFIX,
-        EmotionConfig.CONFIG_FILE_PREFIX
+        EmotionConfig.CONFIG_FILE_PREFIX,
+        AgreementConfig.CONFIG_FILE_PREFIX
     )
 
     fun createDefaultConfigs() {
