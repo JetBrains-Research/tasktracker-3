@@ -1,0 +1,4 @@
+agreements:
+  - text: "example"
+    required: false
+  - text: "example1"

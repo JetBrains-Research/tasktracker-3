@@ -15,11 +15,17 @@ import org.jetbrains.research.tasktracker.util.survey.SurveyParser
 
 typealias Panel = MainPluginPanelFactory
 
+fun Panel.agreementAcceptance() {
+    loadBasePage(AgreementTemplate.loadCurrentTemplate(), "ui.button.next", false)
+}
+
 /**
  * Switches the panel to the plugin description window.
  */
 fun Panel.welcomePage() {
-    loadBasePage(MainPageTemplate.loadCurrentTemplate(), "ui.button.next", false)
+    loadBasePage(
+        MainPageTemplate.loadCurrentTemplate(), "ui.button.next", false
+    )
     setNextAction {
         selectTask()
     }

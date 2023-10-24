@@ -23,7 +23,7 @@ import org.jetbrains.research.tasktracker.tracking.fileEditor.FileEditorTracker
 import org.jetbrains.research.tasktracker.tracking.toolWindow.ToolWindowTracker
 import org.jetbrains.research.tasktracker.tracking.webcam.WebCamTracker
 import org.jetbrains.research.tasktracker.tracking.webcam.collectAllDevices
-import org.jetbrains.research.tasktracker.ui.main.panel.panelStates.welcomePage
+import org.jetbrains.research.tasktracker.ui.main.panel.panelStates.agreementAcceptance
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.GlobalPluginStorage
 import org.jetbrains.research.tasktracker.ui.main.panel.template.*
 import org.jetbrains.research.tasktracker.util.UIBundle
@@ -39,7 +39,6 @@ import javax.swing.JButton
  * Note: This class requires JBCefApp to be supported for proper functioning.
  *
  */
-@Suppress("TooManyFunctions")
 class MainPluginPanelFactory : ToolWindowFactory {
     // TODO: init in other place, states can be saved between sessions
     private val nextButton = createJButton("ui.button.next")
@@ -55,7 +54,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
         this.project = project
         mainWindow = project.getService(MainWindowService::class.java).mainWindow
         mainWindow.jComponent.size = JBUI.size(toolWindow.component.width, toolWindow.component.height)
-        welcomePage()
+        agreementAcceptance()
         val buttonPanel = JBPanel<JBPanel<*>>(FlowLayout()).apply {
             add(backButton)
             add(nextButton)
