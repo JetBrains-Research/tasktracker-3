@@ -11,7 +11,10 @@ class AgreementTemplate(private val agreements: List<Agreement>) : HtmlBaseFileT
         get() = arrayOf(agreementsToHtml())
 
     private fun agreementsToHtml() = agreements.mapIndexed { index, element ->
-        """<p><input id="$index" type="checkbox" name="$index" /> ${element.text}</p>"""
+        buildString {
+            append("""<p><input id="$index" type="checkbox" name="$index" ${'$'}{if (element.required)""")
+            append(""" "required" else ""}> ${element.text}</p>""")
+        }
     }.joinToString("")
 
     companion object {

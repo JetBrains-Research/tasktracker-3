@@ -13,6 +13,8 @@ import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBPanel
 import com.intellij.ui.jcef.JBCefApp
 import com.intellij.util.ui.JBUI
+import kotlinx.coroutines.runBlocking
+import org.jetbrains.concurrency.await
 import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.config.content.task.base.Task
 import org.jetbrains.research.tasktracker.modelInference.model.EmoModel
@@ -25,7 +27,8 @@ import org.jetbrains.research.tasktracker.tracking.webcam.WebCamTracker
 import org.jetbrains.research.tasktracker.tracking.webcam.collectAllDevices
 import org.jetbrains.research.tasktracker.ui.main.panel.panelStates.agreementAcceptance
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.GlobalPluginStorage
-import org.jetbrains.research.tasktracker.ui.main.panel.template.*
+import org.jetbrains.research.tasktracker.ui.main.panel.template.HtmlTemplate
+import org.jetbrains.research.tasktracker.ui.main.panel.template.WebcamChoicePageTemplate
 import org.jetbrains.research.tasktracker.util.UIBundle
 import java.awt.BorderLayout
 import java.awt.FlowLayout
@@ -162,6 +165,15 @@ class MainPluginPanelFactory : ToolWindowFactory {
             focusOnfFileById(task, it)
             null
         }
+    }
+
+    /**
+     * @return **true** if any required field is not filled. **false** otherwise.
+     */
+    fun checkInputs(): Boolean {
+            return runBlocking {
+                return@runBlocking mainWindow.executeJavaScriptAsync("allChecked()").await().toBoolean()
+            }
     }
 
     fun setNextAction(listener: ActionListener) = nextButton.addListener(listener)

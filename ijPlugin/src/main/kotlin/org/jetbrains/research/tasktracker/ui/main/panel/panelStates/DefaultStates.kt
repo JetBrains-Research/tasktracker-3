@@ -15,19 +15,28 @@ import org.jetbrains.research.tasktracker.util.survey.SurveyParser
 
 typealias Panel = MainPluginPanelFactory
 
+/**
+ * A page for collecting user data, and checkboxes for user agreement acceptance.
+ */
 fun Panel.agreementAcceptance() {
     loadBasePage(AgreementTemplate.loadCurrentTemplate(), "ui.button.next", false)
+    setNextAction {
+        if (!checkInputs()) {
+            welcomePage()
+        }
+    }
 }
 
 /**
  * Switches the panel to the plugin description window.
  */
 fun Panel.welcomePage() {
-    loadBasePage(
-        MainPageTemplate.loadCurrentTemplate(), "ui.button.next", false
-    )
+    loadBasePage(MainPageTemplate.loadCurrentTemplate(), "ui.button.next", true)
     setNextAction {
         selectTask()
+    }
+    setBackAction {
+        agreementAcceptance()
     }
 }
 
