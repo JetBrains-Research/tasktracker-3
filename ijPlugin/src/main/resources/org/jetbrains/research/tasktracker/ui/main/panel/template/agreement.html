@@ -1,9 +1,38 @@
 <div class="container">
     <label for="name">Please write your name: </label>
-    <input type="text" name="name" id="name" placeholder="Name">
+    <input type="text" name="name" id="name" placeholder="Name" required>
     <br>
     <label for="email">Please write your email: </label>
-    <input type="email" name="email" id="email" placeholder="example@example.com">
+    <input type="email" name="email" id="email" placeholder="example@example.com" required>
     <br>
     %s
 </div>
+<script>
+    let requiredFields = document.querySelectorAll('input[required]')
+
+    requiredFields.forEach(function (field) {
+        field.onclick = function () {
+            if (field.type === "checkbox") {
+                field.style.outline = '1px solid black'
+            } else {
+                field.style.border = '1px solid black';
+            }
+        };
+    });
+
+    function allChecked() {
+        let emptyRequiredFields = [];
+        requiredFields.forEach(function (field) {
+            if (field.type === "checkbox") {
+                if (!field.checked) {
+                    emptyRequiredFields.push(field);
+                    field.style.outline = '1px solid red'
+                }
+            } else if (field.value.trim() === "") {
+                emptyRequiredFields.push(field);
+                field.style.border = "1px solid red"
+            }
+        });
+        return emptyRequiredFields.length > 0
+    }
+</script>

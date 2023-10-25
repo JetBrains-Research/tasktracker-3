@@ -51,7 +51,7 @@ class MainPluginWindow(service: MainWindowService) {
     fun checkIfRadioButtonChecked(elementId: String): Promise<JsExpressionResult> =
         windowBrowser.executeJavaScriptAsync("${getJsElementByIdCommand(elementId)}.checked")
 
-    fun executeJavaScriptAsync(code: String) = windowBrowser.executeJavaScriptAsync(code)
+    fun executeJavaScriptAsync(@Language("JavaScript") code: String) = windowBrowser.executeJavaScriptAsync(code)
 
     fun executeJavascript(
         @Language("JavaScript") codeBeforeInject: String = "",
