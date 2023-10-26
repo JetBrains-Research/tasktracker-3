@@ -7,7 +7,6 @@ import io.ktor.server.routing.*
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.research.tasktracker.createLogFile
-import org.jetbrains.research.tasktracker.database.models.ActivityFileTable
 
 private const val DEFAULT_FOLDER = "default"
 
@@ -18,10 +17,6 @@ fun Routing.uploadFile() {
         ) { name, index ->
             run {
                 transaction {
-                    ActivityFileTable.insert {
-                        it[ActivityFileTable.name] = name
-                        it[researchId] = index
-                    }
                 }
             }
         }

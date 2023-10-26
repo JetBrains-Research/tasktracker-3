@@ -33,7 +33,7 @@ suspend inline fun PipelineContext<Unit, ApplicationCall>.createLogFile(
 }
 
 fun createDirectoryPath(researchId: Int, subDirectory: String): Path {
-    val userId = Research.findById(researchId)?.userId
+    val userId = Research.findById(researchId)?.user?.id
         ?: error("There are no research with id `$researchId`")
     val directoryPath = Paths.get("files/$researchId/$userId/$subDirectory")
     directoryPath.createDirectories()
