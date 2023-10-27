@@ -4,7 +4,6 @@ import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
-import org.jetbrains.research.tasktracker.database.models.Research.Companion.referrersOn
 
 class Research(id: EntityID<Int>) : Entity<Int>(id) {
     companion object : EntityClass<Int, Research>(Researches)

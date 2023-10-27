@@ -31,6 +31,7 @@ allprojects {
     }
 
     dependencies {
+        implementation(rootProject.libs.csv)
         detektPlugins(rootProject.libs.detekt.formatting)
         implementation(rootProject.libs.joda)
         testImplementation(kotlin("test"))

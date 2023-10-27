@@ -16,7 +16,7 @@ object DatabaseFactory {
             password = System.getenv("POSTGRES_PASSWORD")
         )
         transaction(database) {
-            listOf(
+            arrayOf(
                 Users,
                 Researches,
                 DocumentData,
@@ -25,8 +25,8 @@ object DatabaseFactory {
                 ToolWindowData,
                 SurveyData,
                 FileEditorData
-            ).forEach {
-                SchemaUtils.create(it)
+            ).let {
+                SchemaUtils.create(tables = it)
             }
             commit()
         }

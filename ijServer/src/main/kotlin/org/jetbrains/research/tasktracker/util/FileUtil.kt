@@ -1,10 +1,8 @@
-package org.jetbrains.research.tasktracker
+package org.jetbrains.research.tasktracker.util
 
-import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
-import io.ktor.server.response.*
 import io.ktor.server.util.*
 import io.ktor.util.pipeline.*
 import org.jetbrains.research.tasktracker.database.models.Research
@@ -14,22 +12,22 @@ import java.nio.file.Paths
 import kotlin.io.path.createDirectories
 
 suspend inline fun PipelineContext<Unit, ApplicationCall>.createLogFile(
-    subDirectory: String,
-    crossinline insert: (name: String, researchId: Int) -> Unit
-) {
+    logFileType: String,
+): File {
     val multipartData = call.receiveMultipart()
-    val researchIndex = call.parameters.getOrFail<Int>("id")
+    val researchId = call.parameters.getOrFail<Int>("id")
+    val directoryPath = createDirectoryPath(researchId, logFileType)
+    var file: File? = null
     multipartData.forEachPart { part ->
         if (part is PartData.FileItem) {
             val fileName = part.originalFileName as String
             val fileBytes = part.streamProvider().readBytes()
-            insert(fileName, researchIndex)
-            val directoryPath = createDirectoryPath(researchIndex, subDirectory)
-            getAndCreateFile(directoryPath, fileName).writeBytes(fileBytes)
+            file = file ?: getAndCreateFile(directoryPath, fileName)
+            file?.appendBytes(fileBytes)
         }
         part.dispose()
     }
-    call.respond(HttpStatusCode.Accepted)
+    return file ?: error("File must be initialized for this moment")
 }
 
 fun createDirectoryPath(researchId: Int, subDirectory: String): Path {

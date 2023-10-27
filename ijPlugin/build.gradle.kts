@@ -13,7 +13,6 @@ plugins {
 dependencies {
     implementation(rootProject.libs.kaml)
     implementation(rootProject.libs.snakeyaml)
-    implementation(rootProject.libs.csv)
     implementation(rootProject.libs.kinference)
     implementation(rootProject.libs.javacv)
     implementation(rootProject.libs.ktor.client.cio)
