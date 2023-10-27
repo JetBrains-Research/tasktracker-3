@@ -13,8 +13,7 @@ import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBPanel
 import com.intellij.ui.jcef.JBCefApp
 import com.intellij.util.ui.JBUI
-import kotlinx.coroutines.runBlocking
-import org.jetbrains.concurrency.await
+import org.jetbrains.concurrency.Promise
 import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.config.content.task.base.Task
 import org.jetbrains.research.tasktracker.modelInference.model.EmoModel
@@ -170,11 +169,8 @@ class MainPluginPanelFactory : ToolWindowFactory {
     /**
      * @return **true** if any required field is not filled. **false** otherwise.
      */
-    fun checkInputs(): Boolean {
-            return runBlocking {
-                return@runBlocking mainWindow.executeJavaScriptAsync("allChecked()").await().toBoolean()
-            }
-    }
+    fun checkInputs(): Promise<Boolean> =
+        mainWindow.executeJavaScriptAsync("allChecked()").then { it.toBoolean() }
 
     fun setNextAction(listener: ActionListener) = nextButton.addListener(listener)
 
