@@ -5,6 +5,7 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.util.*
 import io.ktor.util.pipeline.*
+import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.research.tasktracker.database.models.Research
 import java.io.File
 import java.nio.file.Path
@@ -13,9 +14,9 @@ import kotlin.io.path.createDirectories
 
 suspend inline fun PipelineContext<Unit, ApplicationCall>.createLogFile(
     logFileType: String,
+    researchId: Int
 ): File {
     val multipartData = call.receiveMultipart()
-    val researchId = call.parameters.getOrFail<Int>("id")
     val directoryPath = createDirectoryPath(researchId, logFileType)
     var file: File? = null
     multipartData.forEachPart { part ->
@@ -31,13 +32,17 @@ suspend inline fun PipelineContext<Unit, ApplicationCall>.createLogFile(
 }
 
 fun createDirectoryPath(researchId: Int, subDirectory: String): Path {
-    val userId = Research.findById(researchId)?.user?.id
-        ?: error("There are no research with id `$researchId`")
+    val userId = transaction {
+        Research.findById(researchId)?.user?.id
+            ?: error("There are no research with id `$researchId`")
+    }
     val directoryPath = Paths.get("files/$researchId/$userId/$subDirectory")
     directoryPath.createDirectories()
     return directoryPath
 }
 
 fun getAndCreateFile(root: Path, filename: String): File {
-    return root.resolve(filename).toFile().also { it.createNewFile() }
+    return root.resolve(filename).toFile().also {
+        check(it.createNewFile()) { "file `$filename` already exists." }
+    }
 }
