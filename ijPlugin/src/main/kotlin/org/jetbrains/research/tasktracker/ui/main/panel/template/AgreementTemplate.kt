@@ -12,8 +12,8 @@ class AgreementTemplate(private val agreements: List<Agreement>) : HtmlBaseFileT
 
     private fun agreementsToHtml() = agreements.mapIndexed { index, element ->
         buildString {
-            append("""<p><input id="$index" type="checkbox" name="$index" ${'$'}{if (element.required)""")
-            append(""" "required" else ""}> ${element.text}</p>""")
+            append("""<p><input id="$index" type="checkbox" name="$index" """)
+            append("""${if (element.required) "required" else ""}> ${element.text}</p>""")
         }
     }.joinToString("")
 
