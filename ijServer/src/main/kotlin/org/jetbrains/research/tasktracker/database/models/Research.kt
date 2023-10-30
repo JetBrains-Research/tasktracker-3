@@ -13,7 +13,6 @@ class Research(id: EntityID<Int>) : Entity<Int>(id) {
     var user by User referencedOn Researches.user
 }
 
-
 /**
  * The table with information about the research.
  */

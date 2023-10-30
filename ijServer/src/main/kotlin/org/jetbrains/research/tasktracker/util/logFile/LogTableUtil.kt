@@ -8,6 +8,7 @@ import java.io.File
 
 internal val LOGGER = KtorSimpleLogger("org.jetbrains.research.tasktracker.util.logFile")
 
+@Suppress("SwallowedException")
 fun File.parseLogFile(logFileTypeString: String, researchId: Int) {
     val logFileType = try {
         LogFileType.valueOf(logFileTypeString)
