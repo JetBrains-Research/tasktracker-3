@@ -13,8 +13,23 @@ class Research(id: EntityID<Int>) : Entity<Int>(id) {
     var user by User referencedOn Researches.user
 }
 
+
+/**
+ * The table with information about the research.
+ */
 object Researches : IntIdTable() {
+    /**
+     * Research name.
+     */
     val name = text("name")
+
+    /**
+     * Research description.
+     */
     val description = text("description").nullable()
+
+    /**
+     * User who took part in the research.
+     */
     val user = reference("user", Users)
 }

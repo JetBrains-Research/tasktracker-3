@@ -7,7 +7,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
 import org.jetbrains.research.tasktracker.util.createLogFile
-import org.jetbrains.research.tasktracker.util.parseLogFile
+import org.jetbrains.research.tasktracker.util.logFile.parseLogFile
 
 private const val DEFAULT_FOLDER = "default"
 
