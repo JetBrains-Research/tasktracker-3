@@ -27,11 +27,11 @@ object DocumentLoggedData : LoggedData<Document, String?>() {
     override val loggedDataGetters: List<LoggedDataGetter<Document, String?>> = arrayListOf(
         LoggedDataGetter("date") { DateTime.now().toString() },
         LoggedDataGetter("timestamp") { it.modificationStamp.toString() },
-        LoggedDataGetter("fileName") { FileDocumentManager.getInstance().getFile(it)?.name },
-        LoggedDataGetter("fileHashCode") { FileDocumentManager.getInstance().getFile(it)?.hashCode().toString() },
-        LoggedDataGetter("documentHashCode") { it.hashCode().toString() },
+        LoggedDataGetter("filename") { FileDocumentManager.getInstance().getFile(it)?.name },
+        LoggedDataGetter("file_hash_code") { FileDocumentManager.getInstance().getFile(it)?.hashCode().toString() },
+        LoggedDataGetter("document_hash_code") { it.hashCode().toString() },
         LoggedDataGetter("fragment") { it.text },
-        LoggedDataGetter("testMode") { TaskTrackerPlugin.mainConfig.pluginProperties.testMode.propValue }
+        LoggedDataGetter("test_mode") { TaskTrackerPlugin.mainConfig.pluginProperties.testMode.propValue }
     )
 }
 
@@ -40,8 +40,8 @@ object ActivityLoggedData : LoggedData<ActivityEvent, String?>() {
         LoggedDataGetter("date") { it.time.toString() },
         LoggedDataGetter("type") { it.type.name },
         LoggedDataGetter("info") { it.info },
-        LoggedDataGetter("selected-text") { it.selectedText },
-        LoggedDataGetter("id") { it.id }
+        LoggedDataGetter("selected_text") { it.selectedText },
+        LoggedDataGetter("action_id") { it.id }
     )
 }
 

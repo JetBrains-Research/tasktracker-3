@@ -21,5 +21,7 @@ dependencies {
     implementation(rootProject.libs.exposed.core)
     implementation(rootProject.libs.exposed.dao)
     implementation(rootProject.libs.exposed.jdbc)
+    implementation(rootProject.libs.exposed.time)
     testImplementation(rootProject.libs.ktor.server.tests)
+    testImplementation(rootProject.libs.h2)
 }
