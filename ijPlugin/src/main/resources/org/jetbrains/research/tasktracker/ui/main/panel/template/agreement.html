@@ -1,14 +1,29 @@
 <div class="container">
-    <label for="name">Please write your name: </label>
-    <input type="text" name="name" id="name" placeholder="Name" required>
+    <div class="form-group">
+        <label for="name">Please put your name: </label>
+        <input type="text" name="name" id="name" placeholder="Name" required>
+    </div>
     <br>
-    <label for="email">Please write your email: </label>
-    <input type="email" name="email" id="email" placeholder="example@example.com" required>
-    <br>
-    %s
+    <div class="form-group">
+        <label for="email">Please put your email: </label>
+        <input type="email" name="email" id="email" placeholder="example@example.com" required>
+    </div>
+    <div class="agreement-container">
+        <p>I agree to the terms and conditions:</p>
+        %s
+        <p><span style="color: red">*</span> - Required field</p>
+    </div>
 </div>
 <script>
     let requiredFields = document.querySelectorAll('input[required]')
+
+    // Loop through each required input element and add the 'required' class to its parent label
+    requiredFields.forEach(function(inputElement) {
+        const parentLabel = inputElement.parentElement.querySelector('label');
+        if (parentLabel) {
+            parentLabel.classList.add('required');
+        }
+    });
 
     requiredFields.forEach(function (field) {
         field.onclick = function () {

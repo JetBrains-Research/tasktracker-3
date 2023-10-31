@@ -10,10 +10,14 @@ class AgreementTemplate(private val agreements: List<Agreement>) : HtmlBaseFileT
     override val arguments: Array<String>
         get() = arrayOf(agreementsToHtml())
 
+    override val cssFilename: String
+        get() = "agreement"
+
     private fun agreementsToHtml() = agreements.mapIndexed { index, element ->
         buildString {
-            append("""<p><input id="$index" type="checkbox" name="$index" """)
-            append("""${if (element.required) "required" else ""}> ${element.text}</p>""")
+            append("""<div><input id="$index" type="checkbox" name="$index" """)
+            append("""${if (element.required) "required" else ""}>""")
+            append("""<label for="$index">${element.text}</label></div>""")
         }
     }.joinToString("")
 

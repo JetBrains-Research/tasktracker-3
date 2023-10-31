@@ -11,6 +11,8 @@ import org.jetbrains.research.tasktracker.tracking.activity.ActivityTracker
 import org.jetbrains.research.tasktracker.ui.main.panel.MainPluginPanelFactory
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.MainPanelStorage
 import org.jetbrains.research.tasktracker.ui.main.panel.template.*
+import org.jetbrains.research.tasktracker.util.UIBundle
+import org.jetbrains.research.tasktracker.util.notifier.notifyError
 import org.jetbrains.research.tasktracker.util.survey.SurveyParser
 
 typealias Panel = MainPluginPanelFactory
@@ -25,6 +27,8 @@ fun Panel.agreementAcceptance() {
             .onSuccess {
                 if (!it) {
                     welcomePage()
+                } else {
+                    notifyError(project, UIBundle.message("ui.please.fill"))
                 }
             }
             .onError {
