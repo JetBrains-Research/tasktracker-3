@@ -1,0 +1,32 @@
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 3vmin;
+}
+
+.form-group label{
+    margin-bottom: 2vmin;
+}
+
+label {
+    font-size: 2vmin;
+}
+
+.agreement-container {
+    margin-top: 25vmin;
+    align-items: flex-start;
+    text-align: left;
+    justify-content: left;
+    width: 70vw;
+}
+
+.agreement-container div{
+    display:flex;
+    align-items:center;
+}
+
+.required:after{
+    content:" *";
+    font-weight:bold;
+    color:red;
+}

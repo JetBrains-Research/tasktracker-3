@@ -9,8 +9,10 @@
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="org.jetbrains.research.tasktracker.ui.main.panel.MainPluginPanelFactory" id="TaskTracker" anchor="right"/>
+        <toolWindow factoryClass="org.jetbrains.research.tasktracker.ui.main.panel.MainPluginPanelFactory"
+                    id="TaskTracker" anchor="right"/>
         <postStartupActivity implementation="org.jetbrains.research.tasktracker.activities.InitActivity"/>
+        <notificationGroup id="Tasktracker" displayType="BALLOON"/>
     </extensions>
 
     <actions>
