@@ -8,10 +8,6 @@
     margin-bottom: 2vmin;
 }
 
-label {
-    font-size: 2vmin;
-}
-
 .agreement-container {
     margin-top: 25vmin;
     align-items: flex-start;
@@ -23,6 +19,12 @@ label {
 .agreement-container div{
     display:flex;
     align-items:center;
+}
+
+.agreement-container div label{
+    font-size: 15px;
+    margin-left: 3px;
+    font-weight: normal !important;
 }
 
 .required:after{
