@@ -1,4 +1,6 @@
 agreements:
-  - text: "example"
+  - text: |
+      Multiline
+      example
     required: false
-  - text: "example1 <a href=\"https://github.com/JetBrains-Research/tasktracker-3\">link</a>"
+  - text: "Example <a href=\"https://github.com/JetBrains-Research/tasktracker-3\">link</a>"

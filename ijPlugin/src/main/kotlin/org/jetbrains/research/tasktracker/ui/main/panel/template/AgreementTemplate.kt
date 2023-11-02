@@ -17,9 +17,11 @@ class AgreementTemplate(private val agreements: List<Agreement>) : HtmlBaseFileT
         buildString {
             append("""<div><input id="$index" type="checkbox" name="$index" """)
             append("""${if (element.required) "required" else ""}>""")
-            append("""<label for="$index">${element.text}</label></div>""")
+            append("""<label for="$index">${element.text.withBr()}</label></div>""")
         }
-    }.joinToString("")
+    }.joinToString("<br>")
+
+    private fun String.withBr() = replace(System.lineSeparator(), "<br>")
 
     companion object {
         fun loadCurrentTemplate(): AgreementTemplate {
