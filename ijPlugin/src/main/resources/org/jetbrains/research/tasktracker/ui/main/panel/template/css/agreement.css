@@ -2,33 +2,40 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 3vmin;
+    align-items: center;
 }
 
-.form-group label{
-    margin-bottom: 2vmin;
+.form-group input {
+    padding: 12px;
+    border-radius: 3px;
+    font-size: 20px;
 }
 
 .agreement-container {
-    margin-top: 25vmin;
     align-items: flex-start;
     text-align: left;
     justify-content: left;
-    width: 70vw;
 }
 
-.agreement-container div{
-    display:flex;
-    align-items:center;
+.agreement-container div {
+    display: flex;
+    align-items: center;
 }
 
-.agreement-container div label{
+.agreement-container div label {
     font-size: 15px;
     margin-left: 3px;
     font-weight: normal !important;
+    word-wrap: break-word;
 }
 
-.required:after{
-    content:" *";
-    font-weight:bold;
-    color:red;
+.required:after {
+    content: " *";
+    font-weight: bold;
+    color: red;
+}
+
+.box {
+    width: 60vmin;
+    height: 70vmin;
 }
