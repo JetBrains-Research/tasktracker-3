@@ -10,6 +10,7 @@ import org.cef.browser.CefFrame
 import org.cef.handler.CefLoadHandlerAdapter
 import org.intellij.lang.annotations.Language
 import org.jetbrains.concurrency.Promise
+import org.jetbrains.research.tasktracker.ui.main.panel.models.LinkType
 import org.jetbrains.research.tasktracker.ui.main.panel.models.Theme
 import org.jetbrains.research.tasktracker.ui.main.panel.template.DefaultErrorPage
 import org.jetbrains.research.tasktracker.ui.main.panel.template.HtmlTemplate
@@ -41,7 +42,7 @@ class MainPluginWindow(service: MainWindowService) {
                 }
             }
         )
-        listenRedirect()
+        listenRedirectToDefaultBrowser()
         Disposer.register(service, windowBrowser)
     }
 
@@ -88,25 +89,16 @@ class MainPluginWindow(service: MainWindowService) {
     fun loadHtmlTemplate(template: HtmlTemplate) =
         windowBrowser.loadHTML(template.htmlContent).also { currentTemplate = template }
 
-    private fun listenRedirect() {
-        executeJavascript(
-            """
-            const hrefs = document.getElementsByClassName('defaultBrowser');  
-            for (const href of hrefs) {
-            href.addEventListener('click', function(event) {
-                event.preventDefault();
-            })
-                href.onclick = load_file
-            }
-                function load_file (){
-                 file_id = this.getAttribute('href');
-                
-            """,
-            "}",
-            "file_id"
-        ) {
+    fun loadCurrentTemplate() {
+        loadHtmlTemplate(currentTemplate)
+    }
+
+    /**
+     * Redirecting to external websites in default browser.
+     */
+    private fun listenRedirectToDefaultBrowser() {
+        jslinkProcess(LinkType.DEFAULT_BROWSER) {
             BrowserLauncher.instance.open(it)
-            null
         }
     }
 

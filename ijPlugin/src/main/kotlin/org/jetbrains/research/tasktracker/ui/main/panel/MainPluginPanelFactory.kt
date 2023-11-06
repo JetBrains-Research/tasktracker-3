@@ -24,6 +24,8 @@ import org.jetbrains.research.tasktracker.tracking.fileEditor.FileEditorTracker
 import org.jetbrains.research.tasktracker.tracking.toolWindow.ToolWindowTracker
 import org.jetbrains.research.tasktracker.tracking.webcam.WebCamTracker
 import org.jetbrains.research.tasktracker.tracking.webcam.collectAllDevices
+import org.jetbrains.research.tasktracker.ui.main.panel.models.ButtonState
+import org.jetbrains.research.tasktracker.ui.main.panel.models.LinkType
 import org.jetbrains.research.tasktracker.ui.main.panel.panelStates.agreementAcceptance
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.GlobalPluginStorage
 import org.jetbrains.research.tasktracker.ui.main.panel.template.HtmlTemplate
@@ -32,7 +34,6 @@ import org.jetbrains.research.tasktracker.util.UIBundle
 import java.awt.BorderLayout
 import java.awt.FlowLayout
 import java.awt.event.ActionListener
-import javax.swing.JButton
 
 /**
  * The class is intended to manage JCEF and Swing components simultaneously,
@@ -66,6 +67,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
             add(buttonPanel, BorderLayout.SOUTH)
         }
         toolWindow.component.add(panel)
+        listenRedirection()
     }
 
     override fun isApplicable(project: Project) = super.isApplicable(project) && JBCefApp.isSupported()
@@ -144,25 +146,30 @@ class MainPluginPanelFactory : ToolWindowFactory {
         }
     }
 
+    /**
+     * Opening file in editor by html link.
+     */
     fun listenFileRedirection(task: Task) {
-        mainWindow.executeJavascript(
-            """
-            const files = document.getElementsByClassName('file');  
-            for (const file of files) {
-            file.addEventListener('click', function(event) {
-                event.preventDefault();
-            })
-                file.onclick = load_file
-            }
-                function load_file (){
-                 file_id = this.getAttribute('data-value');
-                
-            """,
-            "}",
-            "file_id"
-        ) {
+        mainWindow.jslinkProcess(LinkType.FILE) {
             focusOnfFileById(task, it)
-            null
+        }
+    }
+
+    /**
+     * Redirecting to external websites in JCEF.
+     */
+    private fun listenRedirection() {
+        mainWindow.jslinkProcess(LinkType.JCEF) {
+            val previousBackState = backButton.getState()
+            val previousNextState = nextButton.getState()
+            nextButton.changeState(ButtonState(previousNextState.text, false))
+            backButton.changeState(
+                ButtonState(UIBundle.message("ui.button.back"), true) {
+                    backButton.changeState(previousBackState)
+                    nextButton.changeState(previousNextState)
+                    mainWindow.loadCurrentTemplate()
+                }
+            )
         }
     }
 
@@ -175,11 +182,4 @@ class MainPluginPanelFactory : ToolWindowFactory {
     fun setNextAction(listener: ActionListener) = nextButton.addListener(listener)
 
     fun setBackAction(listener: ActionListener) = backButton.addListener(listener)
-
-    private fun JButton.addListener(listener: ActionListener) {
-        actionListeners.forEach {
-            removeActionListener(it)
-        }
-        addActionListener(listener)
-    }
 }
