@@ -7,4 +7,4 @@ import kotlinx.serialization.Serializable
  */
 
 @Serializable
-data class Agreement(val text: String, val required: Boolean = true)
+data class Agreement(val text: String, val required: Boolean = true, val openLinkInDefaultBrowser: Boolean = true)

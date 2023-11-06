@@ -1,5 +1,6 @@
 package org.jetbrains.research.tasktracker.ui.main.panel
 
+import com.intellij.ide.browsers.BrowserLauncher
 import com.intellij.ide.ui.LafManagerListener
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.util.Disposer
@@ -40,6 +41,7 @@ class MainPluginWindow(service: MainWindowService) {
                 }
             }
         )
+        listenRedirect()
         Disposer.register(service, windowBrowser)
     }
 
@@ -85,6 +87,28 @@ class MainPluginWindow(service: MainWindowService) {
 
     fun loadHtmlTemplate(template: HtmlTemplate) =
         windowBrowser.loadHTML(template.htmlContent).also { currentTemplate = template }
+
+    private fun listenRedirect() {
+        executeJavascript(
+            """
+            const hrefs = document.getElementsByClassName('defaultBrowser');  
+            for (const href of hrefs) {
+            href.addEventListener('click', function(event) {
+                event.preventDefault();
+            })
+                href.onclick = load_file
+            }
+                function load_file (){
+                 file_id = this.getAttribute('href');
+                
+            """,
+            "}",
+            "file_id"
+        ) {
+            BrowserLauncher.instance.open(it)
+            null
+        }
+    }
 
     companion object {
         const val JS_QUERY_POOL_SIZE = 100
