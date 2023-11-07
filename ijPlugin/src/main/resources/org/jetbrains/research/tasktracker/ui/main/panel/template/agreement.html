@@ -35,7 +35,7 @@
         };
     });
 
-    function allChecked() {
+    function check_all_inputs() {
         requiredFields.forEach(function (field) {
             if (field.type === "checkbox") {
                 if (!field.checked) {
@@ -48,7 +48,7 @@
         return JSON.stringify(getData())
     }
 
-    function getData(){
+    function getData() {
         let email = document.getElementById('email')
         let name = document.getElementById('name')
         let inputs = {
@@ -67,11 +67,11 @@
         return inputs
     }
 
-    function findLabelForControl(el) {
-        let idVal = el.id
+    function findLabelForControl(field) {
+        let labelId = field.id
         let labels = document.getElementsByTagName('label')
-        for( let i = 0; i < labels.length; i++ ) {
-            if (labels[i].htmlFor === idVal)
+        for (let i = 0; i < labels.length; i++) {
+            if (labels[i].htmlFor === labelId)
                 return labels[i].innerHTML
         }
     }
