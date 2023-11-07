@@ -7,14 +7,17 @@ import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.progress.Task.Modal
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBPanel
 import com.intellij.ui.jcef.JBCefApp
 import com.intellij.util.ui.JBUI
+import kotlinx.serialization.json.Json
 import org.jetbrains.concurrency.Promise
 import org.jetbrains.research.tasktracker.TaskTrackerPlugin
+import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig.Companion.agreementFilePath
 import org.jetbrains.research.tasktracker.config.content.task.base.Task
 import org.jetbrains.research.tasktracker.modelInference.model.EmoModel
 import org.jetbrains.research.tasktracker.tracking.BaseTracker
@@ -24,6 +27,7 @@ import org.jetbrains.research.tasktracker.tracking.fileEditor.FileEditorTracker
 import org.jetbrains.research.tasktracker.tracking.toolWindow.ToolWindowTracker
 import org.jetbrains.research.tasktracker.tracking.webcam.WebCamTracker
 import org.jetbrains.research.tasktracker.tracking.webcam.collectAllDevices
+import org.jetbrains.research.tasktracker.ui.main.panel.models.AgreementChecker
 import org.jetbrains.research.tasktracker.ui.main.panel.panelStates.agreementAcceptance
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.GlobalPluginStorage
 import org.jetbrains.research.tasktracker.ui.main.panel.template.HtmlTemplate
@@ -32,6 +36,7 @@ import org.jetbrains.research.tasktracker.util.UIBundle
 import java.awt.BorderLayout
 import java.awt.FlowLayout
 import java.awt.event.ActionListener
+import java.io.File
 import javax.swing.JButton
 
 /**
@@ -170,7 +175,16 @@ class MainPluginPanelFactory : ToolWindowFactory {
      * @return **true** if any required field is not filled. **false** otherwise.
      */
     fun checkInputs(): Promise<Boolean> =
-        mainWindow.executeJavaScriptAsync("allChecked()").then { it.toBoolean() }
+        mainWindow.executeJavaScriptAsync("allChecked()").then {
+            val agreementChecker = Json.decodeFromString(AgreementChecker.serializer(), it.toString())
+            if (agreementChecker.allRequiredChecked()) {
+                val agreementFile = File(agreementFilePath)
+                FileUtil.createIfDoesntExist(agreementFile)
+                agreementFile.writeText(it.toString())
+                return@then false
+            }
+            true
+        }
 
     fun setNextAction(listener: ActionListener) = nextButton.addListener(listener)
 
