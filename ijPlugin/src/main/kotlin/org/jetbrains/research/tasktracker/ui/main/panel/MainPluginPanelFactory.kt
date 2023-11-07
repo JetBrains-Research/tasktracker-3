@@ -176,7 +176,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
      * @return **true** if any required field is not filled. **false** otherwise.
      */
     fun checkInputs(): Promise<Boolean> =
-        mainWindow.executeJavaScriptAsync("check_all_inputs()").then {
+        mainWindow.executeJavaScriptAsync("checkAllInputs()").then {
             val agreementChecker = Json.decodeFromString(AgreementChecker.serializer(), it.toString())
             if (agreementChecker.allRequiredChecked()) {
                 saveAgreements(it.toString())
