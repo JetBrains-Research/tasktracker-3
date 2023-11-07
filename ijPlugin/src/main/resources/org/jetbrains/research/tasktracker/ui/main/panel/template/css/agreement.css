@@ -6,6 +6,7 @@
 }
 
 .form-group input {
+    width: 100%;
     padding: 12px;
     border-radius: 3px;
     font-size: 20px;
