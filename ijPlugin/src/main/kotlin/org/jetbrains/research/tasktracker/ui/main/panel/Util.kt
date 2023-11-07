@@ -19,7 +19,7 @@ fun MainPluginWindow.jslinkProcess(type: LinkType, action: (param: String) -> Un
     with(type) {
         val preventCode = if (prevent) {
             """
-                link.addEventListener('click', function(event) {
+            link.addEventListener('click', function(event) {
                 event.preventDefault();
             });
             """.trimIndent()
@@ -33,9 +33,9 @@ fun MainPluginWindow.jslinkProcess(type: LinkType, action: (param: String) -> Un
             $preventCode
                 link.onclick = get_link$name
             }
-                function get_link$name (){
+            
+            function get_link$name() {
                  link = this.getAttribute('$getAttribute');
-                
             """,
             "}",
             "link"
@@ -51,7 +51,7 @@ fun MainPluginWindow.jslinkProcess(type: LinkType, action: (param: String) -> Un
  */
 fun JButton.changeState(buttonState: ButtonState) {
     buttonState.actionListener?.let {
-        addListener(buttonState.actionListener)
+        setListener(buttonState.actionListener)
     }
     this.text = buttonState.text
     isVisible = buttonState.isVisibleProp
@@ -59,7 +59,7 @@ fun JButton.changeState(buttonState: ButtonState) {
 
 fun JButton.getState(): ButtonState = ButtonState(text, isVisible, actionListeners.firstOrNull())
 
-fun JButton.addListener(listener: ActionListener) {
+fun JButton.setListener(listener: ActionListener) {
     actionListeners.forEach {
         removeActionListener(it)
     }

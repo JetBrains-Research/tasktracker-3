@@ -22,15 +22,14 @@ class AgreementTemplate(private val agreements: List<Agreement>) : HtmlBaseFileT
     }.joinToString("<br>")
 
     private fun Agreement.toHtml(): String {
-        var text = text
-        text = text.replace(System.lineSeparator(), "<br>")
+        var html = text.replace(System.lineSeparator(), "<br>")
         if (openLinkInDefaultBrowser) {
-            text = text.replace(HREF_PATTERN) { matchResult ->
+            html = html.replace(HREF_PATTERN) { matchResult ->
                 val href = matchResult.groupValues[1]
                 """<a class="defaultBrowser" href="$href">"""
             }
         }
-        return text
+        return html
     }
 
     companion object {

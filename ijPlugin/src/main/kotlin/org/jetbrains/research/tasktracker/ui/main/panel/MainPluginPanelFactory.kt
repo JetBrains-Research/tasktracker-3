@@ -179,7 +179,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
     fun checkInputs(): Promise<Boolean> =
         mainWindow.executeJavaScriptAsync("allChecked()").then { it.toBoolean() }
 
-    fun setNextAction(listener: ActionListener) = nextButton.addListener(listener)
+    fun setNextAction(listener: ActionListener) = nextButton.setListener(listener)
 
-    fun setBackAction(listener: ActionListener) = backButton.addListener(listener)
+    fun setBackAction(listener: ActionListener) = backButton.setListener(listener)
 }
