@@ -27,17 +27,15 @@ abstract class HtmlBaseTemplate : HtmlTemplate {
         css
     ).joinToString(System.lineSeparator())
 
-    protected fun loadCssFromFile(filename: String) = getFileContentFromResources("$CSS_FOLDER/$filename.css").toCss()
+    protected fun loadCssFromFile(filename: String) = getFileContentFromResources("$CSS_FOLDER/$filename.css")
 
     protected fun getFileContentFromResources(path: String) =
         HtmlBaseTemplate::class.java.getResource(path)?.readText()
             ?: error("Base file with path `$path` must exist")
 
-    private fun String.toCss() = replace("%", "%%")
-
     protected fun String.wrapToSmallText() = lines().wrapToSmallText()
 
-    protected fun List<String>.wrapToSmallText() = joinToString(System.lineSeparator()) {
+    private fun List<String>.wrapToSmallText() = joinToString(System.lineSeparator()) {
         """
             <p class="small-font">$it</p>
         """.trimIndent()

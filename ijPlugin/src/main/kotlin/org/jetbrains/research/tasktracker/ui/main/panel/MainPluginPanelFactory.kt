@@ -13,6 +13,7 @@ import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBPanel
 import com.intellij.ui.jcef.JBCefApp
 import com.intellij.util.ui.JBUI
+import kotlinx.serialization.json.Json
 import org.jetbrains.concurrency.Promise
 import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.config.content.task.base.Task
@@ -26,6 +27,7 @@ import org.jetbrains.research.tasktracker.tracking.webcam.WebCamTracker
 import org.jetbrains.research.tasktracker.tracking.webcam.collectAllDevices
 import org.jetbrains.research.tasktracker.ui.main.panel.models.ButtonState
 import org.jetbrains.research.tasktracker.ui.main.panel.models.LinkType
+import org.jetbrains.research.tasktracker.ui.main.panel.models.AgreementChecker
 import org.jetbrains.research.tasktracker.ui.main.panel.panelStates.agreementAcceptance
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.GlobalPluginStorage
 import org.jetbrains.research.tasktracker.ui.main.panel.template.HtmlTemplate
@@ -174,10 +176,21 @@ class MainPluginPanelFactory : ToolWindowFactory {
     }
 
     /**
+     * If all required fields are filled then
+     * [saveAgreements][org.jetbrains.research.tasktracker.ui.main.panel.saveAgreements]
+     * function will be called.
+     *
      * @return **true** if any required field is not filled. **false** otherwise.
      */
     fun checkInputs(): Promise<Boolean> =
-        mainWindow.executeJavaScriptAsync("allChecked()").then { it.toBoolean() }
+        mainWindow.executeJavaScriptAsync("checkAllInputs()").then {
+            val agreementChecker = Json.decodeFromString(AgreementChecker.serializer(), it.toString())
+            if (agreementChecker.allRequiredChecked()) {
+                saveAgreements(it.toString())
+                return@then false
+            }
+            true
+        }
 
     fun setNextAction(listener: ActionListener) = nextButton.setListener(listener)
 

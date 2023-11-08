@@ -18,7 +18,6 @@
 <script>
     let requiredFields = document.querySelectorAll('input[required]')
 
-    // Loop through each required input element and add the 'required' class to its parent label
     requiredFields.forEach(function (inputElement) {
         const parentLabel = inputElement.parentElement.querySelector('label');
         if (parentLabel) {
@@ -36,19 +35,44 @@
         };
     });
 
-    function allChecked() {
-        let emptyRequiredFields = [];
+    function checkAllInputs() {
         requiredFields.forEach(function (field) {
             if (field.type === "checkbox") {
                 if (!field.checked) {
-                    emptyRequiredFields.push(field);
                     field.style.outline = '1px solid red'
                 }
             } else if (field.value.trim() === "") {
-                emptyRequiredFields.push(field);
                 field.style.border = "1px solid red"
             }
         });
-        return emptyRequiredFields.length > 0
+        return JSON.stringify(getData())
+    }
+
+    function getData() {
+        let email = document.getElementById('email')
+        let name = document.getElementById('name')
+        let inputs = {
+            email: email.value,
+            name: name.value,
+            agreements: []
+        }
+        let checkboxes = document.querySelectorAll('input[type=checkbox]')
+        checkboxes.forEach(function (field) {
+            inputs.agreements.push({
+                checked: field.checked,
+                text: findLabelForControl(field),
+                required: field.hasAttribute("required")
+            })
+        })
+        return inputs
+    }
+
+    function findLabelForControl(field) {
+        let labelId = field.id
+        let labels = document.getElementsByTagName('label')
+        for (let i = 0; i < labels.length; i++) {
+            if (labels[i].htmlFor === labelId)
+                return labels[i].innerHTML
+        }
     }
 </script>
