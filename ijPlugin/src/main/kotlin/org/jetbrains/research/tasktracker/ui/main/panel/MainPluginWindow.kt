@@ -1,5 +1,6 @@
 package org.jetbrains.research.tasktracker.ui.main.panel
 
+import com.intellij.ide.browsers.BrowserLauncher
 import com.intellij.ide.ui.LafManagerListener
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.util.Disposer
@@ -9,6 +10,7 @@ import org.cef.browser.CefFrame
 import org.cef.handler.CefLoadHandlerAdapter
 import org.intellij.lang.annotations.Language
 import org.jetbrains.concurrency.Promise
+import org.jetbrains.research.tasktracker.ui.main.panel.models.LinkType
 import org.jetbrains.research.tasktracker.ui.main.panel.models.Theme
 import org.jetbrains.research.tasktracker.ui.main.panel.template.DefaultErrorPage
 import org.jetbrains.research.tasktracker.ui.main.panel.template.HtmlTemplate
@@ -40,6 +42,7 @@ class MainPluginWindow(service: MainWindowService) {
                 }
             }
         )
+        listenRedirectToDefaultBrowser()
         Disposer.register(service, windowBrowser)
     }
 
@@ -85,6 +88,19 @@ class MainPluginWindow(service: MainWindowService) {
 
     fun loadHtmlTemplate(template: HtmlTemplate) =
         windowBrowser.loadHTML(template.htmlContent).also { currentTemplate = template }
+
+    fun loadCurrentTemplate() {
+        loadHtmlTemplate(currentTemplate)
+    }
+
+    /**
+     * Redirecting to external websites in default browser.
+     */
+    private fun listenRedirectToDefaultBrowser() {
+        jslinkProcess(LinkType.DEFAULT_BROWSER) {
+            BrowserLauncher.instance.open(it)
+        }
+    }
 
     companion object {
         const val JS_QUERY_POOL_SIZE = 100

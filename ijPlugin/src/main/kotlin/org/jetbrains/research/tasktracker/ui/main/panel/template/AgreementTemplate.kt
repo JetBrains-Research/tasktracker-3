@@ -17,13 +17,24 @@ class AgreementTemplate(private val agreements: List<Agreement>) : HtmlBaseFileT
         buildString {
             append("""<div><input id="$index" type="checkbox" name="$index" """)
             append("""${if (element.required) "required" else ""}>""")
-            append("""<label for="$index">${element.text.withBr()}</label></div>""")
+            append("""<label for="$index">${element.toHtml()}</label></div>""")
         }
     }.joinToString("<br>")
 
-    private fun String.withBr() = replace(System.lineSeparator(), "<br>")
+    private fun Agreement.toHtml(): String {
+        var html = text.replace(System.lineSeparator(), "<br>")
+        if (openLinkInDefaultBrowser) {
+            html = html.replace(HREF_PATTERN) { matchResult ->
+                val href = matchResult.groupValues[1]
+                """<a class="defaultBrowser" href="$href">"""
+            }
+        }
+        return html
+    }
 
     companion object {
+        val HREF_PATTERN = """<a href="([^"]*)">""".toRegex()
+
         fun loadCurrentTemplate(): AgreementTemplate {
             val config = TaskTrackerPlugin.mainConfig.agreementConfig
                 ?: error("agreementConfig has not initialized yet!")
