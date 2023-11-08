@@ -25,9 +25,9 @@ import org.jetbrains.research.tasktracker.tracking.fileEditor.FileEditorTracker
 import org.jetbrains.research.tasktracker.tracking.toolWindow.ToolWindowTracker
 import org.jetbrains.research.tasktracker.tracking.webcam.WebCamTracker
 import org.jetbrains.research.tasktracker.tracking.webcam.collectAllDevices
+import org.jetbrains.research.tasktracker.ui.main.panel.models.AgreementChecker
 import org.jetbrains.research.tasktracker.ui.main.panel.models.ButtonState
 import org.jetbrains.research.tasktracker.ui.main.panel.models.LinkType
-import org.jetbrains.research.tasktracker.ui.main.panel.models.AgreementChecker
 import org.jetbrains.research.tasktracker.ui.main.panel.panelStates.agreementAcceptance
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.GlobalPluginStorage
 import org.jetbrains.research.tasktracker.ui.main.panel.template.HtmlTemplate

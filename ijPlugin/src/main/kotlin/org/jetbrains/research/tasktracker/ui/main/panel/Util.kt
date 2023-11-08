@@ -1,9 +1,9 @@
 package org.jetbrains.research.tasktracker.ui.main.panel
 
-import org.jetbrains.research.tasktracker.ui.main.panel.models.ButtonState
-import org.jetbrains.research.tasktracker.ui.main.panel.models.LinkType
 import com.intellij.openapi.util.io.FileUtil
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
+import org.jetbrains.research.tasktracker.ui.main.panel.models.ButtonState
+import org.jetbrains.research.tasktracker.ui.main.panel.models.LinkType
 import org.jetbrains.research.tasktracker.util.UIBundle
 import java.awt.event.ActionListener
 import java.io.File
