@@ -6,5 +6,5 @@ pluginManagement {
 }
 
 rootProject.name = "tasktracker-3"
-include("ijPlugin")
-include("ijServer")
+include("ij-plugin")
+include("ij-server")
