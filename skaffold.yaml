@@ -1,0 +1,8 @@
+apiVersion: skaffold/v4beta8
+kind: Config
+build:
+  artifacts:
+    - image: ij-server-image
+      context: .
+      jib:
+        project: :ij-server
