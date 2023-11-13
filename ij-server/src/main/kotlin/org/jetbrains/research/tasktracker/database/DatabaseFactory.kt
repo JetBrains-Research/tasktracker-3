@@ -10,7 +10,7 @@ import org.jetbrains.research.tasktracker.database.models.data.*
 object DatabaseFactory {
     fun init() {
         val database = Database.connect(
-            url = System.getenv("DB_HOST"),
+            url = System.getenv("DB_URL"),
             driver = "org.postgresql.Driver",
             user = System.getenv("DB_USERNAME"),
             password = System.getenv("DB_PASSWORD")
