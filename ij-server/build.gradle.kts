@@ -26,9 +26,3 @@ dependencies {
     testImplementation(rootProject.libs.ktor.server.tests)
     testImplementation(rootProject.libs.h2)
 }
-
-jib {
-    to {
-        image = "new1"
-    }
-}
