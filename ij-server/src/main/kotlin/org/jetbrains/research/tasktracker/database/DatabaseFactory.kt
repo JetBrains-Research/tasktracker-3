@@ -10,10 +10,10 @@ import org.jetbrains.research.tasktracker.database.models.data.*
 object DatabaseFactory {
     fun init() {
         val database = Database.connect(
-            url = System.getenv("POSTGRES_URL"),
+            url = System.getenv("DB_URL"),
             driver = "org.postgresql.Driver",
-            user = System.getenv("POSTGRES_USER"),
-            password = System.getenv("POSTGRES_PASSWORD")
+            user = System.getenv("DB_USERNAME"),
+            password = System.getenv("DB_PASSWORD")
         )
         transaction(database) {
             arrayOf(
