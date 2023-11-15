@@ -3,6 +3,7 @@ package org.jetbrains.research.tasktracker.config.scenario
 import kotlinx.serialization.Serializable
 import org.jetbrains.research.tasktracker.config.BaseConfig
 import org.jetbrains.research.tasktracker.config.YamlConfigLoadStrategy
+import org.jetbrains.research.tasktracker.config.scenario.models.Scenario
 import java.io.File
 
 @Serializable

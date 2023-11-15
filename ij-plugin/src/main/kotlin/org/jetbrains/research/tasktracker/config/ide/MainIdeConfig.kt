@@ -2,6 +2,7 @@ package org.jetbrains.research.tasktracker.config.ide
 
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
+import kotlinx.serialization.Serializable
 import org.jetbrains.research.tasktracker.config.BaseProjectConfig
 import org.jetbrains.research.tasktracker.config.ide.inspection.InspectionConfig
 import org.jetbrains.research.tasktracker.config.ide.settings.SettingsConfig
@@ -10,9 +11,11 @@ import org.jetbrains.research.tasktracker.handler.BaseProjectHandler
 import org.jetbrains.research.tasktracker.handler.ide.IdeHandler
 import java.io.File
 
-class MainIdeConfig : BaseProjectConfig {
-    var inspectionConfig: InspectionConfig? = null
+@Serializable
+data class MainIdeConfig(
+    var inspectionConfig: InspectionConfig? = null,
     var settingsConfig: SettingsConfig? = null
+) : BaseProjectConfig {
     override val configName: String
         get() = "main_ide"
 
