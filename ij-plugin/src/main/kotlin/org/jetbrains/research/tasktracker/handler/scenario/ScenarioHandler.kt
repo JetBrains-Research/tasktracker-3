@@ -1,8 +1,8 @@
 package org.jetbrains.research.tasktracker.handler.scenario
 
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
-import org.jetbrains.research.tasktracker.config.scenario.ScenarioStep
-import org.jetbrains.research.tasktracker.config.scenario.ScenarioUnitType
+import org.jetbrains.research.tasktracker.config.scenario.models.ScenarioStep
+import org.jetbrains.research.tasktracker.config.scenario.models.ScenarioUnitType
 
 @Suppress("UnusedPrivateMember")
 class ScenarioHandler(private val mainConfig: MainTaskTrackerConfig) {

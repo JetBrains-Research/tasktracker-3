@@ -1,4 +1,4 @@
-package org.jetbrains.research.tasktracker.config.scenario
+package org.jetbrains.research.tasktracker.config.scenario.models
 
 import com.intellij.openapi.diagnostic.Logger
 import kotlinx.serialization.KSerializer
@@ -8,30 +8,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import org.jetbrains.research.tasktracker.TaskTrackerPlugin
-import org.jetbrains.research.tasktracker.config.BaseConfig
 import java.util.*
-
-enum class ScenarioUnitType {
-    TASK_CONTENT,
-
-    // TODO: add other types of content
-    IDE_SETTINGS;
-
-    val config: BaseConfig?
-        get() = when (this) {
-            TASK_CONTENT -> TaskTrackerPlugin.mainConfig.taskContentConfig
-            IDE_SETTINGS -> TaskTrackerPlugin.mainConfig.mainIdeConfig
-        }
-}
-
-@Serializable
-data class ScenarioStep(
-    // TODO: sort according to the plugin's implementation to make sure in the right order
-    val units: List<ScenarioUnitType>
-) {
-    fun isValid() = units.any { it.config != null }
-}
 
 @Serializable
 data class Scenario(
