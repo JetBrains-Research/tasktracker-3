@@ -17,7 +17,10 @@ data class Scenario(
     @Transient
     private val logger: Logger = Logger.getInstance(javaClass)
 
-    fun getNextStep(): ScenarioStep? {
+    @Transient
+    private var currentStepIterator: Iterator<ScenarioUnit>? = null
+
+    private fun getNextStep(): ScenarioStep? {
         var isValid: Boolean
         var step: ScenarioStep
         do {
@@ -33,6 +36,18 @@ data class Scenario(
             }
         } while (!isValid)
         return step
+    }
+
+    @Suppress("ReturnCount")
+    fun getNextUnit(): ScenarioUnit? {
+        if (currentStepIterator?.hasNext() != true) {
+            val currentStep = getNextStep() ?: return null
+            currentStepIterator = currentStep.getUnits().iterator()
+            if (currentStepIterator?.hasNext() != true) {
+                return null
+            }
+        }
+        return currentStepIterator?.next()
     }
 
     private class QueueSerializer<T>(private val dataSerializer: KSerializer<T>) :

@@ -5,7 +5,6 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.StartupActivity
 import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
-import org.jetbrains.research.tasktracker.handler.scenario.ScenarioHandler
 
 // Put into plugin.xml
 class InitActivity : StartupActivity {
@@ -20,11 +19,11 @@ class InitActivity : StartupActivity {
     override fun runActivity(project: Project) {
         TaskTrackerPlugin.initializationHandler.setupEnvironment(project) // TODO: move to the start point of the task
         TaskTrackerPlugin.mainConfig.scenarioConfig?.let { scenarioConf ->
-            scenarioConf.scenario.getNextStep()?.let { scenarioStep ->
-                with(ScenarioHandler(TaskTrackerPlugin.mainConfig)) {
-                    scenarioStep.run()
-                }
-            } ?: logger.warn("Try to init the plugin, but the scenario is empty or invalid")
+//            scenarioConf.scenario.getNextStep()?.let { scenarioStep ->
+//                with(ScenarioHandler(TaskTrackerPlugin.mainConfig)) {
+//                    scenarioStep.run()
+//                }
+//            } ?: logger.warn("Try to init the plugin, but the scenario is empty or invalid")
         } ?: logger.warn("Please, provide a scenario for the plugin behaviour")
     }
 }
