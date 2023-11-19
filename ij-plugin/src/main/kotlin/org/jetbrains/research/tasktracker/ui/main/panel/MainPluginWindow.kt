@@ -102,6 +102,8 @@ class MainPluginWindow(service: MainWindowService) {
         }
     }
 
+    fun openExternalUrl(url: String) = windowBrowser.loadURL(url)
+
     companion object {
         const val JS_QUERY_POOL_SIZE = 100
     }

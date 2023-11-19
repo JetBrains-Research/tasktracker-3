@@ -22,7 +22,7 @@ formatting:
 complexity:
   TooManyFunctions:
     thresholdInObjects: 14
-    thresholdInClasses: 13
+    thresholdInClasses: 14
 
 performance:
   SpreadOperator:

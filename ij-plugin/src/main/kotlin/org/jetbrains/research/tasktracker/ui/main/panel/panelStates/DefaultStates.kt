@@ -54,26 +54,22 @@ fun Panel.welcomePage() {
  * Switches the panel to the task selection window.
  */
 @Suppress("UnusedPrivateMember")
-private fun Panel.selectTask() {
-    loadBasePage(
-        TasksPageTemplate(MainPanelStorage.taskIdTask.values.toList()), "ui.button.select", true
-    )
+private fun Panel.selectTask(taskIds: List<String>, allRequired: Boolean = true) {
+    val tasks = TaskTrackerPlugin.mainConfig.taskContentConfig?.tasks?.filter { it.id in taskIds } ?: emptyList()
+    loadBasePage(TasksPageTemplate(tasks))
     setNextAction {
         mainWindow.getElementValue("tasks").onSuccess { name ->
-            processTask(name.toString())
+            solveTask(name.toString(), if (allRequired) taskIds.filter { it != name } else emptyList())
         }.onError {
             error(it.localizedMessage)
         }
-    }
-    setBackAction {
-        welcomePage()
     }
 }
 
 /**
  * Loads configs by selected task and language
  */
-fun Panel.processTask(id: String) {
+fun Panel.processTask(id: String): Task {
     startTracking() // TODO
     val task =
         MainPanelStorage.taskIdTask.values.find { it.id == id } ?: error("Can't find task with id '$id'")
@@ -83,20 +79,25 @@ fun Panel.processTask(id: String) {
     (task as? TaskWithFiles)?.focusFileId?.let { fileId ->
         focusOnfFileById(task, fileId)
     }
-    solveTask(task)
+    return task
 }
 
 /**
  * Switches the panel to the task solving window.
  * It contains task name, description and I/O data.
  */
-private fun Panel.solveTask(task: Task) {
+private fun Panel.solveTask(id: String, nextTasks: List<String> = emptyList()) {
+    val task = processTask(id)
     val activityTracker = ActivityTracker(project)
     activityTracker.startTracking() // TODO
     loadBasePage(SolvePageTemplate(task))
     setNextAction {
         TaskFileHandler.disposeTask(project, task)
-        processScenario()
+        if (nextTasks.isNotEmpty()) {
+            selectTask(nextTasks)
+        } else {
+            processScenario()
+        }
     }
     listenFileRedirection(task)
 }
@@ -115,9 +116,11 @@ fun Panel.survey() {
 
 fun Panel.serverErrorPage() {
     trackers.clear()
-    loadBasePage(
-        ServerErrorPage(), "ui.button.welcome", false, isVisibleNextButton = false
-    )
+    loadBasePage(ServerErrorPage(), "ui.button.welcome", false)
+}
+
+fun Panel.finalPage() {
+    loadBasePage(FinalPageTemplate.loadCurrentTemplate(), "ui.button.welcome")
 }
 
 fun Panel.processScenario() {
@@ -126,15 +129,15 @@ fun Panel.processScenario() {
             ?: error("Unexpected error, Scenario config must exist!")
     when (val unit = scenario.getNextUnit(project)) {
         is TaskListUnit -> {
-            TODO()
+            selectTask(unit.tasks)
         }
 
         is TaskListWithSingleChoiceUnit -> {
-            TODO()
+            selectTask(unit.tasks, allRequired = false)
         }
 
         is TaskUnit -> {
-            processTask(unit.id)
+            solveTask(unit.id)
         }
 
         is IdeSettingUnit -> {
@@ -150,11 +153,11 @@ fun Panel.processScenario() {
         }
 
         is ExternalSourceUnit -> {
-            TODO()
+            openExternalUrl(unit.url)
         }
 
         null -> {
-            TODO()
+            finalPage()
         }
     }
 }
