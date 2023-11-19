@@ -10,11 +10,11 @@ sealed interface ScenarioUnit
 
 @Serializable
 @SerialName("List")
-class TaskListUnit(val tasks: List<Int>) : ScenarioUnit
+class TaskListUnit(val tasks: List<String>) : ScenarioUnit
 
 @Serializable
 @SerialName("SingleList")
-class TaskListWithSingleChoiceUnit(val tasks: List<Int>) : ScenarioUnit
+class TaskListWithSingleChoiceUnit(val tasks: List<String>) : ScenarioUnit
 
 @Serializable
 @SerialName("Task")

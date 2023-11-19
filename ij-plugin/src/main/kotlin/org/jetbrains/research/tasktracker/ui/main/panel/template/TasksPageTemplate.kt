@@ -8,7 +8,6 @@ class TasksPageTemplate(private val tasks: List<Task>) : HtmlBaseFileTemplate() 
     override val arguments: Array<String>
         get() = arrayOf(optionTags())
 
-    // TODO: change to select by id
     private fun optionTags() =
-        tasks.joinToString(System.lineSeparator()) { "<option value=\"${it.name}\">${it.name}</option>" }
+        tasks.joinToString(System.lineSeparator()) { "<option value=\"${it.id}\">${it.name}</option>" }
 }

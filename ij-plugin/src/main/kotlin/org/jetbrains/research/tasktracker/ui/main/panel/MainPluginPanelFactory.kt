@@ -194,6 +194,8 @@ class MainPluginPanelFactory : ToolWindowFactory {
             true
         }
 
+    fun openExternalUrl(url: String) = mainWindow.openExternalUrl(url)
+
     fun setNextAction(listener: ActionListener) = nextButton.setListener(listener)
 
     fun setBackAction(listener: ActionListener) = backButton.setListener(listener)
