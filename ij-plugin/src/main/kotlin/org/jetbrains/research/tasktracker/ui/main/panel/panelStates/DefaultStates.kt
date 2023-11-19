@@ -1,11 +1,13 @@
 package org.jetbrains.research.tasktracker.ui.main.panel.panelStates
 
 import com.intellij.openapi.application.ApplicationManager
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.config.content.task.base.Task
 import org.jetbrains.research.tasktracker.config.content.task.base.TaskWithFiles
-import org.jetbrains.research.tasktracker.requests.FileRequests.send
+import org.jetbrains.research.tasktracker.config.scenario.models.*
 import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
 import org.jetbrains.research.tasktracker.tracking.activity.ActivityTracker
 import org.jetbrains.research.tasktracker.ui.main.panel.MainPluginPanelFactory
@@ -43,10 +45,7 @@ fun Panel.agreementAcceptance() {
 fun Panel.welcomePage() {
     loadBasePage(MainPageTemplate.loadCurrentTemplate(), "ui.button.next", true)
     setNextAction {
-        selectTask()
-    }
-    setBackAction {
-        agreementAcceptance()
+        processScenario()
     }
 }
 
@@ -54,6 +53,7 @@ fun Panel.welcomePage() {
 /**
  * Switches the panel to the task selection window.
  */
+@Suppress("UnusedPrivateMember")
 private fun Panel.selectTask() {
     loadBasePage(
         TasksPageTemplate(MainPanelStorage.taskIdTask.values.toList()), "ui.button.select", true
@@ -73,16 +73,15 @@ private fun Panel.selectTask() {
 /**
  * Loads configs by selected task and language
  */
-private fun Panel.processTask(name: String) {
-    startTracking()
-    // TODO: change to task by id
+fun Panel.processTask(id: String) {
+    startTracking() // TODO
     val task =
-        MainPanelStorage.taskIdTask.values.find { it.name == name } ?: error("Can't find task with name '$name'")
+        MainPanelStorage.taskIdTask.values.find { it.id == id } ?: error("Can't find task with id '$id'")
     ApplicationManager.getApplication().invokeAndWait {
         TaskFileHandler.initTask(project, task)
     }
-    (task as? TaskWithFiles)?.focusFileId?.let { id ->
-        focusOnfFileById(task, id)
+    (task as? TaskWithFiles)?.focusFileId?.let { fileId ->
+        focusOnfFileById(task, fileId)
     }
     solveTask(task)
 }
@@ -93,49 +92,24 @@ private fun Panel.processTask(name: String) {
  */
 private fun Panel.solveTask(task: Task) {
     val activityTracker = ActivityTracker(project)
-    activityTracker.startTracking()
-    loadBasePage(
-        SolvePageTemplate(task), "ui.button.submit", true
-    )
-    setBackAction {
-        TaskFileHandler.disposeTask(project, task)
-        mainWindow.removeHandlers()
-        selectTask()
-        activityTracker.stopTracking()
-    }
+    activityTracker.startTracking() // TODO
+    loadBasePage(SolvePageTemplate(task))
     setNextAction {
         TaskFileHandler.disposeTask(project, task)
-        mainWindow.removeHandlers()
-        welcomePage()
-        activityTracker.stopTracking()
+        processScenario()
     }
     listenFileRedirection(task)
 }
 
-private fun Panel.survey() {
-    loadBasePage(
-        SurveyTemplate.loadCurrentTemplate(), "ui.button.submit", true
-    )
+@OptIn(DelicateCoroutinesApi::class)
+fun Panel.survey() {
+    loadBasePage(SurveyTemplate.loadCurrentTemplate())
     setNextAction {
         val surveyParser = SurveyParser(mainWindow, project)
-        // TODO: rewrite
         GlobalScope.launch {
             surveyParser.parseAndLog()
-            // TODO: unify
-            val isSuccessful = surveyParser.send()
-            if (!isSuccessful) {
-                serverErrorPage()
-            }
-            trackers.forEach {
-                it.stopTracking()
-            }
-            trackers.forEach {
-                if (!it.send()) {
-                    serverErrorPage()
-                }
-            }
-            trackers.clear()
         }
+        processScenario()
     }
 }
 
@@ -144,4 +118,43 @@ fun Panel.serverErrorPage() {
     loadBasePage(
         ServerErrorPage(), "ui.button.welcome", false, isVisibleNextButton = false
     )
+}
+
+fun Panel.processScenario() {
+    val scenario =
+        TaskTrackerPlugin.mainConfig.scenarioConfig?.scenario
+            ?: error("Unexpected error, Scenario config must exist!")
+    when (val unit = scenario.getNextUnit(project)) {
+        is TaskListUnit -> {
+            TODO()
+        }
+
+        is TaskListWithSingleChoiceUnit -> {
+            TODO()
+        }
+
+        is TaskUnit -> {
+            processTask(unit.id)
+        }
+
+        is IdeSettingUnit -> {
+            unit.mainIdeConfig.buildHandler(project).also {
+                MainPanelStorage.activeIdeHandlers.addFirst(it)
+                it.setup()
+            }
+            processScenario()
+        }
+
+        is SurveyUnit -> {
+            survey()
+        }
+
+        is ExternalSourceUnit -> {
+            TODO()
+        }
+
+        null -> {
+            TODO()
+        }
+    }
 }

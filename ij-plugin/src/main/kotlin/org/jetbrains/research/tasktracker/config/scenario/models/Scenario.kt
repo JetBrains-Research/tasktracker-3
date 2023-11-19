@@ -1,6 +1,7 @@
 package org.jetbrains.research.tasktracker.config.scenario.models
 
 import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.project.Project
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
@@ -8,6 +9,7 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import org.jetbrains.research.tasktracker.ui.main.panel.storage.MainPanelStorage
 import java.util.*
 
 @Serializable
@@ -39,9 +41,11 @@ data class Scenario(
     }
 
     @Suppress("ReturnCount")
-    fun getNextUnit(): ScenarioUnit? {
+    fun getNextUnit(project: Project): ScenarioUnit? {
         if (currentStepIterator?.hasNext() != true) {
+            cleanStepSettings()
             val currentStep = getNextStep() ?: return null
+            currentStep.prepareSettings(project)
             currentStepIterator = currentStep.getUnits().iterator()
             if (currentStepIterator?.hasNext() != true) {
                 return null
@@ -49,6 +53,11 @@ data class Scenario(
         }
         return currentStepIterator?.next()
     }
+
+    private fun cleanStepSettings() =
+        MainPanelStorage.activeIdeHandlers.forEach {
+            it.destroy()
+        }
 
     private class QueueSerializer<T>(private val dataSerializer: KSerializer<T>) :
         KSerializer<Queue<T>> {

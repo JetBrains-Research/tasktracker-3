@@ -1,9 +1,7 @@
 package org.jetbrains.research.tasktracker.ui.main.panel
 
 import com.intellij.openapi.util.io.FileUtil
-import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
-import org.jetbrains.research.tasktracker.config.scenario.models.*
 import org.jetbrains.research.tasktracker.ui.main.panel.models.ButtonState
 import org.jetbrains.research.tasktracker.ui.main.panel.models.LinkType
 import org.jetbrains.research.tasktracker.util.UIBundle
@@ -80,34 +78,4 @@ fun saveAgreements(agreementString: String) {
     val agreementFile = File(MainTaskTrackerConfig.agreementFilePath)
     FileUtil.createIfDoesntExist(agreementFile)
     agreementFile.writeText(agreementString)
-}
-
-fun processScenario() {
-    val scenario =
-        TaskTrackerPlugin.mainConfig.scenarioConfig?.scenario ?: error("Unexpected error, Scenario config must exist!")
-    when (TaskTrackerPlugin.mainConfig.scenarioConfig?.scenario?.getNextUnit()) {
-        is TaskListUnit -> {
-            TODO()
-        }
-
-        is TaskUnit -> {
-            TODO()
-        }
-
-        is IdeSettingUnit -> {
-            TODO()
-        }
-
-        is SurveyUnit -> {
-            TODO()
-        }
-
-        is ExternalSourceUnit -> {
-            TODO()
-        }
-
-        null -> {
-            TODO()
-        }
-    }
 }

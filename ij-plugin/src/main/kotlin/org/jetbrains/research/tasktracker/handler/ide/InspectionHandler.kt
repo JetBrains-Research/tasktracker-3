@@ -14,8 +14,10 @@ import org.jetbrains.research.tasktracker.handler.BaseProjectHandler
 class InspectionHandler(override val config: InspectionConfig, override val project: Project) : BaseProjectHandler {
     private var inspectionDisposable: Disposable? = null
     private val logger: Logger = Logger.getInstance(InspectionHandler::class.java)
+    private var initialProfile: InspectionProfileImpl? = null
 
     override fun setup() {
+        initialProfile = ProjectInspectionProfileManager.getInstance(project).currentProfile
         // creating a new profile to make changes only in the current project
         val profile = initTaskProfile(project)
         applyConfig(profile)
@@ -58,6 +60,9 @@ class InspectionHandler(override val config: InspectionConfig, override val proj
     }
 
     override fun destroy() {
+        initialProfile?.let {
+            ProjectInspectionProfileManager.getInstance(project).setCurrentProfile(it)
+        }
         inspectionDisposable?.let { Disposer.dispose(it) }
     }
 
