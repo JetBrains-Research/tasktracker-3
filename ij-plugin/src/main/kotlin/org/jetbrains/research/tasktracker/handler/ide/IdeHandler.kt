@@ -18,4 +18,8 @@ class IdeHandler(override val config: MainIdeConfig, override val project: Proje
             it?.setup()
         }
     }
+
+    override fun destroy() {
+        // TODO destroy
+    }
 }

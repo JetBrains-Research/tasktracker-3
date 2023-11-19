@@ -5,11 +5,12 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import org.jetbrains.research.tasktracker.config.ide.MainIdeConfig
 import org.jetbrains.research.tasktracker.handler.BaseProjectHandler
+import org.jetbrains.research.tasktracker.ui.main.panel.storage.MainPanelStorage
 
 @Serializable
 data class ScenarioStep(
-    private val ideConfig: MainIdeConfig?,
     private val units: List<ScenarioUnit>,
+    private val ideConfig: MainIdeConfig? = null,
     val mode: ScenarioStepMode = ScenarioStepMode.ORDERED
 ) {
 
@@ -18,7 +19,10 @@ data class ScenarioStep(
 
     fun prepareSettings(project: Project) {
         mainIdeHandler = ideConfig?.buildHandler(project)
-        mainIdeHandler?.setup()
+        mainIdeHandler?.let {
+            MainPanelStorage.activeIdeHandlers.addFirst(it)
+            it.setup()
+        }
     }
 
     fun getUnits() = when (mode) {

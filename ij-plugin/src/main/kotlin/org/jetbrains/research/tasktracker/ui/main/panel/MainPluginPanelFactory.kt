@@ -97,17 +97,19 @@ class MainPluginPanelFactory : ToolWindowFactory {
 
     fun loadBasePage(
         template: HtmlTemplate,
-        buttonTextKey: String,
-        isVisibleBackButton: Boolean = true,
+        buttonTextKey: String? = null,
+        isVisibleBackButton: Boolean = false,
         backButtonText: String? = null,
         isVisibleNextButton: Boolean = true
     ) {
         mainWindow.loadHtmlTemplate(template)
-        nextButton.text = UIBundle.message(buttonTextKey)
         backButton.isVisible = isVisibleBackButton
         nextButton.isVisible = isVisibleNextButton
         backButtonText?.let {
             backButton.text = backButtonText
+        }
+        buttonTextKey?.let {
+            nextButton.text = UIBundle.message(buttonTextKey)
         }
     }
 
