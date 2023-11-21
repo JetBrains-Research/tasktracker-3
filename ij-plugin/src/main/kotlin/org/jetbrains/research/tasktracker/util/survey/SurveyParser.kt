@@ -2,7 +2,6 @@ package org.jetbrains.research.tasktracker.util.survey
 
 import com.intellij.openapi.project.Project
 import org.jetbrains.concurrency.await
-import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.config.survey.*
 import org.jetbrains.research.tasktracker.tracking.Loggable
 import org.jetbrains.research.tasktracker.ui.main.panel.MainPluginWindow
@@ -11,9 +10,8 @@ import java.io.File
 class SurveyParser(private val mainWindow: MainPluginWindow, project: Project) : Loggable {
     private val surveyLogger = SurveyLogger(project)
 
-    private val items = TaskTrackerPlugin.mainConfig.surveyConfig?.htmlQuestions ?: emptyList()
-
-    suspend fun parseAndLog() = items.forEachIndexed { index, surveyItem -> parseAndLog(surveyItem, index) }
+    suspend fun parseAndLog(survey: Survey) =
+        survey.htmlQuestions.forEachIndexed { index, surveyItem -> parseAndLog(surveyItem, index) }
 
     private suspend fun parseAndLog(item: HtmlQuestion, id: Int) {
         when (item) {

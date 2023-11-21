@@ -7,11 +7,9 @@ import java.io.File
 
 @Serializable
 class SurveyConfig : BaseConfig {
-    val htmlQuestions: List<HtmlQuestion> = emptyList()
+    val surveys: List<Survey> = emptyList()
     override val configName: String
         get() = CONFIG_FILE_PREFIX
-
-    fun toHtml() = htmlQuestions.joinToString(System.lineSeparator()) { it.toHtml() }
 
     companion object {
         const val CONFIG_FILE_PREFIX: String = "survey"
