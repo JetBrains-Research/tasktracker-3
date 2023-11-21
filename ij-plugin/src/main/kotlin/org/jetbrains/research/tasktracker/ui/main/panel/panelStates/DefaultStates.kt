@@ -103,12 +103,14 @@ private fun Panel.solveTask(id: String, nextTasks: List<String> = emptyList()) {
 }
 
 @OptIn(DelicateCoroutinesApi::class)
-fun Panel.survey() {
-    loadBasePage(SurveyTemplate.loadCurrentTemplate())
+fun Panel.survey(id: String) {
+    val survey = TaskTrackerPlugin.mainConfig.surveyConfig?.surveys?.find { it.id == id }
+        ?: error("Survey with id `$id` hasn't been found.")
+    loadBasePage(SurveyTemplate(survey))
     setNextAction {
         val surveyParser = SurveyParser(mainWindow, project)
         GlobalScope.launch {
-            surveyParser.parseAndLog()
+            surveyParser.parseAndLog(survey)
         }
         processScenario()
     }
@@ -121,6 +123,9 @@ fun Panel.serverErrorPage() {
 
 fun Panel.finalPage() {
     loadBasePage(FinalPageTemplate.loadCurrentTemplate(), "ui.button.welcome")
+    setNextAction {
+        welcomePage()
+    }
 }
 
 fun Panel.processScenario() {
@@ -129,11 +134,11 @@ fun Panel.processScenario() {
             ?: error("Unexpected error, Scenario config must exist!")
     when (val unit = scenario.getNextUnit(project)) {
         is TaskListUnit -> {
-            selectTask(unit.tasks)
+            selectTask(unit.taskIds)
         }
 
         is TaskListWithSingleChoiceUnit -> {
-            selectTask(unit.tasks, allRequired = false)
+            selectTask(unit.taskIds, allRequired = false)
         }
 
         is TaskUnit -> {
@@ -149,7 +154,7 @@ fun Panel.processScenario() {
         }
 
         is SurveyUnit -> {
-            survey()
+            survey(unit.id)
         }
 
         is ExternalSourceUnit -> {

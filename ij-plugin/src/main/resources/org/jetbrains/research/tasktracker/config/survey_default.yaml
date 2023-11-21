@@ -1,206 +1,208 @@
-htmlQuestions:
-  - !<Input>
-    text: Approximately how many hours did you use the plugin?
-    elementId: hours
-    type: number
-    required: true
-    min: 0
-    step: 0.5
-  - !<Radio>
-    text: 2. On a scale of 1 (very unlikely) to 5 (very likely), how likely are you to continue using the Emotion Tracker in the future?
-    elementId: likely
-    info:
-      - id: likely1
-        value: 1
-      - id: likely2
-        value: 2
-      - id: likely3
-        value: 3
-      - id: likely4
-        value: 4
-      - id: likely5
-        value: 5
-  - !<Radio>
-    text: 3. On a scale of 1 (not at all) to 5 (extremely), how much did the Emotion Tracker disrupt your workflow?
-    elementId: disrupt
-    info:
-      - id: disrupt1
-        value: 1
-      - id: disrupt2
-        value: 2
-      - id: disrupt3
-        value: 3
-      - id: disrupt4
-        value: 4
-      - id: disrupt5
-        value: 5
-  - !<Radio>
-    text: 4. On a scale of 1 (very inaccurate) to 5 (very accurate), how accurately did the Emotion Tracker capture your emotions?
-    elementId: accuracy
-    info:
-      - id: accuracy1
-        value: 1
-      - id: accuracy2
-        value: 2
-      - id: accuracy3
-        value: 3
-      - id: accuracy4
-        value: 4
-      - id: accuracy5
-        value: 5
-  - !<Radio>
-    text: 5. On a scale of 1 (not at all) to 5 (very comfortable), how comfortable were you with the plugin recording your emotions while coding?
-    elementId: comfort
-    info:
-      - id: comfort1
-        value: 1
-      - id: comfort2
-        value: 2
-      - id: comfort3
-        value: 3
-      - id: comfort4
-        value: 4
-      - id: comfort5
-        value: 5
-  - !<Radio>
-    text: 6. On a scale of 1 (not at all) to 5 (extremely), how helpful did you find the messages provided by the Emotion Tracker in aiding your self-regulation?
-    elementId: helpful
-    info:
-      - id: helpful1
-        value: 1
-      - id: helpful2
-        value: 2
-      - id: helpful3
-        value: 3
-      - id: helpful4
-        value: 4
-      - id: helpful5
-        value: 5
-  - !<Container>
-    text: 7. During your experience with the Emotion Tracker, how often did you feel the following emotions?
-    questions:
+surveys:
+  - id: default
+    htmlQuestions:
+      - !<Input>
+        text: Approximately how many hours did you use the plugin?
+        elementId: hours
+        type: number
+        required: true
+        min: 0
+        step: 0.5
       - !<Radio>
-        text: Happiness
-        textSize: 4
-        elementId: happiness
+        text: 2. On a scale of 1 (very unlikely) to 5 (very likely), how likely are you to continue using the Emotion Tracker in the future?
+        elementId: likely
         info:
-          - id: never_happy
-            value: Never
-          - id: rarely_happy
-            value: Rarely
-          - id: sometimes_happy
-            value: Sometimes
-          - id: often_happy
-            value: Often
-          - id: most_happy
-            value: Most of the time
+          - id: likely1
+            value: 1
+          - id: likely2
+            value: 2
+          - id: likely3
+            value: 3
+          - id: likely4
+            value: 4
+          - id: likely5
+            value: 5
       - !<Radio>
-        text: Surprise
-        textSize: 4
-        elementId: surprise
+        text: 3. On a scale of 1 (not at all) to 5 (extremely), how much did the Emotion Tracker disrupt your workflow?
+        elementId: disrupt
         info:
-          - id: never_surprise
-            value: Never
-          - id: rarely_surprise
-            value: Rarely
-          - id: sometimes_surprise
-            value: Sometimes
-          - id: often_surprise
-            value: Often
-          - id: most_surprise
-            value: Most of the time
+          - id: disrupt1
+            value: 1
+          - id: disrupt2
+            value: 2
+          - id: disrupt3
+            value: 3
+          - id: disrupt4
+            value: 4
+          - id: disrupt5
+            value: 5
       - !<Radio>
-        text: Neutral
-        textSize: 4
-        elementId: neutral
+        text: 4. On a scale of 1 (very inaccurate) to 5 (very accurate), how accurately did the Emotion Tracker capture your emotions?
+        elementId: accuracy
         info:
-          - id: never_neutral
-            value: Never
-          - id: rarely_neutral
-            value: Rarely
-          - id: sometimes_neutral
-            value: Sometimes
-          - id: often_neutral
-            value: Often
-          - id: most_neutral
-            value: Most of the time
+          - id: accuracy1
+            value: 1
+          - id: accuracy2
+            value: 2
+          - id: accuracy3
+            value: 3
+          - id: accuracy4
+            value: 4
+          - id: accuracy5
+            value: 5
       - !<Radio>
-        text: Sadness
-        textSize: 4
-        elementId: sadness
+        text: 5. On a scale of 1 (not at all) to 5 (very comfortable), how comfortable were you with the plugin recording your emotions while coding?
+        elementId: comfort
         info:
-          - id: never_sad
-            value: Never
-          - id: rarely_sad
-            value: Rarely
-          - id: sometimes_sad
-            value: Sometimes
-          - id: often_sad
-            value: Often
-          - id: most_sad
-            value: Most of the time
+          - id: comfort1
+            value: 1
+          - id: comfort2
+            value: 2
+          - id: comfort3
+            value: 3
+          - id: comfort4
+            value: 4
+          - id: comfort5
+            value: 5
       - !<Radio>
-        text: Anger
-        textSize: 4
-        elementId: anger
+        text: 6. On a scale of 1 (not at all) to 5 (extremely), how helpful did you find the messages provided by the Emotion Tracker in aiding your self-regulation?
+        elementId: helpful
         info:
-          - id: never_anger
-            value: Never
-          - id: rarely_anger
-            value: Rarely
-          - id: sometimes_anger
-            value: Sometimes
-          - id: often_anger
-            value: Often
-          - id: most_anger
-            value: Most of the time
-      - !<Radio>
-        text: Disgust
-        textSize: 4
-        elementId: disgust
-        info:
-          - id: never_disgust
-            value: Never
-          - id: rarely_disgust
-            value: Rarely
-          - id: sometimes_disgust
-            value: Sometimes
-          - id: often_disgust
-            value: Often
-          - id: most_disgust
-            value: Most of the time
-      - !<Radio>
-        text: Fear
-        textSize: 4
-        elementId: fear
-        info:
-          - id: never_fear
-            value: Never
-          - id: rarely_fear
-            value: Rarely
-          - id: sometimes_fear
-            value: Sometimes
-          - id: often_fear
-            value: Often
-          - id: most_fear
-            value: Most of the time
-      - !<Radio>
-        text: Contempt
-        textSize: 4
-        elementId: contempt
-        info:
-          - id: never_contempt
-            value: Never
-          - id: rarely_contempt
-            value: Rarely
-          - id: sometimes_contempt
-            value: Sometimes
-          - id: often_contempt
-            value: Often
-          - id: most_contempt
-            value: Most of the time
-  - !<Textarea>
-    text: 8. Please share any additional thoughts or comments you have about your experience using the Emotion Tracker plugin.
-    elementId: additionalThoughts
-    rows: 5
-    cols: 50
+          - id: helpful1
+            value: 1
+          - id: helpful2
+            value: 2
+          - id: helpful3
+            value: 3
+          - id: helpful4
+            value: 4
+          - id: helpful5
+            value: 5
+      - !<Container>
+        text: 7. During your experience with the Emotion Tracker, how often did you feel the following emotions?
+        questions:
+          - !<Radio>
+            text: Happiness
+            textSize: 4
+            elementId: happiness
+            info:
+              - id: never_happy
+                value: Never
+              - id: rarely_happy
+                value: Rarely
+              - id: sometimes_happy
+                value: Sometimes
+              - id: often_happy
+                value: Often
+              - id: most_happy
+                value: Most of the time
+          - !<Radio>
+            text: Surprise
+            textSize: 4
+            elementId: surprise
+            info:
+              - id: never_surprise
+                value: Never
+              - id: rarely_surprise
+                value: Rarely
+              - id: sometimes_surprise
+                value: Sometimes
+              - id: often_surprise
+                value: Often
+              - id: most_surprise
+                value: Most of the time
+          - !<Radio>
+            text: Neutral
+            textSize: 4
+            elementId: neutral
+            info:
+              - id: never_neutral
+                value: Never
+              - id: rarely_neutral
+                value: Rarely
+              - id: sometimes_neutral
+                value: Sometimes
+              - id: often_neutral
+                value: Often
+              - id: most_neutral
+                value: Most of the time
+          - !<Radio>
+            text: Sadness
+            textSize: 4
+            elementId: sadness
+            info:
+              - id: never_sad
+                value: Never
+              - id: rarely_sad
+                value: Rarely
+              - id: sometimes_sad
+                value: Sometimes
+              - id: often_sad
+                value: Often
+              - id: most_sad
+                value: Most of the time
+          - !<Radio>
+            text: Anger
+            textSize: 4
+            elementId: anger
+            info:
+              - id: never_anger
+                value: Never
+              - id: rarely_anger
+                value: Rarely
+              - id: sometimes_anger
+                value: Sometimes
+              - id: often_anger
+                value: Often
+              - id: most_anger
+                value: Most of the time
+          - !<Radio>
+            text: Disgust
+            textSize: 4
+            elementId: disgust
+            info:
+              - id: never_disgust
+                value: Never
+              - id: rarely_disgust
+                value: Rarely
+              - id: sometimes_disgust
+                value: Sometimes
+              - id: often_disgust
+                value: Often
+              - id: most_disgust
+                value: Most of the time
+          - !<Radio>
+            text: Fear
+            textSize: 4
+            elementId: fear
+            info:
+              - id: never_fear
+                value: Never
+              - id: rarely_fear
+                value: Rarely
+              - id: sometimes_fear
+                value: Sometimes
+              - id: often_fear
+                value: Often
+              - id: most_fear
+                value: Most of the time
+          - !<Radio>
+            text: Contempt
+            textSize: 4
+            elementId: contempt
+            info:
+              - id: never_contempt
+                value: Never
+              - id: rarely_contempt
+                value: Rarely
+              - id: sometimes_contempt
+                value: Sometimes
+              - id: often_contempt
+                value: Often
+              - id: most_contempt
+                value: Most of the time
+      - !<Textarea>
+        text: 8. Please share any additional thoughts or comments you have about your experience using the Emotion Tracker plugin.
+        elementId: additionalThoughts
+        rows: 5
+        cols: 50

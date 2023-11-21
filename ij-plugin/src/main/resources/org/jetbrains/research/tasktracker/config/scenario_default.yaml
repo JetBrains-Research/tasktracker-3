@@ -3,9 +3,23 @@ scenario:
     - units:
         - !<Task>
           id: "hello"
+        - !<Survey>
+          id: "default"
+      mode: SHUFFLED
+    - units:
+        - !<Setting>
+          mainIdeConfig:
+            settingsConfig:
+              theme: LIGHT
+        - !<List>
+          taskIds:
+            - "hello"
+            - "example"
     - units:
         - !<SingleList>
-          tasks:
+          taskIds:
             - "hello"
             - "example"
             - "style"
+        - !<External>
+          url: "https://github.com/JetBrains-Research/tasktracker-3"
