@@ -141,9 +141,9 @@ class MainPluginPanelFactory : ToolWindowFactory {
      * Switches the editor to the virtualFile.
      */
     private fun focusOnFile(virtualFile: VirtualFile) {
-        ApplicationManager.getApplication().invokeAndWait {
+        ApplicationManager.getApplication().invokeLater {
             FileEditorManager.getInstance(project).openFile(
-                virtualFile, false
+                virtualFile, true
             )
         }
     }
