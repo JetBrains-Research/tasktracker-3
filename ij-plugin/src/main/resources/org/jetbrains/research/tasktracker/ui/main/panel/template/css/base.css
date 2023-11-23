@@ -1,5 +1,8 @@
 * {
     box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
 
 body {
@@ -12,17 +15,13 @@ body {
     font-size: 9vmin;
     margin-top: 2vmin;
     margin-bottom: 5vmin;
-    font-family: 'Inter', sans-serif;
     font-weight: 900;
 }
 
 .small-font {
-    font-family: 'Inter', sans-serif;
     font-size: 4vmin;
     margin-top: 0;
     margin-bottom: 2vmin;
-    overflow-wrap: break-word;
-    word-break: break-all;
 }
 
 .container {
@@ -36,7 +35,6 @@ body {
 }
 
 label {
-    font-family: 'Inter', sans-serif;
     font-size: 4vmin;
     font-weight: bold;
 }
@@ -47,7 +45,6 @@ label, select {
 }
 
 select {
-    font-family: 'Inter', sans-serif;
     margin-left: 5px;
     font-size: 0.8em;
     padding: 6px;
@@ -55,12 +52,10 @@ select {
     width: 200px;
 }
 
-/* unvisited link */
 a:link {
     color: #808080;
 }
 
-/* visited link */
 a:visited {
     color: #696969;
 }
