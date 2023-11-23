@@ -27,7 +27,6 @@
     font-size: 15px;
     margin-left: 3px;
     font-weight: normal !important;
-    word-wrap: break-word;
 }
 
 .required:after {
