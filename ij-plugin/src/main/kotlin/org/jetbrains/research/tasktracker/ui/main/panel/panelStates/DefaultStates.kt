@@ -89,7 +89,7 @@ fun Panel.processTask(id: String): Task {
 private fun Panel.solveTask(id: String, nextTasks: List<String> = emptyList()) {
     val task = processTask(id)
     val activityTracker = ActivityTracker(project)
-    activityTracker.startTracking() // TODO
+    activityTracker.startTracking() // TODO start tracking for all trackers instead of this one
     loadBasePage(SolvePageTemplate(task))
     setNextAction {
         TaskFileHandler.disposeTask(project, task)
