@@ -44,6 +44,7 @@ import java.awt.event.ActionListener
  * Note: This class requires JBCefApp to be supported for proper functioning.
  *
  */
+@Suppress("TooManyFunctions")
 class MainPluginPanelFactory : ToolWindowFactory {
     // TODO: init in other place, states can be saved between sessions
     private val nextButton = createJButton("ui.button.next")
