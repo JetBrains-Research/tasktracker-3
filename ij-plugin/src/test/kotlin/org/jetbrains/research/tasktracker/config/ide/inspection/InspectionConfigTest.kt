@@ -124,9 +124,9 @@ class InspectionConfigTest : LightPlatformTestCase() {
     }
 
     companion object {
-        const val DEFAULT_ENABLED_INSPECTION_SIZE = 55
-        const val DISABLE_SELECTED_ENABLED_INSPECTION_SIZE = 53
-        const val ADD_SELECTED_ENABLED_INSPECTION_SIZE = 57
+        const val DEFAULT_ENABLED_INSPECTION_SIZE = 53
+        const val DISABLE_SELECTED_ENABLED_INSPECTION_SIZE = 51
+        const val ADD_SELECTED_ENABLED_INSPECTION_SIZE = 55
         val enableSelectedTools = listOf("LongLine", "TodoComment")
         val disableSelectedTools = listOf("CheckTagEmptyBody", "RegExpRedundantEscape")
         val addSelectedTools = listOf("EmptyDirectory", "ProblematicWhitespace")
