@@ -42,21 +42,19 @@ data class Scenario(
 
     @Suppress("ReturnCount")
     fun getNextUnit(project: Project): ScenarioUnit? {
-        if (!currentStepIterator.notNullAndHasNext()) {
-            return null
+        if (currentStepIterator.notNullAndHasNext()) {
+            cleanStepSettings()
+            val currentStep = getNextStep() ?: return null
+            currentStep.prepareSettings(project)
+            currentStepIterator = currentStep.getUnits().iterator()
+            if (currentStepIterator.notNullAndHasNext()) {
+                return null
+            }
         }
-        cleanStepSettings()
-        val currentStep = getNextStep() ?: return null
-        currentStep.prepareSettings(project)
-        currentStepIterator = currentStep.getUnits().iterator()
-        return if (currentStepIterator.notNullAndHasNext()) {
-            currentStepIterator?.next()
-        } else {
-            null
-        }
+        return currentStepIterator?.next()
     }
 
-    private fun Iterator<ScenarioUnit>?.notNullAndHasNext() = this?.hasNext() ?: false
+    private fun Iterator<ScenarioUnit>?.notNullAndHasNext() = this?.hasNext() != true
 
     private fun cleanStepSettings() =
         MainPanelStorage.activeIdeHandlers.forEach {
