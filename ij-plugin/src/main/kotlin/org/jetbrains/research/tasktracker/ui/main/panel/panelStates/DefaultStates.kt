@@ -11,6 +11,7 @@ import org.jetbrains.research.tasktracker.config.scenario.models.*
 import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
 import org.jetbrains.research.tasktracker.tracking.activity.ActivityTracker
 import org.jetbrains.research.tasktracker.ui.main.panel.MainPluginPanelFactory
+import org.jetbrains.research.tasktracker.ui.main.panel.runOnSuccess
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.MainPanelStorage
 import org.jetbrains.research.tasktracker.ui.main.panel.template.*
 import org.jetbrains.research.tasktracker.util.UIBundle
@@ -25,17 +26,13 @@ typealias Panel = MainPluginPanelFactory
 fun Panel.agreementAcceptance() {
     loadBasePage(AgreementTemplate.loadCurrentTemplate(), "ui.button.next", false)
     setNextAction {
-        checkInputs()
-            .onSuccess {
-                if (!it) {
-                    welcomePage()
-                } else {
-                    notifyError(project, UIBundle.message("ui.please.fill"))
-                }
+        checkInputs().runOnSuccess {
+            if (!it) {
+                welcomePage()
+            } else {
+                notifyError(project, UIBundle.message("ui.please.fill"))
             }
-            .onError {
-                error(it.localizedMessage)
-            }
+        }
     }
 }
 
@@ -58,10 +55,8 @@ private fun Panel.selectTask(taskIds: List<String>, allRequired: Boolean = true)
     val tasks = TaskTrackerPlugin.mainConfig.taskContentConfig?.tasks?.filter { it.id in taskIds } ?: emptyList()
     loadBasePage(TasksPageTemplate(tasks))
     setNextAction {
-        mainWindow.getElementValue("tasks").onSuccess { name ->
+        mainWindow.getElementValue("tasks").runOnSuccess { name ->
             solveTask(name.toString(), if (allRequired) taskIds.filter { it != name } else emptyList())
-        }.onError {
-            error(it.localizedMessage)
         }
     }
 }

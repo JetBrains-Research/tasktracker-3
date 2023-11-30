@@ -1,6 +1,8 @@
 package org.jetbrains.research.tasktracker.ui.main.panel
 
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.util.io.FileUtil
+import org.jetbrains.concurrency.Promise
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
 import org.jetbrains.research.tasktracker.ui.main.panel.models.ButtonState
 import org.jetbrains.research.tasktracker.ui.main.panel.models.LinkType
@@ -79,3 +81,12 @@ fun saveAgreements(agreementString: String) {
     FileUtil.createIfDoesntExist(agreementFile)
     agreementFile.writeText(agreementString)
 }
+
+fun<T> Promise<T>.runOnSuccess(task: (response: T) -> Unit) =
+    onSuccess {
+        ApplicationManager.getApplication().invokeLater {
+            task(it)
+        }
+    }.onError {
+        error(it.localizedMessage)
+    }
