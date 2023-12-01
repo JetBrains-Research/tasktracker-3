@@ -43,7 +43,7 @@ fun Panel.agreementAcceptance() {
  * Switches the panel to the plugin description window.
  */
 fun Panel.welcomePage() {
-    loadBasePage(MainPageTemplate.loadCurrentTemplate(), "ui.button.next", true)
+    loadBasePage(MainPageTemplate.loadCurrentTemplate(), "ui.button.next", false)
     setNextAction {
         processScenario()
     }
@@ -122,7 +122,7 @@ fun Panel.serverErrorPage() {
 }
 
 fun Panel.finalPage() {
-    loadBasePage(FinalPageTemplate.loadCurrentTemplate(), "ui.button.welcome")
+    loadBasePage(FinalPageTemplate.loadCurrentTemplate(), "ui.button.welcome", false)
     setNextAction {
         welcomePage()
     }
@@ -162,6 +162,7 @@ fun Panel.processScenario() {
         }
 
         null -> {
+            scenario.reset()
             finalPage()
         }
     }

@@ -20,18 +20,21 @@ data class Scenario(
     private val logger: Logger = Logger.getInstance(javaClass)
 
     @Transient
+    private var currentSteps = LinkedList(steps)
+
+    @Transient
     private var currentStepIterator: Iterator<ScenarioUnit>? = null
 
     private fun getNextStep(): ScenarioStep? {
         var isValid: Boolean
         var step: ScenarioStep
         do {
-            if (steps.isEmpty()) {
+            if (currentSteps.isEmpty()) {
                 logger.warn("No steps found!")
                 return null
             }
 
-            step = steps.poll()
+            step = currentSteps.poll()
             isValid = step.isValid()
             if (!isValid) {
                 logger.warn("Found useless step, all configs are null. Skip it")
@@ -42,21 +45,23 @@ data class Scenario(
 
     @Suppress("ReturnCount")
     fun getNextUnit(project: Project): ScenarioUnit? {
-        if (!currentStepIterator.notNullAndHasNext()) {
-            return null
+        if (currentStepIterator.notNullAndHasNext()) {
+            cleanStepSettings()
+            val currentStep = getNextStep() ?: return null
+            currentStep.prepareSettings(project)
+            currentStepIterator = currentStep.getUnits().iterator()
+            if (currentStepIterator.notNullAndHasNext()) {
+                return null
+            }
         }
-        cleanStepSettings()
-        val currentStep = getNextStep() ?: return null
-        currentStep.prepareSettings(project)
-        currentStepIterator = currentStep.getUnits().iterator()
-        return if (currentStepIterator.notNullAndHasNext()) {
-            currentStepIterator?.next()
-        } else {
-            null
-        }
+        return currentStepIterator?.next()
     }
 
-    private fun Iterator<ScenarioUnit>?.notNullAndHasNext() = this?.hasNext() ?: false
+    fun reset() {
+        currentSteps = LinkedList(steps)
+    }
+
+    private fun Iterator<ScenarioUnit>?.notNullAndHasNext() = this?.hasNext() != true
 
     private fun cleanStepSettings() =
         MainPanelStorage.activeIdeHandlers.forEach {
