@@ -2,6 +2,7 @@ package org.jetbrains.research.tasktracker.config.survey
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 /**
  * Radio button id and value
@@ -23,24 +24,38 @@ sealed class HtmlQuestion {
     /**
      * `h` tag size. For example, h1, h2, and so on.
      */
-    private val textSize: Int = defaultTextSize
-        get() = if (field < minTextSize || field > maxTextSize) defaultTextSize else field
+    private val textSize: Int = DEFAULT_TEXT_SIZE
+        get() = if (field < MIN_TEXT_SIZE || field > MAX_TEXT_SIZE) DEFAULT_TEXT_SIZE else field
 
     /**
      * Sets 'required' on the input if this field is mandatory to fill out.
      */
     @SerialName("required")
-    private val isRequired: Boolean = false
-    abstract fun toHtml(): String
+    protected val isRequired: Boolean = false
+    internal abstract fun toHtml(): String
+
+    val html: String
+        get() = buildString {
+            append("<div class=\"box\" id=\"${elementId}___container\">")
+            append(toHtml())
+            append("</div>")
+        }
+
+    @Transient
+    private var alreadyRequired = false
 
     protected fun Any?.asParameter(name: String): String = this?.let { "$name=\"$it\"" } ?: ""
-    protected fun isRequiredString(): String = if (isRequired) "required" else ""
-    protected fun htmlText() = "<h$textSize>$text</h$textSize>"
+    protected open fun isRequiredString(): String =
+        if (isRequired && !alreadyRequired) "required".also { alreadyRequired = true } else ""
+
+    protected fun htmlText() = "<h$textSize ${isRequiredClass()}>$text</h$textSize>"
+
+    private fun isRequiredClass(): String = if (isRequired) "class=\"required\"" else ""
 
     companion object {
-        private const val minTextSize = 1
-        private const val maxTextSize = 5
-        private const val defaultTextSize = 3
+        private const val MIN_TEXT_SIZE = 1
+        private const val MAX_TEXT_SIZE = 5
+        private const val DEFAULT_TEXT_SIZE = 3
     }
 }
 
@@ -118,6 +133,8 @@ data class TextAreaHtmlQuestion(
         append("<textarea name=\"$elementId\" id=\"$elementId\" ${rows.asParameter("rows")} ")
         append("${cols.asParameter("cols")} ${isRequiredString()}></textarea>")
     }
+
+    override fun isRequiredString(): String = if (isRequired) "data-req=\"required\"" else ""
 }
 
 /**

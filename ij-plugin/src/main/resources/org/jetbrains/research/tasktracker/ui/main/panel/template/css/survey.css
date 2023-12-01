@@ -1,3 +1,16 @@
-h1, h2, h3, h4, h5, label {
-    color: #fefefe;
+.form-container{
+    align-items: flex-start;
+    text-align: left;
+    justify-content: left;
+}
+
+.required:after {
+    content: " *";
+    font-weight: bold;
+    color: red;
+}
+
+.box{
+    padding: 3px;
+    margin: 6px;
 }

@@ -1,3 +1,50 @@
-<form id="theForm" action="%s" method="post">
-%s
-</form>
+<div class="container">
+    <form class="form-container" id="theForm" action="%s" method="post">
+        %s
+    </form>
+</div>
+<script>
+
+    let requiredFields = document.querySelectorAll('input[required], textarea[data-req="required"]')
+    requiredFields.forEach(function (fieldTemp) {
+        let fields = document.querySelectorAll(`input[name=${fieldTemp.name}]`)
+        fields.forEach(function (field){
+            field.onclick = function () {
+                if (field.type === "radio") {
+                    defaultBorder(field.name)
+                } else {
+                    defaultBorder(field.id)
+                }
+            };
+        })
+    });
+
+    function checkAllInputs() {
+        let checker = true
+        requiredFields.forEach(function (field) {
+            if (field.type === "checkbox" && !field.checked) {
+                redBorder(field.id)
+                checker = false
+            } else if (field.type === "radio") {
+                let checked = document.querySelector(`input[name = ${field.name}]:checked`);
+                if (checked == null) {
+                    redBorder(field.name)
+                    checker = false
+                }
+            } else if (field.value.trim() === "") {
+                redBorder(field.id)
+                checker = false
+            }
+        });
+        return checker
+    }
+
+    function redBorder(id) {
+        document.getElementById(`${id}___container`).style.outline = '1px solid red'
+    }
+
+    function defaultBorder(id) {
+        document.getElementById(`${id}___container`).style.outline = '1px solid black'
+    }
+
+</script>

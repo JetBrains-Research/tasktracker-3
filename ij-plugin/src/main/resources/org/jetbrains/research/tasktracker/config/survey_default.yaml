@@ -11,6 +11,7 @@ surveys:
       - !<Radio>
         text: 2. On a scale of 1 (very unlikely) to 5 (very likely), how likely are you to continue using the Emotion Tracker in the future?
         elementId: likely
+        required: true
         info:
           - id: likely1
             value: 1

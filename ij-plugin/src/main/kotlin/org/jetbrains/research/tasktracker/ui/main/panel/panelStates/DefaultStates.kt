@@ -25,7 +25,7 @@ typealias Panel = MainPluginPanelFactory
 fun Panel.agreementAcceptance() {
     loadBasePage(AgreementTemplate.loadCurrentTemplate(), "ui.button.next", false)
     setNextAction {
-        checkInputs()
+        checkAgreementInputs()
             .onSuccess {
                 if (!it) {
                     welcomePage()

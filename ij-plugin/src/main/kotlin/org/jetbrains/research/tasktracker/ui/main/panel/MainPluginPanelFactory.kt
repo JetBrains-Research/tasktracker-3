@@ -185,7 +185,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
      *
      * @return **true** if any required field is not filled. **false** otherwise.
      */
-    fun checkInputs(): Promise<Boolean> =
+    fun checkAgreementInputs(): Promise<Boolean> =
         mainWindow.executeJavaScriptAsync("checkAllInputs()").then {
             val agreementChecker = Json.decodeFromString(AgreementChecker.serializer(), it.toString())
             if (agreementChecker.allRequiredChecked()) {
@@ -194,6 +194,10 @@ class MainPluginPanelFactory : ToolWindowFactory {
             }
             true
         }
+
+    fun checkSurveyInputs(): Promise<Boolean> = mainWindow.executeJavaScriptAsync("checkAllInputs()").then {
+        it.toBoolean()
+    }
 
     fun openExternalUrl(url: String) = mainWindow.openExternalUrl(url)
 
