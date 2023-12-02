@@ -103,11 +103,17 @@ fun Panel.survey(id: String) {
         ?: error("Survey with id `$id` hasn't been found.")
     loadBasePage(SurveyTemplate(survey))
     setNextAction {
-        val surveyParser = SurveyParser(mainWindow, project)
-        GlobalScope.launch {
-            surveyParser.parseAndLog(survey)
+        checkSurveyInputs().runOnSuccess {
+            if (it) {
+                val surveyParser = SurveyParser(mainWindow, project)
+                GlobalScope.launch {
+                    surveyParser.parseAndLog(survey)
+                }
+                processScenario()
+            } else {
+                notifyError(project, UIBundle.message("ui.please.fill"))
+            }
         }
-        processScenario()
     }
 }
 

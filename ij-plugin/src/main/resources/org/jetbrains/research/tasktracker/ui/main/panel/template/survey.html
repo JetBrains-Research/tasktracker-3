@@ -7,8 +7,8 @@
 
     let requiredFields = document.querySelectorAll('input[required], textarea[data-req="required"]')
     requiredFields.forEach(function (fieldTemp) {
-        let fields = document.querySelectorAll(`input[name=${fieldTemp.name}]`)
-        fields.forEach(function (field){
+        let fields = document.getElementsByName(fieldTemp.name);
+        fields.forEach(function (field) {
             field.onclick = function () {
                 if (field.type === "radio") {
                     defaultBorder(field.name)
@@ -44,7 +44,6 @@
     }
 
     function defaultBorder(id) {
-        document.getElementById(`${id}___container`).style.outline = '1px solid black'
+        document.getElementById(`${id}___container`).style.outline = '0px'
     }
-
 </script>

@@ -13,4 +13,5 @@
 .box{
     padding: 3px;
     margin: 6px;
+    border-radius: 3px;
 }

@@ -205,5 +205,6 @@ surveys:
       - !<Textarea>
         text: 8. Please share any additional thoughts or comments you have about your experience using the Emotion Tracker plugin.
         elementId: additionalThoughts
+        required: true
         rows: 5
         cols: 50
