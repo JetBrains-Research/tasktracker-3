@@ -15,15 +15,12 @@ import com.intellij.ui.jcef.JBCefApp
 import com.intellij.util.ui.JBUI
 import kotlinx.serialization.json.Json
 import org.jetbrains.concurrency.Promise
-import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.config.content.task.base.Task
-import org.jetbrains.research.tasktracker.modelInference.model.EmoModel
 import org.jetbrains.research.tasktracker.tracking.BaseTracker
 import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
 import org.jetbrains.research.tasktracker.tracking.activity.ActivityTracker
 import org.jetbrains.research.tasktracker.tracking.fileEditor.FileEditorTracker
 import org.jetbrains.research.tasktracker.tracking.toolWindow.ToolWindowTracker
-import org.jetbrains.research.tasktracker.tracking.webcam.WebCamTracker
 import org.jetbrains.research.tasktracker.tracking.webcam.collectAllDevices
 import org.jetbrains.research.tasktracker.ui.main.panel.models.AgreementChecker
 import org.jetbrains.research.tasktracker.ui.main.panel.models.ButtonState
@@ -79,10 +76,6 @@ class MainPluginPanelFactory : ToolWindowFactory {
         if (trackers.isNotEmpty()) { // Otherwise we can lose data
             return
         }
-        TaskTrackerPlugin.mainConfig.emotionConfig?.let {
-            GlobalPluginStorage.emoPredictor = EmoModel(it)
-        } ?: error("emotion config must exist by this moment")
-
         trackers.addAll(
             listOf(
                 ActivityTracker(project),
@@ -90,10 +83,13 @@ class MainPluginPanelFactory : ToolWindowFactory {
                 FileEditorTracker(project)
             )
         )
-        GlobalPluginStorage.emoPredictor?.let {
-            trackers.add(WebCamTracker(project, it))
-        }
         trackers.forEach { it.startTracking() }
+    }
+
+    fun stopTracking() {
+        trackers.forEach {
+            it.stopTracking()
+        }
     }
 
     fun loadBasePage(

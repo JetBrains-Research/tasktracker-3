@@ -9,7 +9,6 @@ import org.jetbrains.research.tasktracker.config.content.task.base.Task
 import org.jetbrains.research.tasktracker.config.content.task.base.TaskWithFiles
 import org.jetbrains.research.tasktracker.config.scenario.models.*
 import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
-import org.jetbrains.research.tasktracker.tracking.activity.ActivityTracker
 import org.jetbrains.research.tasktracker.ui.main.panel.MainPluginPanelFactory
 import org.jetbrains.research.tasktracker.ui.main.panel.runOnSuccess
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.MainPanelStorage
@@ -43,6 +42,7 @@ fun Panel.welcomePage() {
     loadBasePage(MainPageTemplate.loadCurrentTemplate(), "ui.button.next", false)
     setNextAction {
         TaskTrackerPlugin.initializationHandler.setupEnvironment(project)
+        startTracking()
         processScenario()
     }
 }
@@ -65,7 +65,6 @@ private fun Panel.selectTask(taskIds: List<String>, allRequired: Boolean = true)
  * Loads configs by selected task and language
  */
 fun Panel.processTask(id: String): Task {
-    startTracking() // TODO
     val task =
         MainPanelStorage.taskIdTask.values.find { it.id == id } ?: error("Can't find task with id '$id'")
     ApplicationManager.getApplication().invokeAndWait {
@@ -83,8 +82,6 @@ fun Panel.processTask(id: String): Task {
  */
 private fun Panel.solveTask(id: String, nextTasks: List<String> = emptyList()) {
     val task = processTask(id)
-    val activityTracker = ActivityTracker(project)
-    activityTracker.startTracking() // TODO start tracking for all trackers instead of this one
     loadBasePage(SolvePageTemplate(task))
     setNextAction {
         TaskFileHandler.disposeTask(project, task)
@@ -164,6 +161,7 @@ fun Panel.processScenario() {
 
         null -> {
             scenario.reset()
+            stopTracking()
             finalPage()
         }
     }
