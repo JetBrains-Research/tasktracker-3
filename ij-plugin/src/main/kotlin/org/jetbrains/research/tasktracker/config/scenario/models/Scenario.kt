@@ -12,6 +12,10 @@ import kotlinx.serialization.encoding.Encoder
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.MainPanelStorage
 import java.util.*
 
+/**
+ * Structure of the research scenario. It consists of steps.
+ * @see [ScenarioStep]
+ */
 @Serializable
 data class Scenario(
     @Serializable(with = QueueSerializer::class) val steps: Queue<ScenarioStep>
