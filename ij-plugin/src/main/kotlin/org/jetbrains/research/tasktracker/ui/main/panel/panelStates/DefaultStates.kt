@@ -42,11 +42,11 @@ fun Panel.agreementAcceptance() {
 fun Panel.welcomePage() {
     loadBasePage(MainPageTemplate.loadCurrentTemplate(), "ui.button.next", false)
     setNextAction {
+        TaskTrackerPlugin.initializationHandler.setupEnvironment(project)
         processScenario()
     }
 }
 
-// TODO refactor it for many configs
 /**
  * Switches the panel to the task selection window.
  */

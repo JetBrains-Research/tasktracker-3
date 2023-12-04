@@ -63,7 +63,7 @@ class InspectionHandler(override val config: InspectionConfig, override val proj
         initialProfile?.let {
             ProjectInspectionProfileManager.getInstance(project).setCurrentProfile(it)
         }
-        inspectionDisposable?.let { Disposer.dispose(it) }
+//        inspectionDisposable?.let { Disposer.dispose(it) }
     }
 
     private fun Collection<String>.enableInspections(profile: InspectionProfileImpl, project: Project) =
