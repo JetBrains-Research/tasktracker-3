@@ -7,6 +7,13 @@ import org.jetbrains.research.tasktracker.config.ide.MainIdeConfig
 import org.jetbrains.research.tasktracker.handler.BaseProjectHandler
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.MainPanelStorage
 
+/**
+ * This is the part of the research scenario. Each step contains Units.
+ * Units can be shuffled or ordered, depends on the [mode] field.
+ * Also, Scenario step can contain [ideConfig] settings which will
+ * be setup on the step start and destroyed on the step end.
+ * @see [ScenarioUnit]
+ */
 @Serializable
 data class ScenarioStep(
     private val units: List<ScenarioUnit>,

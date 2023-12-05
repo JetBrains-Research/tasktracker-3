@@ -15,8 +15,5 @@ class InitActivity : StartupActivity {
         TaskTrackerPlugin.initPlugin()
     }
 
-    // TODO: show an error message to the user if an error occurs
-    override fun runActivity(project: Project) {
-        TaskTrackerPlugin.initializationHandler.setupEnvironment(project) // TODO: move to the start point of the task
-    }
+    override fun runActivity(project: Project) = Unit
 }

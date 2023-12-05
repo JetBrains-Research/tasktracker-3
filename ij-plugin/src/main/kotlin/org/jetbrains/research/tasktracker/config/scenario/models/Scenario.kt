@@ -12,6 +12,10 @@ import kotlinx.serialization.encoding.Encoder
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.MainPanelStorage
 import java.util.*
 
+/**
+ * Structure of the research scenario. It consists of steps.
+ * @see [ScenarioStep]
+ */
 @Serializable
 data class Scenario(
     @Serializable(with = QueueSerializer::class) val steps: Queue<ScenarioStep>
@@ -20,18 +24,21 @@ data class Scenario(
     private val logger: Logger = Logger.getInstance(javaClass)
 
     @Transient
+    private var currentSteps = LinkedList(steps)
+
+    @Transient
     private var currentStepIterator: Iterator<ScenarioUnit>? = null
 
     private fun getNextStep(): ScenarioStep? {
         var isValid: Boolean
         var step: ScenarioStep
         do {
-            if (steps.isEmpty()) {
+            if (currentSteps.isEmpty()) {
                 logger.warn("No steps found!")
                 return null
             }
 
-            step = steps.poll()
+            step = currentSteps.poll()
             isValid = step.isValid()
             if (!isValid) {
                 logger.warn("Found useless step, all configs are null. Skip it")
@@ -52,6 +59,10 @@ data class Scenario(
             }
         }
         return currentStepIterator?.next()
+    }
+
+    fun reset() {
+        currentSteps = LinkedList(steps)
     }
 
     private fun Iterator<ScenarioUnit>?.notNullAndHasNext() = this?.hasNext() != true

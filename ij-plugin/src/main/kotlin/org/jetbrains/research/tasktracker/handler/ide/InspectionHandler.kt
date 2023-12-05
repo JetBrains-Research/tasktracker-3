@@ -60,10 +60,11 @@ class InspectionHandler(override val config: InspectionConfig, override val proj
     }
 
     override fun destroy() {
-        initialProfile?.let {
-            ProjectInspectionProfileManager.getInstance(project).setCurrentProfile(it)
-        }
-        inspectionDisposable?.let { Disposer.dispose(it) }
+        // TODO rewrite inspection handler, now it raises an error.
+//        initialProfile?.let {
+//            ProjectInspectionProfileManager.getInstance(project).setCurrentProfile(it)
+//        }
+//        inspectionDisposable?.let { Disposer.dispose(it) }
     }
 
     private fun Collection<String>.enableInspections(profile: InspectionProfileImpl, project: Project) =

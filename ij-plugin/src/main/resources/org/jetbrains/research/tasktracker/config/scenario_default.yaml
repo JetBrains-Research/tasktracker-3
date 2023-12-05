@@ -6,11 +6,18 @@ scenario:
         - !<Survey>
           id: "default"
       mode: SHUFFLED
+      ideConfig:
+        settingsConfig:
+          theme: LIGHT
+        inspectionConfig:
+          mode: DISABLE_SELECTED
+          inspectionNames:
+            - "EmptyFinallyBlock"
     - units:
         - !<Setting>
           mainIdeConfig:
             settingsConfig:
-              theme: LIGHT
+              enableCodeCompletion: OFF
         - !<List>
           taskIds:
             - "hello"

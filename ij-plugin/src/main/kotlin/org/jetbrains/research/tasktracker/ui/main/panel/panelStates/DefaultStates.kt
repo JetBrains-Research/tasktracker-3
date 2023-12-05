@@ -9,7 +9,6 @@ import org.jetbrains.research.tasktracker.config.content.task.base.Task
 import org.jetbrains.research.tasktracker.config.content.task.base.TaskWithFiles
 import org.jetbrains.research.tasktracker.config.scenario.models.*
 import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
-import org.jetbrains.research.tasktracker.tracking.activity.ActivityTracker
 import org.jetbrains.research.tasktracker.ui.main.panel.MainPluginPanelFactory
 import org.jetbrains.research.tasktracker.ui.main.panel.runOnSuccess
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.MainPanelStorage
@@ -26,7 +25,7 @@ typealias Panel = MainPluginPanelFactory
 fun Panel.agreementAcceptance() {
     loadBasePage(AgreementTemplate.loadCurrentTemplate(), "ui.button.next", false)
     setNextAction {
-        checkInputs().runOnSuccess {
+        checkAgreementInputs().runOnSuccess {
             if (!it) {
                 welcomePage()
             } else {
@@ -40,13 +39,14 @@ fun Panel.agreementAcceptance() {
  * Switches the panel to the plugin description window.
  */
 fun Panel.welcomePage() {
-    loadBasePage(MainPageTemplate.loadCurrentTemplate(), "ui.button.next", true)
+    loadBasePage(MainPageTemplate.loadCurrentTemplate(), "ui.button.next", false)
     setNextAction {
+        TaskTrackerPlugin.initializationHandler.setupEnvironment(project)
+        startTracking()
         processScenario()
     }
 }
 
-// TODO refactor it for many configs
 /**
  * Switches the panel to the task selection window.
  */
@@ -65,7 +65,6 @@ private fun Panel.selectTask(taskIds: List<String>, allRequired: Boolean = true)
  * Loads configs by selected task and language
  */
 fun Panel.processTask(id: String): Task {
-    startTracking() // TODO
     val task =
         MainPanelStorage.taskIdTask.values.find { it.id == id } ?: error("Can't find task with id '$id'")
     ApplicationManager.getApplication().invokeAndWait {
@@ -83,8 +82,6 @@ fun Panel.processTask(id: String): Task {
  */
 private fun Panel.solveTask(id: String, nextTasks: List<String> = emptyList()) {
     val task = processTask(id)
-    val activityTracker = ActivityTracker(project)
-    activityTracker.startTracking() // TODO start tracking for all trackers instead of this one
     loadBasePage(SolvePageTemplate(task))
     setNextAction {
         TaskFileHandler.disposeTask(project, task)
@@ -103,11 +100,17 @@ fun Panel.survey(id: String) {
         ?: error("Survey with id `$id` hasn't been found.")
     loadBasePage(SurveyTemplate(survey))
     setNextAction {
-        val surveyParser = SurveyParser(mainWindow, project)
-        GlobalScope.launch {
-            surveyParser.parseAndLog(survey)
+        checkSurveyInputs().runOnSuccess {
+            if (it) {
+                val surveyParser = SurveyParser(mainWindow, project)
+                GlobalScope.launch {
+                    surveyParser.parseAndLog(survey)
+                }
+                processScenario()
+            } else {
+                notifyError(project, UIBundle.message("ui.please.fill"))
+            }
         }
-        processScenario()
     }
 }
 
@@ -117,7 +120,7 @@ fun Panel.serverErrorPage() {
 }
 
 fun Panel.finalPage() {
-    loadBasePage(FinalPageTemplate.loadCurrentTemplate(), "ui.button.welcome")
+    loadBasePage(FinalPageTemplate.loadCurrentTemplate(), "ui.button.welcome", false)
     setNextAction {
         welcomePage()
     }
@@ -157,6 +160,8 @@ fun Panel.processScenario() {
         }
 
         null -> {
+            scenario.reset()
+            stopTracking()
             finalPage()
         }
     }
