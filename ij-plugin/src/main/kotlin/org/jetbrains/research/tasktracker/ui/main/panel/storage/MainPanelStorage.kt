@@ -9,7 +9,5 @@ import java.util.*
  */
 object MainPanelStorage {
     var taskIdTask: MutableMap<String, Task> = mutableMapOf()
-    var currentResearchId: Int? = null
-    var userId: Int? = null
     val activeIdeHandlers = LinkedList<BaseProjectHandler>()
 }

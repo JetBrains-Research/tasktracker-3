@@ -1,11 +1,11 @@
 package org.jetbrains.research.tasktracker.util.logFile
 
 @Suppress("UnusedPrivateMember")
-enum class LogFileType(private val logFileType: String) {
+enum class LogFileType(val logFileType: String) {
     ActivityData("activity"),
     DocumentData("document"),
-    FileEditorData("file-editor"),
+    FileEditorData("fileEditor"),
     SurveyData("survey"),
-    ToolWindowData("tool-window"),
+    ToolWindowData("toolWindow"),
     WebCamData("web-cam")
 }

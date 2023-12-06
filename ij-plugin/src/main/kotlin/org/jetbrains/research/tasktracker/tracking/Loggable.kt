@@ -1,10 +1,15 @@
 package org.jetbrains.research.tasktracker.tracking
 
+import org.jetbrains.research.tasktracker.requests.FileRequests
 import java.io.File
 
-interface Loggable {
+abstract class Loggable {
 
-    val subDir: String
+    abstract val logFileType: String
 
-    fun getLogFiles(): List<File>
+    abstract fun getLogFiles(): List<File>
+
+    fun send() = getLogFiles().all {
+        FileRequests.sendFile(it, this.logFileType)
+    }
 }

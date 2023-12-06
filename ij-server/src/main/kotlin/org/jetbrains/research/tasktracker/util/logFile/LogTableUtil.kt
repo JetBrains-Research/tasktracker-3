@@ -11,9 +11,10 @@ internal val LOGGER = KtorSimpleLogger("org.jetbrains.research.tasktracker.util.
 @Suppress("SwallowedException")
 fun File.parseLogFile(logFileTypeString: String, researchId: Int) {
     val logFileType = try {
-        LogFileType.valueOf(logFileTypeString)
+        LogFileType.values().find { it.logFileType == logFileTypeString }
+            ?: error("An data file was not found that is not defined with the type: $logFileTypeString")
     } catch (exception: IllegalStateException) {
-        LOGGER.warn("An data file was found that is not defined with the type: $logFileTypeString")
+        LOGGER.warn(exception.localizedMessage)
         return
     }
     CSVFormat.Builder.create().apply {
