@@ -28,7 +28,7 @@ object IdRequests {
                     }
                 ).body<Int>()
             } catch (e: Exception) {
-                logger.error("Server interaction error while getting user id! Url: $url", e)
+                logger.warn("Server interaction error while getting user id! Url: $url", e)
             }
             return@runBlocking null
         }
@@ -50,9 +50,9 @@ object IdRequests {
                     }
                 ).body<Int>()
             } catch (e: IllegalArgumentException) {
-                logger.error(e.localizedMessage)
+                logger.warn(e.localizedMessage)
             } catch (e: Exception) {
-                logger.error("Server interaction error while getting user id! Url: $url", e)
+                logger.warn("Server interaction error while getting user id! Url: $url", e)
             }
             return@runBlocking null
         }
