@@ -11,11 +11,12 @@ import org.jetbrains.research.tasktracker.util.logFile.parseLogFile
 
 private const val DEFAULT_FOLDER = "default"
 
+@Suppress("TooGenericExceptionCaught")
 fun Routing.uploadLogFile() {
     post("/upload-log-file") {
         try {
             val parameters = call.parameters
-            val logFileType = parameters["logFileType"]?: DEFAULT_FOLDER
+            val logFileType = parameters["logFileType"] ?: DEFAULT_FOLDER
             val researchId = parameters.getOrFail<Int>("id")
             val logFile = createLogFile(logFileType, researchId)
             logFile.parseLogFile(logFileType, researchId)
@@ -24,7 +25,7 @@ fun Routing.uploadLogFile() {
             call.respond(HttpStatusCode.BadRequest, e.localizedMessage)
         } catch (e: ParameterConversionException) {
             call.respond(HttpStatusCode.BadRequest, e.localizedMessage)
-        } catch (e: Exception){
+        } catch (e: Exception) {
             call.respond(HttpStatusCode.BadRequest, e.localizedMessage)
         }
     }

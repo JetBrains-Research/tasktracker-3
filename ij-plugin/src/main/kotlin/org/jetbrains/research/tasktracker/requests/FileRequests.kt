@@ -39,10 +39,10 @@ object FileRequests {
             )
             true
         } catch (e: IllegalStateException) {
-            logger.error(e.localizedMessage)
+            logger.warn(e.localizedMessage)
             false
         } catch (e: Exception) {
-            logger.error("Server interaction error! File to send: ${file.path}", e)
+            logger.warn("Server interaction error! File to send: ${file.path}", e)
             false
         }
     }
