@@ -8,9 +8,11 @@ import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.config.content.task.base.Task
 import org.jetbrains.research.tasktracker.config.content.task.base.TaskWithFiles
 import org.jetbrains.research.tasktracker.config.scenario.models.*
+import org.jetbrains.research.tasktracker.requests.IdRequests
 import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
 import org.jetbrains.research.tasktracker.ui.main.panel.MainPluginPanelFactory
 import org.jetbrains.research.tasktracker.ui.main.panel.runOnSuccess
+import org.jetbrains.research.tasktracker.ui.main.panel.storage.GlobalPluginStorage
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.MainPanelStorage
 import org.jetbrains.research.tasktracker.ui.main.panel.template.*
 import org.jetbrains.research.tasktracker.util.UIBundle
@@ -41,6 +43,10 @@ fun Panel.agreementAcceptance() {
 fun Panel.welcomePage() {
     loadBasePage(MainPageTemplate.loadCurrentTemplate(), "ui.button.next", false)
     setNextAction {
+        GlobalPluginStorage.agreementChecker?.let {
+            GlobalPluginStorage.userId = IdRequests.getUserId(it.name, it.email)
+        }
+        GlobalPluginStorage.currentResearchId = IdRequests.getResearchId()
         TaskTrackerPlugin.initializationHandler.setupEnvironment(project)
         startTracking()
         processScenario()
@@ -105,8 +111,9 @@ fun Panel.survey(id: String) {
                 val surveyParser = SurveyParser(mainWindow, project)
                 GlobalScope.launch {
                     surveyParser.parseAndLog(survey)
+                    surveyParser.send()
+                    processScenario()
                 }
-                processScenario()
             } else {
                 notifyError(project, UIBundle.message("ui.please.fill"))
             }

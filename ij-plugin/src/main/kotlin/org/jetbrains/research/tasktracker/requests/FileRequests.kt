@@ -6,8 +6,9 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.request.forms.*
 import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
-import org.jetbrains.research.tasktracker.tracking.Loggable
-import org.jetbrains.research.tasktracker.ui.main.panel.storage.MainPanelStorage
+import org.apache.http.client.utils.URIBuilder
+import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig.Companion.getRoute
+import org.jetbrains.research.tasktracker.ui.main.panel.storage.GlobalPluginStorage
 import java.io.File
 
 object FileRequests {
@@ -15,15 +16,15 @@ object FileRequests {
     private val client = HttpClient(CIO)
     private val logger: Logger = Logger.getInstance(FileRequests::class.java)
 
-    fun Loggable.send() = this.getLogFiles().all {
-        sendFile(it, this.subDir)
-    }
-
     @Suppress("TooGenericExceptionCaught")
-    private fun sendFile(file: File, subdir: String) = runBlocking {
+    fun sendFile(file: File, logFileType: String) = runBlocking {
         try {
+            val researchId = GlobalPluginStorage.currentResearchId
+                ?: error("ResearchId is undefined")
+            val url = URIBuilder(getRoute("upload-log-file")).addParameter("logFileType", logFileType)
+                .addParameter("id", researchId.toString()).build().toString()
             client.submitFormWithBinaryData(
-                url = "$DOMAIN/upload-document/${MainPanelStorage.currentResearchId}?subdir=$subdir",
+                url = url,
                 formData = formData {
                     append(
                         "file",
@@ -37,11 +38,12 @@ object FileRequests {
                 }
             )
             true
+        } catch (e: IllegalStateException) {
+            logger.error(e.localizedMessage)
+            false
         } catch (e: Exception) {
-            logger.warn("Server interaction error! File to send: ${file.path}", e)
+            logger.error("Server interaction error! File to send: ${file.path}", e)
             false
         }
     }
-
-    const val DOMAIN = "http://3.249.245.244:8888"
 }

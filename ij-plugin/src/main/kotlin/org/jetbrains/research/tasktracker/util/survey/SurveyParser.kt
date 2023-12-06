@@ -7,7 +7,7 @@ import org.jetbrains.research.tasktracker.tracking.Loggable
 import org.jetbrains.research.tasktracker.ui.main.panel.MainPluginWindow
 import java.io.File
 
-class SurveyParser(private val mainWindow: MainPluginWindow, project: Project) : Loggable {
+class SurveyParser(private val mainWindow: MainPluginWindow, project: Project) : Loggable() {
     private val surveyLogger = SurveyLogger(project)
 
     suspend fun parseAndLog(survey: Survey) =
@@ -36,7 +36,7 @@ class SurveyParser(private val mainWindow: MainPluginWindow, project: Project) :
         }
     }
 
-    override val subDir: String
+    override val logFileType: String
         get() = "survey"
 
     override fun getLogFiles(): List<File> = surveyLogger.getLogFiles()

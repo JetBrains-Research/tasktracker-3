@@ -14,14 +14,17 @@ private const val DEFAULT_FOLDER = "default"
 fun Routing.uploadLogFile() {
     post("/upload-log-file") {
         try {
-            val logFileType = call.request.queryParameters["logFileType"] ?: DEFAULT_FOLDER
-            val researchId = call.parameters.getOrFail<Int>("id")
+            val parameters = call.parameters
+            val logFileType = parameters["logFileType"]?: DEFAULT_FOLDER
+            val researchId = parameters.getOrFail<Int>("id")
             val logFile = createLogFile(logFileType, researchId)
             logFile.parseLogFile(logFileType, researchId)
             call.respond(HttpStatusCode.OK)
         } catch (e: MissingRequestParameterException) {
             call.respond(HttpStatusCode.BadRequest, e.localizedMessage)
         } catch (e: ParameterConversionException) {
+            call.respond(HttpStatusCode.BadRequest, e.localizedMessage)
+        } catch (e: Exception){
             call.respond(HttpStatusCode.BadRequest, e.localizedMessage)
         }
     }

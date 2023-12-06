@@ -4,7 +4,7 @@ import com.intellij.openapi.application.PathManager
 import com.intellij.openapi.diagnostic.Logger
 import org.jetbrains.research.tasktracker.config.agreement.AgreementConfig
 import org.jetbrains.research.tasktracker.config.content.FinalPageContentConfig
-import org.jetbrains.research.tasktracker.config.content.MainPageContentConfig
+import org.jetbrains.research.tasktracker.config.content.PluginInfoConfig
 import org.jetbrains.research.tasktracker.config.content.ServerErrorPageConfig
 import org.jetbrains.research.tasktracker.config.content.TaskContentConfig
 import org.jetbrains.research.tasktracker.config.emotion.EmotionConfig
@@ -29,7 +29,7 @@ data class MainTaskTrackerConfig(
     var activityTrackingConfig: ActivityTrackingConfig? = null,
     var codeTrackingConfig: CodeTrackingConfig? = null,
     var webCamConfig: WebCamTrackingConfig? = null,
-    var mainPageConfig: MainPageContentConfig? = null,
+    var pluginInfoConfig: PluginInfoConfig? = null,
     var finalPageConfig: FinalPageContentConfig? = null,
     var serverErrorPageConfig: ServerErrorPageConfig? = null,
     var emotionConfig: EmotionConfig? = null,
@@ -45,7 +45,7 @@ data class MainTaskTrackerConfig(
         codeTrackingConfig,
         scenarioConfig,
         webCamConfig,
-        mainPageConfig,
+        pluginInfoConfig,
         finalPageConfig,
         serverErrorPageConfig,
         emotionConfig,
@@ -60,6 +60,9 @@ data class MainTaskTrackerConfig(
         val agreementFilePath = "$pluginFolderPath/agreement/agreement.json"
         val logFilesFolder = "$pluginFolderPath/logs"
         const val PLUGIN_PROPERTIES_FILE = "$PLUGIN_NAME.properties"
+        private const val DOMAIN = "http://0.0.0.0:8080"
+
+        fun getRoute(path: String) = "$DOMAIN/$path"
 
         private fun File.isConfigFile() = this.extension == "yaml"
 
@@ -103,9 +106,9 @@ data class MainTaskTrackerConfig(
                         )
                     }
 
-                    fileName.startsWith(MainPageContentConfig.CONFIG_FILE_PREFIX) -> {
-                        mainConfig.mainPageConfig = buildBaseConfig(
-                            mainConfig.mainPageConfig, configFile, MainPageContentConfig::buildConfig, logger
+                    fileName.startsWith(PluginInfoConfig.CONFIG_FILE_PREFIX) -> {
+                        mainConfig.pluginInfoConfig = buildBaseConfig(
+                            mainConfig.pluginInfoConfig, configFile, PluginInfoConfig::buildConfig, logger
                         )
                     }
 

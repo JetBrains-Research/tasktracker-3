@@ -3,7 +3,7 @@ package org.jetbrains.research.tasktracker.config
 import com.intellij.openapi.diagnostic.Logger
 import org.jetbrains.research.tasktracker.config.agreement.AgreementConfig
 import org.jetbrains.research.tasktracker.config.content.FinalPageContentConfig
-import org.jetbrains.research.tasktracker.config.content.MainPageContentConfig
+import org.jetbrains.research.tasktracker.config.content.PluginInfoConfig
 import org.jetbrains.research.tasktracker.config.content.ServerErrorPageConfig
 import org.jetbrains.research.tasktracker.config.content.TaskContentConfig
 import org.jetbrains.research.tasktracker.config.emotion.EmotionConfig
@@ -28,7 +28,7 @@ object DefaultConfigsFactory {
         TaskContentConfig.CONFIG_FILE_PREFIX,
         ScenarioConfig.CONFIG_FILE_PREFIX,
         WebCamTrackingConfig.CONFIG_FILE_PREFIX,
-        MainPageContentConfig.CONFIG_FILE_PREFIX,
+        PluginInfoConfig.CONFIG_FILE_PREFIX,
         FinalPageContentConfig.CONFIG_FILE_PREFIX,
         ServerErrorPageConfig.CONFIG_FILE_PREFIX,
         SurveyConfig.CONFIG_FILE_PREFIX,

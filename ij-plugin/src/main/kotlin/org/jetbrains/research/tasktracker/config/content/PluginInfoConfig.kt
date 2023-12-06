@@ -6,14 +6,14 @@ import org.jetbrains.research.tasktracker.config.YamlConfigLoadStrategy
 import java.io.File
 
 @Serializable
-class MainPageContentConfig(val pluginName: String, val pluginDescription: String) : BaseConfig {
+class PluginInfoConfig(val pluginName: String, val pluginDescription: String) : BaseConfig {
     override val configName: String
         get() = CONFIG_FILE_PREFIX
 
     companion object {
-        const val CONFIG_FILE_PREFIX: String = "main_page"
+        const val CONFIG_FILE_PREFIX: String = "info"
 
-        fun buildConfig(configFile: File): MainPageContentConfig =
+        fun buildConfig(configFile: File): PluginInfoConfig =
             YamlConfigLoadStrategy.load(configFile.readText(), serializer())
     }
 }

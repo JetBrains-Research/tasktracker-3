@@ -90,6 +90,9 @@ class MainPluginPanelFactory : ToolWindowFactory {
         trackers.forEach {
             it.stopTracking()
         }
+        trackers.forEach {
+            it.send()
+        }
     }
 
     fun loadBasePage(
@@ -185,6 +188,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
         mainWindow.executeJavaScriptAsync("checkAllInputs()").then {
             val agreementChecker = Json.decodeFromString(AgreementChecker.serializer(), it.toString())
             if (agreementChecker.allRequiredChecked()) {
+                GlobalPluginStorage.agreementChecker = agreementChecker
                 saveAgreements(it.toString())
                 return@then false
             }
