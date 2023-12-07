@@ -22,10 +22,10 @@ object IdRequests {
             try {
                 return@runBlocking client.submitForm(
                     url = url,
-                    formParameters = parameters {
-                        append("name", name)
-                        append("email", email)
-                    }
+                    formParameters = mapOf(
+                        "name" to name,
+                        "email" to email
+                    ).buildParameters()
                 ).body<Int>()
             } catch (e: Exception) {
                 logger.warn("Server interaction error while getting user id! Url: $url", e)
@@ -43,17 +43,23 @@ object IdRequests {
                 requireNotNull(GlobalPluginStorage.userId) { "User id is not defined" }
                 return@runBlocking client.submitForm(
                     url = url,
-                    formParameters = parameters {
-                        append("name", pluginInfoConfig.pluginName)
-                        append("description", pluginInfoConfig.pluginDescription)
-                        append("user_id", GlobalPluginStorage.userId.toString())
-                    }
+                    formParameters = mapOf(
+                        "name" to pluginInfoConfig.pluginName,
+                        "description" to pluginInfoConfig.pluginDescription,
+                        "user_id" to GlobalPluginStorage.userId.toString()
+                    ).buildParameters()
                 ).body<Int>()
             } catch (e: IllegalArgumentException) {
                 logger.warn(e.localizedMessage)
             } catch (e: Exception) {
-                logger.warn("Server interaction error while getting user id! Url: $url", e)
+                logger.warn("Server interaction error while getting research id! Url: $url", e)
             }
             return@runBlocking null
         }
+
+    private fun Map<String, String>.buildParameters() = parameters {
+        this@buildParameters.forEach { (name, param) ->
+            append(name, param)
+        }
+    }
 }
