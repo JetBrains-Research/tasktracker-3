@@ -3,7 +3,6 @@ package org.jetbrains.research.tasktracker.util
 import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
-import io.ktor.server.util.*
 import io.ktor.util.pipeline.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.research.tasktracker.database.models.Research
@@ -11,6 +10,8 @@ import java.io.File
 import java.nio.file.Path
 import java.nio.file.Paths
 import kotlin.io.path.createDirectories
+
+private const val FILE_DIRECTORY = "/tmp/files/"
 
 suspend inline fun PipelineContext<Unit, ApplicationCall>.createLogFile(
     logFileType: String,
@@ -36,7 +37,7 @@ fun createDirectoryPath(researchId: Int, subDirectory: String): Path {
         Research.findById(researchId)?.user?.id
             ?: error("There are no research with id `$researchId`")
     }
-    val directoryPath = Paths.get("files/$researchId/$userId/$subDirectory")
+    val directoryPath = Paths.get("$FILE_DIRECTORY$researchId/$userId/$subDirectory")
     directoryPath.createDirectories()
     return directoryPath
 }
