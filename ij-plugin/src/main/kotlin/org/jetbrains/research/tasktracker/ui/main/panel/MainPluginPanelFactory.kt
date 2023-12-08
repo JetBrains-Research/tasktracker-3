@@ -13,6 +13,8 @@ import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBPanel
 import com.intellij.ui.jcef.JBCefApp
 import com.intellij.util.ui.JBUI
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import org.jetbrains.concurrency.Promise
 import org.jetbrains.research.tasktracker.config.content.task.base.Task
@@ -90,8 +92,10 @@ class MainPluginPanelFactory : ToolWindowFactory {
         trackers.forEach {
             it.stopTracking()
         }
-        trackers.forEach {
-            it.send()
+        GlobalScope.launch {
+            trackers.forEach {
+                it.send()
+            }
         }
     }
 

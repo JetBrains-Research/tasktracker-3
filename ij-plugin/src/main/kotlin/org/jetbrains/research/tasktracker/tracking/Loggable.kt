@@ -9,7 +9,7 @@ abstract class Loggable {
 
     abstract fun getLogFiles(): List<File>
 
-    fun send() = getLogFiles().all {
+    suspend fun send() = getLogFiles().all {
         FileRequests.sendFile(it, this.logFileType)
     }
 }

@@ -2,6 +2,8 @@ package org.jetbrains.research.tasktracker.tracking.logger
 
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.editor.Document
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.jetbrains.research.tasktracker.requests.FileRequests
 import java.io.File
 
@@ -23,8 +25,10 @@ object DocumentLogger {
             ?: emptyList<File>().also {
                 logger.error("attempt to flush non-existing csv printer for document '$document'")
             }
-        logFiles.all {
-            FileRequests.sendFile(it, "document")
+        logFiles.forEach {
+            GlobalScope.launch {
+                FileRequests.sendFile(it, "document")
+            }
         }
         myDocumentsToPrinters.remove(document)
     }
