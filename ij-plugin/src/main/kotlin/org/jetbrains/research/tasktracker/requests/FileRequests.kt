@@ -5,7 +5,6 @@ import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.request.forms.*
 import io.ktor.http.*
-import kotlinx.coroutines.runBlocking
 import org.apache.http.client.utils.URIBuilder
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig.Companion.getRoute
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.GlobalPluginStorage
@@ -17,7 +16,7 @@ object FileRequests {
     private val logger: Logger = Logger.getInstance(FileRequests::class.java)
 
     @Suppress("TooGenericExceptionCaught")
-    fun sendFile(file: File, logFileType: String) = runBlocking {
+    suspend fun sendFile(file: File, logFileType: String): Boolean {
         try {
             val researchId = GlobalPluginStorage.currentResearchId
                 ?: error("ResearchId is undefined")
@@ -37,13 +36,12 @@ object FileRequests {
                     )
                 }
             )
-            true
+            return true
         } catch (e: IllegalStateException) {
             logger.warn(e.localizedMessage)
-            false
         } catch (e: Exception) {
             logger.warn("Server interaction error! File to send: ${file.path}", e)
-            false
         }
+        return false
     }
 }
