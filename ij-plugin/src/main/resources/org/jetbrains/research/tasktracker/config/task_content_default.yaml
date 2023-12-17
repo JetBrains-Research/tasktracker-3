@@ -1,37 +1,162 @@
 tasks:
-  - name: hello world
-    description: Write a program that will print 'hello world' to the console.
+  - name: Refactoring course
+    description: "Take the refactoring course, and after that, press the next button."
     language: "KOTLIN"
-    focusFileId: "main"
     files:
-      - filename: main
+      - filename: "Task"
+        relativePath: "RefactoringAndItsPurpose/Practice/RefactoringAndItsPurposePractice/src/main/kotlin/jetbrains/refactoring/course/refactoring/purpose"
         sourceSet: "SRC"
-        id: "main"
-    id: "hello"
-  - name: "Example with several files"
-    description: "In this task, we kindly request you to review three provided files and determine which one is the most readable and which one is the least readable. Files: [a.java](a), [b.java](b), [c.java](c)"
-    language: "JAVA"
-    id: "example"
-    files:
-      - filename: a
+        isInternal: false
+      - filename: "Task"
+        relativePath: "CodeStyleAndFormatting/WhatIsFormatting/ReformatTheCode/src/main/kotlin/jetbrains/refactoring/course/formatting"
         sourceSet: "SRC"
-        templateFile: "a"
-        id: "a"
-      - filename: b
+        isInternal: false
+      - filename: "Task"
+        relativePath: "CodeStyleAndFormatting/WhatIsFormatting/ReformatTheCodeUsingIDE/src/main/kotlin/jetbrains/refactoring/course/formatting"
         sourceSet: "SRC"
-        templateFile: "b"
-        id: "b"
-      - filename: c
+        isInternal: false
+      - filename: "Task"
+        relativePath: "CodeStyleAndFormatting/CodeSchemasAndEditorConfig/task/src/main/kotlin/jetbrains/refactoring/course/formatting"
         sourceSet: "SRC"
-        templateFile: "c"
-        id: "c"
-  - name: "python style checker"
-    description: "Modify the file to be more readable and compliant with PEP 8"
-    language: "PYTHON"
-    id: "style"
-    focusFileId: "main"
-    files:
-      - filename: "main"
+        isInternal: false
+      - filename: ".editorconfig"
+        relativePath: "CodeStyleAndFormatting/CodeSchemasAndEditorConfig/task"
         sourceSet: "SRC"
-        templateFile: "comparison"
-        id: "main"
+        isInternal: false
+      - filename: "Student"
+        relativePath: "RenamingCode/RenameRefactoringInIDE/FixTypos/src/main/kotlin/jetbrains/refactoring/course/renaming"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "University"
+        relativePath: "RenamingCode/RenameRefactoringInIDE/FixTypos/src/main/kotlin/jetbrains/refactoring/course/renaming"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "Main"
+        relativePath: "MovingCode/WhatIsMoveMethodRefactoring/task/src/main/kotlin/jetbrains/refactoring/course/moving"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "Driver"
+        relativePath: "MovingCode/WhatIsMoveMethodRefactoring/task/src/main/kotlin/jetbrains/refactoring/course/moving/driver"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "Car"
+        relativePath: "MovingCode/WhatIsMoveMethodRefactoring/task/src/main/kotlin/jetbrains/refactoring/course/moving/car"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "Animal"
+        relativePath: "MovingCode/WhatArePullUpAndPushDownRefactorings/task/src/main/kotlin/jetbrains/refactoring/course/moving"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "Cat"
+        relativePath: "MovingCode/WhatArePullUpAndPushDownRefactorings/task/src/main/kotlin/jetbrains/refactoring/course/moving"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "Dog"
+        relativePath: "MovingCode/WhatArePullUpAndPushDownRefactorings/task/src/main/kotlin/jetbrains/refactoring/course/moving"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "Task"
+        relativePath: "ExtractingCode/WhatIsExtractMethodRefactoring/ExtractDuplicatedCode/src/main/kotlin/jetbrains/refactoring/course/extracting"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "Task"
+        relativePath: "ExtractingCode/WhatIsExtractVariableRefactoring/ExtractMagicConstants/src/main/kotlin/jetbrains/refactoring/course/extracting"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "Task"
+        relativePath: "InliningCode/WhatIsInlineVariableRefactoring/InlineVariables/src/main/kotlin/jetbrains/refactoring/course/inlining"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "Task"
+        relativePath: "InliningCode/InlineMethodRefactoring/InlineMethodAndVariables/src/main/kotlin/jetbrains/refactoring/course/inlining"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "MiddleMan"
+        relativePath: "InliningCode/MiddleManCodeSmell/task/src/main/kotlin/jetbrains/refactoring/course/inlining"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "Main"
+        relativePath: "RefactoringToDesignPatterns/FacadePatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "VideoConversionFacade"
+        relativePath: "RefactoringToDesignPatterns/FacadePatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "VideoEncoder"
+        relativePath: "RefactoringToDesignPatterns/FacadePatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "VideoLoader"
+        relativePath: "RefactoringToDesignPatterns/FacadePatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "VideoProcessor"
+        relativePath: "RefactoringToDesignPatterns/FacadePatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "VideoSaver"
+        relativePath: "RefactoringToDesignPatterns/FacadePatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "EncodedVideo"
+        relativePath: "RefactoringToDesignPatterns/FacadePatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns/video"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "ProcessedVideo"
+        relativePath: "RefactoringToDesignPatterns/FacadePatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns/video"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "Video"
+        relativePath: "RefactoringToDesignPatterns/FacadePatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns/video"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "Main"
+        relativePath: "RefactoringToDesignPatterns/StrategyPatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "Order"
+        relativePath: "RefactoringToDesignPatterns/StrategyPatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "PaymentProcessor"
+        relativePath: "RefactoringToDesignPatterns/StrategyPatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns/processor"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "BitcoinPayment"
+        relativePath: "RefactoringToDesignPatterns/StrategyPatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns/strategy"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "CreditCardPayment"
+        relativePath: "RefactoringToDesignPatterns/StrategyPatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns/strategy"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "PaymentStrategy"
+        relativePath: "RefactoringToDesignPatterns/StrategyPatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns/strategy"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "PayPalPayment"
+        relativePath: "RefactoringToDesignPatterns/StrategyPatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns/strategy"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "Bicycle"
+        relativePath: "RefactoringToDesignPatterns/FactoryMethodPatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "Car"
+        relativePath: "RefactoringToDesignPatterns/FactoryMethodPatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "Main"
+        relativePath: "RefactoringToDesignPatterns/FactoryMethodPatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "Transport"
+        relativePath: "RefactoringToDesignPatterns/FactoryMethodPatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns"
+        sourceSet: "SRC"
+        isInternal: false
+      - filename: "TransportationServiceFactory"
+        relativePath: "RefactoringToDesignPatterns/FactoryMethodPatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns"
+        sourceSet: "SRC"
+        isInternal: false
+    id: "main"

@@ -1,2 +1,2 @@
-pluginName: TaskTracker
-pluginDescription: "TaskTracker is a plugin designed to track code changes during programming problem-solving. It monitors the modifications made to the code throughout the process of problem resolution."
+pluginName: Refactoring course
+pluginDescription: "We want to track your progress through the code refactoring course in order to collect data on file changes during the course completion. Please, when you are ready, press the next button."

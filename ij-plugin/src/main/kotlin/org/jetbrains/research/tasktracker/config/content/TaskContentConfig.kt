@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import org.jetbrains.research.tasktracker.config.BaseConfig
 import org.jetbrains.research.tasktracker.config.YamlConfigLoadStrategy
 import org.jetbrains.research.tasktracker.config.content.task.ProgrammingTask
+import org.jetbrains.research.tasktracker.config.content.task.base.TaskFileInfo
 import org.jetbrains.research.tasktracker.handler.content.TaskContentHandler
 import java.io.File
 
@@ -24,16 +25,19 @@ data class TaskContentConfig(val tasks: List<ProgrammingTask>) : BaseConfig {
 
         fun buildConfig(configFile: File): TaskContentConfig {
             val config = YamlConfigLoadStrategy.load(configFile.readText(), serializer())
-            config.tasks.forEach { t ->
-                t.language?.let {
-                    t.files.forEach { f ->
-                        f.extension = it
-                        f.relativePath = "${t.name}/${f.relativePath}"
-                        f.content = f.gatherContent()
+            config.tasks.forEach { task ->
+                task.language?.let {
+                    task.files.forEach { fileInfo ->
+                        fileInfo.extension = it
+                        fileInfo.relativePath = getRelativePath(task, fileInfo)
+                        fileInfo.content = fileInfo.gatherContent()
                     }
                 }
             }
             return config
         }
+
+        private fun getRelativePath(task: ProgrammingTask, fileInfo: TaskFileInfo) =
+            "${if (fileInfo.isInternal) "${task.name}/" else ""}${fileInfo.relativePath}"
     }
 }

@@ -92,7 +92,9 @@ object TaskFileHandler {
             val files = task.files.map { taskFile ->
                 val path = getPath(project, taskFile, task)
                 val file = File(path)
-                file.writeDefaultContent(taskFile, task.name)
+                if (!file.exists()) {
+                    file.writeDefaultContent(taskFile, task.name)
+                }
                 LocalFileSystem.getInstance().refreshAndFindFileByIoFile(file)?.also {
                     taskFile.id?.let { id ->
                         projectTaskIdToFile[project]?.get(task)?.putIfAbsent(id, it)
@@ -108,7 +110,7 @@ object TaskFileHandler {
 
     private fun addSourceFolders(project: Project, task: TaskWithFiles) {
         val sourceFolders = task.files.map { Pair(it.extension, it.sourceSet) }.toSet().map {
-            "$PLUGIN_NAME/${it.first?.getFolderName()}/${task.root.pathOrEmpty()}/${it.second.path}"
+            "$PLUGIN_NAME/${it.first?.getDirectoryName()}/${task.root.pathOrEmpty()}/${it.second.path}"
         }
         sourceFolders.forEach {
             ApplicationManager.getApplication().runWriteAction {
@@ -132,8 +134,11 @@ object TaskFileHandler {
     }
 
     private fun getPath(project: Project, taskFile: ITaskFileInfo, task: TaskWithFiles): String = buildString {
-        append("${project.basePath}/$PLUGIN_NAME/${taskFile.extension?.getFolderName() ?: ""}")
-        append("${task.root.pathOrEmpty()}/${taskFile.sourceSet.path}")
+        append("${project.basePath}/")
+        if (taskFile.isInternal) {
+            append("$PLUGIN_NAME/${taskFile.extension?.getDirectoryName() ?: ""}")
+            append("${task.root.pathOrEmpty()}/${taskFile.sourceSet.path}")
+        }
         append("${taskFile.relativePath.toPackageName().pathOrEmpty()}/")
         append("${taskFile.filename}${taskFile.extension?.ext ?: ""}")
     }
