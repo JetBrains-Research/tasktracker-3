@@ -28,6 +28,8 @@ data class MockTaskFile(
     override val templateFile: String? = null,
 ) : ITaskFileInfo {
     override val sourceSet: SourceSet = SourceSet.SRC
+    override val isInternal: Boolean
+        get() = true
 }
 
 fun List<VirtualFile>.toMockTask(project: Project): MockTask {

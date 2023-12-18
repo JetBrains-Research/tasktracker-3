@@ -36,6 +36,13 @@ interface ITaskFileInfo {
      * id is intended for quick access to the corresponding VirtualFile.
      */
     val id: String?
+
+    /**
+     * If file is default then it will be created in plugin directory and will be filled by the default code.
+     *
+     * @return true if the file needs to be created in plugin directory, false otherwise.
+     */
+    val isInternal: Boolean
 }
 
 @Serializable
@@ -47,6 +54,7 @@ data class TaskFileInfo(override val filename: String, override val sourceSet: S
     // TODO: can we avoid using var here?
     override var content: String? = gatherContent()
     override val id: String? = null
+    override val isInternal: Boolean = true
 
     fun gatherContent() = extension?.let {
         templateFile?.getTemplate(relativePath, it) ?: DefaultContentProvider.getDefaultContent(
