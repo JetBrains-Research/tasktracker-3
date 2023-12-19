@@ -15,5 +15,9 @@ class User(id: EntityID<Int>) : Entity<Int>(id) {
 
 object Users : IntIdTable() {
     val name = text("name")
-    val email = text("email").uniqueIndex()
+    val email = text("email")
+
+    init {
+        uniqueIndex(name, email)
+    }
 }
