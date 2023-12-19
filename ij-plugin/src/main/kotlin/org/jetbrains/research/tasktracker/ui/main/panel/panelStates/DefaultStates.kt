@@ -1,6 +1,7 @@
 package org.jetbrains.research.tasktracker.ui.main.panel.panelStates
 
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.util.alsoIfNull
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -44,7 +45,13 @@ fun Panel.welcomePage() {
     loadBasePage(MainPageTemplate.loadCurrentTemplate(), "ui.button.next", false)
     setNextAction {
         GlobalPluginStorage.agreementChecker?.let {
-            GlobalPluginStorage.userId = IdRequests.getUserId(it.name, it.email)
+            GlobalPluginStorage.userId = IdRequests.getUserId(it.name, it.email).alsoIfNull {
+                notifyError(
+                    project,
+                    "Connection problems with the server, either you entered an incorrect email or name."
+                )
+                return@setNextAction
+            }
         }
         GlobalPluginStorage.currentResearchId = IdRequests.getResearchId()
         TaskTrackerPlugin.initializationHandler.setupEnvironment(project)

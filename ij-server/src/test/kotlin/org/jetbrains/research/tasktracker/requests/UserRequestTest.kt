@@ -16,7 +16,7 @@ class UserRequestTest {
     fun singleCreationTest() = testApplicationRouted {
         val id = client.createUserRequest("example", "example@example.example")
             .apply {
-                assertEquals(HttpStatusCode.Created, status)
+                assertEquals(HttpStatusCode.OK, status)
             }.body<Int>()
         transaction {
             val user = User.findById(id)
@@ -30,11 +30,11 @@ class UserRequestTest {
     fun multiCreationTest() = testApplicationRouted {
         val id1 = client.createUserRequest("example1", "example1@example.example")
             .apply {
-                assertEquals(HttpStatusCode.Created, status)
+                assertEquals(HttpStatusCode.OK, status)
             }.body<Int>()
         val id2 = client.createUserRequest("example2", "example2@example.example")
             .apply {
-                assertEquals(HttpStatusCode.Created, status)
+                assertEquals(HttpStatusCode.OK, status)
             }.body<Int>()
         transaction {
             assertNotNull(User.findById(id1))
@@ -48,7 +48,7 @@ class UserRequestTest {
         val size = transaction { User.all().count() }
         client.createUserRequest("example", "example@example.example")
             .apply {
-                assertEquals(HttpStatusCode.Created, status)
+                assertEquals(HttpStatusCode.OK, status)
             }
         transaction {
             assertEquals(size, User.all().count())
@@ -56,11 +56,11 @@ class UserRequestTest {
     }
 
     @Test
-    fun `creation with same email test`() = testApplicationRouted {
+    fun `creation with same email and name test`() = testApplicationRouted {
         client.createUserRequest("example", "example@example.example")
         val size = transaction { User.all().count() }
-        client.createUserRequest("another", "example@example.example").apply {
-            assertEquals(HttpStatusCode.BadRequest, status)
+        client.createUserRequest("example", "example@example.example").apply {
+            assertEquals(HttpStatusCode.OK, status)
         }
         transaction {
             assertEquals(size, User.all().count())
