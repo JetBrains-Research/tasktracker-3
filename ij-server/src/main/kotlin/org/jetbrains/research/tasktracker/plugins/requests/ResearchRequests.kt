@@ -20,6 +20,7 @@ fun Routing.createResearch() {
                     name = formParameters.getOrFail("name")
                     description = formParameters["description"]
                     user = User[formParameters.getOrFail<Int>("user_id")]
+                    researchUniqueId = formParameters.getOrFail("research_unique_id")
                 }.id.value
             }
             call.respondText(

@@ -30,6 +30,15 @@ fun Panel.agreementAcceptance() {
     setNextAction {
         checkAgreementInputs().runOnSuccess {
             if (!it) {
+                GlobalPluginStorage.agreementChecker?.let { agreement ->
+                    GlobalPluginStorage.userId = IdRequests.getUserId(agreement.name, agreement.email).alsoIfNull {
+                        notifyError(
+                            project,
+                            "Connection problems with the server, check tour connection or try later"
+                        )
+                    }
+                }
+                GlobalPluginStorage.currentResearchId = IdRequests.getResearchId()
                 welcomePage()
             } else {
                 notifyError(project, UIBundle.message("ui.please.fill"))
@@ -44,16 +53,6 @@ fun Panel.agreementAcceptance() {
 fun Panel.welcomePage() {
     loadBasePage(MainPageTemplate.loadCurrentTemplate(), "ui.button.next", false)
     setNextAction {
-        GlobalPluginStorage.agreementChecker?.let {
-            GlobalPluginStorage.userId = IdRequests.getUserId(it.name, it.email).alsoIfNull {
-                notifyError(
-                    project,
-                    "Connection problems with the server, either you entered an incorrect email or name."
-                )
-                return@setNextAction
-            }
-        }
-        GlobalPluginStorage.currentResearchId = IdRequests.getResearchId()
         TaskTrackerPlugin.initializationHandler.setupEnvironment(project)
         startTracking()
         processScenario()
