@@ -50,5 +50,6 @@ suspend fun HttpClient.createResearchRequest(name: String, userId: Int, descript
                 append("description", description)
             }
             append("user_id", userId.toString())
+            append("research_unique_id", "test")
         }
     )
