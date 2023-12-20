@@ -11,6 +11,7 @@ class Research(id: EntityID<Int>) : Entity<Int>(id) {
     var name by Researches.name
     var description by Researches.description
     var user by User referencedOn Researches.user
+    var researchUniqueId by Researches.researchUniqueId
 }
 
 /**
@@ -31,4 +32,9 @@ object Researches : IntIdTable() {
      * User who took part in the research.
      */
     val user = reference("user", Users)
+
+    /**
+     * Unique id for research
+     */
+    val researchUniqueId = text("research_unique_id")
 }

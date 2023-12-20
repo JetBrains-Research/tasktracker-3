@@ -41,12 +41,16 @@ object IdRequests {
                 ?: error("MainPageConfig must not be null")
             try {
                 requireNotNull(GlobalPluginStorage.userId) { "User id is not defined" }
+                val researchId = TaskTrackerPlugin.mainConfig.pluginInfoConfig?.let {
+                    it.researchId
+                } ?: error("Plugin info config is uninitialized")
                 return@runBlocking client.submitForm(
                     url = url,
                     formParameters = mapOf(
                         "name" to pluginInfoConfig.pluginName,
                         "description" to pluginInfoConfig.pluginDescription,
-                        "user_id" to GlobalPluginStorage.userId.toString()
+                        "user_id" to GlobalPluginStorage.userId.toString(),
+                        "research_unique_id" to researchId
                     ).buildParameters()
                 ).body<Int>()
             } catch (e: IllegalArgumentException) {

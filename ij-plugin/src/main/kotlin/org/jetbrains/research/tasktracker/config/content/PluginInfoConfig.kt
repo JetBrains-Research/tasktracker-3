@@ -6,7 +6,7 @@ import org.jetbrains.research.tasktracker.config.YamlConfigLoadStrategy
 import java.io.File
 
 @Serializable
-class PluginInfoConfig(val pluginName: String, val pluginDescription: String) : BaseConfig {
+class PluginInfoConfig(val pluginName: String, val pluginDescription: String, val researchId: String) : BaseConfig {
     override val configName: String
         get() = CONFIG_FILE_PREFIX
 
