@@ -40,10 +40,10 @@ allprojects {
     tasks {
         withType<JavaCompile> {
             sourceCompatibility = jdkVersion
-            targetCompatibility = JavaVersion.VERSION_1_8.toString()
+            targetCompatibility = JavaVersion.VERSION_17.toString()
         }
         withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-            kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
+            kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
         }
 
 //        withType<Detekt>().configureEach {

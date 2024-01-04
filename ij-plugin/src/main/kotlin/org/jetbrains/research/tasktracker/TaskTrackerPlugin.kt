@@ -47,7 +47,7 @@ object TaskTrackerPlugin {
         }
     }
 
-    fun initPluginFolder() {
+    private fun initPluginFolder() {
         File(MainTaskTrackerConfig.logFilesFolder).mkdirs()
     }
 }
