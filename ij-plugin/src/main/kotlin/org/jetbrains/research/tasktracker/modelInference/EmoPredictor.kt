@@ -1,7 +1,7 @@
 package org.jetbrains.research.tasktracker.modelInference
 
 import org.jetbrains.research.tasktracker.config.emotion.EmotionConfig
-import org.opencv.core.Mat
+//import org.opencv.core.Mat
 
 class EmoPrediction(val probabilities: Map<Int, Double>, private val thresholds: Map<Int, Double>) {
 
@@ -21,5 +21,5 @@ interface EmoPredictor {
 
     val emotionConfig: EmotionConfig
 
-    suspend fun predict(image: Mat): EmoPrediction
+//    suspend fun predict(image: Mat): EmoPrediction
 }
