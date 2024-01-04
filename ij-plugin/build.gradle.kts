@@ -14,7 +14,7 @@ dependencies {
     implementation(rootProject.libs.kaml)
     implementation(rootProject.libs.snakeyaml)
     implementation(rootProject.libs.kinference)
-    implementation(rootProject.libs.javacv)
+//    implementation(rootProject.libs.javacv)
     implementation(rootProject.libs.ktor.client.cio)
     implementation(rootProject.libs.ktor.client.core)
     implementation(rootProject.libs.ktor.client.json)
@@ -22,7 +22,7 @@ dependencies {
     implementation(rootProject.libs.ktor.client.content.negotiation)
     implementation(rootProject.libs.ktor.serialization.kotlinx.json)
     implementation(rootProject.libs.slf4j)
-    implementation(rootProject.libs.opencv)
+//    implementation(rootProject.libs.opencv)
 }
 
 intellij {
