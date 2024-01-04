@@ -17,6 +17,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import org.jetbrains.concurrency.Promise
+import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.config.content.task.base.Task
 import org.jetbrains.research.tasktracker.tracking.BaseTracker
 import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
@@ -56,6 +57,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
     lateinit var project: Project
 
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
+        TaskTrackerPlugin.initPlugin()
         this.project = project
         mainWindow = project.getService(MainWindowService::class.java).mainWindow
         mainWindow.jComponent.size = JBUI.size(toolWindow.component.width, toolWindow.component.height)

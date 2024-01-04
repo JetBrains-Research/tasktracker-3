@@ -18,7 +18,7 @@ object TaskTrackerPlugin {
     private val logger: Logger = Logger.getInstance(javaClass)
 
     // TODO: add a settings panel to update properties and the main config
-    lateinit var mainConfig: MainTaskTrackerConfig
+    var mainConfig: MainTaskTrackerConfig = MainTaskTrackerConfig(loadProps().toPluginProperties())
     lateinit var initializationHandler: InitializationHandler
 
     fun initPlugin() {
