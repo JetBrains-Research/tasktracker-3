@@ -46,10 +46,8 @@ object DefaultConfigsFactory {
 
     private fun writeFromResources(configName: String, filePath: String) {
         val configFile = File(filePath)
-        if (!configFile.exists()) {
-            DefaultConfigsFactory::class.java.getResource(configName)?.readText()?.let {
-                configFile.writeText(it)
-            } ?: logger.warn("There are no file with name $configName")
-        }
+        DefaultConfigsFactory::class.java.getResource(configName)?.readText()?.let {
+            configFile.writeText(it)
+        } ?: logger.warn("There are no file with name $configName")
     }
 }

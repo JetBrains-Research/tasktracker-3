@@ -46,20 +46,20 @@ allprojects {
             kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
         }
 
-//        withType<Detekt>().configureEach {
-//            jvmTarget = jdkVersion
-//        }
+        withType<Detekt>().configureEach {
+            jvmTarget = jdkVersion
+        }
 
         test {
             useJUnit()
         }
     }
 
-//    detekt {
-//        buildUponDefaultConfig = true
-//        allRules = false
-//        config = files("$rootDir/config/detekt.yml")
-//    }
+    detekt {
+        buildUponDefaultConfig = true
+        allRules = false
+        config = files("$rootDir/config/detekt.yml")
+    }
 }
 
 tasks {
