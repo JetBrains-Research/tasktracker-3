@@ -21,18 +21,18 @@ class WebCamService : Disposable {
 
     fun startTakingPhotos(emoPredictor: EmoPredictor, trackerLogger: WebCamLogger) {
         var photosMade = 0
-//        timerToMakePhoto.scheduleAtFixedRate(
-//            timerTask {
-//                makePhoto()?.let {
-//                    photosMade++
-//                    runBlocking {
-////                        it.guessEmotionAndLog(emoPredictor, trackerLogger)
-//                    }
-//                }
-//            },
-//            TIME_TO_PHOTO_DELAY,
-//            TIME_TO_PHOTO_DELAY
-//        )
+        timerToMakePhoto.scheduleAtFixedRate(
+            timerTask {
+                makePhoto()?.let {
+                    photosMade++
+                    runBlocking {
+                        it.guessEmotionAndLog(emoPredictor, trackerLogger)
+                    }
+                }
+            },
+            TIME_TO_PHOTO_DELAY,
+            TIME_TO_PHOTO_DELAY
+        )
     }
 
     fun stopTakingPhotos() {

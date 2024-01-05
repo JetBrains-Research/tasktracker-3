@@ -13,7 +13,7 @@ kinference = "0.2.16"
 ktor = "2.3.4"
 javacv = "1.5.9"
 slf4j = "1.7.35"
-#opencv = "4.7.0-0"
+opencv = "4.7.0-0"
 changelog = "2.1.2"
 postgres = "42.3.1"
 logback = "1.4.11"
@@ -28,7 +28,7 @@ csv = { module = "org.apache.commons:commons-csv", version.ref = "csv" }
 joda = { module = "joda-time:joda-time", version.ref = "joda" }
 kinference = { module = "io.kinference:inference-core-jvm", version.ref = "kinference" }
 javacv = { module = "org.bytedeco:javacv-platform", version.ref = "javacv" }
-#opencv = { module = "org.openpnp:opencv", version.ref = "opencv" }
+opencv = { module = "org.openpnp:opencv", version.ref = "opencv" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-json = { module = "io.ktor:ktor-client-json", version.ref = "ktor" }

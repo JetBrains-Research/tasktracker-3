@@ -12,7 +12,6 @@
         <toolWindow doNotActivateOnStart="true"
                     factoryClass="org.jetbrains.research.tasktracker.ui.main.panel.MainPluginPanelFactory"
                     id="TaskTracker" anchor="right"/>
-<!--        <postStartupActivity implementation="org.jetbrains.research.tasktracker.activities.InitActivity"/>-->
         <notificationGroup id="tasktracker" displayType="BALLOON"/>
     </extensions>
 

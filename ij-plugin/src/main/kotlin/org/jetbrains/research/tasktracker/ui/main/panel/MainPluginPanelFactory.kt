@@ -24,7 +24,7 @@ import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
 import org.jetbrains.research.tasktracker.tracking.activity.ActivityTracker
 import org.jetbrains.research.tasktracker.tracking.fileEditor.FileEditorTracker
 import org.jetbrains.research.tasktracker.tracking.toolWindow.ToolWindowTracker
-//import org.jetbrains.research.tasktracker.tracking.webcam.collectAllDevices
+import org.jetbrains.research.tasktracker.tracking.webcam.collectAllDevices
 import org.jetbrains.research.tasktracker.ui.main.panel.models.AgreementChecker
 import org.jetbrains.research.tasktracker.ui.main.panel.models.ButtonState
 import org.jetbrains.research.tasktracker.ui.main.panel.models.LinkType
@@ -126,7 +126,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
         ) {
             override fun run(indicator: ProgressIndicator) {
                 if (GlobalPluginStorage.camerasInfo.isEmpty()) {
-//                    GlobalPluginStorage.camerasInfo.addAll(collectAllDevices())
+                    GlobalPluginStorage.camerasInfo.addAll(collectAllDevices())
                 }
                 loadBasePage(
                     WebcamChoicePageTemplate(GlobalPluginStorage.camerasInfo), "ui.button.select", true

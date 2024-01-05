@@ -19,7 +19,7 @@ object TaskTrackerPlugin {
 
     // TODO: add a settings panel to update properties and the main config
     var mainConfig: MainTaskTrackerConfig = MainTaskTrackerConfig(loadProps().toPluginProperties())
-    lateinit var initializationHandler: InitializationHandler
+    var initializationHandler: InitializationHandler = InitializationHandler(mainConfig)
 
     fun initPlugin() {
         initPluginFolder()
