@@ -33,10 +33,10 @@ dependencies {
 tasks{
     withType<JavaCompile> {
         sourceCompatibility = jdkVersion
-        targetCompatibility = JavaVersion.VERSION_17.toString()
+        targetCompatibility = JavaVersion.VERSION_11.toString()
     }
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
+        kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
     }
 
     withType<Detekt>().configureEach {
