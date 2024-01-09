@@ -16,8 +16,6 @@ plugins {
 group = properties("pluginGroup").get()
 version = properties("pluginVersion").get()
 
-val jdkVersion = libs.versions.jdk.get()
-
 allprojects {
     apply {
         with(rootProject.libs.plugins) {
@@ -38,18 +36,6 @@ allprojects {
     }
 
     tasks {
-        withType<JavaCompile> {
-            sourceCompatibility = jdkVersion
-            targetCompatibility = JavaVersion.VERSION_17.toString()
-        }
-        withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-            kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
-        }
-
-        withType<Detekt>().configureEach {
-            jvmTarget = jdkVersion
-        }
-
         test {
             useJUnit()
         }
