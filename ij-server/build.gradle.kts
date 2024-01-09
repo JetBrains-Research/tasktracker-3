@@ -1,3 +1,5 @@
+import io.gitlab.arturbosch.detekt.Detekt
+
 group = rootProject.group
 version = rootProject.version
 
@@ -5,6 +7,8 @@ version = rootProject.version
 plugins {
     id(libs.plugins.ktor.get().pluginId) version libs.versions.ktor.get()
 }
+
+val jdkVersion = libs.versions.jdk11.get()
 
 application {
     mainClass.set("org.jetbrains.research.tasktracker.ApplicationKt")
@@ -24,4 +28,18 @@ dependencies {
     implementation(rootProject.libs.exposed.time)
     testImplementation(rootProject.libs.ktor.server.tests)
     testImplementation(rootProject.libs.h2)
+}
+
+tasks{
+    withType<JavaCompile> {
+        sourceCompatibility = jdkVersion
+        targetCompatibility = JavaVersion.VERSION_17.toString()
+    }
+    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+        kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+
+    withType<Detekt>().configureEach {
+        jvmTarget = jdkVersion
+    }
 }

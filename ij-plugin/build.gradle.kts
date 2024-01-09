@@ -1,3 +1,4 @@
+import io.gitlab.arturbosch.detekt.Detekt
 import org.jetbrains.changelog.markdownToHTML
 
 group = rootProject.group
@@ -9,6 +10,8 @@ fun properties(key: String) = providers.gradleProperty(key)
 plugins {
     alias(libs.plugins.intellij)
 }
+
+val jdkVersion = libs.versions.jdk17.get()
 
 dependencies {
     implementation(rootProject.libs.kaml)
@@ -53,4 +56,17 @@ tasks {
         sinceBuild.set(properties("pluginSinceBuild"))
         untilBuild.set(properties("pluginUntilBuild"))
     }
+
+    withType<JavaCompile> {
+        sourceCompatibility = jdkVersion
+        targetCompatibility = JavaVersion.VERSION_17.toString()
+    }
+    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+        kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+
+    withType<Detekt>().configureEach {
+        jvmTarget = jdkVersion
+    }
+
 }
