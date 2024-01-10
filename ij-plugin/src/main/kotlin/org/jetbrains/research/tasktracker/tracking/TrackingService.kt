@@ -41,7 +41,6 @@ class TrackingService : Disposable {
         }
         ApplicationManager.getApplication().invokeAndWait {
             runBlocking {
-                println(trackers.size)
                 val result = trackers.all {
                     it.send()
                 }
