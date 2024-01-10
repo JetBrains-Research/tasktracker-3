@@ -34,7 +34,7 @@ fun Panel.agreementAcceptance() {
                     GlobalPluginStorage.userId = IdRequests.getUserId(agreement.name, agreement.email).alsoIfNull {
                         notifyError(
                             project,
-                            "Connection problems with the server, check tour connection or try later"
+                            UIBundle.message("ui.connection.lose")
                         )
                     }
                 }
@@ -54,7 +54,7 @@ fun Panel.welcomePage() {
     loadBasePage(MainPageTemplate.loadCurrentTemplate(), "ui.button.next", false)
     setNextAction {
         TaskTrackerPlugin.initializationHandler.setupEnvironment(project)
-        startTracking()
+        trackingService.startTracking(project)
         processScenario()
     }
 }
@@ -128,7 +128,6 @@ fun Panel.survey(id: String) {
 }
 
 fun Panel.serverErrorPage() {
-    trackers.clear()
     loadBasePage(ServerErrorPage(), "ui.button.welcome", false)
 }
 
@@ -174,8 +173,10 @@ fun Panel.processScenario() {
 
         null -> {
             scenario.reset()
-            stopTracking()
-            finalPage()
+            loadBasePage(LoadTemplate())
+            GlobalScope.launch {
+                trackingService.stopTracking(::finalPage, ::serverErrorPage)
+            }
         }
     }
 }
