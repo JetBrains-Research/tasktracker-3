@@ -8,11 +8,11 @@ tasks:
         sourceSet: "SRC"
         isInternal: false
       - filename: "Task"
-        relativePath: "CodeStyleAndFormatting/WhatIsFormatting/ReformatTheCode/src/main/kotlin/jetbrains/refactoring/course/formatting"
+        relativePath: "CodeStyleAndFormatting/WhatIsFormatting/ReformatTheCodePractice/src/main/kotlin/jetbrains/refactoring/course/formatting"
         sourceSet: "SRC"
         isInternal: false
       - filename: "Task"
-        relativePath: "CodeStyleAndFormatting/WhatIsFormatting/ReformatTheCodeUsingIDE/src/main/kotlin/jetbrains/refactoring/course/formatting"
+        relativePath: "CodeStyleAndFormatting/WhatIsFormatting/ReformatTheCodeUsingIDEPractice/src/main/kotlin/jetbrains/refactoring/course/formatting"
         sourceSet: "SRC"
         isInternal: false
       - filename: "Task"
@@ -21,14 +21,15 @@ tasks:
         isInternal: false
       - filename: ".editorconfig"
         relativePath: "CodeStyleAndFormatting/CodeSchemasAndEditorConfig/task"
+        extension: NO_EXTENSION
         sourceSet: "SRC"
         isInternal: false
       - filename: "Student"
-        relativePath: "RenamingCode/RenameRefactoringInIDE/FixTypos/src/main/kotlin/jetbrains/refactoring/course/renaming"
+        relativePath: "RenamingCode/RenameRefactoringInIDE/FixTyposPractice/src/main/kotlin/jetbrains/refactoring/course/renaming"
         sourceSet: "SRC"
         isInternal: false
       - filename: "University"
-        relativePath: "RenamingCode/RenameRefactoringInIDE/FixTypos/src/main/kotlin/jetbrains/refactoring/course/renaming"
+        relativePath: "RenamingCode/RenameRefactoringInIDE/FixTyposPractice/src/main/kotlin/jetbrains/refactoring/course/renaming"
         sourceSet: "SRC"
         isInternal: false
       - filename: "Main"
@@ -56,19 +57,19 @@ tasks:
         sourceSet: "SRC"
         isInternal: false
       - filename: "Task"
-        relativePath: "ExtractingCode/WhatIsExtractMethodRefactoring/ExtractDuplicatedCode/src/main/kotlin/jetbrains/refactoring/course/extracting"
+        relativePath: "ExtractingCode/WhatIsExtractMethodRefactoring/ExtractDuplicatedCodePractice/src/main/kotlin/jetbrains/refactoring/course/extracting"
         sourceSet: "SRC"
         isInternal: false
       - filename: "Task"
-        relativePath: "ExtractingCode/WhatIsExtractVariableRefactoring/ExtractMagicConstants/src/main/kotlin/jetbrains/refactoring/course/extracting"
+        relativePath: "ExtractingCode/WhatIsExtractVariableRefactoring/ExtractMagicConstantsPractice/src/main/kotlin/jetbrains/refactoring/course/extracting"
         sourceSet: "SRC"
         isInternal: false
       - filename: "Task"
-        relativePath: "InliningCode/WhatIsInlineVariableRefactoring/InlineVariables/src/main/kotlin/jetbrains/refactoring/course/inlining"
+        relativePath: "InliningCode/WhatIsInlineVariableRefactoring/InlineVariablesPractice/src/main/kotlin/jetbrains/refactoring/course/inlining"
         sourceSet: "SRC"
         isInternal: false
       - filename: "Task"
-        relativePath: "InliningCode/InlineMethodRefactoring/InlineMethodAndVariables/src/main/kotlin/jetbrains/refactoring/course/inlining"
+        relativePath: "InliningCode/InlineMethodRefactoring/InlineMethodAndVariablesPractice/src/main/kotlin/jetbrains/refactoring/course/inlining"
         sourceSet: "SRC"
         isInternal: false
       - filename: "MiddleMan"
