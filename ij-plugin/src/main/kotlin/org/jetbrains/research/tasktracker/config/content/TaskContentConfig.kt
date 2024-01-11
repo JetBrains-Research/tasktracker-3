@@ -28,7 +28,7 @@ data class TaskContentConfig(val tasks: List<ProgrammingTask>) : BaseConfig {
             config.tasks.forEach { task ->
                 task.language?.let {
                     task.files.forEach { fileInfo ->
-                        fileInfo.extension = it
+                        fileInfo.extension = fileInfo.extension ?: it
                         fileInfo.relativePath = getRelativePath(task, fileInfo)
                         fileInfo.content = fileInfo.gatherContent()
                     }

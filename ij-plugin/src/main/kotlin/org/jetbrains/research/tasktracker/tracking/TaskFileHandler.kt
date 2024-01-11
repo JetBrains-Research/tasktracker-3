@@ -134,9 +134,9 @@ object TaskFileHandler {
     }
 
     private fun getPath(project: Project, taskFile: ITaskFileInfo, task: TaskWithFiles): String = buildString {
-        append("${project.basePath}/")
+        append("${project.basePath}")
         if (taskFile.isInternal) {
-            append("$PLUGIN_NAME/${taskFile.extension?.getDirectoryName() ?: ""}")
+            append("/$PLUGIN_NAME/${taskFile.extension?.getDirectoryName() ?: ""}")
             append("${task.root.pathOrEmpty()}/${taskFile.sourceSet.path}")
         }
         append("${taskFile.relativePath.toPackageName().pathOrEmpty()}/")
