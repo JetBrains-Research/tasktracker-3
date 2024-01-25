@@ -4,6 +4,7 @@ import com.intellij.openapi.diagnostic.Logger
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.request.forms.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 import org.apache.http.client.utils.URIBuilder
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig.Companion.getRoute
@@ -22,7 +23,7 @@ object FileRequests {
                 ?: error("ResearchId is undefined")
             val url = URIBuilder(getRoute("upload-log-file")).addParameter("logFileType", logFileType)
                 .addParameter("id", researchId.toString()).build().toString()
-            client.submitFormWithBinaryData(
+            val response = client.submitFormWithBinaryData(
                 url = url,
                 formData = formData {
                     append(
@@ -36,7 +37,7 @@ object FileRequests {
                     )
                 }
             )
-            return true
+            return response.status.isSuccess()
         } catch (e: IllegalStateException) {
             logger.warn(e.localizedMessage)
         } catch (e: Exception) {

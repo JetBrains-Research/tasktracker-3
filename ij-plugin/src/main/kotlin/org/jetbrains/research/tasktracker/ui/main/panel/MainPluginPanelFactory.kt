@@ -13,17 +13,12 @@ import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBPanel
 import com.intellij.ui.jcef.JBCefApp
 import com.intellij.util.ui.JBUI
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import org.jetbrains.concurrency.Promise
 import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.config.content.task.base.Task
-import org.jetbrains.research.tasktracker.tracking.BaseTracker
 import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
-import org.jetbrains.research.tasktracker.tracking.activity.ActivityTracker
-import org.jetbrains.research.tasktracker.tracking.fileEditor.FileEditorTracker
-import org.jetbrains.research.tasktracker.tracking.toolWindow.ToolWindowTracker
+import org.jetbrains.research.tasktracker.tracking.TrackingService
 import org.jetbrains.research.tasktracker.tracking.webcam.collectAllDevices
 import org.jetbrains.research.tasktracker.ui.main.panel.models.AgreementChecker
 import org.jetbrains.research.tasktracker.ui.main.panel.models.ButtonState
@@ -51,8 +46,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
     private val backButton = createJButton("ui.button.back", isVisibleProp = false)
     private val logger: Logger = Logger.getInstance(MainPluginPanelFactory::class.java)
 
-    val trackers: MutableList<BaseTracker> = mutableListOf()
-
+    lateinit var trackingService: TrackingService
     lateinit var mainWindow: MainPluginWindow
     lateinit var project: Project
 
@@ -60,6 +54,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
         TaskTrackerPlugin.initPlugin()
         this.project = project
         mainWindow = project.getService(MainWindowService::class.java).mainWindow
+        trackingService = project.getService(TrackingService::class.java)
         mainWindow.jComponent.size = JBUI.size(toolWindow.component.width, toolWindow.component.height)
         agreementAcceptance()
         val buttonPanel = JBPanel<JBPanel<*>>(FlowLayout()).apply {
@@ -75,31 +70,6 @@ class MainPluginPanelFactory : ToolWindowFactory {
     }
 
     override fun isApplicable(project: Project) = super.isApplicable(project) && JBCefApp.isSupported()
-
-    fun startTracking() {
-        if (trackers.isNotEmpty()) { // Otherwise we can lose data
-            return
-        }
-        trackers.addAll(
-            listOf(
-                ActivityTracker(project),
-                ToolWindowTracker(project),
-                FileEditorTracker(project)
-            )
-        )
-        trackers.forEach { it.startTracking() }
-    }
-
-    fun stopTracking() {
-        trackers.forEach {
-            it.stopTracking()
-        }
-        GlobalScope.launch {
-            trackers.forEach {
-                it.send()
-            }
-        }
-    }
 
     fun loadBasePage(
         template: HtmlTemplate,
