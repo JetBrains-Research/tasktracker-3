@@ -7,6 +7,9 @@ import java.io.File
 
 @Serializable
 class PluginInfoConfig(val pluginName: String, val pluginDescription: String, val researchId: String) : BaseConfig {
+
+    val logs: List<Log> = emptyList()
+
     override val configName: String
         get() = CONFIG_FILE_PREFIX
 
