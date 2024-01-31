@@ -5,14 +5,17 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
 import kotlinx.coroutines.runBlocking
+import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.tracking.activity.ActivityTracker
 import org.jetbrains.research.tasktracker.tracking.fileEditor.FileEditorTracker
 import org.jetbrains.research.tasktracker.tracking.toolWindow.ToolWindowTracker
+import kotlin.io.path.Path
 
 @Service(Service.Level.PROJECT)
 class TrackingService : Disposable {
 
     private val trackers: MutableList<BaseTracker> = mutableListOf()
+    private val logs: MutableList<Loggable> = mutableListOf()
 
     fun startTracking(project: Project) {
         if (trackers.isNotEmpty()) { // Otherwise we can lose data
@@ -25,6 +28,16 @@ class TrackingService : Disposable {
                 FileEditorTracker(project)
             )
         )
+        project.basePath?.let { path ->
+            logs.addAll(
+                TaskTrackerPlugin.mainConfig.pluginInfoConfig?.logs?.map {
+                    ExternalLogger(
+                        Path(path),
+                        it
+                    )
+                } ?: emptyList()
+            )
+        }
         trackers.forEach { it.startTracking() }
     }
 
@@ -43,8 +56,11 @@ class TrackingService : Disposable {
             runBlocking {
                 val result = trackers.all {
                     it.send()
-                }
+                }.and(
+                    logs.all { it.send() }
+                )
                 trackers.clear()
+                logs.clear()
                 if (result) success.invoke() else failure.invoke()
             }
         }

@@ -1,3 +1,7 @@
 pluginName: Refactoring course
 pluginDescription: "We want to track your progress through the code refactoring course in order to collect data on file changes during the course completion. Please, when you are ready, press the next button."
 researchId: "RefactoringCourse"
+logs:
+  - logPaths:
+      - "eduAssistant.log"
+    type: "ai"
