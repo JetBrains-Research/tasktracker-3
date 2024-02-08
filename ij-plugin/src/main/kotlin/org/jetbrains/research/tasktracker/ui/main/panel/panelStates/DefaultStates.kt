@@ -26,6 +26,7 @@ typealias Panel = MainPluginPanelFactory
  * A page for collecting user data, and checkboxes for user agreement acceptance.
  */
 fun Panel.agreementAcceptance() {
+    GlobalPluginStorage.resetSession()
     loadBasePage(AgreementTemplate.loadCurrentTemplate(), "ui.button.next", false)
     setNextAction {
         checkAgreementInputs().runOnSuccess {
@@ -129,12 +130,15 @@ fun Panel.survey(id: String) {
 
 fun Panel.serverErrorPage() {
     loadBasePage(ServerErrorPage(), "ui.button.welcome", false)
+    setNextAction {
+        agreementAcceptance()
+    }
 }
 
 fun Panel.finalPage() {
     loadBasePage(FinalPageTemplate.loadCurrentTemplate(), "ui.button.welcome", false)
     setNextAction {
-        welcomePage()
+        agreementAcceptance()
     }
 }
 
@@ -174,7 +178,7 @@ fun Panel.processScenario() {
         null -> {
             scenario.reset()
             loadBasePage(LoadTemplate())
-            GlobalScope.launch {
+            ApplicationManager.getApplication().invokeLater {
                 trackingService.stopTracking(::finalPage, ::serverErrorPage)
             }
         }

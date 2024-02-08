@@ -13,4 +13,10 @@ object GlobalPluginStorage {
     var agreementChecker: AgreementChecker? = null
     var userId: Int? = null
     var currentResearchId: Int? = null
+
+    fun resetSession() {
+        userId = null
+        currentResearchId = null
+        agreementChecker = null
+    }
 }
