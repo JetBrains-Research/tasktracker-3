@@ -1,5 +1,5 @@
 tasks:
-  - description: description
+  - description: "Take the kotlin introduction course, and after that, press the next button."
     files:
       - extension: KOTLIN
         filename: Main
@@ -57,4 +57,4 @@ tasks:
         relativePath: WarmUp/task/src/main/kotlin/jetbrains/kotlin/course/warmup
         sourceSet: SRC
     id: main
-    name: example
+    name: "Kotlin Introduction"

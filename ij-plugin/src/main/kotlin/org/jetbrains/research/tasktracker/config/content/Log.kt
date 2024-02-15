@@ -9,4 +9,4 @@ import kotlinx.serialization.Serializable
  * @param type The log type. By default, it is set to "default".
  */
 @Serializable
-data class Log(val logPaths: List<String>, val type: String = "default")
+data class Log(val logPaths: List<String>, val isInPluginDirectory: Boolean = false, val type: String = "default")
