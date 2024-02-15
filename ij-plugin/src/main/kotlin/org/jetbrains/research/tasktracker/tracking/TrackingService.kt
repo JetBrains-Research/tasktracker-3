@@ -1,10 +1,11 @@
 package org.jetbrains.research.tasktracker.tracking
 
 import com.intellij.openapi.Disposable
-import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.tracking.activity.ActivityTracker
 import org.jetbrains.research.tasktracker.tracking.fileEditor.FileEditorTracker
@@ -52,17 +53,15 @@ class TrackingService : Disposable {
         trackers.forEach {
             it.stopTracking()
         }
-        ApplicationManager.getApplication().invokeAndWait {
-            runBlocking {
-                val result = trackers.all {
-                    it.send()
-                }.and(
-                    logs.all { it.send() }
-                )
-                trackers.clear()
-                logs.clear()
-                if (result) success.invoke() else failure.invoke()
-            }
+        CoroutineScope(Dispatchers.IO).launch {
+            val result = trackers.all {
+                it.send()
+            }.and(
+                logs.all { it.send() }
+            )
+            trackers.clear()
+            logs.clear()
+            if (result) success.invoke() else failure.invoke()
         }
     }
 

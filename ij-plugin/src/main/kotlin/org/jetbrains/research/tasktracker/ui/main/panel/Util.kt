@@ -7,7 +7,6 @@ import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
 import org.jetbrains.research.tasktracker.ui.main.panel.models.ButtonState
 import org.jetbrains.research.tasktracker.ui.main.panel.models.LinkType
 import org.jetbrains.research.tasktracker.util.UIBundle
-import java.awt.event.ActionListener
 import java.io.File
 import javax.swing.JButton
 
@@ -55,20 +54,22 @@ fun MainPluginWindow.jslinkProcess(type: LinkType, action: (param: String) -> Un
  * Creates new JButton state and return previous JButton state.
  */
 fun JButton.changeState(buttonState: ButtonState) {
-    buttonState.actionListener?.let {
-        setListener(buttonState.actionListener)
-    }
+    addActionListener(buttonState.actionListener)
     this.text = buttonState.text
     isVisible = buttonState.isVisibleProp
 }
 
 fun JButton.getState(): ButtonState = ButtonState(text, isVisible, actionListeners.firstOrNull())
 
-fun JButton.setListener(listener: ActionListener) {
+fun JButton.setListener(listener: () -> Unit = {}) {
     actionListeners.forEach {
         removeActionListener(it)
     }
-    addActionListener(listener)
+    addActionListener {
+        isEnabled = false
+        listener.invoke()
+        isEnabled = true
+    }
 }
 
 /**
@@ -82,7 +83,7 @@ fun saveAgreements(agreementString: String) {
     agreementFile.writeText(agreementString)
 }
 
-fun<T> Promise<T>.runOnSuccess(task: (response: T) -> Unit) =
+fun <T> Promise<T>.runOnSuccess(task: (response: T) -> Unit) =
     onSuccess {
         ApplicationManager.getApplication().invokeLater {
             task(it)

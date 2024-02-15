@@ -3,10 +3,12 @@ package org.jetbrains.research.tasktracker.tracking.logger
 import com.intellij.openapi.project.Project
 import org.jetbrains.research.tasktracker.tracking.fileEditor.FileEditorAction
 import org.jetbrains.research.tasktracker.tracking.fileEditor.FileEditorData
+import org.jetbrains.research.tasktracker.ui.main.panel.storage.GlobalPluginStorage
 import org.joda.time.DateTime
 
 class FileEditorLogger(project: Project) : BaseLogger() {
-    override val logPrinterFilename: String = "file_editor_${project.hashCode()}_${project.name}"
+    override val logPrinterFilename: String =
+        "file_editor_${project.hashCode()}_${project.name}_${GlobalPluginStorage.currentResearchId}"
     override val loggedData: LoggedData<*, *>
         get() = FileEditorLoggedData
 

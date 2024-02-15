@@ -3,8 +3,8 @@ package org.jetbrains.research.tasktracker.requests
 import com.intellij.openapi.diagnostic.Logger
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.*
 import io.ktor.client.request.forms.*
-import io.ktor.client.statement.*
 import io.ktor.http.*
 import org.apache.http.client.utils.URIBuilder
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig.Companion.getRoute
@@ -15,6 +15,7 @@ object FileRequests {
 
     private val client = HttpClient(CIO)
     private val logger: Logger = Logger.getInstance(FileRequests::class.java)
+    private const val TIMEOUT: Long = 15_000 // 15 seconds
 
     @Suppress("TooGenericExceptionCaught")
     suspend fun sendFile(file: File, logFileType: String): Boolean {
@@ -35,6 +36,11 @@ object FileRequests {
                             )
                         }
                     )
+                },
+                block = {
+                    timeout {
+                        requestTimeoutMillis = TIMEOUT
+                    }
                 }
             )
             return response.status.isSuccess()

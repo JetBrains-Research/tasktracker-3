@@ -30,7 +30,6 @@ import org.jetbrains.research.tasktracker.ui.main.panel.template.WebcamChoicePag
 import org.jetbrains.research.tasktracker.util.UIBundle
 import java.awt.BorderLayout
 import java.awt.FlowLayout
-import java.awt.event.ActionListener
 
 /**
  * The class is intended to manage JCEF and Swing components simultaneously,
@@ -177,7 +176,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
 
     fun openExternalUrl(url: String) = mainWindow.openExternalUrl(url)
 
-    fun setNextAction(listener: ActionListener) = nextButton.setListener(listener)
+    fun setNextAction(listener: () -> Unit = {}) = nextButton.setListener(listener)
 
-    fun setBackAction(listener: ActionListener) = backButton.setListener(listener)
+    fun setBackAction(listener: () -> Unit = {}) = backButton.setListener(listener)
 }
