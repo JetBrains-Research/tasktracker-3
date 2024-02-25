@@ -1,6 +1,6 @@
 package org.jetbrains.research.tasktracker.database.models.data
 
-import org.jetbrains.exposed.sql.statements.InsertStatement
+import org.jetbrains.exposed.sql.statements.UpdateBuilder
 
 /**
  * The table represents information about a completed survey.
@@ -23,10 +23,10 @@ object SurveyData : DataTable() {
         uniqueIndex(date, questionId, question, option, answer)
     }
 
-    override fun insertData(insertStatement: InsertStatement<Number>, iterator: Iterator<String>, researchId: Int) {
-        insertStatement[questionId] = iterator.next().toInt()
-        insertStatement[question] = iterator.next()
-        insertStatement[option] = iterator.next()
-        insertStatement[answer] = iterator.next()
+    override fun insertData(updateBuilder: UpdateBuilder<*>, iterator: Iterator<String>, researchId: Int) {
+        updateBuilder[questionId] = iterator.next().toInt()
+        updateBuilder[question] = iterator.next()
+        updateBuilder[option] = iterator.next()
+        updateBuilder[answer] = iterator.next()
     }
 }

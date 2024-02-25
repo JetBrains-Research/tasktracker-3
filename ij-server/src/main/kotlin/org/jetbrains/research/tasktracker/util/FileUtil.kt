@@ -11,7 +11,7 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import kotlin.io.path.createDirectories
 
-private const val FILE_DIRECTORY = "/data/tt-files/"
+private const val FILE_DIRECTORY = "data"
 
 suspend inline fun PipelineContext<Unit, ApplicationCall>.createLogFile(
     logFileType: String,

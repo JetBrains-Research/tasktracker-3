@@ -1,6 +1,6 @@
 package org.jetbrains.research.tasktracker.database.models.data
 
-import org.jetbrains.exposed.sql.statements.InsertStatement
+import org.jetbrains.exposed.sql.statements.UpdateBuilder
 
 /**
  * The table represents information about emotions determined through photos.
@@ -27,9 +27,9 @@ object WebCamData : DataTable() {
         uniqueIndex(date, emotionShown, isRegular, scores)
     }
 
-    override fun insertData(insertStatement: InsertStatement<Number>, iterator: Iterator<String>, researchId: Int) {
-        insertStatement[emotionShown] = iterator.next()
-        insertStatement[isRegular] = iterator.next().toBoolean()
-        insertStatement[scores] = iterator.next()
+    override fun insertData(updateBuilder: UpdateBuilder<*>, iterator: Iterator<String>, researchId: Int) {
+        updateBuilder[emotionShown] = iterator.next()
+        updateBuilder[isRegular] = iterator.next().toBoolean()
+        updateBuilder[scores] = iterator.next()
     }
 }

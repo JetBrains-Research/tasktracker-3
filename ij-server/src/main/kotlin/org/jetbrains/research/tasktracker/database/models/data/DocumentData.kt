@@ -1,6 +1,6 @@
 package org.jetbrains.research.tasktracker.database.models.data
 
-import org.jetbrains.exposed.sql.statements.InsertStatement
+import org.jetbrains.exposed.sql.statements.UpdateBuilder
 
 /**
  * The table represents information about changes to the file used in the research.
@@ -21,12 +21,12 @@ object DocumentData : DataTable() {
         uniqueIndex(date, timestamp, filename, fileHashCode, documentHashCode, fragment)
     }
 
-    override fun insertData(insertStatement: InsertStatement<Number>, iterator: Iterator<String>, researchId: Int) {
-        insertStatement[timestamp] = iterator.next().toLong()
-        insertStatement[filename] = iterator.next()
-        insertStatement[fileHashCode] = iterator.next().toInt()
-        insertStatement[documentHashCode] = iterator.next().toInt()
-        insertStatement[fragment] = iterator.next()
-        insertStatement[testMode] = iterator.next()
+    override fun insertData(updateBuilder: UpdateBuilder<*>, iterator: Iterator<String>, researchId: Int) {
+        updateBuilder[timestamp] = iterator.next().toLong()
+        updateBuilder[filename] = iterator.next()
+        updateBuilder[fileHashCode] = iterator.next().toInt()
+        updateBuilder[documentHashCode] = iterator.next().toInt()
+        updateBuilder[fragment] = iterator.next()
+        updateBuilder[testMode] = iterator.next()
     }
 }

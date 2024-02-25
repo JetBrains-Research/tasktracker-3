@@ -1,6 +1,6 @@
 package org.jetbrains.research.tasktracker.database.models.data
 
-import org.jetbrains.exposed.sql.statements.InsertStatement
+import org.jetbrains.exposed.sql.statements.UpdateBuilder
 
 /**
  *
@@ -26,9 +26,9 @@ object FileEditorData : DataTable() {
         uniqueIndex(date, action, oldFile, newFile)
     }
 
-    override fun insertData(insertStatement: InsertStatement<Number>, iterator: Iterator<String>, researchId: Int) {
-        insertStatement[action] = iterator.next()
-        insertStatement[oldFile] = iterator.next()
-        insertStatement[newFile] = iterator.next()
+    override fun insertData(updateBuilder: UpdateBuilder<*>, iterator: Iterator<String>, researchId: Int) {
+        updateBuilder[action] = iterator.next()
+        updateBuilder[oldFile] = iterator.next()
+        updateBuilder[newFile] = iterator.next()
     }
 }
