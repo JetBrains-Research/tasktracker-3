@@ -22,6 +22,10 @@ object FileEditorData : DataTable() {
      */
     val newFile = text("new_file").nullable()
 
+    init {
+        uniqueIndex(date, action, oldFile, newFile)
+    }
+
     override fun insertData(insertStatement: InsertStatement<Number>, iterator: Iterator<String>, researchId: Int) {
         insertStatement[action] = iterator.next()
         insertStatement[oldFile] = iterator.next()

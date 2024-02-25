@@ -28,6 +28,10 @@ object ActivityData : DataTable() {
      */
     val actionId = integer("action_id").nullable()
 
+    init {
+        uniqueIndex(date, type, info, selectedText, actionId)
+    }
+
     override fun insertData(insertStatement: InsertStatement<Number>, iterator: Iterator<String>, researchId: Int) {
         insertStatement[type] = iterator.next()
         insertStatement[info] = iterator.next()

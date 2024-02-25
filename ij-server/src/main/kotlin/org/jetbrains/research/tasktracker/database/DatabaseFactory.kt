@@ -26,7 +26,7 @@ object DatabaseFactory {
                 SurveyData,
                 FileEditorData
             ).let {
-                SchemaUtils.create(tables = it)
+                SchemaUtils.createMissingTablesAndColumns(tables = it)
             }
             commit()
         }
