@@ -17,10 +17,6 @@ object DocumentData : DataTable() {
      */
     val testMode = text("test_mode")
 
-    init {
-        uniqueIndex(date, timestamp, filename, fileHashCode, documentHashCode, fragment)
-    }
-
     override fun insertData(updateBuilder: UpdateBuilder<*>, iterator: Iterator<String>, researchId: Int) {
         updateBuilder[timestamp] = iterator.next().toLong()
         updateBuilder[filename] = iterator.next()

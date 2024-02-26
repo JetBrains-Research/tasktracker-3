@@ -19,10 +19,6 @@ object SurveyData : DataTable() {
     val option = text("option").nullable()
     val answer = text("answer")
 
-    init {
-        uniqueIndex(date, questionId, question, option, answer)
-    }
-
     override fun insertData(updateBuilder: UpdateBuilder<*>, iterator: Iterator<String>, researchId: Int) {
         updateBuilder[questionId] = iterator.next().toInt()
         updateBuilder[question] = iterator.next()

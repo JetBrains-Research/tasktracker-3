@@ -23,10 +23,6 @@ object WebCamData : DataTable() {
      */
     val scores = text("scores")
 
-    init {
-        uniqueIndex(date, emotionShown, isRegular, scores)
-    }
-
     override fun insertData(updateBuilder: UpdateBuilder<*>, iterator: Iterator<String>, researchId: Int) {
         updateBuilder[emotionShown] = iterator.next()
         updateBuilder[isRegular] = iterator.next().toBoolean()

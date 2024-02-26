@@ -22,10 +22,6 @@ object FileEditorData : DataTable() {
      */
     val newFile = text("new_file").nullable()
 
-    init {
-        uniqueIndex(date, action, oldFile, newFile)
-    }
-
     override fun insertData(updateBuilder: UpdateBuilder<*>, iterator: Iterator<String>, researchId: Int) {
         updateBuilder[action] = iterator.next()
         updateBuilder[oldFile] = iterator.next()

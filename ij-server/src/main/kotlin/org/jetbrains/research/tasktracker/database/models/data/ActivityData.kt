@@ -28,10 +28,6 @@ object ActivityData : DataTable() {
      */
     val actionId = integer("action_id").nullable().default(-1)
 
-    init {
-        uniqueIndex(date, type, info, selectedText, actionId)
-    }
-
     override fun insertData(updateBuilder: UpdateBuilder<*>, iterator: Iterator<String>, researchId: Int) {
         updateBuilder[type] = iterator.next()
         updateBuilder[info] = iterator.next()
