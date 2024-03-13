@@ -60,7 +60,7 @@ data class MainTaskTrackerConfig(
         val agreementFilePath = "$pluginFolderPath/agreement/agreement.json"
         val logFilesFolder = "$pluginFolderPath/logs"
         const val PLUGIN_PROPERTIES_FILE = "$PLUGIN_NAME.properties"
-        private const val DOMAIN = "http://0.0.0.0:8080"
+        private const val DOMAIN = "https://tt-server-5.labs.jb.gg"
 
         fun getRoute(path: String) = "$DOMAIN/$path"
 
