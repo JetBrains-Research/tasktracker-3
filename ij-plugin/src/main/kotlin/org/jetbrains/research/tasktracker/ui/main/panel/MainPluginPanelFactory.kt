@@ -50,6 +50,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
     lateinit var project: Project
 
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
+        TaskFileHandler.initProject(project)
         TaskTrackerPlugin.initPlugin()
         this.project = project
         mainWindow = project.getService(MainWindowService::class.java).mainWindow

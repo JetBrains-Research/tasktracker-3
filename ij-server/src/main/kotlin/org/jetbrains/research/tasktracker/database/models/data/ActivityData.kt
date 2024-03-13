@@ -1,6 +1,6 @@
 package org.jetbrains.research.tasktracker.database.models.data
 
-import org.jetbrains.exposed.sql.statements.InsertStatement
+import org.jetbrains.exposed.sql.statements.UpdateBuilder
 
 /**
  * The table presenting all the activities that have occurred in the IDE.
@@ -26,12 +26,12 @@ object ActivityData : DataTable() {
     /**
      * Activity ID as provided by the IDE.
      */
-    val actionId = integer("action_id").nullable()
+    val actionId = integer("action_id").nullable().default(-1)
 
-    override fun insertData(insertStatement: InsertStatement<Number>, iterator: Iterator<String>, researchId: Int) {
-        insertStatement[type] = iterator.next()
-        insertStatement[info] = iterator.next()
-        insertStatement[selectedText] = iterator.next()
-        insertStatement[actionId] = iterator.next().toIntOrNull()
+    override fun insertData(updateBuilder: UpdateBuilder<*>, iterator: Iterator<String>, researchId: Int) {
+        updateBuilder[type] = iterator.next()
+        updateBuilder[info] = iterator.next()
+        updateBuilder[selectedText] = iterator.next()
+        updateBuilder[actionId] = iterator.next().toIntOrNull()
     }
 }

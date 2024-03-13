@@ -51,6 +51,7 @@ class TaskFileHandlerTest : CodeInsightFixtureTestCase<ModuleFixtureBuilder<*>>(
     }
 
     private fun testInitTasks(tasks: List<TaskWithFiles>) {
+        TaskFileHandler.initProject(project)
         assertNoThrowable {
             tasks.forEach { task ->
                 TaskFileHandler.initTask(project, task)
@@ -84,6 +85,7 @@ class TaskFileHandlerTest : CodeInsightFixtureTestCase<ModuleFixtureBuilder<*>>(
     }
 
     private fun testDisposeTasks(tasks: List<Task>) {
+        TaskFileHandler.initProject(project)
         tasks.forEach { task ->
             TaskFileHandler.initTask(project, task)
         }

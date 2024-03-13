@@ -2,6 +2,7 @@ package org.jetbrains.research.tasktracker.tracking
 
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.editor.event.DocumentListener
 import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.module.ModuleManager
@@ -25,23 +26,25 @@ import java.io.File
 typealias ProjectTaskFileMap = MutableMap<Project, MutableMap<Task, MutableList<VirtualFile>>>
 typealias ProjectTaskIdFile = MutableMap<Project, MutableMap<Task, MutableMap<String, VirtualFile>>>
 
-@Suppress("UnusedPrivateMember")
+@Suppress("UnusedPrivateMember", "TooManyFunctions")
 object TaskFileHandler {
     private val logger: Logger = Logger.getInstance(TaskFileHandler.javaClass)
-    private val listener by lazy { TaskDocumentListener() }
+    private var listener: DocumentListener? = null
     private val projectTaskIdToFile: ProjectTaskIdFile = HashMap()
     val projectToTaskToFiles: ProjectTaskFileMap = HashMap()
 
     fun initProject(project: Project) {
-        TODO()
+        listener = TaskDocumentListener(project)
     }
+
+    private fun getListener() = listener ?: error("Listener is not define")
 
     fun initTask(project: Project, task: Task) {
         projectTaskIdToFile.putIfAbsent(project, mutableMapOf())
         projectTaskIdToFile[project]?.putIfAbsent(task, mutableMapOf())
         getOrCreateFiles(project, task).forEach { file ->
             file?.let {
-                addVirtualFileListener(it)
+                addVirtualFileListener(project, it)
                 projectToTaskToFiles.putIfAbsent(project, mutableMapOf())
                 projectToTaskToFiles[project]?.putIfAbsent(task, mutableListOf())
                 projectToTaskToFiles[project]?.get(task)?.add(it)
@@ -52,7 +55,7 @@ object TaskFileHandler {
     // TODO not forget to remove from document loggers hashmap, flush data
     fun disposeTask(project: Project, task: Task) {
         projectToTaskToFiles[project]?.let {
-            it[task]?.let { virtualFiles -> removeVirtualFileListener(virtualFiles) }
+            it[task]?.let { virtualFiles -> removeVirtualFileListener(project, virtualFiles) }
                 ?: logger.warn("attempt to dispose a uninitialized task: '$task'")
             it.remove(task)
             projectTaskIdToFile[project]?.remove(task)
@@ -63,24 +66,24 @@ object TaskFileHandler {
         } ?: logger.warn("attempt to dispose task: '$task' from uninitialized project: '$project'")
     }
 
-    private fun addVirtualFileListener(virtualFile: VirtualFile) {
+    private fun addVirtualFileListener(project: Project, virtualFile: VirtualFile) {
         ApplicationManager.getApplication().invokeAndWait {
             val document = FileDocumentManager.getInstance().getDocument(virtualFile)
             document?.let {
-                it.addDocumentListener(listener)
+                it.addDocumentListener(getListener())
                 // Log the first state
-                DocumentLogger.log(it)
+                DocumentLogger.log(project, it)
             } ?: logger.warn("attempt to add listener for non-existing document: '$document'")
         }
     }
 
-    private fun removeVirtualFileListener(virtualFiles: List<VirtualFile>) {
+    private fun removeVirtualFileListener(project: Project, virtualFiles: List<VirtualFile>) {
         virtualFiles.forEach { file ->
             ApplicationManager.getApplication().invokeAndWait {
                 val document = FileDocumentManager.getInstance().getDocument(file)
                 document?.let {
-                    DocumentLogger.removeDocumentLogPrinter(document)
-                    document.removeDocumentListener(listener)
+                    DocumentLogger.removeDocumentLogPrinter(project, document)
+                    document.removeDocumentListener(getListener())
                 }
             }
         }

@@ -2,6 +2,7 @@ package org.jetbrains.research.tasktracker.tracking.logger
 
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.fileEditor.FileDocumentManager
+import com.intellij.openapi.project.Project
 import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.tracking.activity.ActivityEvent
 import org.jetbrains.research.tasktracker.tracking.fileEditor.FileEditorData
@@ -9,6 +10,7 @@ import org.jetbrains.research.tasktracker.tracking.toolWindow.ToolWindowData
 import org.jetbrains.research.tasktracker.tracking.webcam.WebCamData
 import org.jetbrains.research.tasktracker.util.survey.SurveyData
 import org.joda.time.DateTime
+import kotlin.io.path.Path
 
 data class LoggedDataGetter<T, S>(val header: String, val getData: (T) -> S)
 
@@ -23,11 +25,17 @@ abstract class LoggedData<T, S> {
     }
 }
 
-object DocumentLoggedData : LoggedData<Document, String?>() {
+class DocumentLoggedData(project: Project) : LoggedData<Document, String?>() {
     override val loggedDataGetters: List<LoggedDataGetter<Document, String?>> = arrayListOf(
         LoggedDataGetter("date") { DateTime.now().toString() },
         LoggedDataGetter("timestamp") { it.modificationStamp.toString() },
-        LoggedDataGetter("filename") { FileDocumentManager.getInstance().getFile(it)?.name },
+        LoggedDataGetter("filename") {
+            FileDocumentManager.getInstance().getFile(it)?.toNioPath()?.let { filepath ->
+                project.basePath?.let { projectPath ->
+                    Path(projectPath).relativize(filepath)
+                } ?: filepath
+            }.toString()
+        },
         LoggedDataGetter("file_hash_code") { FileDocumentManager.getInstance().getFile(it)?.hashCode().toString() },
         LoggedDataGetter("document_hash_code") { it.hashCode().toString() },
         LoggedDataGetter("fragment") { it.text },

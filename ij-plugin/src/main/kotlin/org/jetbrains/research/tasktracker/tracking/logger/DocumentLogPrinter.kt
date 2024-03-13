@@ -3,6 +3,7 @@ package org.jetbrains.research.tasktracker.tracking.logger
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.fileEditor.FileDocumentManager
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.io.FileUtil
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVPrinter
@@ -25,27 +26,27 @@ class DocumentLogPrinter {
     /**
      * Gets the active logPrinter or creates a new one if there was none or the active one was full
      */
-    fun getActiveLogPrinter(document: Document): LogPrinter {
-        val activePrinter = getLastPrinter(document)
+    fun getActiveLogPrinter(project: Project, document: Document): LogPrinter {
+        val activePrinter = getLastPrinter(project, document)
         return if (activePrinter.isFull()) {
-            addLogPrinter(document)
+            addLogPrinter(project, document)
         } else {
             activePrinter
         }
     }
 
-    private fun getLastPrinter(document: Document) = if (logPrinters.isEmpty()) {
-        addLogPrinter(document)
+    private fun getLastPrinter(project: Project, document: Document) = if (logPrinters.isEmpty()) {
+        addLogPrinter(project, document)
     } else {
         logPrinters.last()
     }
 
-    private fun addLogPrinter(document: Document): LogPrinter {
+    private fun addLogPrinter(project: Project, document: Document): LogPrinter {
         logger.info("${MainTaskTrackerConfig.PLUGIN_NAME}: init printer")
         val logFile = createLogFile(document)
         val fileWriter = OutputStreamWriter(FileOutputStream(logFile), StandardCharsets.UTF_8)
         val csvPrinter = CSVPrinter(fileWriter, CSVFormat.DEFAULT)
-        csvPrinter.printRecord(DocumentLoggedData.headers)
+        csvPrinter.printRecord(DocumentLoggedData(project).headers)
         logPrinters.add(LogPrinter(csvPrinter, fileWriter, logFile))
         return logPrinters.last()
     }
