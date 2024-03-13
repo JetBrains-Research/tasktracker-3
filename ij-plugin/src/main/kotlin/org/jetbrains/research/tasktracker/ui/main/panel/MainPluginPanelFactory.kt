@@ -55,6 +55,10 @@ class MainPluginPanelFactory : ToolWindowFactory {
         mainWindow = project.getService(MainWindowService::class.java).mainWindow
         trackingService = project.getService(TrackingService::class.java)
         mainWindow.jComponent.size = JBUI.size(toolWindow.component.width, toolWindow.component.height)
+        mainWindow.onError {
+            nextButton.text = UIBundle.message("ui.button.welcome")
+            setNextAction { agreementAcceptance() }
+        }
         agreementAcceptance()
         val buttonPanel = JBPanel<JBPanel<*>>(FlowLayout()).apply {
             add(backButton)

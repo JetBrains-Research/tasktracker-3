@@ -1,9 +1,2 @@
 agreements:
-  - text: |
-      Multiline
-      example
-    required: false
-  - text: "Example <a href=\"https://github.com/JetBrains-Research/tasktracker-3\">link</a>"
-  - text: "Example link in JCEF <a href=\"https://github.com/JetBrains-Research/tasktracker-3\">link</a>"
-    openLinkInDefaultBrowser: false
-  - text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"
+  - text: I agree to save my name and email in the taskTracker plugin database.

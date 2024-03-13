@@ -12,9 +12,9 @@ import org.intellij.lang.annotations.Language
 import org.jetbrains.concurrency.Promise
 import org.jetbrains.research.tasktracker.ui.main.panel.models.LinkType
 import org.jetbrains.research.tasktracker.ui.main.panel.models.Theme
-import org.jetbrains.research.tasktracker.ui.main.panel.template.DefaultErrorPage
 import org.jetbrains.research.tasktracker.ui.main.panel.template.HtmlTemplate
 import org.jetbrains.research.tasktracker.ui.main.panel.template.MainPageTemplate
+import org.jetbrains.research.tasktracker.ui.main.panel.template.ServerErrorPage
 import javax.swing.JComponent
 
 class MainPluginWindow(service: MainWindowService) {
@@ -28,9 +28,6 @@ class MainPluginWindow(service: MainWindowService) {
 
     init {
         windowBrowser.jbCefClient.setProperty(JBCefClient.Properties.JS_QUERY_POOL_SIZE, JS_QUERY_POOL_SIZE)
-        windowBrowser.setErrorPage { errorCode, errorText, failedUrl ->
-            DefaultErrorPage(errorCode.code.toString(), errorText, failedUrl).htmlContent
-        }
         loadHtmlTemplate(currentTemplate)
         val app = ApplicationManager.getApplication().messageBus
         app.connect().subscribe(
@@ -44,6 +41,13 @@ class MainPluginWindow(service: MainWindowService) {
         )
         listenRedirectToDefaultBrowser()
         Disposer.register(service, windowBrowser)
+    }
+
+    fun onError(action: () -> Unit) {
+        windowBrowser.setErrorPage { errorCode, errorText, failedUrl ->
+            action.invoke()
+            ServerErrorPage().htmlContent
+        }
     }
 
     private fun getJsElementByIdCommand(elementId: String) = "document.getElementById('$elementId')"

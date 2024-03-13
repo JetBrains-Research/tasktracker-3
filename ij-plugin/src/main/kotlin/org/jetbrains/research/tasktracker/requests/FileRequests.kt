@@ -13,12 +13,17 @@ import java.io.File
 
 object FileRequests {
 
-    private val client = HttpClient(CIO)
+    private val client = HttpClient(CIO) {
+        install(HttpTimeout)
+    }
     private val logger: Logger = Logger.getInstance(FileRequests::class.java)
-    private const val TIMEOUT: Long = 15_000 // 15 seconds
+    private const val TIMEOUT: Long = 120_000 // 2 minutes
 
-    @Suppress("TooGenericExceptionCaught")
+    @Suppress("TooGenericExceptionCaught", "ReturnCount")
     suspend fun sendFile(file: File, logFileType: String): Boolean {
+        if (!file.exists() || file.length() == 0L) {
+            return true
+        }
         try {
             val researchId = GlobalPluginStorage.currentResearchId
                 ?: error("ResearchId is undefined")
