@@ -22,7 +22,7 @@ class TaskDocumentListenerTest : CodeInsightFixtureTestCase<ModuleFixtureBuilder
             assert(document.text == text) { "Expected '$text' to be written, but found '${document.text}'" }
         }
         document.reWriteText("test")
-        DocumentLogger.getDocumentLogPrinter(document)?.getActiveLogPrinter(document)?.csvPrinter?.flush()
+        DocumentLogger.getDocumentLogPrinter(document)?.getActiveLogPrinter(project, document)?.csvPrinter?.flush()
         assert(logFile.exists()) { "log file with path '${logFile.path}' should have been created" }
         val changes = logFile.readLines()
             .filterIndexed { index, _ -> index > 1 }
@@ -46,7 +46,7 @@ class TaskDocumentListenerTest : CodeInsightFixtureTestCase<ModuleFixtureBuilder
         val logFileName =
             "${virtualFile.nameWithoutExtension}_${virtualFile.hashCode()}_${document.hashCode()}_0.csv"
         val logFile = File("${MainTaskTrackerConfig.logFilesFolder}/$logFileName")
-        document.addDocumentListener(TaskDocumentListener())
+        document.addDocumentListener(TaskDocumentListener(project))
         assert(!logFile.exists()) {
             "log file with path '${logFile.path}' should be created on first event in TaskDocumentListener"
         }
