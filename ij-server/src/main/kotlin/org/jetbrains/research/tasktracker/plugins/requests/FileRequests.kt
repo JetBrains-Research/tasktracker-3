@@ -20,10 +20,8 @@ fun Routing.uploadLogFile() {
             val logFileType = parameters["logFileType"] ?: DEFAULT_FOLDER
             val researchId = parameters.getOrFail<Int>("id")
             val logFile = createLogFile(logFileType, researchId)
+            logFile.parseLogFile(logFileType, researchId)
             call.respond(HttpStatusCode.OK)
-            launch {
-                logFile.parseLogFile(logFileType, researchId)
-            }
         } catch (e: MissingRequestParameterException) {
             call.respond(HttpStatusCode.BadRequest, e.localizedMessage)
         } catch (e: ParameterConversionException) {
