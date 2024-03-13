@@ -1,60 +1,375 @@
 tasks:
-  - description: "Take the kotlin introduction course, and after that, press the next button."
-    files:
-      - extension: KOTLIN
-        filename: Main
-        isInternal: false
-        relativePath: TheFirstDateWithProgramming/task/src/main/kotlin/jetbrains/kotlin/course/first/date
-        sourceSet: SRC
-      - extension: KOTLIN
-        filename: Main
-        isInternal: false
-        relativePath: WarmUp/task/src/main/kotlin/jetbrains/kotlin/course/warmup
-        sourceSet: SRC
-      - extension: KOTLIN
-        filename: Main
-        isInternal: false
-        relativePath: LastPush/task/src/main/kotlin/jetbrains/kotlin/course/last/push
-        sourceSet: SRC
-      - extension: KOTLIN
-        filename: Main
-        isInternal: false
-        relativePath: MastermindAdvanced/task/src/main/kotlin/jetbrains/kotlin/course/mastermind/advanced
-        sourceSet: SRC
-      - extension: KOTLIN
-        filename: RealQuestions
-        isInternal: false
-        relativePath: TheFirstDateWithProgramming/task/src/main/kotlin/jetbrains/kotlin/course/first/date
-        sourceSet: SRC
-      - extension: KOTLIN
-        filename: Main
-        isInternal: false
-        relativePath: AlmostDone/task/src/main/kotlin/jetbrains/kotlin/course/almost/done
-        sourceSet: SRC
-      - extension: KOTLIN
-        filename: Main
-        isInternal: false
-        relativePath: Hangman/task/src/main/kotlin/jetbrains/kotlin/course/hangman
-        sourceSet: SRC
-      - extension: KOTLIN
-        filename: Main
-        isInternal: false
-        relativePath: FeedbackSurvey/Survey/src
-        sourceSet: SRC
-      - extension: KOTLIN
-        filename: Main
-        isInternal: false
-        relativePath: Introduction/task/src/main/kotlin/jetbrains/kotlin/course/welcome
-        sourceSet: SRC
-      - extension: KOTLIN
-        filename: Main
-        isInternal: false
-        relativePath: Chat/task/src/main/kotlin/jetbrains/kotlin/course/chat
-        sourceSet: SRC
-      - extension: KOTLIN
-        filename: Util
-        isInternal: false
-        relativePath: WarmUp/task/src/main/kotlin/jetbrains/kotlin/course/warmup
-        sourceSet: SRC
-    id: main
-    name: "Kotlin Introduction"
+- description: "Take the kotlin refactoring course, and after that, press the next button."
+  files:
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: ExtractingCode/WhatIsExtractVariableRefactoring/Theory/src/main/kotlin/jetbrains/refactoring/course/extracting
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: RenamingCode/NamingRules/Quiz/src/main/kotlin/jetbrains/refactoring/course/renaming
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: VideoSaver
+    isInternal: false
+    relativePath: RefactoringToDesignPatterns/FacadePatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: PaymentProcessor
+    isInternal: false
+    relativePath: RefactoringToDesignPatterns/StrategyPatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns/processor
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: RefactoringAndItsPurpose/Introduction/RefactoringAndItsPurposeIntroduction/src/main/kotlin/jetbrains/refactoring/course/refactoring/purpose
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: RenamingCode/RenameRefactoringInIDE/RenameRefactoringInIDE/src/main/kotlin/jetbrains/refactoring/course/renaming
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Task
+    isInternal: false
+    relativePath: ExtractingCode/WhatIsExtractVariableRefactoring/ExtractMagicConstantsPractice/src/main/kotlin/jetbrains/refactoring/course/extracting
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Video
+    isInternal: false
+    relativePath: RefactoringToDesignPatterns/FacadePatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns/video
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: RefactoringAndItsPurpose/GettingFamiliarWithIDERefactoringFeatures/Theory/src/main/kotlin/jetbrains/refactoring/course/refactoring/purpose
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: MovingCode/Introduction/MovingCodeIntroduction/src/main/kotlin/jetbrains/refactoring/course/moving
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: RefactoringToDesignPatterns/FactoryMethodPatternTheory/Theory/src/main/kotlin/jetbrains/refactoring/course/patterns
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: ProcessedVideo
+    isInternal: false
+    relativePath: RefactoringToDesignPatterns/FacadePatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns/video
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: RefactoringAndItsPurpose/WhatIsCodeRefactoring/Quiz/src/main/kotlin/jetbrains/refactoring/course/refactoring/purpose
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Animal
+    isInternal: false
+    relativePath: MovingCode/WhatArePullUpAndPushDownRefactorings/task/src/main/kotlin/jetbrains/refactoring/course/moving
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: MovingCode/WhatIsMoveMethodRefactoring/task/src/main/kotlin/jetbrains/refactoring/course/moving
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Task
+    isInternal: false
+    relativePath: InliningCode/InlineMethodRefactoring/InlineMethodAndVariablesPractice/src/main/kotlin/jetbrains/refactoring/course/inlining
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: RefactoringAndItsPurpose/CommonCodeIssuesAndTheirImpactOnCodeQuality/Theory/src/main/kotlin/jetbrains/refactoring/course/refactoring/purpose
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Student
+    isInternal: false
+    relativePath: RenamingCode/RenameRefactoringInIDE/FixTyposPractice/src/main/kotlin/jetbrains/refactoring/course/renaming
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: InliningCode/InlineMethodRefactoring/Theory/src/main/kotlin/jetbrains/refactoring/course/inlining
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: EncodedVideo
+    isInternal: false
+    relativePath: RefactoringToDesignPatterns/FacadePatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns/video
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: PayPalPayment
+    isInternal: false
+    relativePath: RefactoringToDesignPatterns/StrategyPatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns/strategy
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Dog
+    isInternal: false
+    relativePath: MovingCode/WhatArePullUpAndPushDownRefactorings/task/src/main/kotlin/jetbrains/refactoring/course/moving
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: MiddleMan
+    isInternal: false
+    relativePath: InliningCode/MiddleManCodeSmell/task/src/main/kotlin/jetbrains/refactoring/course/inlining
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: TransportationServiceFactory
+    isInternal: false
+    relativePath: RefactoringToDesignPatterns/FactoryMethodPatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: Introduction/Introduction/Introduction/src/main/kotlin/jetbrains/refactoring/course/introduction
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Car
+    isInternal: false
+    relativePath: MovingCode/WhatIsMoveMethodRefactoring/task/src/main/kotlin/jetbrains/refactoring/course/moving/car
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Bicycle
+    isInternal: false
+    relativePath: RefactoringToDesignPatterns/FactoryMethodPatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: InliningCode/WhatIsInlineVariableRefactoring/Theory/src/main/kotlin/jetbrains/refactoring/course/inlining
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: RenamingCode/RenameRefactoringInIDE/Quiz/src/main/kotlin/jetbrains/refactoring/course/renaming
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: MovingCode/CohesionAndCoupling/Quiz/src
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: ExtractingCode/Introduction/ExtractingCodeIntroduction/src/main/kotlin/jetbrains/refactoring/course/extracting
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: RefactoringToDesignPatterns/Introduction/RefactoringToDesignPatternsIntroduction/src/main/kotlin/jetbrains/refactoring/course/patterns
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Car
+    isInternal: false
+    relativePath: RefactoringToDesignPatterns/FactoryMethodPatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: CodeStyleAndFormatting/WhatIsFormatting/Theory/src/main/kotlin/jetbrains/refactoring/course/formatting
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: CodeStyleAndFormatting/WhatIsFormatting/Quiz/src/main/kotlin/jetbrains/refactoring/course/formatting
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Order
+    isInternal: false
+    relativePath: RefactoringToDesignPatterns/StrategyPatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: University
+    isInternal: false
+    relativePath: RenamingCode/RenameRefactoringInIDE/FixTyposPractice/src/main/kotlin/jetbrains/refactoring/course/renaming
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: RefactoringToDesignPatterns/FacadePatternTheory/Theory/src/main/kotlin/jetbrains/refactoring/course/patterns
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Transport
+    isInternal: false
+    relativePath: RefactoringToDesignPatterns/FactoryMethodPatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Task
+    isInternal: false
+    relativePath: InliningCode/WhatIsInlineVariableRefactoring/InlineVariablesPractice/src/main/kotlin/jetbrains/refactoring/course/inlining
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: Conclusion/FeedbackSurvey/FeedbackSurvey/src/main/kotlin/jetbrains/refactoring/course/conclusion
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Task
+    isInternal: false
+    relativePath: CodeStyleAndFormatting/WhatIsFormatting/ReformatTheCodePractice/src/main/kotlin/jetbrains/refactoring/course/formatting
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: RenamingCode/Introduction/RenamingCodeIntroduction/src/main/kotlin/jetbrains/refactoring/course/renaming
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: MovingCode/CohesionAndCoupling/Theory/src
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Task
+    isInternal: false
+    relativePath: CodeStyleAndFormatting/CodeSchemasAndEditorConfig/task/src/main/kotlin/jetbrains/refactoring/course/formatting
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Driver
+    isInternal: false
+    relativePath: MovingCode/WhatIsMoveMethodRefactoring/task/src/main/kotlin/jetbrains/refactoring/course/moving/driver
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Task
+    isInternal: false
+    relativePath: ExtractingCode/WhatIsExtractMethodRefactoring/ExtractDuplicatedCodePractice/src/main/kotlin/jetbrains/refactoring/course/extracting
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: RefactoringAndItsPurpose/CommonCodeIssuesAndTheirImpactOnCodeQuality/Quiz/src/main/kotlin/jetbrains/refactoring/course/refactoring/purpose
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: RefactoringToDesignPatterns/FacadePatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: PaymentStrategy
+    isInternal: false
+    relativePath: RefactoringToDesignPatterns/StrategyPatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns/strategy
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: CreditCardPayment
+    isInternal: false
+    relativePath: RefactoringToDesignPatterns/StrategyPatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns/strategy
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: RenamingCode/NamingRules/Theory/src/main/kotlin/jetbrains/refactoring/course/renaming
+    sourceSet: SRC
+  - extension: NO_EXTENSION
+    filename: .editorconfig
+    isInternal: false
+    relativePath: CodeStyleAndFormatting/CodeSchemasAndEditorConfig/task
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Task
+    isInternal: false
+    relativePath: RefactoringAndItsPurpose/Practice/RefactoringAndItsPurposePractice/src/main/kotlin/jetbrains/refactoring/course/refactoring/purpose
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: Introduction/JoinOurDiscordCommunity/JoinOurDiscordCommunity/src/main/kotlin/jetbrains/refactoring/course/introduction
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: RefactoringToDesignPatterns/DesignPatternsAndTheirRelationshipsWithRefactoring/Theory/src/main/kotlin/jetbrains/refactoring/course/patterns
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: RefactoringToDesignPatterns/StrategyPatternTheory/Theory/src/main/kotlin/jetbrains/refactoring/course/patterns
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: RefactoringToDesignPatterns/StrategyPatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: Introduction/GettingToKnowYou/GettingToKnowYou/src/main/kotlin/jetbrains/refactoring/course/introduction
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: RefactoringToDesignPatterns/FactoryMethodPatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Task
+    isInternal: false
+    relativePath: CodeStyleAndFormatting/WhatIsFormatting/ReformatTheCodeUsingIDEPractice/src/main/kotlin/jetbrains/refactoring/course/formatting
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: Conclusion/Conclusion/Conclusion/src/main/kotlin/jetbrains/refactoring/course/conclusion
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: CodeStyleAndFormatting/Introduction/CodeStyleAndFormattingIntroduction/src/main/kotlin/jetbrains/refactoring/course/formatting
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: VideoLoader
+    isInternal: false
+    relativePath: RefactoringToDesignPatterns/FacadePatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: VideoEncoder
+    isInternal: false
+    relativePath: RefactoringToDesignPatterns/FacadePatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: RefactoringAndItsPurpose/RefactoringTechniques/Theory/src/main/kotlin/jetbrains/refactoring/course/refactoring/purpose
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: VideoProcessor
+    isInternal: false
+    relativePath: RefactoringToDesignPatterns/FacadePatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: VideoConversionFacade
+    isInternal: false
+    relativePath: RefactoringToDesignPatterns/FacadePatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Cat
+    isInternal: false
+    relativePath: MovingCode/WhatArePullUpAndPushDownRefactorings/task/src/main/kotlin/jetbrains/refactoring/course/moving
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: ExtractingCode/WhatIsExtractMethodRefactoring/Theory/src/main/kotlin/jetbrains/refactoring/course/extracting
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: RefactoringAndItsPurpose/WhatIsCodeRefactoring/Theory/src/main/kotlin/jetbrains/refactoring/course/refactoring/purpose
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: RefactoringAndItsPurpose/RefactoringTechniques/Quiz/src/main/kotlin/jetbrains/refactoring/course/refactoring/purpose
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: Main
+    isInternal: false
+    relativePath: InliningCode/Introduction/InliningCodeIntroduction/src/main/kotlin/jetbrains/refactoring/course/inlining
+    sourceSet: SRC
+  - extension: KOTLIN
+    filename: BitcoinPayment
+    isInternal: false
+    relativePath: RefactoringToDesignPatterns/StrategyPatternPractice/task/src/main/kotlin/jetbrains/refactoring/course/patterns/strategy
+    sourceSet: SRC
+  id: main
+  name: "Kotlin refactoring course"

@@ -13,6 +13,7 @@ inline fun <reified T : BaseConfig> buildBaseConfig(
     require(config == null) {
         "The ${config?.configName} config was already parsed"
     }
-    logger.info("Building ${config?.configName} config...")
-    return configBuilder(configFile)
+    return configBuilder(configFile).also {
+        logger.info("Building ${it.configName} config...")
+    }
 }

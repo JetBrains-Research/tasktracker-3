@@ -37,6 +37,7 @@ fun Panel.agreementAcceptance() {
                             project,
                             UIBundle.message("ui.connection.lose")
                         )
+                        return@runOnSuccess
                     }
                 }
                 GlobalPluginStorage.currentResearchId = IdRequests.getResearchId()
