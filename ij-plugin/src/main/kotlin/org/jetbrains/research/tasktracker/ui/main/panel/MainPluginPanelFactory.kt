@@ -79,6 +79,7 @@ class MainPluginPanelFactory : ToolWindowFactory {
 
     override fun isApplicable(project: Project) = super.isApplicable(project) && JBCefApp.isSupported()
 
+    @Suppress("LongParameterList")
     fun loadBasePage(
         template: HtmlTemplate,
         buttonTextKey: String? = null,
