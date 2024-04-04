@@ -27,7 +27,7 @@ typealias Panel = MainPluginPanelFactory
  */
 fun Panel.agreementAcceptance() {
     GlobalPluginStorage.resetSession()
-    loadBasePage(AgreementTemplate.loadCurrentTemplate(), "ui.button.next", false)
+    loadBasePage(AgreementTemplate.loadCurrentTemplate(), "ui.button.next", false, isVisiblePauseButton = false)
     setNextAction {
         checkAgreementInputs().runOnSuccess {
             if (!it) {
@@ -53,7 +53,7 @@ fun Panel.agreementAcceptance() {
  * Switches the panel to the plugin description window.
  */
 fun Panel.welcomePage() {
-    loadBasePage(MainPageTemplate.loadCurrentTemplate(), "ui.button.next", false)
+    loadBasePage(MainPageTemplate.loadCurrentTemplate(), "ui.button.next", false, isVisiblePauseButton = false)
     setNextAction {
         TaskTrackerPlugin.initializationHandler.setupEnvironment(project)
         trackingService.startTracking(project)
@@ -64,10 +64,9 @@ fun Panel.welcomePage() {
 /**
  * Switches the panel to the task selection window.
  */
-@Suppress("UnusedPrivateMember")
 private fun Panel.selectTask(taskIds: List<String>, allRequired: Boolean = true) {
     val tasks = TaskTrackerPlugin.mainConfig.taskContentConfig?.tasks?.filter { it.id in taskIds } ?: emptyList()
-    loadBasePage(TasksPageTemplate(tasks))
+    loadBasePage(TasksPageTemplate(tasks), isVisiblePauseButton = false)
     setNextAction {
         mainWindow.getElementValue("tasks").runOnSuccess { name ->
             solveTask(name.toString(), if (allRequired) taskIds.filter { it != name } else emptyList())
@@ -130,14 +129,14 @@ fun Panel.survey(id: String) {
 }
 
 fun Panel.serverErrorPage() {
-    loadBasePage(ServerErrorPage(), "ui.button.welcome", false)
+    loadBasePage(ServerErrorPage(), "ui.button.welcome", false, isVisiblePauseButton = false)
     setNextAction {
         agreementAcceptance()
     }
 }
 
 fun Panel.finalPage() {
-    loadBasePage(FinalPageTemplate.loadCurrentTemplate(), "ui.button.welcome", false)
+    loadBasePage(FinalPageTemplate.loadCurrentTemplate(), "ui.button.welcome", false, isVisiblePauseButton = false)
     setNextAction {
         agreementAcceptance()
     }
@@ -177,11 +176,15 @@ fun Panel.processScenario() {
         }
 
         null -> {
-            scenario.reset()
-            loadBasePage(LoadTemplate())
-            ApplicationManager.getApplication().invokeLater {
-                trackingService.stopTracking(::finalPage, ::serverErrorPage)
-            }
+            stopTracking()
         }
+    }
+}
+
+fun Panel.stopTracking() {
+    TaskTrackerPlugin.mainConfig.scenarioConfig?.scenario?.reset()
+    loadBasePage(LoadTemplate())
+    ApplicationManager.getApplication().invokeLater {
+        trackingService.stopTracking(::finalPage, ::serverErrorPage)
     }
 }

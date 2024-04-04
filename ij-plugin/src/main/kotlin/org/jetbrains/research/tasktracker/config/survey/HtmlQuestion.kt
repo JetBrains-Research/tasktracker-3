@@ -107,9 +107,9 @@ data class RadioHtmlQuestion(
     override fun toHtml(): String = buildString {
         append(htmlText())
         infos.forEach { (id, value) ->
-            append("<input type=\"radio\" id=\"$id\" ${elementId.asParameter("name")} ")
+            append("<label for=\"$id\"><input type=\"radio\" id=\"$id\" ${elementId.asParameter("name")} ")
             append("value=\"$value\" ${isRequiredString()}>")
-            append("<label for=\"$id\">$value</label><br>")
+            append("$value</label><br>")
         }
     }
 }

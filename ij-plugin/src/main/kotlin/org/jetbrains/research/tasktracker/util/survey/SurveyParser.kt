@@ -17,12 +17,12 @@ class SurveyParser(private val mainWindow: MainPluginWindow, project: Project) :
         when (item) {
             is InputHtmlQuestion -> {
                 val result = mainWindow.getElementValue(item.elementId).await()
-                surveyLogger.log(item.text, result.toString(), questionId = id)
+                surveyLogger.log(item.text, result.toString(), option = item.elementId, questionId = id)
             }
 
             is TextAreaHtmlQuestion -> {
                 val result = mainWindow.getElementValue(item.elementId).await()
-                surveyLogger.log(item.text, result.toString(), questionId = id)
+                surveyLogger.log(item.text, result.toString(), option = item.elementId, questionId = id)
             }
 
             is RadioHtmlQuestion -> item.infos.forEach { info ->
