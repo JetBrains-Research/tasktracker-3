@@ -63,6 +63,7 @@ data class Scenario(
 
     fun reset() {
         currentSteps = LinkedList(steps)
+        currentStepIterator = null
     }
 
     private fun Iterator<ScenarioUnit>?.notNullAndHasNext() = this?.hasNext() != true

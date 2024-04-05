@@ -1,210 +1,128 @@
 surveys:
   - id: default
     htmlQuestions:
-      - !<Input>
-        text: Approximately how many hours did you use the plugin?
-        elementId: hours
-        type: number
-        required: true
-        min: 0
-        step: 0.5
       - !<Radio>
-        text: 2. On a scale of 1 (very unlikely) to 5 (very likely), how likely are you to continue using the Emotion Tracker in the future?
-        elementId: likely
+        text: 1.How helpful was the hint in solving the problem? Where 1 - not helpful at all, 5 - very helpful.
+        elementId: helpfulHint
         required: true
         info:
-          - id: likely1
+          - id: helpfulHint1
             value: 1
-          - id: likely2
+          - id: helpfulHint2
             value: 2
-          - id: likely3
+          - id: helpfulHint3
             value: 3
-          - id: likely4
+          - id: helpfulHint4
             value: 4
-          - id: likely5
+          - id: helpfulHint5
             value: 5
-      - !<Radio>
-        text: 3. On a scale of 1 (not at all) to 5 (extremely), how much did the Emotion Tracker disrupt your workflow?
-        elementId: disrupt
+      - !<Checkbox>
+        text: 2.Why did you decide to ask for a hint?
+        elementId: hintAsk
+        required: true
         info:
-          - id: disrupt1
-            value: 1
-          - id: disrupt2
-            value: 2
-          - id: disrupt3
-            value: 3
-          - id: disrupt4
-            value: 4
-          - id: disrupt5
-            value: 5
-      - !<Radio>
-        text: 4. On a scale of 1 (very inaccurate) to 5 (very accurate), how accurately did the Emotion Tracker capture your emotions?
-        elementId: accuracy
-        info:
-          - id: accuracy1
-            value: 1
-          - id: accuracy2
-            value: 2
-          - id: accuracy3
-            value: 3
-          - id: accuracy4
-            value: 4
-          - id: accuracy5
-            value: 5
-      - !<Radio>
-        text: 5. On a scale of 1 (not at all) to 5 (very comfortable), how comfortable were you with the plugin recording your emotions while coding?
-        elementId: comfort
-        info:
-          - id: comfort1
-            value: 1
-          - id: comfort2
-            value: 2
-          - id: comfort3
-            value: 3
-          - id: comfort4
-            value: 4
-          - id: comfort5
-            value: 5
-      - !<Radio>
-        text: 6. On a scale of 1 (not at all) to 5 (extremely), how helpful did you find the messages provided by the Emotion Tracker in aiding your self-regulation?
-        elementId: helpful
-        info:
-          - id: helpful1
-            value: 1
-          - id: helpful2
-            value: 2
-          - id: helpful3
-            value: 3
-          - id: helpful4
-            value: 4
-          - id: helpful5
-            value: 5
-      - !<Container>
-        text: 7. During your experience with the Emotion Tracker, how often did you feel the following emotions?
-        questions:
-          - !<Radio>
-            text: Happiness
-            textSize: 4
-            elementId: happiness
-            info:
-              - id: never_happy
-                value: Never
-              - id: rarely_happy
-                value: Rarely
-              - id: sometimes_happy
-                value: Sometimes
-              - id: often_happy
-                value: Often
-              - id: most_happy
-                value: Most of the time
-          - !<Radio>
-            text: Surprise
-            textSize: 4
-            elementId: surprise
-            info:
-              - id: never_surprise
-                value: Never
-              - id: rarely_surprise
-                value: Rarely
-              - id: sometimes_surprise
-                value: Sometimes
-              - id: often_surprise
-                value: Often
-              - id: most_surprise
-                value: Most of the time
-          - !<Radio>
-            text: Neutral
-            textSize: 4
-            elementId: neutral
-            info:
-              - id: never_neutral
-                value: Never
-              - id: rarely_neutral
-                value: Rarely
-              - id: sometimes_neutral
-                value: Sometimes
-              - id: often_neutral
-                value: Often
-              - id: most_neutral
-                value: Most of the time
-          - !<Radio>
-            text: Sadness
-            textSize: 4
-            elementId: sadness
-            info:
-              - id: never_sad
-                value: Never
-              - id: rarely_sad
-                value: Rarely
-              - id: sometimes_sad
-                value: Sometimes
-              - id: often_sad
-                value: Often
-              - id: most_sad
-                value: Most of the time
-          - !<Radio>
-            text: Anger
-            textSize: 4
-            elementId: anger
-            info:
-              - id: never_anger
-                value: Never
-              - id: rarely_anger
-                value: Rarely
-              - id: sometimes_anger
-                value: Sometimes
-              - id: often_anger
-                value: Often
-              - id: most_anger
-                value: Most of the time
-          - !<Radio>
-            text: Disgust
-            textSize: 4
-            elementId: disgust
-            info:
-              - id: never_disgust
-                value: Never
-              - id: rarely_disgust
-                value: Rarely
-              - id: sometimes_disgust
-                value: Sometimes
-              - id: often_disgust
-                value: Often
-              - id: most_disgust
-                value: Most of the time
-          - !<Radio>
-            text: Fear
-            textSize: 4
-            elementId: fear
-            info:
-              - id: never_fear
-                value: Never
-              - id: rarely_fear
-                value: Rarely
-              - id: sometimes_fear
-                value: Sometimes
-              - id: often_fear
-                value: Often
-              - id: most_fear
-                value: Most of the time
-          - !<Radio>
-            text: Contempt
-            textSize: 4
-            elementId: contempt
-            info:
-              - id: never_contempt
-                value: Never
-              - id: rarely_contempt
-                value: Rarely
-              - id: sometimes_contempt
-                value: Sometimes
-              - id: often_contempt
-                value: Often
-              - id: most_contempt
-                value: Most of the time
+          - id: hintAsk1
+            value: My solution did not pass tests
+          - id: hintAsk2
+            value: Didn’t know what to do next
+          - id: hintAsk3
+            value: Compilation errors
+          - id: hintAsk4
+            value: I was curious
+          - id: hintAsk5
+            value: Other - open question
       - !<Textarea>
-        text: 8. Please share any additional thoughts or comments you have about your experience using the Emotion Tracker plugin.
-        elementId: additionalThoughts
+        text: If you have chosen 'other', please write your answer here.
+        elementId: hintAskOptional
+        rows: 5
+        cols: 50
+      - !<Checkbox>
+        text: 3.Which option did you prefer?
+        elementId: optionPrefer
         required: true
+        info:
+          - id: optionPrefer1
+            value: Reading the hint as text
+          - id: optionPrefer2
+            value: Seeing the hint in code
+          - id: optionPrefer3
+            value: The combination of both
+          - id: optionPrefer4
+            value: Depending on the task
+          - id: optionPrefer5
+            value: Neither
+          - id: optionPrefer6
+            value: Other
+      - !<Textarea>
+        text: If you have chosen 'other', please specify your preferred way.
+        elementId: optionPreferOptional
+        rows: 5
+        cols: 50
+      - !<Checkbox>
+        text: 4.Have you ever used hints to quickly complete a task and move on?
+        elementId: quickComplete
+        required: true
+        info:
+          - id: quickComplete1
+            value: A couple of times during solving the course
+          - id: quickComplete2
+            value: At least once in every project
+          - id: quickComplete3
+            value: Only in projects that was hard for me
+          - id: quickComplete4
+            value: Didn't use
+          - id: quickComplete5
+            value: Other
+      - !<Textarea>
+        text: If you have chosen 'other', please write your answer here.
+        elementId: quickCompleteOptional
+        rows: 5
+        cols: 50
+      - !<Checkbox>
+        text: 5.Have there ever been situations when you didn't understand a hint? If yes what did you do?
+        elementId: understandHint
+        required: true
+        info:
+          - id: understandHint1
+            value: Generated the hint again
+          - id: understandHint2
+            value: Google/stack overflow or other similar resources
+          - id: understandHint3
+            value: Asked a teacher/friend for advice
+          - id: understandHint4
+            value: Didn't use
+          - id: understandHint5
+            value: Used other AI-based tools such as ChatGPT
+          - id: understandHint6
+            value: Tried myself
+          - id: understandHint7
+            value: No, there haven't
+          - id: understandHint8
+            value: Other
+      - !<Textarea>
+        text: If you have chosen 'other', please write your answer here.
+        elementId: understandHintOptional
+        rows: 5
+        cols: 50
+      - !<Checkbox>
+        text: 6.Would you like to continue using hints?
+        elementId: continueUse
+        required: true
+        info:
+          - id: continueUse1
+            value: Yes
+          - id: continueUse2
+            value: No, I prefer to use another AI-tool, such as ChatGPT
+          - id: continueUse3
+            value: No, I prefer to use Google and other websites
+          - id: continueUse4
+            value: No, I prefer to ask a teacher/friend
+          - id: continueUse5
+            value: Yes, if hints are generated faster
+          - id: continueUse6
+            value: Other
+      - !<Textarea>
+        text: If you have chosen 'other', please write your answer here.
+        elementId: continueUseOptional
         rows: 5
         cols: 50
