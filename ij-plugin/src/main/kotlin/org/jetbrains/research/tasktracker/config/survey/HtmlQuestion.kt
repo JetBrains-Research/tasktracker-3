@@ -8,7 +8,7 @@ import kotlinx.serialization.Transient
  * Radio button id and value
  */
 @Serializable
-data class RadioInfo(val id: String, val value: String)
+data class ValueInfo(val id: String, val value: String)
 
 /**
  * This is a class that constructs an input field of a specified type in HTML.
@@ -102,12 +102,32 @@ data class RadioHtmlQuestion(
      * **ElementId** here is radio button **name**!!!.
      */
     override val elementId: String,
-    @SerialName("info") val infos: List<RadioInfo>
+    @SerialName("info") val infos: List<ValueInfo>
 ) : HtmlQuestion() {
     override fun toHtml(): String = buildString {
         append(htmlText())
         infos.forEach { (id, value) ->
             append("<label for=\"$id\"><input type=\"radio\" id=\"$id\" ${elementId.asParameter("name")} ")
+            append("value=\"$value\" ${isRequiredString()}>")
+            append("$value</label><br>")
+        }
+    }
+}
+
+@Serializable
+@SerialName("Checkbox")
+data class CheckboxHtmlQuestion(
+    override val text: String,
+    /**
+     * **ElementId** here is checkbox button **name**!!!.
+     */
+    override val elementId: String,
+    @SerialName("info") val infos: List<ValueInfo>
+) : HtmlQuestion() {
+    override fun toHtml(): String = buildString {
+        append(htmlText())
+        infos.forEach { (id, value) ->
+            append("<label for=\"$id\"><input type=\"checkbox\" id=\"$id\" ${elementId.asParameter("name")} ")
             append("value=\"$value\" ${isRequiredString()}>")
             append("$value</label><br>")
         }

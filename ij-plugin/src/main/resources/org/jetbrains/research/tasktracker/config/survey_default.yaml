@@ -1,13 +1,22 @@
 surveys:
   - id: default
     htmlQuestions:
-      - !<Textarea>
-        text: 1.How helpful was the hint in solving the problem?
+      - !<Radio>
+        text: 1.How helpful was the hint in solving the problem? Where 1 - not helpful at all, 5 - very helpful.
         elementId: helpfulHint
         required: true
-        rows: 5
-        cols: 50
-      - !<Radio>
+        info:
+          - id: helpfulHint1
+            value: 1
+          - id: helpfulHint2
+            value: 2
+          - id: helpfulHint3
+            value: 3
+          - id: helpfulHint4
+            value: 4
+          - id: helpfulHint5
+            value: 5
+      - !<Checkbox>
         text: 2.Why did you decide to ask for a hint?
         elementId: hintAsk
         required: true
@@ -27,7 +36,7 @@ surveys:
         elementId: hintAskOptional
         rows: 5
         cols: 50
-      - !<Radio>
+      - !<Checkbox>
         text: 3.Which option did you prefer?
         elementId: optionPrefer
         required: true
@@ -49,7 +58,7 @@ surveys:
         elementId: optionPreferOptional
         rows: 5
         cols: 50
-      - !<Radio>
+      - !<Checkbox>
         text: 4.Have you ever used hints to quickly complete a task and move on?
         elementId: quickComplete
         required: true
@@ -69,7 +78,7 @@ surveys:
         elementId: quickCompleteOptional
         rows: 5
         cols: 50
-      - !<Radio>
+      - !<Checkbox>
         text: 5.Have there ever been situations when you didn't understand a hint? If yes what did you do?
         elementId: understandHint
         required: true
@@ -95,7 +104,7 @@ surveys:
         elementId: understandHintOptional
         rows: 5
         cols: 50
-      - !<Radio>
+      - !<Checkbox>
         text: 6.Would you like to continue using hints?
         elementId: continueUse
         required: true
