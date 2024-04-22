@@ -52,6 +52,14 @@ object TaskFileHandler {
         }
     }
 
+    fun disposeAllTasks() {
+        projectToTaskToFiles.forEach { (project, projectFiles) ->
+            projectFiles.keys.forEach {
+                disposeTask(project, it)
+            }
+        }
+    }
+
     // TODO not forget to remove from document loggers hashmap, flush data
     fun disposeTask(project: Project, task: Task) {
         projectToTaskToFiles[project]?.let {

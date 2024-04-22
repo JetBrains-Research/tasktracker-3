@@ -184,6 +184,7 @@ fun Panel.processScenario() {
 fun Panel.stopTracking() {
     TaskTrackerPlugin.mainConfig.scenarioConfig?.scenario?.reset()
     loadBasePage(LoadTemplate())
+    TaskFileHandler.disposeAllTasks()
     ApplicationManager.getApplication().invokeLater {
         trackingService.stopTracking(::finalPage, ::serverErrorPage)
     }
