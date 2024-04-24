@@ -17,6 +17,7 @@ import org.jetbrains.research.tasktracker.config.tracking.WebCamTrackingConfig
 import org.jetbrains.research.tasktracker.config.util.buildBaseConfig
 import org.jetbrains.research.tasktracker.properties.PluginProperties
 import java.io.File
+import java.util.*
 
 /**
  * Plugin's main config. Initializes and stores configs of all subsystems.
@@ -60,7 +61,8 @@ data class MainTaskTrackerConfig(
         val agreementFilePath = "$pluginFolderPath/agreement/agreement.json"
         val logFilesFolder = "$pluginFolderPath/logs"
         const val PLUGIN_PROPERTIES_FILE = "$PLUGIN_NAME.properties"
-        private const val DOMAIN = "https://tt-server-5.labs.jb.gg"
+        private val DOMAIN = ResourceBundle.getBundle("properties.actual.domain")
+            .getString("serverAddress")
 
         fun getRoute(path: String) = "$DOMAIN/$path"
 

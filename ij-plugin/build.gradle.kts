@@ -1,5 +1,6 @@
 import io.gitlab.arturbosch.detekt.Detekt
 import org.jetbrains.changelog.markdownToHTML
+import org.jetbrains.kotlin.incremental.createDirectory
 
 group = rootProject.group
 version = rootProject.version
@@ -35,21 +36,38 @@ intellij {
     plugins.set(properties("platformPlugins").map { it.split(',').map(String::trim).filter(String::isNotEmpty) })
 }
 
+val defaultPropertiesDirectory = project.file("src/main/resources/properties/default")
+val actualPropertiesDirectory = project.file("src/main/resources/properties/actual").also { if (!it.exists()) it.createDirectory() }
+
 tasks {
+    val checkPropertiesExist = register("checkPropertiesExist") {
+        doLast {
+            defaultPropertiesDirectory.listFiles()?.forEach { file ->
+                val newFile = File("${actualPropertiesDirectory.absolutePath}/${file.name}")
+                if (!newFile.exists()) {
+                    newFile.createNewFile()
+                    newFile.writeText(file.readText())
+                }
+            }
+        }
+    }
+
+    configureEach {
+        if (name != checkPropertiesExist.name) {
+            dependsOn(checkPropertiesExist)
+        }
+    }
+
     withType<org.jetbrains.intellij.tasks.BuildSearchableOptionsTask>()
         .forEach { it.enabled = false }
 
     patchPluginXml {
         val description = """
-            CodeMood – the revolutionary plugin that understands and affirms your emotions while you code!
-
-            The plugin will ask you permission to record the coding session using one of available video devices.
-            _We don't send the photos to a server and handle them locally._
-            During the session, you can click on the plugin icon to pop up a dashboard with
-            an emoticon reflecting the programmer's current emotion.
-            In the end of the coding session you might fill out a short survey about your feelings.
-
-            **Download CodeMood today and start coding with emotions in harmony.**
+            TaskTracker-3 - a revolutionary plugin for collecting detailed data during education.
+            The plugin collects various user activities during interactions with it, such as code
+            snapshots with a certain granularity, all interactions with the interface, shortcuts,
+            and so on. Extensive configuration options with config files that control its entire
+            functionality make it very lightweight and easy to set up and use.
         """.trimIndent()
         pluginDescription.set(description.run { markdownToHTML(this) })
 
