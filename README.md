@@ -8,17 +8,19 @@ code quality and other. This will allow us to conduct better studies, produce mo
 ux-studies and potentially speed up user-testing for experimental features. 
 
 
-We want to develop a plugin with the following functionality:
 
-- [ ] It will be able to ask small, singular, questions to user in popup window;
-- [ ] It will be able to suggest users to participate in two types of studies:
-  - [ ] “Questionnaire” study – which will open questionnaire in side window of IDE& Questionnaire 
-   in this case could be any web content, for example diary record or some attention experiment.
-  - [ ] “Task” study – which will open file inside ide with some task and will record the process of task solution
-  - [ ]“Replay” study – which will play a given set of actions in the IDE and users will be asked a few questions about it.
-- [ ] It will be able to configure IDE in arbitrary pre-defined way;
-- [ ] It will be able to suggest this task based on IDE logs – on given time or after a particular event.
-- [ ] Send all resulting data to the remote server.
+The plugin is capable of collecting the following data:
+- Snapshots of all code changes.
+- All activities that occurred in the IDE. More details about activity types you can find [here](ij-plugin/src/main/kotlin/org/jetbrains/research/tasktracker/tracking/activity/ActivityEvent.kt).
+- Switching between file windows.
+- Switching between tool and IDE plugin windows.
+- Survey responses.
+- Third-party logs/files specified in the [configuration](ij-plugin/src/main/kotlin/org/jetbrains/research/tasktracker/config/content/PluginInfoConfig.kt) by this [structure](ij-plugin/src/main/kotlin/org/jetbrains/research/tasktracker/config/content/Log.kt).
+
+
+The plugin works in conjunction with the [server](ij-server), which is located in the same repository. The server receives, processes, and saves the data that was sent from the plugin side.
+
+The settings of the plugin configuration and interaction with its server are stored [here](ij-plugin/src/main/resources/properties/actual). If this directory does not exist, it will be created with default properties and values.
 
 Here we want to notice that the plugin will not collect any of the user data outside given tasks.
 

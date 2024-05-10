@@ -2,3 +2,5 @@
 .idea
 .qodana
 build
+
+ij-plugin/src/main/resources/properties/actual
