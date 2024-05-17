@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.8.10"
+kotlin = "1.9.22"
 intellij = "1.16.1"
 detekt = "1.22.0"
 buildconfig = "3.1.0"
@@ -20,6 +20,7 @@ postgres = "42.3.1"
 logback = "1.4.11"
 exposed = "0.44.0"
 h2 = "2.2.224"
+dataframe = "0.13.1"
 
 [libraries]
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
@@ -39,6 +40,7 @@ ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx
 ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor" }
 ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor" }
 ktor-server-tests = { module = "io.ktor:ktor-server-tests-jvm", version.ref = "ktor" }
+dataframe = {module = "org.jetbrains.kotlinx:dataframe", version.ref = "dataframe"}
 
 slf4j = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
 postgres = { module = "org.postgresql:postgresql", version.ref = "postgres" }
@@ -58,3 +60,4 @@ buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildconfig
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serialization" }
 changelog = { id = "org.jetbrains.changelog", version.ref = "changelog" }
 ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
+dataframe = {id = "org.jetbrains.kotlinx.dataframe", version.ref = "dataframe"}
