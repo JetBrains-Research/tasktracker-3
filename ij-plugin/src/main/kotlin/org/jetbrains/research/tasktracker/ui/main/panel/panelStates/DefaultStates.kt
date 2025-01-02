@@ -1,7 +1,6 @@
 package org.jetbrains.research.tasktracker.ui.main.panel.panelStates
 
 import com.intellij.openapi.application.ApplicationManager
-import com.intellij.util.alsoIfNull
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -32,12 +31,14 @@ fun Panel.agreementAcceptance() {
         checkAgreementInputs().runOnSuccess {
             if (!it) {
                 GlobalPluginStorage.agreementChecker?.let { agreement ->
-                    GlobalPluginStorage.userId = IdRequests.getUserId(agreement.name, agreement.email).alsoIfNull {
-                        notifyError(
-                            project,
-                            UIBundle.message("ui.connection.lose")
-                        )
-                        return@runOnSuccess
+                    GlobalPluginStorage.userId = IdRequests.getUserId(agreement.name, agreement.email).also {
+                        if (it == null) {
+                            notifyError(
+                                project,
+                                UIBundle.message("ui.connection.lose")
+                            )
+                            return@runOnSuccess
+                        }
                     }
                 }
                 GlobalPluginStorage.currentResearchId = IdRequests.getResearchId()
@@ -69,7 +70,7 @@ private fun Panel.selectTask(taskIds: List<String>, allRequired: Boolean = true)
     loadBasePage(TasksPageTemplate(tasks), isVisiblePauseButton = false)
     setNextAction {
         mainWindow.getElementValue("tasks").runOnSuccess { name ->
-            solveTask(name.toString(), if (allRequired) taskIds.filter { it != name } else emptyList())
+            solveTask(name, if (allRequired) taskIds.filter { it != name } else emptyList())
         }
     }
 }
