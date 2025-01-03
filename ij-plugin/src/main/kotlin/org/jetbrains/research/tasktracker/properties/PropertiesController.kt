@@ -1,5 +1,7 @@
 package org.jetbrains.research.tasktracker.properties
 
+import com.intellij.openapi.application.runReadAction
+import com.intellij.openapi.application.runWriteAction
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
 import java.io.File
 import java.io.FileInputStream
@@ -19,10 +21,10 @@ object PropertiesController {
 
     fun loadProps() = Properties().also { props ->
         createPropertiesFile()
-        FileInputStream(propertiesFile).use { props.load(it) }
+        runReadAction { FileInputStream(propertiesFile).use { props.load(it) } }
     }
 
-    private fun createPropertiesFile() {
+    private fun createPropertiesFile() = runWriteAction {
         defaultConfigRoot.mkdirs()
         propertiesFile.createNewFile()
         createDefaultPropertiesFile()
