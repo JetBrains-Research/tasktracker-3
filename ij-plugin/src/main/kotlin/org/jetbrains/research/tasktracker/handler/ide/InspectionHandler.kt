@@ -44,7 +44,7 @@ class InspectionHandler(override val config: InspectionConfig, override val proj
         }
     }
 
-    private fun initTaskProfile(project: Project): InspectionProfileImpl {
+    fun initTaskProfile(project: Project): InspectionProfileImpl {
         val inspectionProfileManager = ProjectInspectionProfileManager.getInstance(project)
         val inspectionProfile = InspectionProfileImpl(
             PROFILE_NAME,

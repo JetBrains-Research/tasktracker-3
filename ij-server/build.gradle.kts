@@ -1,4 +1,5 @@
 import io.gitlab.arturbosch.detekt.Detekt
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 group = rootProject.group
 version = rootProject.version
@@ -36,7 +37,7 @@ tasks{
         targetCompatibility = JavaVersion.VERSION_11.toString()
     }
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
+        compilerOptions.jvmTarget.set(JvmTarget.JVM_11)
     }
 
     withType<Detekt>().configureEach {

@@ -75,7 +75,7 @@ object TaskFileHandler {
     }
 
     private fun addVirtualFileListener(project: Project, virtualFile: VirtualFile) {
-        ApplicationManager.getApplication().invokeAndWait {
+        ApplicationManager.getApplication().runWriteAction {
             val document = FileDocumentManager.getInstance().getDocument(virtualFile)
             document?.let {
                 it.addDocumentListener(getListener())
@@ -87,7 +87,7 @@ object TaskFileHandler {
 
     private fun removeVirtualFileListener(project: Project, virtualFiles: List<VirtualFile>) {
         virtualFiles.forEach { file ->
-            ApplicationManager.getApplication().invokeAndWait {
+            ApplicationManager.getApplication().runWriteAction {
                 val document = FileDocumentManager.getInstance().getDocument(file)
                 document?.let {
                     DocumentLogger.removeDocumentLogPrinter(project, document)

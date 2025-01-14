@@ -52,11 +52,11 @@ class MainPluginWindow(service: MainWindowService) {
 
     private fun getJsElementByIdCommand(elementId: String) = "document.getElementById('$elementId')"
 
-    fun getElementValue(elementId: String): Promise<JsExpressionResult> =
-        windowBrowser.executeJavaScriptAsync("${getJsElementByIdCommand(elementId)}.value")
+    fun getElementValue(elementId: String): Promise<String> =
+        windowBrowser.executeJavaScriptAsync("${getJsElementByIdCommand(elementId)}.value") as Promise<String>
 
-    fun checkIfRadioButtonChecked(elementId: String): Promise<JsExpressionResult> =
-        windowBrowser.executeJavaScriptAsync("${getJsElementByIdCommand(elementId)}.checked")
+    fun checkIfRadioButtonChecked(elementId: String): Promise<String> =
+        windowBrowser.executeJavaScriptAsync("${getJsElementByIdCommand(elementId)}.checked") as Promise<String>
 
     fun executeJavaScriptAsync(@Language("JavaScript") code: String) = windowBrowser.executeJavaScriptAsync(code)
 

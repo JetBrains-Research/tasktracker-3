@@ -25,7 +25,7 @@ suspend inline fun PipelineContext<Unit, ApplicationCall>.createLogFile(
             val fileName = part.originalFileName as String
             val fileBytes = part.streamProvider().readBytes()
             file = file ?: getAndCreateFile(directoryPath, fileName)
-            file?.appendBytes(fileBytes)
+            file.appendBytes(fileBytes)
         }
         part.dispose()
     }

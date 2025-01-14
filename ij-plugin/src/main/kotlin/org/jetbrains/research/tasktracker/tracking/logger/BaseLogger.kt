@@ -1,5 +1,7 @@
 package org.jetbrains.research.tasktracker.tracking.logger
 
+import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.application.runWriteAction
 import com.intellij.openapi.util.io.FileUtil
 import com.jetbrains.rd.util.AtomicInteger
 import org.apache.commons.csv.CSVFormat
@@ -22,7 +24,9 @@ abstract class BaseLogger {
 
     protected fun log(dataToPrint: Iterable<*>) {
         val logPrinter = getActiveLogPrinter()
-        logPrinter.csvPrinter.printRecord(dataToPrint)
+        ApplicationManager.getApplication().invokeLater {
+            runWriteAction { logPrinter.csvPrinter.printRecord(dataToPrint) }
+        }
     }
 
     /**
@@ -47,19 +51,21 @@ abstract class BaseLogger {
         val logFile = createLogFile("$logPrinterFilename${atomicInteger.getAndIncrement()}.csv")
         val fileWriter = OutputStreamWriter(FileOutputStream(logFile), StandardCharsets.UTF_8)
         val csvPrinter = CSVPrinter(fileWriter, CSVFormat.DEFAULT)
-        csvPrinter.printRecord(loggedData.headers)
+        runWriteAction { csvPrinter.printRecord(loggedData.headers) }
         logPrinters.add(LogPrinter(csvPrinter, fileWriter, logFile))
         return logPrinters.last()
     }
 
-    private fun createLogFile(fileName: String): File {
+    private fun createLogFile(fileName: String): File = runWriteAction {
         val logFile = File("${MainTaskTrackerConfig.logFilesFolder}/$fileName")
         FileUtil.createIfDoesntExist(logFile)
-        return logFile
+        logFile
     }
 
-    fun getLogFiles(): List<File> = logPrinters.map {
-        it.csvPrinter.flush()
-        it.logFile
+    fun getLogFiles(): List<File> = runWriteAction {
+        logPrinters.map {
+            it.csvPrinter.flush()
+            it.logFile
+        }
     }
 }

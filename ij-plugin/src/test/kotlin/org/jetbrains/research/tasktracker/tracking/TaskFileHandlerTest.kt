@@ -8,7 +8,6 @@ import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig.Companion
 import org.jetbrains.research.tasktracker.config.content.task.base.Task
 import org.jetbrains.research.tasktracker.config.content.task.base.TaskWithFiles
 import org.jetbrains.research.tasktracker.tracking.mock.*
-import kotlin.test.assertFailsWith
 
 class TaskFileHandlerTest : CodeInsightFixtureTestCase<ModuleFixtureBuilder<*>>() {
 
@@ -37,7 +36,7 @@ class TaskFileHandlerTest : CodeInsightFixtureTestCase<ModuleFixtureBuilder<*>>(
 
     fun testInitExistingTask() {
         TaskFileHandler.initTask(project, task1)
-        assertFailsWith<Throwable>("Expected Throwable on second initialization of $task1") {
+        assertNoThrowable {
             TaskFileHandler.initTask(project, task1)
         }
     }

@@ -1,5 +1,7 @@
 package org.jetbrains.research.tasktracker.config
 
+import com.intellij.openapi.application.runReadAction
+import com.intellij.openapi.application.runWriteAction
 import com.intellij.openapi.diagnostic.Logger
 import org.jetbrains.research.tasktracker.config.agreement.AgreementConfig
 import org.jetbrains.research.tasktracker.config.content.FinalPageContentConfig
@@ -46,8 +48,8 @@ object DefaultConfigsFactory {
 
     private fun writeFromResources(configName: String, filePath: String) {
         val configFile = File(filePath)
-        DefaultConfigsFactory::class.java.getResource(configName)?.readText()?.let {
-            configFile.writeText(it)
+        runReadAction { DefaultConfigsFactory::class.java.getResource(configName)?.readText() }?.let {
+            runWriteAction { configFile.writeText(it) }
         } ?: logger.warn("There are no file with name $configName")
     }
 }
