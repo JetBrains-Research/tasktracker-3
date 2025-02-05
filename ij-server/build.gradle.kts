@@ -9,7 +9,7 @@ plugins {
     id(libs.plugins.ktor.get().pluginId) version libs.versions.ktor.get()
 }
 
-val jdkVersion = libs.versions.jdk11.get()
+val jdkVersion = libs.versions.jdk21.get()
 val mainClassPath = "org.jetbrains.research.tasktracker.ApplicationKt"
 
 
