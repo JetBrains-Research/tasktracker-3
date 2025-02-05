@@ -10,9 +10,11 @@ plugins {
 }
 
 val jdkVersion = libs.versions.jdk11.get()
+val mainClassPath = "org.jetbrains.research.tasktracker.ApplicationKt"
+
 
 application {
-    mainClass.set("org.jetbrains.research.tasktracker.ApplicationKt")
+    mainClass.set(mainClassPath)
 
     val isDevelopment: Boolean = project.ext.has("development")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
@@ -42,5 +44,11 @@ tasks{
 
     withType<Detekt>().configureEach {
         jvmTarget = jdkVersion
+    }
+
+   withType<Jar> {
+        manifest {
+            attributes["Main-Class"] = mainClassPath
+        }
     }
 }
