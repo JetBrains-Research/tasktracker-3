@@ -48,5 +48,20 @@ enum class Type {
     /**
      * Releasing any key on the keyboard in the current project.
      */
-    KeyReleased
+    KeyReleased,
+
+    /**
+     * Mouse click in the ide window of current project.
+     */
+    MouseClicked,
+
+    /**
+     * Mouse position changed in the window of current project.
+     */
+    MouseMoved,
+
+    /**
+     * Mouse wheel scrolled in the window of current project.
+     */
+    MouseWheel
 }

@@ -22,6 +22,8 @@ import org.jetbrains.research.tasktracker.tracking.activity.actions.TypingAction
 import org.jetbrains.research.tasktracker.tracking.logger.ActivityLogger
 import java.awt.AWTEvent
 import java.awt.event.KeyEvent
+import java.awt.event.MouseEvent
+import java.awt.event.MouseWheelEvent
 import java.util.concurrent.atomic.AtomicInteger
 
 class ActivityTracker(project: Project) : BaseTracker("activity") {
@@ -82,11 +84,32 @@ class ActivityTracker(project: Project) : BaseTracker("activity") {
     }
 
     private fun listenKeyboard() {
+        var lastTime = System.currentTimeMillis()
         IdeEventQueue.getInstance().addPostprocessor({ awtEvent: AWTEvent ->
-            if (awtEvent is KeyEvent) {
-                when (awtEvent.id) {
-                    KeyEvent.KEY_PRESSED -> trackerLogger.log(Type.KeyPressed, awtEvent.info())
-                    KeyEvent.KEY_RELEASED -> trackerLogger.log(Type.KeyReleased, awtEvent.info())
+            val currentTime = System.currentTimeMillis()
+            when (awtEvent) {
+                is KeyEvent -> {
+                    when (awtEvent.id) {
+                        KeyEvent.KEY_PRESSED -> trackerLogger.log(Type.KeyPressed, awtEvent.info())
+                        KeyEvent.KEY_RELEASED -> trackerLogger.log(Type.KeyReleased, awtEvent.info())
+                    }
+                }
+
+                is MouseWheelEvent -> {
+                    when (awtEvent.id) {
+                        MouseEvent.MOUSE_WHEEL -> trackerLogger.log(Type.MouseWheel, awtEvent.info())
+                    }
+                }
+
+                is MouseEvent -> {
+                    when (awtEvent.id) {
+                        MouseEvent.MOUSE_CLICKED -> trackerLogger.log(Type.MouseClicked, awtEvent.clickInfo())
+                        MouseEvent.MOUSE_MOVED -> {
+                            if (currentTime - lastTime >= MILLIS_THRESHOLD) {
+                                trackerLogger.log(Type.MouseMoved, awtEvent.movedInfo())
+                            }
+                        }
+                    }
                 }
             }
             false
@@ -100,6 +123,10 @@ class ActivityTracker(project: Project) : BaseTracker("activity") {
     }
 
     private fun KeyEvent.info() = "$id:$keyChar:$keyCode"
+
+    private fun MouseEvent.clickInfo() = "$x:$y:$button:$clickCount:$modifiersEx"
+    private fun MouseEvent.movedInfo() = "$x:$y:$modifiersEx"
+    private fun MouseWheelEvent.info() = "$wheelRotation:$modifiersEx"
 
     companion object {
         private val movingActions = MovingActions.values().map { it.name }.toSet()
@@ -115,3 +142,5 @@ class ActivityTracker(project: Project) : BaseTracker("activity") {
         fun check(event: KeyEvent): Key? = if (f(event)) this else null
     }
 }
+
+private const val MILLIS_THRESHOLD = 100

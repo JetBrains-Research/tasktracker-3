@@ -42,7 +42,7 @@ object TaskFileHandler {
     fun initTask(project: Project, task: Task) {
         projectTaskIdToFile.putIfAbsent(project, mutableMapOf())
         projectTaskIdToFile[project]?.putIfAbsent(task, mutableMapOf())
-        getOrCreateFiles(project, task).forEach { file ->
+        getOrCreateFiles(project, task).forEach { file -> // TODO sometimes problem with null array
             file?.let {
                 addVirtualFileListener(project, it)
                 projectToTaskToFiles.putIfAbsent(project, mutableMapOf())
@@ -125,7 +125,7 @@ object TaskFileHandler {
         }
         sourceFolders.forEach {
             ApplicationManager.getApplication().runWriteAction {
-                addSourceFolder(ModuleManager.getInstance(project).modules.last(), it)
+                addSourceFolder(ModuleManager.getInstance(project).modules.last(), it) // TODO array is empty
             }
         }
     }

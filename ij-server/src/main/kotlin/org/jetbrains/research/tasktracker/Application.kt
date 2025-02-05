@@ -9,8 +9,8 @@ import org.jetbrains.research.tasktracker.plugins.configureRouting
 fun main() {
     embeddedServer(
         Netty,
-        port = System.getenv("PORT").toIntOrNull() ?: 8080,
-        host = System.getenv("HOST") ?: "0.0.0.0",
+        port = getEnvOrNull("PORT")?.toIntOrNull() ?: 8080,
+        host = getEnvOrNull("HOST") ?: "0.0.0.0",
         module = Application::module
     )
         .start(wait = true)
@@ -19,4 +19,11 @@ fun main() {
 fun Application.module() {
     DatabaseFactory.init()
     configureRouting()
+}
+
+fun getEnvOrNull(name: String): String? {
+    try {
+        return System.getenv(name)
+    } catch (_: Exception) {}
+    return null
 }
