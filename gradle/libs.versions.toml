@@ -11,7 +11,8 @@ snakeyaml = "2.0"
 csv = "1.10.0"
 joda = "2.12.4"
 kinference = "0.2.16"
-ktor = "2.3.4"
+ktor = "3.0.3"
+ktor-tests = "2.3.13"
 javacv = "1.5.9"
 slf4j = "1.7.35"
 opencv = "4.7.0-0"
@@ -39,7 +40,7 @@ ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negoti
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor" }
 ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor" }
-ktor-server-tests = { module = "io.ktor:ktor-server-tests-jvm", version.ref = "ktor" }
+ktor-server-tests = { module = "io.ktor:ktor-server-tests-jvm", version.ref = "ktor-tests" }
 opentest4j = { module = "org.opentest4j:opentest4j", version.ref = "opentest4j" }
 kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 

@@ -6,10 +6,10 @@ version = rootProject.version
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id(libs.plugins.ktor.get().pluginId) version libs.versions.ktor.get()
+    id("io.ktor.plugin") version "3.0.3"
 }
 
-val jdkVersion = libs.versions.jdk11.get()
+val jdkVersion = libs.versions.jdk21.get()
 val mainClassPath = "org.jetbrains.research.tasktracker.ApplicationKt"
 
 
@@ -36,10 +36,10 @@ dependencies {
 tasks{
     withType<JavaCompile> {
         sourceCompatibility = jdkVersion
-        targetCompatibility = JavaVersion.VERSION_11.toString()
+        targetCompatibility = JavaVersion.VERSION_21.toString()
     }
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        compilerOptions.jvmTarget.set(JvmTarget.JVM_11)
+        compilerOptions.jvmTarget.set(JvmTarget.JVM_21)
     }
 
     withType<Detekt>().configureEach {
