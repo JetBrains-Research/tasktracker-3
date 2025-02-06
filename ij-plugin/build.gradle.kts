@@ -46,7 +46,6 @@ dependencies {
     implementation(rootProject.libs.kaml)
     implementation(rootProject.libs.snakeyaml)
     implementation(rootProject.libs.kinference)
-    implementation(rootProject.libs.javacv)
     implementation(rootProject.libs.ktor.client.cio)
     implementation(rootProject.libs.ktor.client.core)
     implementation(rootProject.libs.ktor.client.json)
@@ -91,7 +90,7 @@ tasks {
 
     patchPluginXml {
         val description = """
-            TaskTracker-3 - a revolutionary plugin for collecting detailed data during education.
+            KOALA - a revolutionary plugin for collecting detailed data during education.
             The plugin collects various user activities during interactions with it, such as code
             snapshots with a certain granularity, all interactions with the interface, shortcuts,
             and so on. Extensive configuration options with config files that control its entire
