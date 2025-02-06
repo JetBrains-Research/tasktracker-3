@@ -107,6 +107,7 @@ class ActivityTracker(project: Project) : BaseTracker("activity") {
                         MouseEvent.MOUSE_MOVED -> {
                             if (currentTime - lastTime >= MILLIS_THRESHOLD) {
                                 trackerLogger.log(Type.MouseMoved, awtEvent.movedInfo())
+                                lastTime = currentTime
                             }
                         }
                     }
@@ -143,4 +144,4 @@ class ActivityTracker(project: Project) : BaseTracker("activity") {
     }
 }
 
-private const val MILLIS_THRESHOLD = 100
+private const val MILLIS_THRESHOLD = 200

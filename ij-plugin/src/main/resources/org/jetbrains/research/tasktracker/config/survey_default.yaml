@@ -1,128 +1,62 @@
 surveys:
-  - id: default
+  - id: general
     htmlQuestions:
+      - !<Input>
+        text: What is your age?
+        elementId: age
+        required: true
+      - !<Input>
+        text: What university do you study at?
+        elementId: university
+        required: true
       - !<Radio>
-        text: 1.How helpful was the hint in solving the problem? Where 1 - not helpful at all, 5 - very helpful.
-        elementId: helpfulHint
+        text: What year of Bachelor study are you in now?
+        elementId: studyYear
         required: true
         info:
-          - id: helpfulHint1
-            value: 1
-          - id: helpfulHint2
-            value: 2
-          - id: helpfulHint3
-            value: 3
-          - id: helpfulHint4
-            value: 4
-          - id: helpfulHint5
-            value: 5
-      - !<Checkbox>
-        text: 2.Why did you decide to ask for a hint?
-        elementId: hintAsk
+          - id: studyYear1
+            value: First
+          - id: studyYear2
+            value: Second
+          - id: studyYear3
+            value: Third
+      - !<Radio>
+        text: I have no prior experience with Kotlin
+        elementId: experience
         required: true
         info:
-          - id: hintAsk1
-            value: My solution did not pass tests
-          - id: hintAsk2
-            value: Didn’t know what to do next
-          - id: hintAsk3
-            value: Compilation errors
-          - id: hintAsk4
-            value: I was curious
-          - id: hintAsk5
-            value: Other - open question
-      - !<Textarea>
-        text: If you have chosen 'other', please write your answer here.
-        elementId: hintAskOptional
-        rows: 5
-        cols: 50
-      - !<Checkbox>
-        text: 3.Which option did you prefer?
-        elementId: optionPrefer
-        required: true
-        info:
-          - id: optionPrefer1
-            value: Reading the hint as text
-          - id: optionPrefer2
-            value: Seeing the hint in code
-          - id: optionPrefer3
-            value: The combination of both
-          - id: optionPrefer4
-            value: Depending on the task
-          - id: optionPrefer5
-            value: Neither
-          - id: optionPrefer6
-            value: Other
-      - !<Textarea>
-        text: If you have chosen 'other', please specify your preferred way.
-        elementId: optionPreferOptional
-        rows: 5
-        cols: 50
-      - !<Checkbox>
-        text: 4.Have you ever used hints to quickly complete a task and move on?
-        elementId: quickComplete
-        required: true
-        info:
-          - id: quickComplete1
-            value: A couple of times during solving the course
-          - id: quickComplete2
-            value: At least once in every project
-          - id: quickComplete3
-            value: Only in projects that was hard for me
-          - id: quickComplete4
-            value: Didn't use
-          - id: quickComplete5
-            value: Other
-      - !<Textarea>
-        text: If you have chosen 'other', please write your answer here.
-        elementId: quickCompleteOptional
-        rows: 5
-        cols: 50
-      - !<Checkbox>
-        text: 5.Have there ever been situations when you didn't understand a hint? If yes what did you do?
-        elementId: understandHint
-        required: true
-        info:
-          - id: understandHint1
-            value: Generated the hint again
-          - id: understandHint2
-            value: Google/stack overflow or other similar resources
-          - id: understandHint3
-            value: Asked a teacher/friend for advice
-          - id: understandHint4
-            value: Didn't use
-          - id: understandHint5
-            value: Used other AI-based tools such as ChatGPT
-          - id: understandHint6
-            value: Tried myself
-          - id: understandHint7
-            value: No, there haven't
-          - id: understandHint8
-            value: Other
-      - !<Textarea>
-        text: If you have chosen 'other', please write your answer here.
-        elementId: understandHintOptional
-        rows: 5
-        cols: 50
-      - !<Checkbox>
-        text: 6.Would you like to continue using hints?
-        elementId: continueUse
-        required: true
-        info:
-          - id: continueUse1
+          - id: experienceYes
             value: Yes
-          - id: continueUse2
-            value: No, I prefer to use another AI-tool, such as ChatGPT
-          - id: continueUse3
-            value: No, I prefer to use Google and other websites
-          - id: continueUse4
-            value: No, I prefer to ask a teacher/friend
-          - id: continueUse5
-            value: Yes, if hints are generated faster
-          - id: continueUse6
-            value: Other
+          - id: experienceNo
+            value: No
       - !<Textarea>
-        text: If you have chosen 'other', please write your answer here.
-        elementId: continueUseOptional
+        text: Briefly describe your previous programming experience - what languages do you know and at what level?
+        elementId: experienceDescribe
+        required: true
+        rows: 5
+        cols: 50
+      - !<Radio>
+        text: I am ready to participate in a follow-up interview
+        elementId: readyToParticipate
+        info:
+          - id: readyToParticipateYes
+            value: Yes
+  - id: final
+    htmlQuestions:
+      - !<Textarea>
+        text: Briefly describe the situations in which you needed help from the AI-generated hints
+        elementId: needHints
+        required: true
+        rows: 5
+        cols: 50
+      - !<Textarea>
+        text: Briefly describe situations where the AI generated hints provided was not useful to you - why and what should be changed to make it useful
+        elementId: usefulHints
+        required: true
+        rows: 5
+        cols: 50
+      - !<Textarea>
+        text: If you have any comments about the system you used, please leave them here
+        elementId: comments
         rows: 5
         cols: 50
