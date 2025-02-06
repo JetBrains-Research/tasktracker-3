@@ -1,12 +1,13 @@
-pluginName: "Kotlin Introduction"
+pluginName: "AI Hints Research"
 pluginDescription: >
   Thank you for choosing to participate in our study. To complete the study, you will need to complete three projects from the <a class="defaultBrowser" href="https://plugins.jetbrains.com/plugin/21067-kotlin-onboarding-introduction">Kotlin Onboarding: Introduction</a> course:
-  The first date with programming (a simple chat-based app)
-  Warm Up and Mastermind Advanced (a console game to guess words)
-  Almost Done (a project to operate with character images)
-  While solving the course you can always ask for help by clicking on the "Get Hint" button. For each hint you get, please leave a feedback if it was useful or not (like/dislike buttons or a full comment about this hint). When you have completed these three projects, please return to this panel to complete the final survey. Please note that full participation in the study and meaningful responses to all assignments are required to qualify for the Amazon Gift Card.
-
-researchId: "Kotlin Introduction"
+      <ul>
+          <li><strong>The first date with programming</strong> (a simple chat-based app)</li>
+          <li><strong>Warm Up and Mastermind Advanced</strong> (a console game to guess words)</li>
+          <li><strong>Almost Done</strong> (a project to operate with character images)</li>
+      </ul>
+      <p>While doing the projects you can always ask for help by clicking on the "Get Hint" button. For each hint you get, please leave a feedback if it was useful or not (like/dislike buttons or a full comment about this hint). When you have completed these three projects, please return to this panel to complete the final survey. Please note that full participation in the study and meaningful responses to all assignments are required to qualify for the Amazon Gift Card.</p>
+researchId: "AI Hints Research"
 logs:
   - logPaths:
       - "ai-hints/aiHints.log"

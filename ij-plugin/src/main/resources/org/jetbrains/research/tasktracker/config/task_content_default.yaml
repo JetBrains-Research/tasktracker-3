@@ -1,5 +1,6 @@
 tasks:
-  - description: "Take the kotlin introduction course, and after that, press the next button."
+  - description: >
+      Solve three projects in the Kotlin introduction course (The first date with programming, Warm Up and Mastermind Advanced, Almost Done), and after that, press the "Next" button.
     files:
       - extension: KOTLIN
         filename: Main
@@ -57,4 +58,4 @@ tasks:
         relativePath: WarmUp/task/src/main/kotlin/jetbrains/kotlin/course/warmup
         sourceSet: SRC
     id: main
-    name: "Kotlin Introduction"
+    name: "AI Hints Research"
