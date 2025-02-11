@@ -7,13 +7,11 @@ import org.jetbrains.research.tasktracker.config.content.FinalPageContentConfig
 import org.jetbrains.research.tasktracker.config.content.PluginInfoConfig
 import org.jetbrains.research.tasktracker.config.content.ServerErrorPageConfig
 import org.jetbrains.research.tasktracker.config.content.TaskContentConfig
-import org.jetbrains.research.tasktracker.config.emotion.EmotionConfig
 import org.jetbrains.research.tasktracker.config.ide.MainIdeConfig
 import org.jetbrains.research.tasktracker.config.scenario.ScenarioConfig
 import org.jetbrains.research.tasktracker.config.survey.SurveyConfig
 import org.jetbrains.research.tasktracker.config.tracking.ActivityTrackingConfig
 import org.jetbrains.research.tasktracker.config.tracking.CodeTrackingConfig
-import org.jetbrains.research.tasktracker.config.tracking.WebCamTrackingConfig
 import org.jetbrains.research.tasktracker.config.util.buildBaseConfig
 import org.jetbrains.research.tasktracker.properties.PluginProperties
 import java.io.File
@@ -29,11 +27,9 @@ data class MainTaskTrackerConfig(
     var mainIdeConfig: MainIdeConfig? = null,
     var activityTrackingConfig: ActivityTrackingConfig? = null,
     var codeTrackingConfig: CodeTrackingConfig? = null,
-    var webCamConfig: WebCamTrackingConfig? = null,
     var pluginInfoConfig: PluginInfoConfig? = null,
     var finalPageConfig: FinalPageContentConfig? = null,
     var serverErrorPageConfig: ServerErrorPageConfig? = null,
-    var emotionConfig: EmotionConfig? = null,
 
     var scenarioConfig: ScenarioConfig? = null,
     var surveyConfig: SurveyConfig? = null,
@@ -45,11 +41,9 @@ data class MainTaskTrackerConfig(
         activityTrackingConfig,
         codeTrackingConfig,
         scenarioConfig,
-        webCamConfig,
         pluginInfoConfig,
         finalPageConfig,
         serverErrorPageConfig,
-        emotionConfig,
         agreementConfig
     )
 
@@ -78,18 +72,6 @@ data class MainTaskTrackerConfig(
             configFiles.forEach { configFile ->
                 val fileName = configFile.name
                 when {
-                    fileName.startsWith(CodeTrackingConfig.CONFIG_FILE_PREFIX) -> {
-                        mainConfig.codeTrackingConfig = buildBaseConfig(
-                            mainConfig.codeTrackingConfig, configFile, CodeTrackingConfig::buildConfig, logger
-                        )
-                    }
-
-                    fileName.startsWith(ActivityTrackingConfig.CONFIG_FILE_PREFIX) -> {
-                        mainConfig.activityTrackingConfig = buildBaseConfig(
-                            mainConfig.activityTrackingConfig, configFile, ActivityTrackingConfig::buildConfig, logger
-                        )
-                    }
-
                     fileName.startsWith(TaskContentConfig.CONFIG_FILE_PREFIX) -> {
                         mainConfig.taskContentConfig = buildBaseConfig(
                             mainConfig.taskContentConfig, configFile, TaskContentConfig::buildConfig, logger
@@ -99,12 +81,6 @@ data class MainTaskTrackerConfig(
                     fileName.startsWith(ScenarioConfig.CONFIG_FILE_PREFIX) -> {
                         mainConfig.scenarioConfig = buildBaseConfig(
                             mainConfig.scenarioConfig, configFile, ScenarioConfig::buildConfig, logger
-                        )
-                    }
-
-                    fileName.startsWith(WebCamTrackingConfig.CONFIG_FILE_PREFIX) -> {
-                        mainConfig.webCamConfig = buildBaseConfig(
-                            mainConfig.webCamConfig, configFile, WebCamTrackingConfig::buildConfig, logger
                         )
                     }
 
@@ -129,12 +105,6 @@ data class MainTaskTrackerConfig(
                     fileName.startsWith(SurveyConfig.CONFIG_FILE_PREFIX) -> {
                         mainConfig.surveyConfig = buildBaseConfig(
                             mainConfig.surveyConfig, configFile, SurveyConfig::buildConfig, logger
-                        )
-                    }
-
-                    fileName.startsWith(EmotionConfig.CONFIG_FILE_PREFIX) -> {
-                        mainConfig.emotionConfig = buildBaseConfig(
-                            mainConfig.emotionConfig, configFile, EmotionConfig::buildConfig, logger
                         )
                     }
 
