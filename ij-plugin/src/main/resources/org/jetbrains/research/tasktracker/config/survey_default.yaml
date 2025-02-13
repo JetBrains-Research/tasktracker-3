@@ -2,127 +2,32 @@ surveys:
   - id: default
     htmlQuestions:
       - !<Radio>
-        text: 1.How helpful was the hint in solving the problem? Where 1 - not helpful at all, 5 - very helpful.
-        elementId: helpfulHint
+        text: Single choice question
+        elementId: single
         required: true
         info:
-          - id: helpfulHint1
+          - id: single1
             value: 1
-          - id: helpfulHint2
+          - id: single2
             value: 2
-          - id: helpfulHint3
+          - id: single3
             value: 3
-          - id: helpfulHint4
-            value: 4
-          - id: helpfulHint5
-            value: 5
       - !<Checkbox>
-        text: 2.Why did you decide to ask for a hint?
-        elementId: hintAsk
+        text: Multichoice question
+        elementId: multichoice
         required: true
         info:
-          - id: hintAsk1
-            value: My solution did not pass tests
-          - id: hintAsk2
-            value: Didn’t know what to do next
-          - id: hintAsk3
-            value: Compilation errors
-          - id: hintAsk4
-            value: I was curious
-          - id: hintAsk5
-            value: Other - open question
+          - id: multichoice1
+            value: 1
+          - id: multichoice2
+            value: 2
+          - id: multichoice3
+            value: 3
+      - !<Input>
+        text: Input question
+        elementId: input
       - !<Textarea>
-        text: If you have chosen 'other', please write your answer here.
-        elementId: hintAskOptional
-        rows: 5
-        cols: 50
-      - !<Checkbox>
-        text: 3.Which option did you prefer?
-        elementId: optionPrefer
-        required: true
-        info:
-          - id: optionPrefer1
-            value: Reading the hint as text
-          - id: optionPrefer2
-            value: Seeing the hint in code
-          - id: optionPrefer3
-            value: The combination of both
-          - id: optionPrefer4
-            value: Depending on the task
-          - id: optionPrefer5
-            value: Neither
-          - id: optionPrefer6
-            value: Other
-      - !<Textarea>
-        text: If you have chosen 'other', please specify your preferred way.
-        elementId: optionPreferOptional
-        rows: 5
-        cols: 50
-      - !<Checkbox>
-        text: 4.Have you ever used hints to quickly complete a task and move on?
-        elementId: quickComplete
-        required: true
-        info:
-          - id: quickComplete1
-            value: A couple of times during solving the course
-          - id: quickComplete2
-            value: At least once in every project
-          - id: quickComplete3
-            value: Only in projects that was hard for me
-          - id: quickComplete4
-            value: Didn't use
-          - id: quickComplete5
-            value: Other
-      - !<Textarea>
-        text: If you have chosen 'other', please write your answer here.
-        elementId: quickCompleteOptional
-        rows: 5
-        cols: 50
-      - !<Checkbox>
-        text: 5.Have there ever been situations when you didn't understand a hint? If yes what did you do?
-        elementId: understandHint
-        required: true
-        info:
-          - id: understandHint1
-            value: Generated the hint again
-          - id: understandHint2
-            value: Google/stack overflow or other similar resources
-          - id: understandHint3
-            value: Asked a teacher/friend for advice
-          - id: understandHint4
-            value: Didn't use
-          - id: understandHint5
-            value: Used other AI-based tools such as ChatGPT
-          - id: understandHint6
-            value: Tried myself
-          - id: understandHint7
-            value: No, there haven't
-          - id: understandHint8
-            value: Other
-      - !<Textarea>
-        text: If you have chosen 'other', please write your answer here.
-        elementId: understandHintOptional
-        rows: 5
-        cols: 50
-      - !<Checkbox>
-        text: 6.Would you like to continue using hints?
-        elementId: continueUse
-        required: true
-        info:
-          - id: continueUse1
-            value: Yes
-          - id: continueUse2
-            value: No, I prefer to use another AI-tool, such as ChatGPT
-          - id: continueUse3
-            value: No, I prefer to use Google and other websites
-          - id: continueUse4
-            value: No, I prefer to ask a teacher/friend
-          - id: continueUse5
-            value: Yes, if hints are generated faster
-          - id: continueUse6
-            value: Other
-      - !<Textarea>
-        text: If you have chosen 'other', please write your answer here.
-        elementId: continueUseOptional
+        text: Textarea question
+        elementId: textarea
         rows: 5
         cols: 50

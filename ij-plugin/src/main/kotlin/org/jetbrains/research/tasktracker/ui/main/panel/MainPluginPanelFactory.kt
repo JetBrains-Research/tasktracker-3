@@ -3,9 +3,6 @@ package org.jetbrains.research.tasktracker.ui.main.panel
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.fileEditor.FileEditorManager
-import com.intellij.openapi.progress.ProgressIndicator
-import com.intellij.openapi.progress.ProgressManager
-import com.intellij.openapi.progress.Task.Modal
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.wm.ToolWindow
@@ -19,7 +16,6 @@ import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.config.content.task.base.Task
 import org.jetbrains.research.tasktracker.tracking.TaskFileHandler
 import org.jetbrains.research.tasktracker.tracking.TrackingService
-import org.jetbrains.research.tasktracker.tracking.webcam.collectAllDevices
 import org.jetbrains.research.tasktracker.ui.main.panel.models.AgreementChecker
 import org.jetbrains.research.tasktracker.ui.main.panel.models.ButtonState
 import org.jetbrains.research.tasktracker.ui.main.panel.models.LinkType
@@ -27,7 +23,6 @@ import org.jetbrains.research.tasktracker.ui.main.panel.panelStates.agreementAcc
 import org.jetbrains.research.tasktracker.ui.main.panel.panelStates.stopTracking
 import org.jetbrains.research.tasktracker.ui.main.panel.storage.GlobalPluginStorage
 import org.jetbrains.research.tasktracker.ui.main.panel.template.HtmlTemplate
-import org.jetbrains.research.tasktracker.ui.main.panel.template.WebcamChoicePageTemplate
 import org.jetbrains.research.tasktracker.util.UIBundle
 import java.awt.BorderLayout
 import java.awt.FlowLayout
@@ -102,22 +97,6 @@ class MainPluginPanelFactory : ToolWindowFactory {
         pauseButtonText?.let {
             pauseButton.text = UIBundle.message(it)
         }
-    }
-
-    @Suppress("UnusedPrivateMember")
-    private fun collectAllDevicesWithProgressBarAndShowNextPage(project: Project) {
-        ProgressManager.getInstance().run(object : Modal(
-            project, UIBundle.message("ui.progress.webcam.title"), false
-        ) {
-            override fun run(indicator: ProgressIndicator) {
-                if (GlobalPluginStorage.camerasInfo.isEmpty()) {
-                    GlobalPluginStorage.camerasInfo.addAll(collectAllDevices())
-                }
-                loadBasePage(
-                    WebcamChoicePageTemplate(GlobalPluginStorage.camerasInfo), "ui.button.select", true
-                )
-            }
-        })
     }
 
     fun focusOnfFileById(task: Task, id: String?) {

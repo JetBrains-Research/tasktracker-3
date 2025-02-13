@@ -7,7 +7,6 @@ import org.jetbrains.research.tasktracker.TaskTrackerPlugin
 import org.jetbrains.research.tasktracker.tracking.activity.ActivityEvent
 import org.jetbrains.research.tasktracker.tracking.fileEditor.FileEditorData
 import org.jetbrains.research.tasktracker.tracking.toolWindow.ToolWindowData
-import org.jetbrains.research.tasktracker.tracking.webcam.WebCamData
 import org.jetbrains.research.tasktracker.util.survey.SurveyData
 import org.joda.time.DateTime
 import kotlin.io.path.Path
@@ -50,15 +49,6 @@ object ActivityLoggedData : LoggedData<ActivityEvent, String?>() {
         LoggedDataGetter("info") { it.info },
         LoggedDataGetter("selected_text") { it.selectedText },
         LoggedDataGetter("action_id") { it.id }
-    )
-}
-
-object WebcamLoggedData : LoggedData<WebCamData, String?>() {
-    override val loggedDataGetters: List<LoggedDataGetter<WebCamData, String?>> = arrayListOf(
-        LoggedDataGetter("date") { it.time.toString() },
-        LoggedDataGetter("emotion_shown") { it.emotionShown.name },
-        LoggedDataGetter("is_regular") { it.isRegular.toString() },
-        LoggedDataGetter("scores") { it.scores.toString() },
     )
 }
 
