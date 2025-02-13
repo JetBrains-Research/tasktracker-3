@@ -1,10 +1,3 @@
-pluginName: "Kotlin Introduction"
-pluginDescription: "We want to track your progress through the kotlin introduction course in order to collect data on file changes during the course completion. Please, when you are ready, press the next button."
-researchId: "Kotlin Introduction"
-logs:
-  - logPaths:
-      - "edu-assistant/eduAssistant.log"
-      - "edu-assistant/hintTiming.log"
-      - "edu-assistant/taskAnalysisTiming.log"
-    type: "assistant"
-    isInPluginDirectory: true
+pluginName: "Name Example"
+pluginDescription: "We want to track your progress through the course in order to collect data on file changes during the course completion. Please, when you are ready, press the next button."
+researchId: "Example"
