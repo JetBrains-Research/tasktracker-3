@@ -1,5 +1,5 @@
 [versions]
-kotlin = "2.1.0"
+kotlin = "2.0.20"
 intellij = "2.1.0"
 detekt = "1.23.7"
 buildconfig = "3.1.0"
@@ -20,7 +20,7 @@ postgres = "42.3.1"
 logback = "1.4.11"
 exposed = "0.44.0"
 h2 = "2.2.224"
-dataframe = "0.13.1"
+dataframe = "0.15.0"
 opentest4j="1.3.0"
 
 [libraries]

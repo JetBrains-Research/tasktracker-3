@@ -9,7 +9,7 @@ plugins {
 }
 
 
-val jdkVersion = libs.versions.jdk17.get()
+val jdkVersion = libs.versions.jdk21.get()
 
 dependencies {
     implementation(rootProject.libs.dataframe)

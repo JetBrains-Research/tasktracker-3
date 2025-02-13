@@ -6,7 +6,6 @@ import org.jetbrains.kotlinx.dataframe.DataRow
 import org.jetbrains.kotlinx.dataframe.api.*
 import org.jetbrains.kotlinx.dataframe.io.readCSV
 import org.jetbrains.kotlinx.dataframe.io.writeCSV
-import org.jetbrains.kotlinx.dataframe.size
 import java.io.File
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
@@ -23,7 +22,7 @@ class ProgsnapParser(private val taskTrackerData: TaskTrackerData) {
         private const val META_DATA_FILENAME = "DatasetMetadata.csv"
     }
 
-    fun covert(destinationDirectory: File) {
+    fun convert(destinationDirectory: File) {
         require(destinationDirectory.exists()) { "destination directory $destinationDirectory doesn't exist" }
         createMetaFile(destinationDirectory)
         val researchGroups = getCodeDataFrame(destinationDirectory).groupBy("researchId")
