@@ -1,4 +1,5 @@
 import io.gitlab.arturbosch.detekt.Detekt
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 group = rootProject.group
 version = rootProject.version
@@ -9,9 +10,11 @@ plugins {
 }
 
 val jdkVersion = libs.versions.jdk11.get()
+val mainClassPath = "org.jetbrains.research.tasktracker.ApplicationKt"
+
 
 application {
-    mainClass.set("org.jetbrains.research.tasktracker.ApplicationKt")
+    mainClass.set(mainClassPath)
 
     val isDevelopment: Boolean = project.ext.has("development")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
@@ -36,10 +39,16 @@ tasks{
         targetCompatibility = JavaVersion.VERSION_11.toString()
     }
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
+        compilerOptions.jvmTarget.set(JvmTarget.JVM_11)
     }
 
     withType<Detekt>().configureEach {
         jvmTarget = jdkVersion
+    }
+
+   withType<Jar> {
+        manifest {
+            attributes["Main-Class"] = mainClassPath
+        }
     }
 }

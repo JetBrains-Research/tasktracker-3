@@ -1,6 +1,7 @@
 import io.gitlab.arturbosch.detekt.Detekt
 import org.jetbrains.changelog.markdownToHTML
-import org.jetbrains.kotlin.incremental.createDirectory
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 group = rootProject.group
 version = rootProject.version
@@ -12,9 +13,36 @@ plugins {
     alias(libs.plugins.intellij)
 }
 
-val jdkVersion = libs.versions.jdk17.get()
+repositories {
+    intellijPlatform {
+        defaultRepositories()
+    }
+}
+
+intellijPlatform {
+    buildSearchableOptions = false
+    projectName = project.name
+    pluginConfiguration {
+        id = project.name
+        name = properties("pluginName")
+        version = properties("pluginVersion")
+        ideaVersion {
+            sinceBuild = properties("pluginSinceBuild")
+            untilBuild = properties("pluginUntilBuild")
+        }
+    }
+}
+
+val jdkVersion = libs.versions.jdk21.get()
 
 dependencies {
+    intellijPlatform {
+        create(properties("platformType"), properties("platformVersion"))
+        instrumentationTools()
+        testFramework(TestFrameworkType.Platform)
+        plugins(properties("platformPlugins").map { it.split(',').map(String::trim).filter(String::isNotEmpty) })
+    }
+
     implementation(rootProject.libs.kaml)
     implementation(rootProject.libs.snakeyaml)
     implementation(rootProject.libs.kinference)
@@ -27,17 +55,20 @@ dependencies {
     implementation(rootProject.libs.ktor.serialization.kotlinx.json)
     implementation(rootProject.libs.slf4j)
     implementation(rootProject.libs.opencv)
+    // Due to the IJPL-157292 issue
+    testImplementation(rootProject.libs.opentest4j)
 }
 
-intellij {
-    pluginName.set(properties("pluginName"))
-    version.set(properties("platformVersion"))
-    type.set(properties("platformType"))
-    plugins.set(properties("platformPlugins").map { it.split(',').map(String::trim).filter(String::isNotEmpty) })
+
+configurations {
+    all {
+        exclude(group = "org.jetbrains.kotlinx", module = "kotlinx-coroutines-core")
+    }
 }
 
 val defaultPropertiesDirectory = project.file("src/main/resources/properties/default")
-val actualPropertiesDirectory = project.file("src/main/resources/properties/actual").also { if (!it.exists()) it.createDirectory() }
+val actualPropertiesDirectory =
+    project.file("src/main/resources/properties/actual").also { if (!it.exists()) it.mkdirs() }
 
 tasks {
     val checkPropertiesExist = register("checkPropertiesExist") {
@@ -58,9 +89,6 @@ tasks {
         }
     }
 
-    withType<org.jetbrains.intellij.tasks.BuildSearchableOptionsTask>()
-        .forEach { it.enabled = false }
-
     patchPluginXml {
         val description = """
             TaskTracker-3 - a revolutionary plugin for collecting detailed data during education.
@@ -77,10 +105,10 @@ tasks {
 
     withType<JavaCompile> {
         sourceCompatibility = jdkVersion
-        targetCompatibility = JavaVersion.VERSION_17.toString()
+        targetCompatibility = JavaVersion.VERSION_21.toString()
     }
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
+        compilerOptions.jvmTarget.set(JvmTarget.JVM_21)
     }
 
     withType<Detekt>().configureEach {

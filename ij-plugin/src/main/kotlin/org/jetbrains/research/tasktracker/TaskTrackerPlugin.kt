@@ -1,5 +1,6 @@
 package org.jetbrains.research.tasktracker
 
+import com.intellij.openapi.application.runReadAction
 import com.intellij.openapi.diagnostic.Logger
 import org.jetbrains.research.tasktracker.config.DefaultConfigsFactory
 import org.jetbrains.research.tasktracker.config.MainTaskTrackerConfig
@@ -38,7 +39,7 @@ object TaskTrackerPlugin {
             DataHandler.LOCAL_FILE -> {
                 val configFolderRoot =
                     props.getProperty(CONFIG_ROOT_PROPERTY_NAME)?.let { File(it) } ?: defaultConfigRoot
-                MainTaskTrackerConfig.buildConfig(pluginProps, configFolderRoot)
+                runReadAction { MainTaskTrackerConfig.buildConfig(pluginProps, configFolderRoot) }
             }
 
             DataHandler.SERVER_CONNECTION -> {

@@ -9,7 +9,7 @@ plugins {
     id(libs.plugins.kotlin.jvm.get().pluginId) version libs.versions.kotlin.get()
     alias(libs.plugins.buildconfig) apply false
     alias(libs.plugins.detekt)
-    alias(libs.plugins.serialization)
+    alias(libs.plugins.serialization) apply false
     alias(libs.plugins.changelog)
 }
 
@@ -32,6 +32,7 @@ allprojects {
         implementation(rootProject.libs.csv)
         detektPlugins(rootProject.libs.detekt.formatting)
         implementation(rootProject.libs.joda)
+        implementation(rootProject.libs.kotlin.serialization)
         testImplementation(kotlin("test"))
     }
 

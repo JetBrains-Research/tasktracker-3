@@ -1,5 +1,6 @@
 package org.jetbrains.research.tasktracker.tracking.logger
 
+import com.intellij.openapi.application.runWriteAction
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.project.Project
@@ -15,7 +16,7 @@ object DocumentLogger {
     fun log(project: Project, document: Document) {
         val docPrinter = myDocumentsToPrinters.getOrPut(document) { DocumentLogPrinter() }
         val logPrinter = docPrinter.getActiveLogPrinter(project, document)
-        logPrinter.csvPrinter.printRecord(DocumentLoggedData(project).getData(document))
+        runWriteAction { logPrinter.csvPrinter.printRecord(DocumentLoggedData(project).getData(document)) }
     }
 
     fun getDocumentLogPrinter(document: Document): DocumentLogPrinter? = myDocumentsToPrinters[document]
