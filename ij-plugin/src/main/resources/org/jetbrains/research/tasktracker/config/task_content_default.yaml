@@ -9,7 +9,7 @@ tasks:
       - extension: JAVA
         filename: Main
         isInternal: false
-        relativePath: courseSection/courseLesson/programmingTask/src/main/kotlin/org/jetbrains/academy/java/template
+        relativePath: courseSection/courseLesson/programmingTask/src/main/java/org/jetbrains/academy/java/template
         sourceSet: SRC
     id: main
     name: "Java Course"
