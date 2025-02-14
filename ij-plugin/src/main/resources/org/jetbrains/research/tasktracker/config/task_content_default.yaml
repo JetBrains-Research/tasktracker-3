@@ -1,4 +1,15 @@
 tasks:
-  - description: "Description should be specified here"
+  - description: "Take the kotlin course, and after that, press the next button."
+    files:
+      - extension: KOTLIN
+        filename: Main
+        isInternal: false
+        relativePath: courseSection/courseFrameworkLesson/task/src/org/jetbrains/academy/kotlin/template
+        sourceSet: SRC
+      - extension: KOTLIN
+        filename: Main
+        isInternal: false
+        relativePath: courseSection/courseLesson/programmingTask/src/main/kotlin/org/jetbrains/academy/kotlin/template
+        sourceSet: SRC
     id: main
-    name: "Name Example"
+    name: "Kotlin Course"
