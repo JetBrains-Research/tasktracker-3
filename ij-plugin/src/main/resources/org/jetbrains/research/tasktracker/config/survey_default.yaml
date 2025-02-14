@@ -50,9 +50,19 @@ surveys:
         rows: 5
         cols: 50
       - !<Textarea>
-        text: Briefly describe situations where the AI generated hints provided was not useful to you - why and what should be changed to make it useful
-        elementId: usefulHints
+        text: Please share with us up to 3 examples when hints did not help you to get unstuck
+        elementId: notHelp
         required: true
+        rows: 5
+        cols: 50
+      - !<Textarea>
+        text: If the hint didn't work for you, what helped you to solve the task?
+        elementId: whatHelped
+        rows: 5
+        cols: 50
+      - !<Textarea>
+        text: What aspects (clarity, level of detail, or something else) of the AI hints did you find most helpful for your learning?
+        elementId: aspects
         rows: 5
         cols: 50
       - !<Textarea>
