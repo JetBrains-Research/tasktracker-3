@@ -150,7 +150,7 @@ object TaskFileHandler {
             append("/$PLUGIN_NAME/${taskFile.extension?.getDirectoryName() ?: ""}")
             append("${task.root.pathOrEmpty()}/${taskFile.sourceSet.path}")
         }
-        append("${taskFile.relativePath.toPackageName().pathOrEmpty()}/")
+        append("${taskFile.relativePath.pathOrEmpty()}/")
         append("${taskFile.filename}${taskFile.extension?.ext ?: ""}")
     }
 
