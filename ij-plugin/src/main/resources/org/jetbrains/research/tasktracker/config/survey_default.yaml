@@ -1,33 +1,52 @@
 surveys:
   - id: default
     htmlQuestions:
-      - !<Radio>
-        text: Single choice question
-        elementId: single
-        required: true
-        info:
-          - id: single1
-            value: 1
-          - id: single2
-            value: 2
-          - id: single3
-            value: 3
-      - !<Checkbox>
-        text: Multichoice question
-        elementId: multichoice
-        required: true
-        info:
-          - id: multichoice1
-            value: 1
-          - id: multichoice2
-            value: 2
-          - id: multichoice3
-            value: 3
       - !<Input>
-        text: Input question
-        elementId: input
+        text: How difficult was this course for you?
+        type: number
+        min: 1
+        max: 10
+        elementId: difficult
+        required: true
+      - !<Checkbox>
+        text: What challenges did you face during the course?
+        elementId: challenges
+        required: true
+        info:
+          - id: pace
+            value: Keeping up with the pace
+          - id: explanations
+            value: Difficult topics/lack of explanations
+          - id: debugging
+            value: Debugging issues
+          - id: transitions
+            value: Unclear transitions between topics
+          - id: practice
+            value: Not enough practice tasks
+          - id: other
+            value: "Other"
       - !<Textarea>
-        text: Textarea question
-        elementId: textarea
+        text: If you have chosen 'Other', please write your answer here.
+        elementId: challengesOther
+        rows: 5
+        cols: 50
+      - !<Textarea>
+        text: Which topic was the most difficult for you?
+        elementId: topicDifficult
+        required: true
+        rows: 5
+        cols: 50
+      - !<Radio>
+        text: Would you be interested in participating in future research studies?
+        elementId: participating
+        required: true
+        info:
+          - id: yes
+            value: Yes
+          - id: no
+            value: No
+      - !<Textarea>
+        text: How would you improve this course?
+        elementId: improve
         rows: 5
         cols: 50
