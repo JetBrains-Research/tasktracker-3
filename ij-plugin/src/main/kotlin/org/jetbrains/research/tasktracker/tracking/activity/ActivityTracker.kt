@@ -143,4 +143,4 @@ class ActivityTracker(project: Project) : BaseTracker("activity") {
     }
 }
 
-private const val MILLIS_THRESHOLD = 100
+private const val MILLIS_THRESHOLD = 1000
