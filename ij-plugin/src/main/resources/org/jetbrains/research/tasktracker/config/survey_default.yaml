@@ -2,7 +2,7 @@ surveys:
   - id: default
     htmlQuestions:
       - !<Input>
-        text: How difficult was this course for you?
+        text: How difficult was this course for you? (1 - Too easy, 5 - Just right, 10 - Too difficult)
         type: number
         min: 1
         max: 10
