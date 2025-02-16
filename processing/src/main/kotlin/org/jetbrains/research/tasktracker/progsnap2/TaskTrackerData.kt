@@ -9,9 +9,7 @@ data class TaskTrackerData(
     val documentData: File,
     val fileEditorData: File,
     val researches: File,
-    val surveyData: File,
     val toolWindowData: File,
-    val users: File,
     val metaData: ProgsnapMeta
 )
 

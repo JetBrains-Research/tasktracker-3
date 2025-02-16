@@ -9,13 +9,17 @@ import org.jetbrains.kotlinx.dataframe.io.writeCSV
 import java.io.File
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 import kotlin.io.path.createDirectories
 import kotlin.io.path.exists
 
+@Suppress("TooManyFunctions")
 class ProgsnapParser(private val taskTrackerData: TaskTrackerData) {
 
     companion object {
-        private val DATE_FORMAT: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS XXX")
+        private val DATE_FORMAT_WITH_MICROS = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSXXX")
+        private val DATE_WITHOUT_MICROS = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ssXXX")
+        private val DATE_FORMATS = listOf(DATE_FORMAT_WITH_MICROS, DATE_WITHOUT_MICROS)
         private val DIRECTORIES_DELIMITERS = arrayOf("/", "\\")
         private const val CODE_STATES_DIRECTORY_NAME = "CodeStates"
         private const val MAIN_TABLE_FILENAME = "MainTable.csv"
@@ -27,6 +31,17 @@ class ProgsnapParser(private val taskTrackerData: TaskTrackerData) {
         createMetaFile(destinationDirectory)
         val researchGroups = getCodeDataFrame(destinationDirectory).groupBy("researchId")
         createMainTableFile(destinationDirectory, researchGroups)
+    }
+
+    private fun parseDate(dateString: String): OffsetDateTime {
+        for (formatter in DATE_FORMATS) {
+            try {
+                return OffsetDateTime.parse(dateString, formatter)
+            } catch (_: DateTimeParseException) {
+                // Ignore and try the next format
+            }
+        }
+        error("Invalid date format: $dateString")
     }
 
     private fun createMetaFile(destinationDirectory: File) {
@@ -63,13 +78,9 @@ class ProgsnapParser(private val taskTrackerData: TaskTrackerData) {
     private var researches =
         taskTrackerData.researches.toDataFrame()
             .convert("id").to<Int>()
-    private var surveyData =
-        taskTrackerData.surveyData.toDataFrame()
     private var toolWindowData =
         taskTrackerData.toolWindowData.toDataFrame()
             .add("data_type") { "toolWindowData" }
-    private var users =
-        taskTrackerData.users.toDataFrame()
 
     private fun File.toDataFrame() = DataFrame.readCSV(this)
 
@@ -78,7 +89,7 @@ class ProgsnapParser(private val taskTrackerData: TaskTrackerData) {
     private fun DataFrame<*>.convertDate() = this
         .dropNA("date")
         .update("date")
-        .with { OffsetDateTime.parse(it.toString(), DATE_FORMAT).toString() }
+        .with { parseDate(it.toString()).toString() }
         .convert("research_id").to<Int>()
         .fullJoin(researches) { "research_id" match "id" }
         .dropNA("date")
@@ -159,6 +170,9 @@ class ProgsnapParser(private val taskTrackerData: TaskTrackerData) {
                     "KeyPressed" -> "X-KeyPressed"
                     "KeyReleased" -> "X-KeyReleased"
                     "Action" -> "X-Action"
+                    "MouseClicked" -> "X-MouseClicked"
+                    "MouseMoved" -> "X-MouseMoved"
+                    "MouseWheel" -> "X-MouseWheel"
                     else -> error("Undefined activity data type has been detected in the data `$type`")
                 }
             }
