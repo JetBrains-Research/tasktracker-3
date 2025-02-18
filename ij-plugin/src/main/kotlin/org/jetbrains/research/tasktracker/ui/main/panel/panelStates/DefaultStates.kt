@@ -174,6 +174,9 @@ fun Panel.processScenario() {
 
         is ExternalSourceUnit -> {
             openExternalUrl(unit.url)
+            setNextAction{
+                processScenario()
+            }
         }
 
         null -> {

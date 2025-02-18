@@ -1,4 +1,51 @@
 tasks:
-  - description: "Description should be specified here"
-    id: main
-    name: "Name Example"
+  - description: "Create pow method for java language"
+    id: powJava
+    name: "Pow Java"
+    focusFileId: "powJava"
+    files:
+      - filename: pow
+        sourceSet: "SRC"
+        templateFile: "pow"
+        extension: JAVA
+        id: "powJava"
+  - description: "Create pow function for kotlin language"
+    id: powKotlin
+    name: "Pow Kotlin"
+    focusFileId: "powKotlin"
+    files:
+      - filename: pow
+        sourceSet: "SRC"
+        templateFile: "pow"
+        extension: KOTLIN
+        id: "powKotlin"
+  - description: "Implement binary algorithm"
+    id: binary
+    name: "Binary algorithm"
+    focusFileId: "binary"
+    files:
+      - filename: binary
+        sourceSet: "SRC"
+        templateFile: "binary"
+        extension: JAVASCRIPT
+        id: "binary"
+  - description: "implement function `get_even_numbers_set` that generates and returns a set containing all even numbers between 0 and 100, inclusive."
+    id: set
+    name: "Even Set"
+    focusFileId: "collections"
+    files:
+      - filename: collections
+        sourceSet: "SRC"
+        templateFile: "collections"
+        extension: PYTHON
+        id: "collections"
+  - description: "implement function `get_even_numbers_list` that generates and returns a list containing all even numbers between 0 and 100, inclusive."
+    id: list
+    name: "Even List"
+    focusFileId: "collections"
+    files:
+      - filename: collections
+        sourceSet: "SRC"
+        templateFile: "collections"
+        extension: PYTHON
+        id: "collections"

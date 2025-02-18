@@ -1,7 +1,27 @@
 scenario:
   steps:
     - units:
+        - !<SingleList>
+          taskIds:
+            - "powKotlin"
+            - "powJava"
+        - !<List>
+          taskIds:
+            - "list"
+            - "set"
+      mode: SHUFFLED
+    - units:
+        - !<Setting>
+          mainIdeConfig:
+            settingsConfig:
+              enableCodeCompletion: OFF
+              enableZenMode: OFF
+              theme: DARK
         - !<Task>
-          id: "main"
+          id: "binary"
+    - units:
         - !<Survey>
           id: "default"
+        - !<External>
+          url: "https://www.youtube.com/watch?v=xvFZjo5PgG0"
+

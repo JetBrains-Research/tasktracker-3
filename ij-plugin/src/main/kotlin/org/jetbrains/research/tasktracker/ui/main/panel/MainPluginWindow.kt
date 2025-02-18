@@ -33,10 +33,11 @@ class MainPluginWindow(service: MainWindowService) {
         app.connect().subscribe(
             LafManagerListener.TOPIC,
             LafManagerListener {
-                if (currentTheme != Theme.currentIdeTheme()) {
-                    currentTheme = Theme.currentIdeTheme()
-                    loadHtmlTemplate(currentTemplate)
-                }
+                // TODO should be replaced for new API
+//                if (currentTheme != Theme.currentIdeTheme()) {
+//                    currentTheme = Theme.currentIdeTheme()
+//                    loadHtmlTemplate(currentTemplate)
+//                }
             }
         )
         listenRedirectToDefaultBrowser()

@@ -7,5 +7,6 @@ enum class Extension(val ext: String) {
     KOTLIN(".kt"),
     CPP(".cpp"),
     CSV(".csv"),
+    JAVASCRIPT(".js"),
     NO_EXTENSION("")
 }

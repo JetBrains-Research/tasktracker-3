@@ -55,6 +55,7 @@ class SettingsHandler(override val config: SettingsConfig, override val project:
         when (config.theme) {
             Theme.DEFAULT -> {}
             Theme.LIGHT -> changeTheme(light)
+            Theme.DARK -> changeTheme(dark)
             Theme.DARCULA -> changeTheme(darcula)
         }
         lafManager.updateUI()
@@ -74,7 +75,8 @@ class SettingsHandler(override val config: SettingsConfig, override val project:
 
     companion object {
         const val zenModeActionId = "ToggleZenMode"
-        const val darcula = "Darcula"
+        const val dark = "Dark"
         const val light = "Light"
+        const val darcula = "Light"
     }
 }

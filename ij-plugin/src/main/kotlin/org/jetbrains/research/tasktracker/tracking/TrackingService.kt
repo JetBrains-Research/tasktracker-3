@@ -1,6 +1,7 @@
 package org.jetbrains.research.tasktracker.tracking
 
 import com.intellij.openapi.Disposable
+import com.intellij.openapi.application.WriteAction
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
 import kotlinx.coroutines.CoroutineScope
@@ -53,15 +54,17 @@ class TrackingService : Disposable {
         trackers.forEach {
             it.stopTracking()
         }
-        CoroutineScope(Dispatchers.IO).launch {
-            val result = trackers.all {
-                it.send()
-            }.and(
-                logs.all { it.send() }
-            )
-            trackers.clear()
-            logs.clear()
-            if (result) success.invoke() else failure.invoke()
+        WriteAction.run<Throwable> {
+            CoroutineScope(Dispatchers.IO).launch {
+                val result = trackers.all {
+                    it.send()
+                }.and(
+                    logs.all { it.send() }
+                )
+                trackers.clear()
+                logs.clear()
+                if (result) success.invoke() else failure.invoke()
+            }
         }
     }
 

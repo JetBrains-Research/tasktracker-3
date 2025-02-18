@@ -6,5 +6,6 @@ enum class Theme {
      */
     DEFAULT,
     LIGHT,
-    DARCULA
+    DARCULA,
+    DARK
 }
