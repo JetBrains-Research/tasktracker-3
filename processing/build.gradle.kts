@@ -27,4 +27,12 @@ tasks{
     withType<Detekt>().configureEach {
         jvmTarget = jdkVersion
     }
+
+    register<JavaExec>("execute") {
+        group = "application"
+        description = "Executes the main function in Main.kt"
+        mainClass.set("org.jetbrains.research.tasktracker.progsnap2.MainKt")
+        classpath = sourceSets["main"].runtimeClasspath
+        args = project.findProperty("execArgs")?.toString()?.split(":") ?: listOf()
+    }
 }
