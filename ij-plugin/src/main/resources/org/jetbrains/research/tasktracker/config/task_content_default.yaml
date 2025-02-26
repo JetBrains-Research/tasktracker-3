@@ -32,20 +32,20 @@ tasks:
   - description: "implement function `get_even_numbers_set` that generates and returns a set containing all even numbers between 0 and 100, inclusive."
     id: set
     name: "Even Set"
-    focusFileId: "collections"
+    focusFileId: "list-set"
     files:
-      - filename: collections
+      - filename: list-set
         sourceSet: "SRC"
-        templateFile: "collections"
+        templateFile: "list-set"
         extension: PYTHON
-        id: "collections"
+        id: "list-set"
   - description: "implement function `get_even_numbers_list` that generates and returns a list containing all even numbers between 0 and 100, inclusive."
     id: list
     name: "Even List"
-    focusFileId: "collections"
+    focusFileId: "list-set"
     files:
-      - filename: collections
+      - filename: list-set
         sourceSet: "SRC"
-        templateFile: "collections"
+        templateFile: "list-set"
         extension: PYTHON
-        id: "collections"
+        id: "list-set"

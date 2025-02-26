@@ -69,7 +69,7 @@ data class TaskFileInfo(override val filename: String, override val sourceSet: S
             val content = ProgrammingTask::class.java.getResource(fileName)?.readText()
                 ?: error("There are no template file with name '$fileName'")
             val builder = StringBuilder(content)
-            builder.insert(0, DefaultContentProvider.getPackage(extension, path))
+//            builder.insert(0, DefaultContentProvider.getPackage(extension, path))
             return builder.toString()
         }
     }

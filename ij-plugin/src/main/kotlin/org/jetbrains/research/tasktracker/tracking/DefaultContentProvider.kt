@@ -8,7 +8,6 @@ object DefaultContentProvider {
     fun getDefaultContent(extension: Extension?, path: String) = when (extension) {
         Extension.JAVA ->
             """
-                ${getPackage(extension, path)}
                
                 public class Solution {
                 
@@ -23,7 +22,6 @@ object DefaultContentProvider {
 
         Extension.KOTLIN ->
             """
-                ${getPackage(extension, path)}
                 
                 fun main() {
                 
