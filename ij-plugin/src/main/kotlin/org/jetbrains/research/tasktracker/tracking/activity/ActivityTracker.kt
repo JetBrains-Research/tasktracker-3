@@ -97,7 +97,12 @@ class ActivityTracker(project: Project) : BaseTracker("activity") {
 
                 is MouseWheelEvent -> {
                     when (awtEvent.id) {
-                        MouseEvent.MOUSE_WHEEL -> trackerLogger.log(Type.MouseWheel, awtEvent.info())
+                        MouseEvent.MOUSE_WHEEL -> {
+                            if (currentTime - lastTime >= MILLIS_THRESHOLD) {
+                                trackerLogger.log(Type.MouseWheel, awtEvent.info())
+                                lastTime = currentTime
+                            }
+                        }
                     }
                 }
 
@@ -107,6 +112,7 @@ class ActivityTracker(project: Project) : BaseTracker("activity") {
                         MouseEvent.MOUSE_MOVED -> {
                             if (currentTime - lastTime >= MILLIS_THRESHOLD) {
                                 trackerLogger.log(Type.MouseMoved, awtEvent.movedInfo())
+                                lastTime = currentTime
                             }
                         }
                     }

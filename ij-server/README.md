@@ -5,12 +5,10 @@ also saves the data received from the plugin as directories in the specified pat
 will be available later).
 
 For a more convenient server setup for your needs, we provide the option to create a Docker container. To do this, you
-can use the image named `daniilkarol/koala:latest`. You can also find a [docker compose](../docker-compose.yml) file that already provides a template to start a docker
+can use the image named `registry.jetbrains.team/p/tasktracker-3/sharable/tasktracker-server:latest`. You can also find a [docker compose](../docker-compose.yml) file that already provides a template to start a docker
 container.
 
 The server requires a certain number of environment variables, as follows:
-- `HOST` - host address ([0.0.0.0]() by default)
-- `PORT` - app port ([8080]() by default)
 - `DB_URL` - postgres database url in format `postgresql://[user[:password]@][netloc][:port][/dbname]`
 - `DB_USERNAME` - username for the database
 - `DB_PASSWORD` - password for the database

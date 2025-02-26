@@ -1,11 +1,9 @@
 services:
   server:
-    image: daniilkarol/koala:latest
+    image: registry.jetbrains.team/p/tasktracker-3/sharable/tasktracker-server:latest
     ports:
       - "8080:8080"
     environment:
-      - HOST=
-      - PORT=
-      - DB_URL=
-      - DB_USERNAME=
-      - DB_PASSWORD=
+      - DB_URL=jdbc:postgresql://host.docker.internal:5432/tasktracker
+      - DB_USERNAME=mikrise2
+      - DB_PASSWORD=Mikmikmik25522552
