@@ -197,9 +197,9 @@ data class SliderHtmlQuestion(
         append(htmlText())
         append("<input type=\"range\" id=\"$elementId\" name=\"$elementId\" ")
         append("min=\"$min\" max=\"$max\" step=\"$step\" ${isRequiredString()} ")
-        append(" style=\"width: 100%; display: block; margin: 10px 0;\">")
+        append(" style=\"width: 100%; display: block;\">")
 
-        append("<div style=\"display: flex; justify-content: space-between; font-size: 14px; color: white; margin-top: 5px;\">")
+        append("<div style=\"display: flex; justify-content: space-between; color: white;\">")
         append("<span>${labels.min}</span>")
         append("<span>${labels.max}</span>")
         append("</div>")
