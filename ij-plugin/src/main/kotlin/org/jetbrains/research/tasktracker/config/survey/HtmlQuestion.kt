@@ -176,3 +176,32 @@ data class HtmlQuestionContainer(override val text: String) : HtmlQuestion() {
         }
     }
 }
+
+@Serializable
+data class Labels(
+    val min: String,
+    val max: String
+)
+
+@Serializable
+@SerialName("Slider")
+data class SliderHtmlQuestion(
+    override val text: String,
+    override val elementId: String,
+    val min: Int,
+    val max: Int,
+    val step: Int = 1,
+    val labels: Labels
+) : HtmlQuestion() {
+    override fun toHtml(): String = buildString {
+        append(htmlText())
+        append("<input type=\"range\" id=\"$elementId\" name=\"$elementId\" ")
+        append("min=\"$min\" max=\"$max\" step=\"$step\" ${isRequiredString()} ")
+        append(" style=\"width: 100%; display: block; margin: 10px 0;\">")
+
+        append("<div style=\"display: flex; justify-content: space-between; font-size: 14px; color: white; margin-top: 5px;\">")
+        append("<span>${labels.min}</span>")
+        append("<span>${labels.max}</span>")
+        append("</div>")
+    }
+}
