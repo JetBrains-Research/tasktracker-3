@@ -160,14 +160,28 @@ surveys:
 
   - id: final_survey
     htmlQuestions:
-      - !<Radio>
-        text: Single choice question
-        elementId: single
-        required: true
-        info:
-          - id: single1
-            value: 1
-          - id: single2
-            value: 2
-          - id: single3
-            value: 3
+      - !<Textarea>
+        text: Describe your overall experience of learning Kotlin during this study. What aspects of the learning process stood out for you?
+        elementId: experience_question
+        rows: 5
+        cols: 50
+      - !<Textarea>
+        text: Describe a specific moment when you felt stuck during one of the projects. What did you do to get past that point?
+        elementId: stuck_question
+        rows: 5
+        cols: 50
+      - !<Textarea>
+        text: What specific features did you use most often to solve the programming tasks? Can you explain why?
+        elementId: features_question
+        rows: 5
+        cols: 50
+      - !<Textarea>
+        text: How would you compare your experience of expressing solutions in natural language versus formal programming syntax? Please describe any differences you noticed in your approach or efficiency.
+        elementId: natural_language_question
+        rows: 5
+        cols: 50
+      - !<Textarea>
+        text: Is there anything else you would like to share about your experience with this study?
+        elementId: anything_else_question
+        rows: 5
+        cols: 50
