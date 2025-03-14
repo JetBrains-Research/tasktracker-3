@@ -200,6 +200,17 @@ data class SliderHtmlQuestion(
         append(" style=\"width: 100%; display: block;\">")
 
         append("<div style=\"display: flex; justify-content: space-between; color: white;\">")
+        (min..max step step).forEachIndexed { index, value ->
+            append("<div style=\"text-align: center; flex: 1; position: relative;\">")
+            append("<div style=\"width: 2px; height: 10px; background: white; margin: auto;\"></div>")
+            if (index % 5 == 0) {
+                append("<span style=\"display: block; margin-top: 2px;\">$value</span>")
+            }
+            append("</div>")
+        }
+        append("</div>")
+
+        append("<div style=\"display: flex; justify-content: space-between; color: white;\">")
         append("<span>${labels.min}</span>")
         append("<span>${labels.max}</span>")
         append("</div>")
