@@ -1,7 +1,23 @@
 scenario:
   steps:
     - units:
-        - !<Task>
-          id: "main"
         - !<Survey>
-          id: "default"
+          id: "NASA_task_load_index_before_tasks"
+        - !<Task>
+          id: "tutorial"
+        - !<Survey>
+          id: "NASA_task_load_index"
+        - !<Task>
+          id: "the_first_date_with_programming"
+        - !<Survey>
+          id: "NASA_task_load_index"
+        - !<Task>
+          id: "warm_up_and_mastermind_advanced"
+        - !<Survey>
+          id: "NASA_task_load_index"
+        - !<Task>
+          id: "almost_done"
+        - !<Survey>
+          id: "NASA_task_load_index"
+        - !<Survey>
+          id: "final_survey"
